@@ -1,0 +1,17 @@
+//
+//  NIMAudioChatroom-Prefix.pch
+//  NIMAudioChatroom
+//
+//  Created by Simon Blue on 2019/1/16.
+//  Copyright © 2019年 netease. All rights reserved.
+//
+
+#ifndef NIMAudioChatroom_Prefix_pch
+#define NIMAudioChatroom_Prefix_pch
+
+#import <NIMSDK/NIMSDK.h>
+#import "NTESGlobalMacro.h"
+#import <SVProgressHUD.h>
+#import "NELPFoundationLogger.h"
+
+#endif /* NIMAudioChatroom_Prefix_pch */
