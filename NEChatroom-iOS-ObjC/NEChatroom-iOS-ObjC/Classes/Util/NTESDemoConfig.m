@@ -8,6 +8,9 @@
 
 #import "NTESDemoConfig.h"
 
+NSString *const kAppKey = @"<#请填入您的APPKey#>";
+NSString *const kApiHost = @"<#请填入您的服务器域名#>";
+
 @implementation NTESDemoConfig
 
 + (instancetype)sharedConfig
@@ -24,9 +27,8 @@
 {
     if (self = [super init])
     {
-        _appKey = @"";
-        _apiURL = @"";
-        _rtcAppKey = @"";
+        _appKey = kAppKey;
+        _apiURL = kApiHost;
     }
     return self;
 }
@@ -41,12 +43,6 @@
 {
     NSAssert((_apiURL.length != 0), @"请填入APIURL");
     return _apiURL;
-}
-
-- (NSString *)rtcAppKey
-{
-    NSAssert((_rtcAppKey.length != 0), @"请填入RTCAPPKEY");
-    return _rtcAppKey;
 }
 
 - (NSString *)cerName

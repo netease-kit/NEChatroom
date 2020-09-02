@@ -94,7 +94,7 @@
 - (void)setupRTCEngine
 {
     NERtcEngineContext *context = [[NERtcEngineContext alloc] init];
-    context.appKey = [NTESDemoConfig sharedConfig].rtcAppKey;
+    context.appKey = [NTESDemoConfig sharedConfig].appKey;
     context.engineDelegate = self;
     NERtcEngine *coreEngine = [NERtcEngine sharedEngine];
     [coreEngine setAudioProfile:kNERtcAudioProfileHighQualityStereo scenario:kNERtcAudioScenarioMusic];
@@ -1004,10 +1004,6 @@
     NSString *roomId = _dataSource.chatroom.roomId;
     [NTESChatroomQueueHelper updateChatroomQueueWithRoomId:roomId
                                                    micInfo:micInfo];
-//    if ([micInfo.userInfo.account isEqualToString:_dataSource.myAccountInfo.sid]) {
-//        BOOL enableAudio = !micInfo.isMicMute;
-//        [[NERtcEngine sharedEngine] enableLocalAudio:enableAudio];
-//    }
 }
 
 - (void)didChatroomMember:(NIMChatroomNotificationMember *)member enter:(BOOL)enter { //进入或离开房间

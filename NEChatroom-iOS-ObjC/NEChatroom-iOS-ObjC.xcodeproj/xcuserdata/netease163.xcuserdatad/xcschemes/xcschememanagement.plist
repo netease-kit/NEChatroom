@@ -4,10 +4,28 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>NERtcAudioChatroom.xcscheme_^#shared#^_</key>
+		<key>NEChatroom-iOS-ObjC.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>90CFDD3D21EC610900DDDFED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>90CFDD5521EC610B00DDDFED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>90CFDD6021EC610B00DDDFED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
