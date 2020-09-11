@@ -77,6 +77,7 @@
 | updateSeats | 更新所有麦位信息 |
 | updateSeat | 更新麦位信息 |
 | onSeatVolume | 麦位说话音量 |
+| onVoiceRoomMessage | 收到消息 |
 
 | Audience | 观众操作 |
 | - | - |
@@ -106,13 +107,11 @@
 | fetchSeats | 获取服务器最新麦位列表 |
 | getSeat | 获取本地麦位 |
 | getApplySeats | 获取当前上麦请求列表 |
-| sendSeatMessage | 发送麦位消息 |
 | checkInRoom | 检查是否在房间内 |
 
 | Anchor.Callback | 主播回调 |
 | - | - |
 | onApplySeats | 上麦请求列表 |
-| onSeatState | 麦位状态 |
 
 | AudioPlay | 播放操作 |
 | - | - |
