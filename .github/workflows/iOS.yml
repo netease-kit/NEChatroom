@@ -1,0 +1,91 @@
+name: NEChatroom - iOS 
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_chatroom_objc:
+    name: Build NEChatroom Objc
+    runs-on: macos-latest
+    env:
+      XC_PROJECT_NAME: ${{ 'NEChatroom-iOS-ObjC' }}
+      XC_VERSION: ${{ '11.4' }}
+      XC_SCHEME: ${{ 'NEChatroom-iOS-ObjC' }}
+      XC_WORKSPACE: ${{ 'NEChatroom-iOS-ObjC.xcworkspace' }}
+      XC_CONFIGURATION: ${{ 'release' }}
+      XC_ARCHIVE_DIR: ${{ './product/archive' }}
+      XC_IPA_DIR: ${{ './product/ipa' }}
+      XC_EXPORT_OPTIONS_PATH: ${{ './Workflow/ExportOptions.plist' }}
+      XC_CONFIG_STUB_SCRIPT_PATH: ${{ './Workflow/config_stub.py' }}
+
+      ENCRYPTED_CERT_PATH: ${{ './Workflow/cert.p12.gpg' }}
+      DECRYPTED_CERT_PATH: ${{ './Workflow/cert.p12' }}
+      ENCRYPTED_PROVISION_PATH: ${{ './Workflow/enterpriseForWildCard.mobileprovision.gpg' }}
+      DECRYPTED_PROVISION_PATH: ${{ './Workflow/enterpriseForWildCard.mobileprovision' }}
+      CERT_ENC_PWD: ${{ secrets.CERT_ENC_PWD }}
+      PROVISION_ENC_PWD: ${{ secrets.PROVISION_ENC_PWD }}
+      APP_KEY: ${{ secrets.APP_KEY }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL  }}
+      KEYCHAIN: ${{ 'temp.keychain' }}
+      APP_CONFIG_FILE_PATH: ${{ './NEChatroom-iOS-ObjC/Classes/Util/NTESDemoConfig.m' }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./NEChatroom-iOS-ObjC/
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Python 2.7
+      uses: actions/setup-python@v2
+      with:
+          python-version: '2.7'
+          
+    - name: Config Stub
+      run: 
+        python $XC_CONFIG_STUB_SCRIPT_PATH $APP_CONFIG_FILE_PATH $APP_KEY $API_BASE_URL
+    
+    - name: Select Xcode
+      run: 
+        sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app
+
+    - name: Install Dependencies
+      run: pod install
+
+    - name: Configure Keychain
+      run: 
+        security create-keychain -p "" "$KEYCHAIN";
+        security list-keychains -s "$KEYCHAIN";
+        security default-keychain -s "$KEYCHAIN";
+        security unlock-keychain -p "" "$KEYCHAIN";
+        security set-keychain-settings;
+        security list-keychains;
+    
+    - name: Configure Code Signing
+      run:
+        gpg -d -o "$DECRYPTED_CERT_PATH" --pinentry-mode=loopback --passphrase "$CERT_ENC_PWD" "$ENCRYPTED_CERT_PATH";
+        gpg -d -o "$DECRYPTED_PROVISION_PATH" --pinentry-mode=loopback --passphrase "$PROVISION_ENC_PWD" "$ENCRYPTED_PROVISION_PATH";
+        security import "$DECRYPTED_CERT_PATH" -k "$KEYCHAIN" -P "" -A;
+        security set-key-partition-list -S apple-tool:,apple:, -s -k "" "$KEYCHAIN";
+        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles";
+        UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i $DECRYPTED_PROVISION_PATH));
+        cp "$DECRYPTED_PROVISION_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision";
+
+    - name: Archive
+      run:
+        mkdir -p $XC_ARCHIVE_DIR;
+        UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i $DECRYPTED_PROVISION_PATH));
+        xcodebuild archive -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -archivePath $XC_ARCHIVE_DIR/$XC_PROJECT_NAME.xcarchive CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE_SPECIFIER=$UUID;
+
+    - name: Export IPA
+      run: 
+        mkdir -p $XC_IPA_DIR;
+        xcodebuild -exportArchive -archivePath $XC_ARCHIVE_DIR/$XC_PROJECT_NAME.xcarchive -exportPath $XC_IPA_DIR -exportOptionsPlist $XC_EXPORT_OPTIONS_PATH;
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: NEChatroom-iOS-ObjC
+        path: ./NEChatroom-iOS-ObjC/product/ipa/NEChatroom-iOS-ObjC.ipa

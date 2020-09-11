@@ -21,9 +21,8 @@
     [[NTESDemoSystemManager shareInstance] start];
     
     NSString *appKey = [[NTESDemoConfig sharedConfig] appKey];
-    NSString *cerName= [[NTESDemoConfig sharedConfig] cerName];
     [[NIMSDK sharedSDK] registerWithAppID:appKey
-                                  cerName:cerName];
+                                  cerName:nil];
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     NTESHomePageViewController *vc = [[NTESHomePageViewController alloc ] init];

@@ -45,9 +45,4 @@ NSString *const kApiHost = @"<#请填入您的服务器域名#>";
     return _apiURL;
 }
 
-- (NSString *)cerName
-{
-    return nil;
-}
-
 @end
