@@ -1,30 +1,59 @@
 ## 云信语聊房（Android）
 
-本文主要展示如何集成云信的NIMSDK以及NERtcSDK，快速实现语音聊天室功能。您可以直接基于我们的Demo修改适配，也可以使用我们提供的nertcvoiceroom库工程，实现自定义UI。
+本文主要展示如何集成云信的NIMSDK以及NERtcSDK，快速实现语音聊天室功能。您可以直接基于我们的Demo修改适配，也可以使用我们提供的nertcvoiceroom库工程，单独使用组件。
 
 ### 环境准备
 
 1. 登录[网易云控制台](https://app.yunxin.163.com/index?clueFrom=nim&from=nim#/)，点击【应用】>【创建】创建自己的App，在【功能管理】中申请开通【信令】和【音视频通话】功能。
 2. 在控制台中【App Key管理】获取App Key。
-3. 下载[场景Demo]()，将/pack/setup.gradle中的G2AppKey更换为自己的App Key。
+3. 下载[场景Demo]()，将/build.gradle中的NimAppKey和G2AppKey更换为自己的App Key，G2AppKey可以和NimAppKey不一样。
 
 ### 运行示例项目
 
 **注意：在运行前，请联系商务经理开通非安全模式（因Demo中RTCSDK中的token传空）。**
 
-1. 下载完成场景Demo后，使用Android Studio打开工程，运行即可。
+1. 下载完成场景Demo后，使用Android Studio打开工程，配置NimAppKey和G2AppKey后，运行即可。
+2. 修改build参数，在/build.gradle中定义了build相关参数，如下表
 
-### 功能实现
+| key | value |
+| - | - |
+| compileSdkVersion | 30 |
+| buildToolsVersion | 30.0.0 |
+| minSdkVersion | 18 |
+| targetSdkVersion | 30 |
+| ndkAbis | all |
 
+2. 修改sdk参数，在/build.gradle中定义了sdk相关参数，如下表
+
+| key | value | note
+| - | - | - |
+| nimVersion | 7.8.4 | nim相关版本
+| nertcVersion | 3.6.0 | G2版本
+
+### 使用示例项目
 源码Demo的包含两个模块，app和nertcvoiceroom。nertcvoiceroom实现了对语音聊天室业务逻辑的组件封装，而app实现ui的搭建。
 
+1. 基于Demo修改适配
+
+2. 使用nertcvoiceroom组件库工程搭建
+
+### 功能实现
 1. NERtcVoiceRoom组件：
 
    ![](https://github.com/netease-im/NEVideoCall-1to1/blob/feature/feature_iOS/iOS/NLiteAVDemo/Images/image-20200902204955182.png)
 
 #### **NERtcVoiceRoom**接口分类
-- 动作接口**NERtcVoiceRoom**，**Anchor**，**Audience**，**AudioPlay**。UI的动作对接到动作接口。
-- 回调接口**RoomCallback**,**Anchor.Callback**，**Audience.Callback**，**AudioPlay.Callback**，根据回调接口更新UI。
+1. 操作接口
+- **NERtcVoiceRoom**
+- **Anchor**
+- **Audience**
+- **AudioPlay**
+
+2. 回调接口
+- **RoomCallback**
+- **Anchor.Callback**
+- **Audience.Callback**
+- **AudioPlay.Callback**
 
 #### **NERtcVoiceRoom**使用
 - 主播创建聊天室，观众选择聊天室
