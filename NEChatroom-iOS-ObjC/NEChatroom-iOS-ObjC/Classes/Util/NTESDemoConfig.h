@@ -15,9 +15,6 @@
 
 @property (nonatomic,copy)  NSString    *appKey;
 @property (nonatomic,copy)  NSString    *apiURL;
-@property (nonatomic,copy)  NSString    *cerName;
-
-@property (nonatomic,copy)  NSString    *rtcAppKey;
 
 @end
 

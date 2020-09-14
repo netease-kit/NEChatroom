@@ -62,7 +62,6 @@
 		E6335CC42235F0E00002EBBA /* NTESAudioPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E6335CC32235F0E00002EBBA /* NTESAudioPlayerManager.m */; };
 		E64ED8312241D67F00E71513 /* NTESActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E64ED8302241D67F00E71513 /* NTESActionSheet.m */; };
 		E64ED8342242433900E71513 /* NTESAuthorityHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E64ED8332242433900E71513 /* NTESAuthorityHelper.m */; };
-		E66A852E228A9BA30032278D /* NTESAudioQualityView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66A852D228A9BA30032278D /* NTESAudioQualityView.m */; };
 		E6756D162244CB8800968F5C /* NTESSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6756D152244CB8800968F5C /* NTESSelectViewController.m */; };
 		E6796D01222E4F8000AF1825 /* NTESChatroomHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6796D00222E4F8000AF1825 /* NTESChatroomHeaderView.m */; };
 		E6796D04222E734E00AF1825 /* NTESChatroomMicQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6796D03222E734E00AF1825 /* NTESChatroomMicQueueView.m */; };
@@ -212,8 +211,6 @@
 		E64ED8302241D67F00E71513 /* NTESActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESActionSheet.m; sourceTree = "<group>"; };
 		E64ED8322242433900E71513 /* NTESAuthorityHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESAuthorityHelper.h; sourceTree = "<group>"; };
 		E64ED8332242433900E71513 /* NTESAuthorityHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESAuthorityHelper.m; sourceTree = "<group>"; };
-		E66A852C228A9BA30032278D /* NTESAudioQualityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESAudioQualityView.h; sourceTree = "<group>"; };
-		E66A852D228A9BA30032278D /* NTESAudioQualityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESAudioQualityView.m; sourceTree = "<group>"; };
 		E6756D142244CB8800968F5C /* NTESSelectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESSelectViewController.h; sourceTree = "<group>"; };
 		E6756D152244CB8800968F5C /* NTESSelectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESSelectViewController.m; sourceTree = "<group>"; };
 		E6796CFF222E4F8000AF1825 /* NTESChatroomHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomHeaderView.h; sourceTree = "<group>"; };
@@ -574,8 +571,6 @@
 				E6DD28E4222D390000B58CAD /* NTESHomePageStateView.m */,
 				9040876B21F080ED00E79DF8 /* NTESChatroomTableViewCell.h */,
 				9040876C21F080ED00E79DF8 /* NTESChatroomTableViewCell.m */,
-				E66A852C228A9BA30032278D /* NTESAudioQualityView.h */,
-				E66A852D228A9BA30032278D /* NTESAudioQualityView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -700,9 +695,7 @@
 				90CFDD3B21EC610900DDDFED /* Frameworks */,
 				90CFDD3C21EC610900DDDFED /* Resources */,
 				0DF4140E1790D130D747FB83 /* [CP] Copy Pods Resources */,
-				E6E98ADD223B3F1400968637 /* ShellScript */,
 				70F78C8F0EC29B49CCC63B4D /* [CP] Embed Pods Frameworks */,
-				86CD6C3124F8D9D000E42725 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -879,40 +872,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NEChatroom-iOS-ObjC/Pods-NEChatroom-iOS-ObjC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		86CD6C3124F8D9D000E42725 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"                                           \n\n# This script loops through the frameworks embedded in the application and\n\n# removes unused architectures.\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\n\ndo\n\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\nEXTRACTED_ARCHS=()\n\nfor ARCH in $ARCHS\n\ndo\n\necho \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n\nlipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n\nEXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n\ndone\n\necho \"Merging extracted architectures: ${ARCHS}\"\n\nlipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\n\nrm \"${EXTRACTED_ARCHS[@]}\"\n\necho \"Replacing original executable with thinned version\"\n\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\n\nmv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
-		};
-		E6E98ADD223B3F1400968637 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"${SRCROOT}/NEChatroom-iOS-ObjC/nrtc_strip_archs.sh\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -979,7 +938,6 @@
 				E61F3335222FCD7A00DA2F05 /* NTESMuteListViewController.m in Sources */,
 				900FC37B21FEA96500DBC8D8 /* NTESConnectListViewCell.m in Sources */,
 				E61F3328222FA59400DA2F05 /* NTESUserUtil.m in Sources */,
-				E66A852E228A9BA30032278D /* NTESAudioQualityView.m in Sources */,
 				E6292F622238E4D8005A530D /* NTESDemoSystemManager.m in Sources */,
 				E64ED8342242433900E71513 /* NTESAuthorityHelper.m in Sources */,
 			);
