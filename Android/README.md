@@ -37,11 +37,6 @@
 
 2. 使用nertcvoiceroom组件库工程搭建
 
-### 功能实现
-1. NERtcVoiceRoom组件：
-
-   ![](https://github.com/netease-im/NEVideoCall-1to1/blob/feature/feature_iOS/iOS/NLiteAVDemo/Images/image-20200902204955182.png)
-
 #### **NERtcVoiceRoom**接口分类
 1. 操作接口
 - **NERtcVoiceRoom**
@@ -57,16 +52,64 @@
 
 #### **NERtcVoiceRoom**使用
 - 主播创建聊天室，观众选择聊天室
-- 获取**NERtcVoiceRoom**对象，注册回调，初始化，加入房间
-- 主播侧，获取**Anchor**对象，注册回调，获取**AudioPlay**对象，注册回调
-- 观众侧，获取**Audience**对象，注册回调
+- 初始化
 
-#### **NERtcVoiceRoom**使用到的SDK功能
-- **NERtcEx** 语音通道加入退出，本地语音采集，发送，静音，远程语音订阅，音量控制，混音播放。
-- **ChatRoomService** 聊天室进入退出，获取聊天室信息，成员列表，麦位（队列）列表，更新麦位（队列），消息发送
-- **ChatRoomServiceObserver** 接收聊天室通知消息，包括：成员变更，麦位（队列）变更，禁言控制。
-- **MsgService** 发送指令消息（麦位消息，观众发送给主播）
-- **MsgServiceObserve** 接收指令消息（麦位消息，主播接收）
+    <code>
+        NERtcVoiceRoom voiceRoom = NERtcVoiceRoom.sharedInstance(context);
+        voiceRoom.init(appKey, roomCallback);
+    </code>
+
+- 主播初始化
+
+    <code>
+        Anchor anchor = voiceRoom.getAnchor();
+        AudioPlay audioPlay = voiceRoom.getAudioPlay();
+        anchor.setCallback(anchorCallback);
+        audioPlay.setCallback(audioPlayCallback);
+    </code>
+
+- 观众初始化
+
+    <code>
+        Audience audience = voiceRoom.getAudience();
+        audience.setCallback(audienceCallback);
+    </code>
+
+- 进入房间
+
+    <code>
+        voiceRoom.enterRoom(voiceRoomInfo, profileInfo, anchorMode);
+    </code>
+    
+- 房间操作
+
+    <code>
+        // 设置采集音量
+        voiceRoom.setAudioCaptureVolume(volume);
+        // 启动耳返
+        voiceRoom.enableEarback(enable);
+    </code>
+        
+- 主播操作
+
+    <code>
+        // 通过连麦请求
+        anchor.approveSeatApply(seat, callback);
+    </code>
+
+- 播放操作
+
+    <code>
+        // 播放或暂停
+        audioPlay.playOrPauseMixing();
+    </code>
+
+- 观众操作
+
+    <code>
+        // 请求连麦
+        audience.applySeat(seat, callback);
+    </code>
 
 #### NERtcVoiceRoom API
 
@@ -76,7 +119,6 @@
 | destroySharedInstance | 销毁实例 |
 | init | 初始化 |
 | setAudioQuality | 设置音质 |
-| listen | 监听操作 |
 | enterRoom | 进入房间 |
 | leaveRoom | 离开房间 |
 | startLocalAudio | 开启本地语音 |
@@ -159,3 +201,96 @@
 | onAudioMixingPlayState | 伴音播放状态 |
 | onAudioMixingPlayError | 伴音播放错误 |
 | onAudioEffectPlayFinished | 音效播放完成 |
+    
+### 功能实现
+
+#### **NERtcVoiceRoom**使用到的SDK功能
+
+- **NERtcEx**房间相关
+
+| api | usage |
+| - | - |
+| init | 初始化 |
+| release | 释放实例 |
+| setAudioProfile | 设置音质 |
+| joinChannel | 进入语音通道 |
+| leaveChannel | 离开语音通道 |
+| enableLocalAudio | 启用本地语音，包括采集和发送，观众上麦后开启，下麦后关闭 |
+| setRecordDeviceMute | 录音设备静音，开启关闭话筒 |
+| isRecordDeviceMute | 获取录音设备静音状态 |
+| adjustRecordingSignalVolume | 调整录音音量，设置采集音量 |
+| subscribeAllRemoteAudioStreams | 订阅房间内所有远端声音，开启关闭房间声音 |
+| enableEarback | 启用耳返 |
+| setSpeakerphoneOn | 打开扬声器，进入房间后默认使用 |
+| enableAudioVolumeIndication | 开启音量汇报，实现房间内说话音量 |
+
+- **NERtcEx**播放相关
+
+| api | usage |
+| - | - |
+| setAudioMixingSendVolume | 设置伴音发送音量（同步设置发送和播放） |
+| setAudioMixingPlaybackVolume | 设置伴音播放音量（同步设置发送和播放） |
+| startAudioMixing | 开始播放伴音 |
+| stopAudioMixing | 停止播放伴音 |
+| pauseAudioMixing | 暂停播放伴音 |
+| resumeAudioMixing | 继续播放伴音 |
+| setEffectPlaybackVolume | 设置音效发送音量（同步设置发送和播放） |
+| setEffectSendVolume | 设置音效播放音量（同步设置发送和播放） |
+| playEffect | 开始播放音效 |
+| stopEffect | 停止播放音效 |
+
+- **NERtcCallbackEx**回调相关
+
+| api | usage |
+| - | - |
+| onJoinChannel | 进入语音通道，此时房间才加入成功 |
+| onLeaveChannel | 离开语音通道，此时房间才完全离开 |
+| onAudioMixingStateChanged | 处理伴音播放状态 |
+| onAudioEffectFinished | 处理音效播放状态 |
+| onRemoteAudioVolumeIndication | 处理音量汇报 |
+
+- **ChatRoomService**相关
+
+| api | usage |
+| - | - |
+| enterChatRoom | 进入聊天室，进入成功后，再进入语音通道 |
+| exitChatRoom | 退出聊天室 |
+| fetchRoomInfo | 获取聊天室信息，人数，创建者等 |
+| fetchRoomMembers* | 获取聊天室成员列表 |
+| fetchQueue | 获取聊天室队列信息，麦位列表信息 |
+| updateQueue | 更新聊天室队列信息，麦位列表信息 |
+| sendMessage | 发送聊天室消息，只发送文本消息，使用了扩展字段type来区分是普通消息还是麦位变化提示消息 |
+
+- **ChatRoomServiceObserver**
+
+ChatRoomServiceObserver.observeReceiveMessage
+
+| event | usage |
+| - | - |
+| ChatRoomQueueChange | 队列变更，用于接收麦位变更 |
+| ChatRoomMemberIn | 生成进入房间消息 |
+| ChatRoomMemberExit | 生成退出房间消息 |
+| ChatRoomRoomMuted | 房间禁言 |
+| ChatRoomRoomDeMuted | 房间解除禁言 |
+| ChatRoomMemberTempMuteAdd | 禁言列表增加 |
+| ChatRoomMemberTempMuteRemove | 禁言列表移除 |
+| ChatRoomInfoUpdated | 聊天室信息变更，人数变化等 |
+| MsgTypeEnum.text | 接收文本消，普通消息和麦位变化提示消息 | 
+
+ChatRoomServiceObserver.observeKickOutEvent
+
+处理踢出，房间被解散
+
+- **MsgService**
+
+MsgService.sendCustomNotification
+
+发送指令消息（麦位消息，观众发送给主播）
+
+- **MsgServiceObserve**
+
+MsgServiceObserve.observeCustomNotification
+
+接收指令消息（麦位消息，主播接收）
+
+
