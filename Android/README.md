@@ -54,62 +54,62 @@
 - 主播创建聊天室，观众选择聊天室
 - 初始化
 
-    <code>
-        NERtcVoiceRoom voiceRoom = NERtcVoiceRoom.sharedInstance(context);
-        voiceRoom.init(appKey, roomCallback);
-    </code>
+```java
+    NERtcVoiceRoom voiceRoom = NERtcVoiceRoom.sharedInstance(context);
+    voiceRoom.init(appKey, roomCallback);
+```
 
 - 主播初始化
 
-    <code>
-        Anchor anchor = voiceRoom.getAnchor();
-        AudioPlay audioPlay = voiceRoom.getAudioPlay();
-        anchor.setCallback(anchorCallback);
-        audioPlay.setCallback(audioPlayCallback);
-    </code>
+```java
+    Anchor anchor = voiceRoom.getAnchor();
+    AudioPlay audioPlay = voiceRoom.getAudioPlay();
+    anchor.setCallback(anchorCallback);
+    audioPlay.setCallback(audioPlayCallback);
+```
 
 - 观众初始化
 
-    <code>
-        Audience audience = voiceRoom.getAudience();
-        audience.setCallback(audienceCallback);
-    </code>
+```java
+    Audience audience = voiceRoom.getAudience();
+    audience.setCallback(audienceCallback);
+```
 
 - 进入房间
 
-    <code>
-        voiceRoom.enterRoom(voiceRoomInfo, profileInfo, anchorMode);
-    </code>
+```java
+    voiceRoom.enterRoom(voiceRoomInfo, profileInfo, anchorMode);
+```
     
 - 房间操作
 
-    <code>
-        // 设置采集音量
-        voiceRoom.setAudioCaptureVolume(volume);
-        // 启动耳返
-        voiceRoom.enableEarback(enable);
-    </code>
+```java
+    // 设置采集音量
+    voiceRoom.setAudioCaptureVolume(volume);
+    // 启动耳返
+    voiceRoom.enableEarback(enable);
+```
         
 - 主播操作
 
-    <code>
-        // 通过连麦请求
-        anchor.approveSeatApply(seat, callback);
-    </code>
+```java
+    // 通过连麦请求
+    anchor.approveSeatApply(seat, callback);
+```
 
 - 播放操作
 
-    <code>
-        // 播放或暂停
-        audioPlay.playOrPauseMixing();
-    </code>
+```java
+    // 播放或暂停
+    audioPlay.playOrPauseMixing();
+```
 
 - 观众操作
 
-    <code>
-        // 请求连麦
-        audience.applySeat(seat, callback);
-    </code>
+```java
+    // 请求连麦
+    audience.applySeat(seat, callback);
+```
 
 #### NERtcVoiceRoom API
 
