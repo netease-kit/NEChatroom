@@ -1,0 +1,59 @@
+// define common task and task ordering
+
+project.afterEvaluate {
+    /**
+     * 1. define task
+     */
+    Task clean = tasks.getByPath('app:clean')
+    Task apk = tasks.getByPath('app:assembleRelease')
+
+    /**
+     * 2. task dependency, clean first
+     */
+    apk.dependsOn clean
+
+    /**
+     * 3. task order
+     */
+    apk.mustRunAfter clearSource, configRelServer, configDevServer
+
+    copyAudioDemoSource.mustRunAfter apk
+    copyAudioRoomApk.mustRunAfter apk
+
+    modifyAudioRoomTestApkName.mustRunAfter copyAudioRoomApk
+    modifyAudioRoomReleaseApkName.mustRunAfter copyAudioRoomApk
+}
+
+
+task Pack_Audio_APK {
+    dependsOn "app:assembleRelease"
+}
+
+task Pack_Audio_Room_Test_APK {
+    dependsOn clearSource
+    dependsOn configDevServer
+    dependsOn Pack_Audio_APK
+    dependsOn copyAudioRoomApk
+    dependsOn modifyAudioRoomTestApkName
+}
+
+task Pack_Audio_Room_Release_APK {
+    dependsOn clearSource
+    dependsOn configRelServer
+    dependsOn Pack_Audio_APK
+    dependsOn copyAudioRoomApk
+    dependsOn modifyAudioRoomReleaseApkName
+}
+
+
+
+
+task Pack_Audio_Room_Release_APK_All {
+
+    dependsOn clearSource
+    dependsOn configRelServer
+    dependsOn Pack_Audio_APK
+    dependsOn copyAudioRoomApk
+    dependsOn modifyAudioRoomReleaseApkName
+    dependsOn copyAudioDemoSource
+}

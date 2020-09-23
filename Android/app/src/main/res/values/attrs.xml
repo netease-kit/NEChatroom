@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge">
+            <flag name="left" value="1" />
+            <flag name="right" value="2" />
+            <flag name="top" value="4" />
+            <flag name="bottom" value="8" />
+        </attr>
+        <attr name="leftEdgeSwipeOffset" format="dimension" />
+        <attr name="rightEdgeSwipeOffset" format="dimension" />
+        <attr name="topEdgeSwipeOffset" format="dimension" />
+        <attr name="bottomEdgeSwipeOffset" format="dimension" />
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0" />
+            <enum name="pull_out" value="1" />
+        </attr>
+
+        <attr name="clickToClose" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="custume_ripple_imageview">
+        <attr name="show_spacing_time" format="integer"></attr>
+        <attr name="imageViewWidth" format="dimension"></attr>
+        <attr name="imageViewHeigth" format="dimension"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="LoadingView">
+        <attr name="radius1" format="dimension" />
+        <attr name="radius2" format="dimension" />
+        <attr name="rtlScale" format="float" />
+        <attr name="ltrScale" format="float" />
+        <attr name="color1" format="color" />
+        <attr name="color2" format="color" />
+        <attr name="mixColor" format="color" />
+        <attr name="duration" format="integer" />
+        <attr name="pauseDuration" format="integer" />
+        <attr name="gap" format="dimension" />
+        <attr name="scaleStartFraction" format="float" />
+        <attr name="scaleEndFraction" format="float" />
+    </declare-styleable>
+</resources>

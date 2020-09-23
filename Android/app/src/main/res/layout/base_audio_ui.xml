@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_base_audio_ui"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/circle"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="7dp"
+        android:background="@mipmap/point_empty" />
+
+    <com.netease.audioroom.demo.widget.HeadImageView
+        android:id="@+id/iv_liver_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/circle"
+        android:layout_alignTop="@+id/circle"
+        android:layout_alignEnd="@+id/circle"
+        android:layout_alignBottom="@+id/circle"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp" />
+
+    <ImageView
+        android:id="@+id/iv_liver_audio_close_hint"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_alignRight="@id/iv_liver_avatar"
+        android:layout_alignBottom="@id/iv_liver_avatar"
+        android:background="@drawable/audio_close_hint_red_bg"
+        android:src="@drawable/audio_close_hint"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_liver_nick"
+        style="@style/TextStyle_Color_828282_Size_14sp"
+        android:layout_width="60dp"
+        android:layout_below="@id/iv_liver_avatar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="主播昵称" />
+
+
+    <TextView
+        android:id="@+id/tv_chat_room_name"
+        style="@style/TextStyle_Color_828282_Size_14sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        tools:text="房间：陈肉丸今天吃饭没(32人)" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_chat_room_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!--设置-->
+        <ImageView
+            android:id="@+id/iv_settings"
+            style="@style/Base_Audio_UI_Switch"
+            android:src="@drawable/settings" />
+
+        <!--禁言他人（聊天室消息）-->
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_mute_other_text"
+            style="@style/Base_Audio_UI_Switch"
+            android:src="@drawable/mute_other_text" />
+
+
+        <!--关闭话筒-->
+        <ImageView
+            android:id="@+id/iv_local_audio_switch"
+            style="@style/Base_Audio_UI_Switch"
+            android:src="@drawable/close_self_audio_switch" />
+
+
+        <!--关闭房间音频-->
+        <ImageView
+            android:id="@+id/iv_room_audio_switch"
+            style="@style/Base_Audio_UI_Switch"
+            android:layout_width="wrap_content"
+            android:src="@drawable/room_audio_switch" />
+
+        <!--连麦者主动下麦-->
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_leave_seat"
+            style="@style/Base_Audio_UI_Switch"
+            android:src="@drawable/cancel_link" />
+
+
+        <!--退出房间-->
+        <ImageView
+            android:id="@+id/iv_leave_room"
+            style="@style/Base_Audio_UI_Switch"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="5dp"
+            android:src="@drawable/close_icon" />
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_seat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_liver_nick"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcy_chat_message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recyclerview_seat"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="56dp" />
+
+
+    <EditText
+        android:id="@+id/edt_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="90dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/input_edit_bg"
+        android:hint="唠两句~"
+        android:paddingLeft="15dp"
+        android:textColor="@color/color_ffffff"
+        android:textColorHint="@color/color_525252" />
+
+    <TextView
+        android:id="@+id/tv_send_text"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/send_text_btn_bg"
+        android:gravity="center"
+        android:text="发送"
+        android:textColor="@color/color_ffffff"
+        android:textSize="16sp" />
+
+
+</RelativeLayout>

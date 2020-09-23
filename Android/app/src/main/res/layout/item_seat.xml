@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/circle"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/point_empty"
+        android:visibility="invisible" />
+
+    <com.netease.audioroom.demo.widget.HeadImageView
+        android:id="@+id/iv_user_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/iv_user_stats"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/seat_item_round_bg"
+        android:scaleType="center"
+        tools:src="@drawable/seat_add_member" />
+
+
+    <TextView
+        android:id="@+id/tv_user_nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_user_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_10"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_ffffff"
+        android:textSize="10sp"
+        tools:text="麦位1" />
+
+    <ImageView
+        android:id="@+id/iv_user_status_hint"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_below="@+id/iv_user_avatar"
+        android:layout_alignRight="@+id/iv_user_avatar"
+        tools:visibility="visible" />
+
+
+</RelativeLayout>

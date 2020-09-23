@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.netease.audioroom.demo"
+
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        ndk {
+            rootProject.ext.ndkAbis.each { abi ->
+                abiFilter(abi)
+            }
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('release.keystore')
+            storePassword '123456'
+            keyAlias 'AudioRoom'
+            keyPassword '123456'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // G2 app key for code
+    defaultConfig {
+        buildConfigField "String", "G2_APP_KEY", "\"${rootProject.ext.G2AppKey}\""
+    }
+    // nim app key from placeholder
+    defaultConfig {
+        manifestPlaceholders.put("com.netease.nim.appKey", "${rootProject.ext.NimAppKey}")
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.2.0'
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+    implementation 'com.orhanobut:logger:2.2.0'
+
+    implementation rootProject.ext.imSdk
+
+    implementation project(':nertcvoiceroom')
+}
