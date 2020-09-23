@@ -1,0 +1,58 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    compileSdkVersion = 30
+    buildToolsVersion = "30.0.0"
+    minSdkVersion = 18
+    targetSdkVersion = 30
+
+    nimVersion = '7.8.4'
+    nertcVersion = '3.6.0'
+
+    nertcSdk = "com.netease.yunxin:nertc:$nertcVersion"
+    imSdk = "com.netease.nimlib:basesdk:$nimVersion"
+    chatroomSdk = "com.netease.nimlib:chatroom:$nimVersion"
+
+    ndkAbis = [
+            'armeabi-v7a',
+            'x86',
+            'arm64-v8a',
+            'x86_64'
+    ]
+}
+
+ext {
+    versionCode = 5
+    versionName = '1.3.0'
+}
+
+ext {
+    NimAppKey = '5887359c380d534ad99b33a07d8723e5'
+    G2AppKey = '6acf024e190215b685905444b6e57dd7'
+}
+
+apply from: 'pack/setup.gradle'
+apply from: 'pack/pack_audio_room.gradle'

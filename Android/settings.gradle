@@ -1,0 +1,3 @@
+include ':nertcvoiceroom'
+include ':app'
+rootProject.name = "AudioRoomG2"

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Bottom View Start-->
+    <LinearLayout
+        android:id="@+id/bottom_wrapper"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@color/color_ff4f4f"
+        android:gravity="center"
+        android:orientation="vertical">
+        <!--What you want to show-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="解除禁言"
+            android:textColor="@color/color_ffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <!-- Bottom View End-->
+
+    <!-- Surface View Start -->
+    <include
+        android:id="@+id/memberinfo"
+        layout="@layout/item_chatroom_list" />
+    <!-- Surface View End -->
+
+</com.daimajia.swipe.SwipeLayout>

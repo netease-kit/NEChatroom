@@ -78,7 +78,8 @@
 - 进入房间
 
 ```java
-    voiceRoom.enterRoom(voiceRoomInfo, profileInfo, anchorMode);
+    voiceRoom.initRoom(voiceRoomInfo, user);
+    voiceRoom.enterRoom(anchorMode);
 ```
     
 - 房间操作
@@ -119,6 +120,7 @@
 | destroySharedInstance | 销毁实例 |
 | init | 初始化 |
 | setAudioQuality | 设置音质 |
+| initRoom | 初始化房间 |
 | enterRoom | 进入房间 |
 | leaveRoom | 离开房间 |
 | startLocalAudio | 开启本地语音 |
@@ -140,7 +142,7 @@
 | onEnterRoom | 进入房间 |
 | onLeaveRoom | 离开房间 |
 | onRoomDismiss | 房间被解散 |
-| onChatRoomInfo | 房间信息更新 |
+| onOnlineUserCount | 当前在线用户数量更新 |
 | onAnchorInfo | 主播信息更新 |
 | onAnchorMute | 主播静音状态 |
 | onAnchorVolume | 主播说话音量 |
@@ -178,7 +180,7 @@
 | fetchSeats | 获取服务器最新麦位列表 |
 | getSeat | 获取本地麦位 |
 | getApplySeats | 获取当前上麦请求列表 |
-| checkInRoom | 检查是否在房间内 |
+| getRoomQuery | 检查是否在房间内 |
 
 | Anchor.Callback | 主播回调 |
 | - | - |
@@ -261,9 +263,7 @@
 | updateQueue | 更新聊天室队列信息，麦位列表信息 |
 | sendMessage | 发送聊天室消息，只发送文本消息，使用了扩展字段type来区分是普通消息还是麦位变化提示消息 |
 
-- **ChatRoomServiceObserver**
-
-ChatRoomServiceObserver.observeReceiveMessage
+- **ChatRoomServiceObserver.observeReceiveMessage**
 
 | event | usage |
 | - | - |
@@ -277,19 +277,15 @@ ChatRoomServiceObserver.observeReceiveMessage
 | ChatRoomInfoUpdated | 聊天室信息变更，人数变化等 |
 | MsgTypeEnum.text | 接收文本消，普通消息和麦位变化提示消息 | 
 
-ChatRoomServiceObserver.observeKickOutEvent
+- **ChatRoomServiceObserver.observeKickOutEvent**
 
 处理踢出，房间被解散
 
-- **MsgService**
-
-MsgService.sendCustomNotification
+- **MsgService.sendCustomNotification**
 
 发送指令消息（麦位消息，观众发送给主播）
 
-- **MsgServiceObserve**
-
-MsgServiceObserve.observeCustomNotification
+- **MsgServiceObserve.observeCustomNotification**
 
 接收指令消息（麦位消息，主播接收）
 

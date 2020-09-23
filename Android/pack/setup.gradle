@@ -1,0 +1,170 @@
+import java.text.SimpleDateFormat
+
+/**
+ * *********************** basic define **************************
+ */
+
+def getBuildTime() {
+    def df = new SimpleDateFormat("yyyyMMdd")
+    df.setTimeZone(TimeZone.getDefault())
+    return df.format(new Date())
+}
+
+def getGitVersion() {
+    try {
+        return 'git rev-parse --short HEAD'.execute().text.trim()
+    } catch (Throwable th) {
+        return ""
+    }
+}
+
+ext {
+    outputDir = "../nim-audio-room-outputs-${rootProject.ext.versionName}-${getBuildTime()}/"
+
+    NimDevAppKey = '35d3301e0d761f2ba8c7f56c5932d45c'
+
+    serverEnvsTemplatePath = 'pack/ServerEnvs.template'
+
+    serverEnvsPath = 'app/src/main/java/com/netease/audioroom/demo/config/ServerEnvs.java'
+    serverEnvsPackage = 'com.netease.audioroom.demo.config'
+    versionCode = rootProject.ext.versionCode
+    versionName = rootProject.ext.versionName
+}
+
+void replaceDemoServer(String server) {
+    File template = file("${serverEnvsTemplatePath}")
+    File demoEnvFile = file("${serverEnvsPath}")
+    replaceServer("${serverEnvsPackage}", server, template, demoEnvFile)
+}
+
+void replaceServer(String pkg, String server, File template, File file) {
+    String pkgHolder = '{PACKAGE.PLACEHOLDER}'
+    String serverHolder = '{SERVER.PLACEHOLDER}'
+    file.text = template.text.replace(pkgHolder, pkg).replace(serverHolder, server)
+}
+
+// 切换测试App key和正式App key
+void replaceAppKey(String key) {
+
+    File manifest = file('app/src/main/AndroidManifest.xml')
+    String content = manifest.getText('utf-8')
+    String regex = 'android:name="com\\.netease\\.nim\\.appKey"\\s*android:value=".+"'
+    String replace = "android:name=\"com.netease.nim.appKey\"\r\n\t\t\tandroid:value=\"${key}\""
+    manifest.setText(content.replaceFirst(regex, replace), 'utf-8')
+}
+
+
+void copySource(String demoName) {
+    String dest = "${outputDir}${demoName}/source/NIM_${demoName}_Demo/"
+    file(dest).mkdirs()
+
+    copy {
+        from('./') {
+            include '*.*'
+            include 'app/**/*'
+            include 'gradle/wrapper/gradle-wrapper.jar'
+            include 'gradle/wrapper/gradle-wrapper.properties'
+            exclude '*/gradle.properties'
+            exclude '*/build/'
+            exclude '*/bin/'
+            exclude '*/gen/'
+            exclude 'doc/'
+        }
+        into dest
+    }
+}
+
+
+void compressSource(String demoName) {
+
+
+    String source = "${outputDir}${demoName}/source/"
+    String name = "NIM_${demoName}_Android_Demo_v${versionName}"
+    Zip compress = tasks.create(name: "compressSource${demoName.capitalize()}", type: Zip) {
+        baseName name
+        from source
+        destinationDir file("${outputDir}")
+    }
+
+    compress.execute()
+}
+
+
+void copyApkFile(String demoName) {
+
+    String apkPath = "app/build/outputs/apk/release"
+    String fileName = "NIM_${demoName}_Android_Demo_Setup_v${versionName}.apk"
+    copy {
+        from "${apkPath}/app-release.apk"
+        into "${outputDir}"
+        rename { String name ->
+            fileName
+        }
+    }
+}
+
+void modifyApkFileName(String demoName, String type) {
+
+
+    String oldFileName = "NIM_${demoName}_Android_Demo_Setup_v${versionName}.apk"
+    String newFileName = "NIM_${demoName}_${versionName}_${type}.apk"
+    copy {
+        from "${outputDir}/${oldFileName}"
+        into "${outputDir}"
+        rename { String name ->
+            newFileName
+        }
+    }
+
+    delete("${outputDir}/${oldFileName}")
+}
+
+
+task clearSource {
+    doLast {
+        delete("${outputDir}")
+        delete("./app/build")
+        delete("./build")
+    }
+}
+
+task configDevServer {
+    doLast {
+        replaceDemoServer('TEST')
+        replaceAppKey("${NimDevAppKey}")
+    }
+}
+
+
+task configRelServer {
+    doLast {
+        replaceDemoServer('REL')
+        replaceAppKey("${NimAppKey}")
+    }
+}
+
+task copyAudioRoomApk {
+    doLast {
+        copyApkFile('Audio_Room')
+    }
+}
+
+
+task modifyAudioRoomTestApkName {
+    doLast {
+        modifyApkFileName('Audio_Room', 'Test')
+    }
+}
+
+task modifyAudioRoomReleaseApkName {
+    doLast {
+        modifyApkFileName('Audio_Room', 'Release')
+    }
+}
+
+task copyAudioDemoSource {
+    doLast {
+        copySource('Audio_Room')
+        compressSource('Audio_Room')
+    }
+}
