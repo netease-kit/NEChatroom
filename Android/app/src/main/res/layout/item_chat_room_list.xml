@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="12dp"
+    app:cardPreventCornerOverlap="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_chat_room_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:background="@drawable/chat_room_default_bg" />
+
+        <TextView
+            android:id="@+id/tv_chat_room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/color_ffffff"
+            android:textSize="33sp"
+            android:textStyle="bold"
+            tools:text="陈肉丸今天吃饭没" />
+
+
+        <TextView
+            android:id="@+id/tv_chat_room_member_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_chat_room_name"
+            android:layout_marginLeft="14dp"
+            android:textColor="@color/color_ffffff"
+            android:textSize="13sp"
+            tools:text="20人" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

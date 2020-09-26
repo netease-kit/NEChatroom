@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/avatar_max_size"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.netease.audioroom.demo.widget.HeadImageView
+        android:id="@+id/item_requestlink_headicon"
+        android:layout_width="@dimen/action_bar_height"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_marginLeft="@dimen/dimen_15" />
+
+    <TextView
+        android:id="@+id/item_requestlink_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_15"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/color_ffffff"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/refuse"
+        android:layout_width="@dimen/dimen_20"
+        android:layout_height="@dimen/dimen_20"
+        android:layout_marginLeft="@dimen/dimen_25"
+        android:layout_marginRight="@dimen/dimen_25"
+        android:src="@drawable/close_icon" />
+
+    <ImageView
+        android:id="@+id/agree"
+        android:layout_width="@dimen/dimen_25"
+        android:layout_height="@dimen/dimen_25"
+        android:layout_marginRight="@dimen/dimen_15"
+        android:src="@drawable/right_icon" />
+
+
+</LinearLayout>
