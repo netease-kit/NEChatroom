@@ -142,6 +142,7 @@ class AudienceImpl implements Audience {
                    EnterChatRoomResultData result) {
         this.voiceRoomInfo = voiceRoomInfo;
         this.user = user;
+        clearSeats();
         ChatRoomMember member = result.getMember();
         ChatRoomInfo roomInfo = result.getRoomInfo();
         if (roomInfo.isMute() ||
@@ -289,6 +290,7 @@ class AudienceImpl implements Audience {
             }
             return;
         }
+        notification.setSendToOnlineUserOnly(false);
         msgService.sendCustomNotification(notification).setCallback(callback);
     }
 }

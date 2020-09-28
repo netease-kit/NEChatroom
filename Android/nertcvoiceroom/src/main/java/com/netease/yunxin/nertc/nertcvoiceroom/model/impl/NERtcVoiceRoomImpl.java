@@ -607,13 +607,15 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private void initSeats() {
         if (anchorMode) {
             updateSeats(createSeats());
-            return;
+//            return;
         }
         fetchSeats(new SuccessCallback<List<VoiceRoomSeat>>() {
             @Override
             public void onSuccess(List<VoiceRoomSeat> seats) {
                 if (!anchorMode) {
                     audience.initSeats(seats);
+                } else  {
+                    anchor.initSeats(seats);
                 }
                 updateSeats(seats);
             }

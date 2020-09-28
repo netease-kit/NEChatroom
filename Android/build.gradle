@@ -50,8 +50,8 @@ ext {
 }
 
 ext {
-    NimAppKey = ''
-    G2AppKey = ''
+    NimAppKey = '5887359c380d534ad99b33a07d8723e5'
+    G2AppKey = '6acf024e190215b685905444b6e57dd7'
 }
 
 apply from: 'pack/setup.gradle'

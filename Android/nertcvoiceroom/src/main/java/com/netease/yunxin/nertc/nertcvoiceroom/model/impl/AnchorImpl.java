@@ -1,5 +1,9 @@
 package com.netease.yunxin.nertc.nertcvoiceroom.model.impl;
 
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.chatroom.ChatRoomService;
@@ -171,6 +175,7 @@ class AnchorImpl implements Anchor {
     }
 
     void enterRoom() {
+        clearSeats();
         sendMute(false);
         sendRoomMute(false);
     }
@@ -241,8 +246,20 @@ class AnchorImpl implements Anchor {
         });
     }
 
+    void initSeats(@NonNull List<VoiceRoomSeat> seats) {
+        for (VoiceRoomSeat seat : seats) {
+            if (!TextUtils.isEmpty(seat.getAccount())) {
+                this.seats.put(seat.getKey(), seat);
+            }
+            if (seat.getStatus() == Status.APPLY) {
+                addApplySeat(seat);
+            }
+        }
+    }
+
     void clearSeats() {
         seats.clear();
+        applySeats.clear();
     }
 
     boolean seatChange(VoiceRoomSeat seat) {
