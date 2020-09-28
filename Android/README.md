@@ -197,6 +197,8 @@
 | setEffectVolume | 设置音效音量 |
 | setEffectFile | 设置音效文件 |
 | playEffect | 播放音效文件 |
+| stopEffect | 停止播放音效文件 |
+| stopAllEffects | 停止播放所有音效 |
 
 | AudioPlay.Callback | 播放回调 |
 | - | - |

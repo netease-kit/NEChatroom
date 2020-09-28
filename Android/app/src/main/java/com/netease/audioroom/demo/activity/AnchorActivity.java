@@ -222,12 +222,20 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                 audioPlay.playMixing(2);
             }
         });
-        tvEffect1.setOnClickListener(view -> tvEffect1.setSelected(audioPlay.playEffect(0)));
-        tvEffect2.setOnClickListener(view -> tvEffect2.setSelected(audioPlay.playEffect(1)));
+        tvEffect1.setOnClickListener(view -> changeEffect(view, 0));
+        tvEffect2.setOnClickListener(view -> changeEffect(view, 1));
         findViewById(R.id.tv_select_file).setOnClickListener(view -> AudioChooser.choose(AnchorActivity.this, CODE_SELECT_FILE));
 
         tvApplyHint.setVisibility(View.INVISIBLE);
         tvApplyHint.setClickable(true);
+    }
+
+    private void changeEffect(View effectView, int index) {
+        if (audioPlay.stopAllEffects()) {
+            tvEffect1.setSelected(false);
+            tvEffect2.setSelected(false);
+        }
+        effectView.setSelected(audioPlay.playEffect(index));
     }
 
     @Override

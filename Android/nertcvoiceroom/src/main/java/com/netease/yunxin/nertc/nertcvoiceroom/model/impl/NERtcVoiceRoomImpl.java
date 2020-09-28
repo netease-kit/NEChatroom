@@ -410,7 +410,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     @Override
     public boolean muteRoomAudio(boolean mute) {
         muteRoomAudio = mute;
-        engine.subscribeAllRemoteAudioStreams(!mute);
+        engine.setPlayoutDeviceMute(mute);
         if (anchorMode) {
             anchor.muteRoomAudio(mute);
         }
