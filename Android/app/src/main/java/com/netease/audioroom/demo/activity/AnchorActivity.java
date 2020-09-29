@@ -386,15 +386,15 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
         bottomMenuDialog = new BottomMenuDialog();
         Bundle bundle = new Bundle();
         ArrayList<String> items = new ArrayList<>();
-        items.add("<font color=\"#ff4f4f\">退出并解散房间</color>");
+        items.add("<font color=\"#ff4f4f\">退出房间</color>");
         items.add("取消");
         bundle.putStringArrayList(BOTTOMMENUS, items);
         bottomMenuDialog.setArguments(bundle);
         bottomMenuDialog.show(getSupportFragmentManager(), bottomMenuDialog.TAG);
         bottomMenuDialog.setItemClickListener((d, p) -> {
             switch (d.get(p)) {
-                case "<font color=\"#ff4f4f\">退出并解散房间</color>":
-                    onSeatAction(bottomMenuDialog, null, "退出并解散房间");
+                case "<font color=\"#ff4f4f\">退出房间</color>":
+                    onSeatAction(bottomMenuDialog, null, "退出房间");
                     break;
                 case "取消":
                     onSeatAction(bottomMenuDialog, null, "取消");
@@ -434,7 +434,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
             case "打开麦位":
                 openSeat(seat);
                 break;
-            case "退出并解散房间":
+            case "退出房间":
                 leaveRoom();
                 break;
             case "取消":
