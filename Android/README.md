@@ -81,7 +81,7 @@
     voiceRoom.initRoom(voiceRoomInfo, user);
     voiceRoom.enterRoom(anchorMode);
 ```
-    
+
 - 房间操作
 
 ```java
@@ -90,7 +90,7 @@
     // 启动耳返
     voiceRoom.enableEarback(enable);
 ```
-        
+
 - 主播操作
 
 ```java
@@ -205,7 +205,7 @@
 | onAudioMixingPlayState | 伴音播放状态 |
 | onAudioMixingPlayError | 伴音播放错误 |
 | onAudioEffectPlayFinished | 音效播放完成 |
-    
+
 ### 功能实现
 
 #### **NERtcVoiceRoom**使用到的SDK功能
@@ -223,10 +223,11 @@
 | setRecordDeviceMute | 录音设备静音，开启关闭话筒 |
 | isRecordDeviceMute | 获取录音设备静音状态 |
 | adjustRecordingSignalVolume | 调整录音音量，设置采集音量 |
-| subscribeAllRemoteAudioStreams | 订阅房间内所有远端声音，开启关闭房间声音 |
+| subscribeAllRemoteAudioStreams | 订阅房间内所有远端声音 |
 | enableEarback | 启用耳返 |
 | setSpeakerphoneOn | 打开扬声器，进入房间后默认使用 |
 | enableAudioVolumeIndication | 开启音量汇报，实现房间内说话音量 |
+| setPlayoutDeviceMute | 开启关闭房间声音（包含伴音，音效） |
 
 - **NERtcEx**播放相关
 
@@ -242,6 +243,7 @@
 | setEffectSendVolume | 设置音效播放音量（同步设置发送和播放） |
 | playEffect | 开始播放音效 |
 | stopEffect | 停止播放音效 |
+| stopAllEffects | 停止播放所有音效 |
 
 - **NERtcCallbackEx**回调相关
 
@@ -260,7 +262,7 @@
 | enterChatRoom | 进入聊天室，进入成功后，再进入语音通道 |
 | exitChatRoom | 退出聊天室 |
 | fetchRoomInfo | 获取聊天室信息，人数，创建者等 |
-| fetchRoomMembers* | 获取聊天室成员列表 |
+| fetchRoomMembers | 获取聊天室成员列表 |
 | fetchQueue | 获取聊天室队列信息，麦位列表信息 |
 | updateQueue | 更新聊天室队列信息，麦位列表信息 |
 | sendMessage | 发送聊天室消息，只发送文本消息，使用了扩展字段type来区分是普通消息还是麦位变化提示消息 |
@@ -277,7 +279,7 @@
 | ChatRoomMemberTempMuteAdd | 禁言列表增加 |
 | ChatRoomMemberTempMuteRemove | 禁言列表移除 |
 | ChatRoomInfoUpdated | 聊天室信息变更，人数变化等 |
-| MsgTypeEnum.text | 接收文本消，普通消息和麦位变化提示消息 | 
+| MsgTypeEnum.text | 接收文本消，普通消息和麦位变化提示消息 |
 
 - **ChatRoomServiceObserver.observeKickOutEvent**
 
