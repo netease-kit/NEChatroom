@@ -334,6 +334,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
     public void close() {
         status = Status.CLOSED;
         reason = Reason.INIT;
+        user = null;
     }
 
     public boolean denyApply() {
@@ -346,6 +347,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
             status = Status.INIT;
         }
         reason = Reason.ANCHOR_DENY_APPLY;
+        user = null;
         return true;
     }
 
@@ -356,6 +358,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
             status = Status.INIT;
         }
         reason = Reason.CANCEL_APPLY;
+        user = null;
     }
 
     public boolean approveApply() {
@@ -382,6 +385,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
             status = Status.INIT;
         }
         reason = Reason.ANCHOR_KICK;
+        user = null;
     }
 
     public void leave() {
@@ -392,6 +396,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
             status = Status.INIT;
         }
         reason = Reason.LEAVE;
+        user = null;
     }
 
     public boolean invite() {

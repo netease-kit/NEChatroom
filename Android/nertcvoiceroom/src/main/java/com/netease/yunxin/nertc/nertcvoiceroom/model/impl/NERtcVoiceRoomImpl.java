@@ -314,6 +314,10 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         future.setCallback(new RequestCallback<EnterChatRoomResultData>() {
             @Override
             public void onSuccess(EnterChatRoomResultData param) {
+                if (roomCallback != null) {
+                    roomCallback.onOnlineUserCount(param.getRoomInfo().getOnlineUserCount());
+                }
+
                 if (!anchorMode) {
                     audience.enterRoom(voiceRoomInfo, user, param);
                 } else {
@@ -614,7 +618,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             public void onSuccess(List<VoiceRoomSeat> seats) {
                 if (!anchorMode) {
                     audience.initSeats(seats);
-                } else  {
+                } else {
                     anchor.initSeats(seats);
                 }
                 updateSeats(seats);

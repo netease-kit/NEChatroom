@@ -260,7 +260,7 @@ class AudienceImpl implements Audience {
     }
 
     private void onEnterSeat(VoiceRoomSeat seat, boolean last) {
-        voiceRoom.stopLocalAudio();
+        voiceRoom.startLocalAudio();
         if (voiceRoom.isLocalAudioMute()) {
             voiceRoom.muteLocalAudio(false);
         }
