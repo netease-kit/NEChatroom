@@ -231,15 +231,17 @@ class AnchorImpl implements Anchor {
     void memberExit(String account) {
         removeApplySeat(account);
 
-        fetchSeat(account, new SuccessCallback<VoiceRoomSeat>() {
+        fetchSeat(account, new SuccessCallback<List<VoiceRoomSeat>>() {
             @Override
-            public void onSuccess(VoiceRoomSeat seat) {
-                if (seat != null) {
-                    if (seat.isOn()) {
-                        kickSeat(seat, null);
-                    }
-                    if (seat.getStatus() == Status.APPLY) {
-                        denySeatApply(seat, null);
+            public void onSuccess(List<VoiceRoomSeat> seats) {
+                for (VoiceRoomSeat seat : seats) {
+                    if (seat != null) {
+                        if (seat.isOn()) {
+                            kickSeat(seat, null);
+                        }
+                        if (seat.getStatus() == Status.APPLY) {
+                            denySeatApply(seat, null);
+                        }
                     }
                 }
             }
@@ -301,7 +303,7 @@ class AnchorImpl implements Anchor {
                 false, null);
     }
 
-    private void fetchSeat(final String account, final RequestCallback<VoiceRoomSeat> callback) {
+    private void fetchSeat(final String account, final RequestCallback<List<VoiceRoomSeat>> callback) {
         voiceRoom.fetchSeats(new RequestCallback<List<VoiceRoomSeat>>() {
             @Override
             public void onSuccess(List<VoiceRoomSeat> seats) {

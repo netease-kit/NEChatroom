@@ -203,7 +203,8 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
         });
         findViewById(R.id.iv_more_action).setOnClickListener(view -> musicContainer.setVisibility(View.VISIBLE));
         musicContainer.setOnClickListener(view -> musicContainer.setVisibility(View.GONE));
-        findViewById(R.id.rl_music_action_container).setOnClickListener(view -> {});
+        findViewById(R.id.rl_music_action_container).setOnClickListener(view -> {
+        });
         skMusicVolume.setOnSeekBarChangeListener(new VolumeSetup() {
             @Override
             protected void onVolume(int volume) {
@@ -606,11 +607,12 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
     }
 
     @Override
-        public void onAudioMixingPlayError() {
+    public void onAudioMixingPlayError() {
         ToastHelper.showToast("伴音发现错误");
     }
 
-    @Override public void onAudioEffectPlayFinished(int index) {
+    @Override
+    public void onAudioEffectPlayFinished(int index) {
         if (index == 0) {
             tvEffect1.setSelected(false);
         } else if (index == 1) {
@@ -769,15 +771,19 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                             int index,
                             @NonNull List<VoiceRoomSeat> seats) {
         String account = member.getAccount();
-        VoiceRoomSeat sel = VoiceRoomSeat.find(seats, account);
-        if (sel != null && sel.isOn()) {
-            ToastHelper.showToast("操作失败:当前用户已在麦位上");
-            return;
+        List<VoiceRoomSeat> userSeats = VoiceRoomSeat.find(seats, account);
+
+        for (VoiceRoomSeat seat : userSeats) {
+            if (seat != null && seat.isOn()) {
+                ToastHelper.showToast("操作失败:当前用户已在麦位上");
+                return;
+            }
         }
 
         int position = -1;//当前用户申请麦位位置
-        if (sel != null && sel.getStatus() == Status.APPLY) {
-            position = sel.getIndex();
+        VoiceRoomSeat seat = VoiceRoomSeat.findByStatus(userSeats, account, Status.APPLY);
+        if (seat != null) {
+            position = seat.getIndex();
         }
 
         //拒绝申请麦位上不是选中用户的观众
