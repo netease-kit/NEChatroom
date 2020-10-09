@@ -260,6 +260,16 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     }
 
+    /**
+     * 恢复单例中非 长期有效对象内容为默认
+     */
+    private void restoreInstanceInfo() {
+        muteRoomAudio = false;
+        user = null;
+        voiceRoomInfo = null;
+        anchorMode = false;
+    }
+
     @Override
     public void init(String appKey, RoomCallback callback) {
         roomCallback = callback;
@@ -341,6 +351,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                 if (roomCallback != null) {
                     roomCallback.onEnterRoom(false);
                 }
+                restoreInstanceInfo();
             }
 
             @Override
@@ -348,6 +359,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                 if (roomCallback != null) {
                     roomCallback.onEnterRoom(false);
                 }
+                restoreInstanceInfo();
             }
         });
     }
@@ -535,10 +547,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     private void onLeaveRoom() {
         engine.release();
-        muteRoomAudio = false;
-        user = null;
-        voiceRoomInfo = null;
-        anchorMode = false;
+        restoreInstanceInfo();
 
         if (roomCallback != null) {
             roomCallback.onLeaveRoom();

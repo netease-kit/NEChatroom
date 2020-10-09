@@ -108,6 +108,7 @@ class AudienceImpl implements Audience {
         sendNotification(SeatCommands.cancelSeatApply(voiceRoomInfo, user, mySeat), new RequestCallbackEx<Void>(callback) {
             @Override
             public void onSuccess(Void param) {
+                mySeat.cancelApply();
                 mySeat = null;
 
                 super.onSuccess(param);

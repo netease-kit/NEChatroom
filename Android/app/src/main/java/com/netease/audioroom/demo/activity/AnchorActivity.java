@@ -627,7 +627,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
     @Override
     public void onLeaveRoom() {
         Runnable runnable = AnchorActivity.super::onLeaveRoom;
-//        closeRoom(runnable);
+        closeRoom(runnable);
         runnable.run();
     }
 
