@@ -75,7 +75,7 @@
 - (void)selectSubviewsWithUserMode:(NTESUserMode)userMode {
     switch (userMode) {
         case NTESUserModeAnchor:
-            self.cacheSubviews = @[self.exitButton,self.voiceButton,self.micMuteButton, self.settingButton];
+            self.cacheSubviews = @[self.exitButton,self.voiceButton,self.micMuteButton, self.settingButton, self.noSpeakingButton];
             break;
         case NTESUserModeAudience:
             self.cacheSubviews = @[self.exitButton,self.voiceButton];
