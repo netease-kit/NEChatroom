@@ -239,11 +239,14 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
     }
 
     private void changeEffect(View effectView, int index) {
+        boolean selected = effectView.isSelected();
         if (audioPlay.stopAllEffects()) {
             tvEffect1.setSelected(false);
             tvEffect2.setSelected(false);
         }
-        effectView.setSelected(audioPlay.playEffect(index));
+        if (!selected) {
+            effectView.setSelected(audioPlay.playEffect(index));
+        }
     }
 
     @Override
