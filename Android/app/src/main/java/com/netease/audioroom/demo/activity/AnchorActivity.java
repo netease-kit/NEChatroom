@@ -29,6 +29,7 @@ import com.netease.audioroom.demo.util.AudioChooser;
 import com.netease.audioroom.demo.util.CommonUtil;
 import com.netease.audioroom.demo.util.ToastHelper;
 import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.LoadingCallback;
+import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.NetErrCallback;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Anchor;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay;
@@ -111,6 +112,9 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                 if (topTipsDialog != null) {
                     topTipsDialog.dismiss();
                 }
+                if (loadService != null) {
+                    loadService.showSuccess();
+                }
             }
 
             @Override
@@ -127,6 +131,9 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                     topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
                     topTipsDialog.setClickListener(() -> {
                     });
+                }
+                if (loadService!=null){
+                    loadService.showCallback(NetErrCallback.class);
                 }
             }
         });
