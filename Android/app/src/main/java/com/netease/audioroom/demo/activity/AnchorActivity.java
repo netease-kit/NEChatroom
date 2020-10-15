@@ -29,6 +29,7 @@ import com.netease.audioroom.demo.util.AudioChooser;
 import com.netease.audioroom.demo.util.CommonUtil;
 import com.netease.audioroom.demo.util.ToastHelper;
 import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.LoadingCallback;
+import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.NetErrCallback;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Anchor;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay;
@@ -111,6 +112,9 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                 if (topTipsDialog != null) {
                     topTipsDialog.dismiss();
                 }
+                if (loadService != null) {
+                    loadService.showSuccess();
+                }
             }
 
             @Override
@@ -127,6 +131,9 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                     topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
                     topTipsDialog.setClickListener(() -> {
                     });
+                }
+                if (loadService!=null){
+                    loadService.showCallback(NetErrCallback.class);
                 }
             }
         });
@@ -203,7 +210,8 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
         });
         findViewById(R.id.iv_more_action).setOnClickListener(view -> musicContainer.setVisibility(View.VISIBLE));
         musicContainer.setOnClickListener(view -> musicContainer.setVisibility(View.GONE));
-        findViewById(R.id.rl_music_action_container).setOnClickListener(view -> {});
+        findViewById(R.id.rl_music_action_container).setOnClickListener(view -> {
+        });
         skMusicVolume.setOnSeekBarChangeListener(new VolumeSetup() {
             @Override
             protected void onVolume(int volume) {
@@ -222,12 +230,23 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                 audioPlay.playMixing(2);
             }
         });
-        tvEffect1.setOnClickListener(view -> tvEffect1.setSelected(audioPlay.playEffect(0)));
-        tvEffect2.setOnClickListener(view -> tvEffect2.setSelected(audioPlay.playEffect(1)));
+        tvEffect1.setOnClickListener(view -> changeEffect(view, 0));
+        tvEffect2.setOnClickListener(view -> changeEffect(view, 1));
         findViewById(R.id.tv_select_file).setOnClickListener(view -> AudioChooser.choose(AnchorActivity.this, CODE_SELECT_FILE));
 
         tvApplyHint.setVisibility(View.INVISIBLE);
         tvApplyHint.setClickable(true);
+    }
+
+    private void changeEffect(View effectView, int index) {
+        boolean selected = effectView.isSelected();
+        if (audioPlay.stopAllEffects()) {
+            tvEffect1.setSelected(false);
+            tvEffect2.setSelected(false);
+        }
+        if (!selected) {
+            effectView.setSelected(audioPlay.playEffect(index));
+        }
     }
 
     @Override
@@ -378,15 +397,15 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
         bottomMenuDialog = new BottomMenuDialog();
         Bundle bundle = new Bundle();
         ArrayList<String> items = new ArrayList<>();
-        items.add("<font color=\"#ff4f4f\">退出并解散房间</color>");
+        items.add("<font color=\"#ff4f4f\">退出房间</color>");
         items.add("取消");
         bundle.putStringArrayList(BOTTOMMENUS, items);
         bottomMenuDialog.setArguments(bundle);
         bottomMenuDialog.show(getSupportFragmentManager(), bottomMenuDialog.TAG);
         bottomMenuDialog.setItemClickListener((d, p) -> {
             switch (d.get(p)) {
-                case "<font color=\"#ff4f4f\">退出并解散房间</color>":
-                    onSeatAction(bottomMenuDialog, null, "退出并解散房间");
+                case "<font color=\"#ff4f4f\">退出房间</color>":
+                    onSeatAction(bottomMenuDialog, null, "退出房间");
                     break;
                 case "取消":
                     onSeatAction(bottomMenuDialog, null, "取消");
@@ -426,7 +445,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
             case "打开麦位":
                 openSeat(seat);
                 break;
-            case "退出并解散房间":
+            case "退出房间":
                 leaveRoom();
                 break;
             case "取消":
@@ -598,11 +617,12 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
     }
 
     @Override
-        public void onAudioMixingPlayError() {
+    public void onAudioMixingPlayError() {
         ToastHelper.showToast("伴音发现错误");
     }
 
-    @Override public void onAudioEffectPlayFinished(int index) {
+    @Override
+    public void onAudioEffectPlayFinished(int index) {
         if (index == 0) {
             tvEffect1.setSelected(false);
         } else if (index == 1) {
@@ -617,7 +637,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
     @Override
     public void onLeaveRoom() {
         Runnable runnable = AnchorActivity.super::onLeaveRoom;
-//        closeRoom(runnable);
+        closeRoom(runnable);
         runnable.run();
     }
 
@@ -761,15 +781,19 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
                             int index,
                             @NonNull List<VoiceRoomSeat> seats) {
         String account = member.getAccount();
-        VoiceRoomSeat sel = VoiceRoomSeat.find(seats, account);
-        if (sel != null && sel.isOn()) {
-            ToastHelper.showToast("操作失败:当前用户已在麦位上");
-            return;
+        List<VoiceRoomSeat> userSeats = VoiceRoomSeat.find(seats, account);
+
+        for (VoiceRoomSeat seat : userSeats) {
+            if (seat != null && seat.isOn()) {
+                ToastHelper.showToast("操作失败:当前用户已在麦位上");
+                return;
+            }
         }
 
         int position = -1;//当前用户申请麦位位置
-        if (sel != null && sel.getStatus() == Status.APPLY) {
-            position = sel.getIndex();
+        VoiceRoomSeat seat = VoiceRoomSeat.findByStatus(userSeats, account, Status.APPLY);
+        if (seat != null) {
+            position = seat.getIndex();
         }
 
         //拒绝申请麦位上不是选中用户的观众
