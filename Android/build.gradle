@@ -52,7 +52,23 @@ ext {
 ext {
     NimAppKey = ''
     G2AppKey = ''
+    BaseUrl = ''
 }
+
+def loadLocalConfig() {
+    def propertiesFile = file("config/config.properties")
+    if (!propertiesFile.exists()) {
+        println "Local properties don't exist."
+        return
+    }
+    Properties config = new Properties()
+    config.load(propertiesFile.newInputStream())
+    def appKey = config.getProperty('APP_KEY')
+    this.NimAppKey = appKey
+    this.G2AppKey = appKey
+    this.BaseUrl = config.getProperty('BASE_URL')
+}
+loadLocalConfig()
 
 apply from: 'pack/setup.gradle'
 apply from: 'pack/pack_audio_room.gradle'
