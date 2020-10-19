@@ -67,4 +67,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: NEChatroom-Android-${{steps.time.outputs.formattedTime}}
-        path: app/build/outputs/apk/release/NEChatroom.apk
+        path: ./Android/app/build/outputs/apk/release/NEChatroom.apk
