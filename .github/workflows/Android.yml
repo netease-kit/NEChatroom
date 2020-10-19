@@ -51,7 +51,7 @@ jobs:
   
     - name: Sign APK
       env:
-        UNSIGNED_APK_PATH: ${{ '.Android/app/build/outputs/apk/release/app-release-unsigned.apk' }}
+        UNSIGNED_APK_PATH: ${{ './Android/app/build/outputs/apk/release/app-release-unsigned.apk' }}
         SIGNED_APK_PATH: ${{ './Android/app/build/outputs/apk/release/NEChatroom.apk' }}
       run:
         $HOME/Library/Android/sdk/build-tools/29.0.3/apksigner sign --ks "$DECRYPTED_KEYSTORE_PATH" --ks-pass pass:$KEYSTORE_ENC_PWD --key-pass pass:$KEYSTORE_ENC_PWD --v1-signing-enabled true --v2-signing-enabled true --in "$UNSIGNED_APK_PATH" --out "$SIGNED_APK_PATH"
