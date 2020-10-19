@@ -10,6 +10,7 @@ jobs:
     name: Build NEChatroom apk
     runs-on: macos-latest
     env:
+      ENCRYPTED_KEYSTORE_PATH: ${{ 'config/release.jks.gpg' }}
       DECRYPTED_KEYSTORE_PATH: ${{ 'config/release.jks' }}
       KEYSTORE_ENC_PWD: ${{ secrets.KEYSTORE_ENC_PWD }}
 
@@ -47,7 +48,6 @@ jobs:
 
     - name: Sign APK
       env:
-        ENCRYPTED_KEYSTORE_PATH: ${{ 'config/release.jks.gpg' }}
         UNSIGNED_APK_PATH: ${{ '.Android/app/build/outputs/apk/release/app-release-unsigned.apk' }}
         SIGNED_APK_PATH: ${{ './Android/app/build/outputs/apk/release/NEChatroom.apk' }}
       run:
