@@ -51,8 +51,8 @@ ext {
 
 ext {
     NimAppKey = ''
-    G2AppKey = ''
-    BaseUrl = ''
+    NERTCAppKey = ''
+    BaseUrl = ''//格式如：https://test/voicechat
 }
 
 def loadLocalConfig() {
@@ -65,7 +65,7 @@ def loadLocalConfig() {
     config.load(propertiesFile.newInputStream())
     def appKey = config.getProperty('APP_KEY')
     this.NimAppKey = appKey
-    this.G2AppKey = appKey
+    this.NERTCAppKey = appKey
     this.BaseUrl = config.getProperty('BASE_URL')
 }
 loadLocalConfig()
