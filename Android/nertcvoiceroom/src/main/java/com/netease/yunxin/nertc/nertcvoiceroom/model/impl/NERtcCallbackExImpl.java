@@ -44,6 +44,11 @@ public class NERtcCallbackExImpl implements NERtcCallbackEx {
     public void onUserVideoMute(long uid, boolean muted) {}
 
     @Override
+    public void onClientRoleChange(int i, int i1) {
+
+    }
+
+    @Override
     public void onFirstAudioDataReceived(long uid) {}
 
     @Override
@@ -69,6 +74,11 @@ public class NERtcCallbackExImpl implements NERtcCallbackEx {
 
     @Override
     public void onConnectionTypeChanged(int newConnectionType) {}
+
+    @Override
+    public void onReconnectingStart() {
+
+    }
 
     @Override
     public void onReJoinChannel(int result, long channelId) {}

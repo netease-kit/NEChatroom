@@ -376,8 +376,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity implements Room
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
 
         }
-        ImageView circle = recyclerView.getLayoutManager().findViewByPosition(seat.getIndex()).findViewById(R.id.circle);
-        showVolume(circle, volume);
+        View itemView = recyclerView.getLayoutManager().findViewByPosition(seat.getIndex());
+        if (itemView != null) {
+            ImageView circle = itemView.findViewById(R.id.circle);
+            showVolume(circle, volume);
+        }
     }
 
     @Override

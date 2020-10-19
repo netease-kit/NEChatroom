@@ -370,7 +370,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                chatRoomService.exitChatRoom(voiceRoomInfo.getRoomId());
+                if (voiceRoomInfo != null) {
+                    chatRoomService.exitChatRoom(voiceRoomInfo.getRoomId());
+                }
                 engine.leaveChannel();
             }
         };
@@ -559,6 +561,8 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         setupParameters();
         if (anchorMode) {
             startLocalAudio();
+        } else {
+            stopLocalAudio();
         }
         int result = engine.joinChannel(null,
                 voiceRoomInfo.getRoomId(), accountToVoiceUid(user.account));

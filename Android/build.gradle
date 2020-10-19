@@ -30,7 +30,7 @@ ext {
     targetSdkVersion = 30
 
     nimVersion = '7.8.4'
-    nertcVersion = '3.6.0'
+    nertcVersion = '3.7.0'
 
     nertcSdk = "com.netease.yunxin:nertc:$nertcVersion"
     imSdk = "com.netease.nimlib:basesdk:$nimVersion"
