@@ -6,13 +6,13 @@
 
 1. 登录[网易云控制台](https://app.yunxin.163.com/index?clueFrom=nim&from=nim#/)，点击【应用】>【创建】创建自己的App，在【功能管理】中申请开通【信令】和【音视频通话】功能。
 2. 在控制台中【App Key管理】获取App Key。
-3. 下载[场景Demo]()，将/build.gradle中的NimAppKey和G2AppKey更换为自己的App Key，G2AppKey可以和NimAppKey不一样。
+3. 下载[场景Demo]()，将/build.gradle中的NimAppKey和NERTCAppKey更换为自己的App Key，将BaseUrl替换为自己的服务器链接，NERTCAppKey可以和NimAppKey不一样。
 
 ### 运行示例项目
 
 **注意：在运行前，请联系商务经理开通非安全模式（因Demo中RTCSDK中的token传空）。**
 
-1. 下载完成场景Demo后，使用Android Studio打开工程，配置NimAppKey和G2AppKey后，运行即可。
+1. 下载完成场景Demo后，使用Android Studio打开工程，配置NimAppKey和NERTCAppKey后，运行即可。
 2. 修改build参数，在/build.gradle中定义了build相关参数，如下表
 
 | key | value |
@@ -28,7 +28,7 @@
 | key | value | note
 | - | - | - |
 | nimVersion | 7.8.4 | nim相关版本
-| nertcVersion | 3.6.0 | G2版本
+| nertcVersion | 3.7.0 | NERTC版本
 
 ### 使用示例项目
 源码Demo的包含两个模块，app和nertcvoiceroom。nertcvoiceroom实现了对语音聊天室业务逻辑的组件封装，而app实现ui的搭建。

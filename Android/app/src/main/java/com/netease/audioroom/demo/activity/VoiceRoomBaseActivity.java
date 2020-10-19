@@ -246,7 +246,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity implements Room
         NERtcVoiceRoom.setAccountMapper(AccountInfo::accountToVoiceUid);
         NERtcVoiceRoom.setMessageTextBuilder(messageTextBuilder);
         voiceRoom = NERtcVoiceRoom.sharedInstance(this);
-        voiceRoom.init(BuildConfig.G2_APP_KEY, this);
+        voiceRoom.init(BuildConfig.NERTC_APP_KEY, this);
         voiceRoom.initRoom(voiceRoomInfo, createUser());
     }
 

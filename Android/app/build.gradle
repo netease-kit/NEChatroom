@@ -37,9 +37,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    // G2 app key for code
+    // NERTC app key for code
     defaultConfig {
-        buildConfigField "String", "G2_APP_KEY", "\"${rootProject.ext.G2AppKey}\""
+        buildConfigField "String", "NERTC_APP_KEY", "\"${rootProject.ext.NERTCAppKey}\""
     }
     // base server url
     defaultConfig {

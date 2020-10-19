@@ -28,11 +28,11 @@ public class ChatRoomHttpClient {
     private static final int RESULT_CODE_SUCCESS = 200;
 
     // api
-    private static final String API_CHAT_ROOM_LIST = "room/list";
-    private static final String API_GET_USER = "user/get";
-    private static final String API_CREATE_ROOM = "room/create";
-    private static final String API_CLOSE_ROOM = "room/dissolve";
-    private static final String API_ALL_MUTE = "room/mute";
+    private static final String API_CHAT_ROOM_LIST = "/room/list";
+    private static final String API_GET_USER = "/user/get";
+    private static final String API_CREATE_ROOM = "/room/create";
+    private static final String API_CLOSE_ROOM = "/room/dissolve";
+    private static final String API_ALL_MUTE = "/room/mute";
 
 
     private static final String HEADER_KEY_CONTENT_TYPE = "Content-Type";
