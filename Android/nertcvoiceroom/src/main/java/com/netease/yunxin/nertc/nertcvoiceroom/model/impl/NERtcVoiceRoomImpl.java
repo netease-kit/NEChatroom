@@ -260,6 +260,16 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     }
 
+    /**
+     * 恢复单例中非 长期有效对象内容为默认
+     */
+    private void restoreInstanceInfo() {
+        muteRoomAudio = false;
+        user = null;
+        voiceRoomInfo = null;
+        anchorMode = false;
+    }
+
     @Override
     public void init(String appKey, RoomCallback callback) {
         roomCallback = callback;
@@ -314,6 +324,10 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         future.setCallback(new RequestCallback<EnterChatRoomResultData>() {
             @Override
             public void onSuccess(EnterChatRoomResultData param) {
+                if (roomCallback != null) {
+                    roomCallback.onOnlineUserCount(param.getRoomInfo().getOnlineUserCount());
+                }
+
                 if (!anchorMode) {
                     audience.enterRoom(voiceRoomInfo, user, param);
                 } else {
@@ -337,6 +351,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                 if (roomCallback != null) {
                     roomCallback.onEnterRoom(false);
                 }
+                restoreInstanceInfo();
             }
 
             @Override
@@ -344,6 +359,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                 if (roomCallback != null) {
                     roomCallback.onEnterRoom(false);
                 }
+                restoreInstanceInfo();
             }
         });
     }
@@ -354,7 +370,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                chatRoomService.exitChatRoom(voiceRoomInfo.getRoomId());
+                if (voiceRoomInfo != null) {
+                    chatRoomService.exitChatRoom(voiceRoomInfo.getRoomId());
+                }
                 engine.leaveChannel();
             }
         };
@@ -410,7 +428,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     @Override
     public boolean muteRoomAudio(boolean mute) {
         muteRoomAudio = mute;
-        engine.subscribeAllRemoteAudioStreams(!mute);
+        engine.setPlayoutDeviceMute(mute);
         if (anchorMode) {
             anchor.muteRoomAudio(mute);
         }
@@ -531,10 +549,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     private void onLeaveRoom() {
         engine.release();
-        muteRoomAudio = false;
-        user = null;
-        voiceRoomInfo = null;
-        anchorMode = false;
+        restoreInstanceInfo();
 
         if (roomCallback != null) {
             roomCallback.onLeaveRoom();
@@ -546,6 +561,8 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         setupParameters();
         if (anchorMode) {
             startLocalAudio();
+        } else {
+            stopLocalAudio();
         }
         int result = engine.joinChannel(null,
                 voiceRoomInfo.getRoomId(), accountToVoiceUid(user.account));
@@ -607,13 +624,15 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private void initSeats() {
         if (anchorMode) {
             updateSeats(createSeats());
-            return;
+//            return;
         }
         fetchSeats(new SuccessCallback<List<VoiceRoomSeat>>() {
             @Override
             public void onSuccess(List<VoiceRoomSeat> seats) {
                 if (!anchorMode) {
                     audience.initSeats(seats);
+                } else {
+                    anchor.initSeats(seats);
                 }
                 updateSeats(seats);
             }

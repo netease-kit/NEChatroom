@@ -20,4 +20,11 @@ public class BaseDialogFragment extends DialogFragment {
         }
 
     }
+
+    @Override
+    public void dismiss() {
+        if (getFragmentManager() != null) {
+            super.dismiss();
+        }
+    }
 }

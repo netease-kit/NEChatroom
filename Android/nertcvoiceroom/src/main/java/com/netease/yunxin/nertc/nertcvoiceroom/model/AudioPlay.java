@@ -82,6 +82,21 @@ public interface AudioPlay {
     boolean playEffect(int index);
 
     /**
+     * 停止音效文件播放
+     *
+     * @param index 音效文件索引
+     * @return 动作结果
+     */
+    boolean stopEffect(int index);
+
+    /**
+     * 停止所有音效文件播放
+     *
+     * @return 动作结果
+     */
+    boolean stopAllEffects();
+
+    /**
      * 伴音播放状态
      */
     interface AudioMixingPlayState {

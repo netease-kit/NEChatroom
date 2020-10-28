@@ -22,21 +22,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file('release.keystore')
-            storePassword '123456'
-            keyAlias 'AudioRoom'
-            keyPassword '123456'
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 
@@ -47,9 +37,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    // G2 app key for code
+    // NERTC app key for code
     defaultConfig {
-        buildConfigField "String", "G2_APP_KEY", "\"${rootProject.ext.G2AppKey}\""
+        buildConfigField "String", "NERTC_APP_KEY", "\"${rootProject.ext.NERTCAppKey}\""
+    }
+    // base server url
+    defaultConfig {
+        buildConfigField "String", "SERVER_BASE_URL", "\"${rootProject.ext.BaseUrl}\""
     }
     // nim app key from placeholder
     defaultConfig {

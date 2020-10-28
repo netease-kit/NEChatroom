@@ -30,7 +30,7 @@ ext {
     targetSdkVersion = 30
 
     nimVersion = '7.8.4'
-    nertcVersion = '3.6.0'
+    nertcVersion = '3.7.0'
 
     nertcSdk = "com.netease.yunxin:nertc:$nertcVersion"
     imSdk = "com.netease.nimlib:basesdk:$nimVersion"
@@ -45,14 +45,30 @@ ext {
 }
 
 ext {
-    versionCode = 5
-    versionName = '1.3.0'
+    versionCode = 15
+    versionName = '2.1.0'
 }
 
 ext {
     NimAppKey = ''
-    G2AppKey = ''
+    NERTCAppKey = ''
+    BaseUrl = ''//格式如：https://test/voicechat
 }
+
+def loadLocalConfig() {
+    def propertiesFile = file("config/config.properties")
+    if (!propertiesFile.exists()) {
+        println "Local properties don't exist."
+        return
+    }
+    Properties config = new Properties()
+    config.load(propertiesFile.newInputStream())
+    def appKey = config.getProperty('APP_KEY')
+    this.NimAppKey = appKey
+    this.NERTCAppKey = appKey
+    this.BaseUrl = config.getProperty('BASE_URL')
+}
+loadLocalConfig()
 
 apply from: 'pack/setup.gradle'
 apply from: 'pack/pack_audio_room.gradle'

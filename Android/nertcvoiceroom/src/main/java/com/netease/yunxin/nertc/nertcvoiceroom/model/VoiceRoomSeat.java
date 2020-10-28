@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.netease.yunxin.nertc.nertcvoiceroom.util.JsonUtil;
@@ -12,7 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -418,13 +421,34 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
                 && account.equals(user.getAccount());
     }
 
-    public static VoiceRoomSeat find(List<VoiceRoomSeat> seats, String account) {
+    @NonNull
+    public static List<VoiceRoomSeat> find(List<VoiceRoomSeat> seats, String account) {
+        if (seats == null || seats.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<VoiceRoomSeat> results = new ArrayList<>(seats.size());
         for (VoiceRoomSeat seat : seats) {
             if (seat.isSameAccount(account)) {
-                return seat;
+                results.add(seat);
             }
         }
-        return null;
+        return results;
+    }
+
+    @Nullable
+    public static VoiceRoomSeat findByStatus(List<VoiceRoomSeat> seats, String account, int status) {
+        List<VoiceRoomSeat> userSeats = find(seats, account);
+        if (userSeats.isEmpty()) {
+            return null;
+        }
+        VoiceRoomSeat result = null;
+        for (VoiceRoomSeat seat : userSeats) {
+            if (seat != null && seat.getStatus() == status) {
+                result = seat;
+                break;
+            }
+        }
+        return result;
     }
 
     public static boolean remove(Collection<VoiceRoomSeat> seats, String account) {

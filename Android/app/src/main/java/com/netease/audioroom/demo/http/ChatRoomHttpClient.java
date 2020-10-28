@@ -2,8 +2,8 @@ package com.netease.audioroom.demo.http;
 
 import android.util.Log;
 
+import com.netease.audioroom.demo.BuildConfig;
 import com.netease.audioroom.demo.cache.DemoCache;
-import com.netease.audioroom.demo.config.DemoServers;
 import com.netease.audioroom.demo.model.AccountInfo;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo;
 
@@ -28,11 +28,11 @@ public class ChatRoomHttpClient {
     private static final int RESULT_CODE_SUCCESS = 200;
 
     // api
-    private static final String API_CHAT_ROOM_LIST = "room/list";
-    private static final String API_GET_USER = "user/get";
-    private static final String API_CREATE_ROOM = "room/create";
-    private static final String API_CLOSE_ROOM = "room/dissolve";
-    private static final String API_ALL_MUTE = "room/mute";
+    private static final String API_CHAT_ROOM_LIST = "/room/list";
+    private static final String API_GET_USER = "/user/get";
+    private static final String API_CREATE_ROOM = "/room/create";
+    private static final String API_CLOSE_ROOM = "/room/dissolve";
+    private static final String API_ALL_MUTE = "/room/mute";
 
 
     private static final String HEADER_KEY_CONTENT_TYPE = "Content-Type";
@@ -77,7 +77,7 @@ public class ChatRoomHttpClient {
      * 向网易云信Demo应用服务器请求聊天室列表
      */
     public void fetchChatRoomList(int offset, int limit, final ChatRoomHttpCallback<ArrayList<VoiceRoomInfo>> callback) {
-        String url = DemoServers.audioRoomAPIServer() + API_CHAT_ROOM_LIST;
+        String url = BuildConfig.SERVER_BASE_URL + API_CHAT_ROOM_LIST;
         String body = null;
         if (offset >= 0 && limit > 0) {
             body = REQUEST_OFFSET + "=" + offset + "&" +
@@ -139,7 +139,7 @@ public class ChatRoomHttpClient {
      * 获取帐号
      */
     public void fetchAccount(String accountId, final ChatRoomHttpCallback<AccountInfo> fetchAccountCallBack) {
-        String url = DemoServers.audioRoomAPIServer() + API_GET_USER;
+        String url = BuildConfig.SERVER_BASE_URL + API_GET_USER;
         String body = null;
 
         if (accountId != null) {
@@ -190,7 +190,7 @@ public class ChatRoomHttpClient {
      */
     public void createRoom(String account, String roomName, final ChatRoomHttpCallback<VoiceRoomInfo> callback) {
 
-        String url = DemoServers.audioRoomAPIServer() + API_CREATE_ROOM;
+        String url = BuildConfig.SERVER_BASE_URL + API_CREATE_ROOM;
 
         Map<String, String> headers = new HashMap<>(2);
         headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
@@ -247,7 +247,7 @@ public class ChatRoomHttpClient {
      * @param callback
      */
     public void closeRoom(String account, String roomID, final ChatRoomHttpCallback callback) {
-        String url = DemoServers.audioRoomAPIServer() + API_CLOSE_ROOM;
+        String url = BuildConfig.SERVER_BASE_URL + API_CLOSE_ROOM;
         Map<String, String> headers = new HashMap<>(2);
         headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -295,7 +295,7 @@ public class ChatRoomHttpClient {
      */
     public void muteAll(String account, String roomID, boolean mute, boolean needNotify, boolean notifyExt, final ChatRoomHttpCallback callback) {
 
-        String url = DemoServers.audioRoomAPIServer() + API_ALL_MUTE;
+        String url = BuildConfig.SERVER_BASE_URL + API_ALL_MUTE;
         Map<String, String> headers = new HashMap<>(5);
         headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
         String bodyString = REQUEST_SID + "=" + account + "&" +

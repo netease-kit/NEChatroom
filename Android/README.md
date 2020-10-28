@@ -6,13 +6,13 @@
 
 1. 登录[网易云控制台](https://app.yunxin.163.com/index?clueFrom=nim&from=nim#/)，点击【应用】>【创建】创建自己的App，在【功能管理】中申请开通【信令】和【音视频通话】功能。
 2. 在控制台中【App Key管理】获取App Key。
-3. 下载[场景Demo]()，将/build.gradle中的NimAppKey和G2AppKey更换为自己的App Key，G2AppKey可以和NimAppKey不一样。
+3. 下载[场景Demo]()，将/build.gradle中的NimAppKey和NERTCAppKey更换为自己的App Key，将BaseUrl替换为自己的服务器链接，NERTCAppKey可以和NimAppKey不一样。
 
 ### 运行示例项目
 
 **注意：在运行前，请联系商务经理开通非安全模式（因Demo中RTCSDK中的token传空）。**
 
-1. 下载完成场景Demo后，使用Android Studio打开工程，配置NimAppKey和G2AppKey后，运行即可。
+1. 下载完成场景Demo后，使用Android Studio打开工程，配置NimAppKey和NERTCAppKey后，运行即可。
 2. 修改build参数，在/build.gradle中定义了build相关参数，如下表
 
 | key | value |
@@ -28,7 +28,7 @@
 | key | value | note
 | - | - | - |
 | nimVersion | 7.8.4 | nim相关版本
-| nertcVersion | 3.6.0 | G2版本
+| nertcVersion | 3.7.0 | NERTC版本
 
 ### 使用示例项目
 源码Demo的包含两个模块，app和nertcvoiceroom。nertcvoiceroom实现了对语音聊天室业务逻辑的组件封装，而app实现ui的搭建。
@@ -81,7 +81,7 @@
     voiceRoom.initRoom(voiceRoomInfo, user);
     voiceRoom.enterRoom(anchorMode);
 ```
-    
+
 - 房间操作
 
 ```java
@@ -90,7 +90,7 @@
     // 启动耳返
     voiceRoom.enableEarback(enable);
 ```
-        
+
 - 主播操作
 
 ```java
@@ -197,13 +197,15 @@
 | setEffectVolume | 设置音效音量 |
 | setEffectFile | 设置音效文件 |
 | playEffect | 播放音效文件 |
+| stopEffect | 停止播放音效文件 |
+| stopAllEffects | 停止播放所有音效 |
 
 | AudioPlay.Callback | 播放回调 |
 | - | - |
 | onAudioMixingPlayState | 伴音播放状态 |
 | onAudioMixingPlayError | 伴音播放错误 |
 | onAudioEffectPlayFinished | 音效播放完成 |
-    
+
 ### 功能实现
 
 #### **NERtcVoiceRoom**使用到的SDK功能
@@ -221,10 +223,11 @@
 | setRecordDeviceMute | 录音设备静音，开启关闭话筒 |
 | isRecordDeviceMute | 获取录音设备静音状态 |
 | adjustRecordingSignalVolume | 调整录音音量，设置采集音量 |
-| subscribeAllRemoteAudioStreams | 订阅房间内所有远端声音，开启关闭房间声音 |
+| subscribeAllRemoteAudioStreams | 订阅房间内所有远端声音 |
 | enableEarback | 启用耳返 |
 | setSpeakerphoneOn | 打开扬声器，进入房间后默认使用 |
 | enableAudioVolumeIndication | 开启音量汇报，实现房间内说话音量 |
+| setPlayoutDeviceMute | 开启关闭房间声音（包含伴音，音效） |
 
 - **NERtcEx**播放相关
 
@@ -240,6 +243,7 @@
 | setEffectSendVolume | 设置音效播放音量（同步设置发送和播放） |
 | playEffect | 开始播放音效 |
 | stopEffect | 停止播放音效 |
+| stopAllEffects | 停止播放所有音效 |
 
 - **NERtcCallbackEx**回调相关
 
@@ -258,7 +262,7 @@
 | enterChatRoom | 进入聊天室，进入成功后，再进入语音通道 |
 | exitChatRoom | 退出聊天室 |
 | fetchRoomInfo | 获取聊天室信息，人数，创建者等 |
-| fetchRoomMembers* | 获取聊天室成员列表 |
+| fetchRoomMembers | 获取聊天室成员列表 |
 | fetchQueue | 获取聊天室队列信息，麦位列表信息 |
 | updateQueue | 更新聊天室队列信息，麦位列表信息 |
 | sendMessage | 发送聊天室消息，只发送文本消息，使用了扩展字段type来区分是普通消息还是麦位变化提示消息 |
@@ -275,7 +279,7 @@
 | ChatRoomMemberTempMuteAdd | 禁言列表增加 |
 | ChatRoomMemberTempMuteRemove | 禁言列表移除 |
 | ChatRoomInfoUpdated | 聊天室信息变更，人数变化等 |
-| MsgTypeEnum.text | 接收文本消，普通消息和麦位变化提示消息 | 
+| MsgTypeEnum.text | 接收文本消，普通消息和麦位变化提示消息 |
 
 - **ChatRoomServiceObserver.observeKickOutEvent**
 

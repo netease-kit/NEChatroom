@@ -212,6 +212,7 @@ public class MainActivity extends BaseActivity implements BaseAdapter.ItemClickL
             return;
         }
         //当前帐号创建的房间
+        model.setAudioQuality(NERtcVoiceRoomDef.RoomAudioQuality.MUSIC_QUALITY);
         if (TextUtils.equals(DemoCache.getAccountId(), model.getCreatorAccount())) {
 //            closeRoom(model.getRoomId());
             AnchorActivity.start(this, model);

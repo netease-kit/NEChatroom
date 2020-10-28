@@ -20,6 +20,7 @@ import com.netease.audioroom.demo.dialog.TopTipsDialog;
 import com.netease.audioroom.demo.model.AccountInfo;
 import com.netease.audioroom.demo.util.ToastHelper;
 import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.ErrorCallback;
+import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.NetErrCallback;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Audience;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
@@ -74,6 +75,9 @@ public class AudienceActivity extends VoiceRoomBaseActivity implements Audience.
                 if (topTipsDialog != null) {
                     topTipsDialog.dismiss();
                 }
+                if (loadService != null) {
+                    loadService.showSuccess();
+                }
                 LoginManager loginManager = LoginManager.getInstance();
                 loginManager.tryLogin();
                 loginManager.setCallback(new LoginManager.Callback() {
@@ -105,7 +109,9 @@ public class AudienceActivity extends VoiceRoomBaseActivity implements Audience.
                 if (!topTipsDialog.isVisible()) {
                     topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
                 }
-
+                if (loadService != null) {
+                    loadService.showCallback(NetErrCallback.class);
+                }
             }
         });
     }

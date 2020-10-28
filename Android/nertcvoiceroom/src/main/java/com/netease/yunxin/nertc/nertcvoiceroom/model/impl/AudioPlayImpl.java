@@ -213,12 +213,10 @@ class AudioPlayImpl implements AudioPlay {
 
     @Override
     public boolean playEffect(int index) {
-        String path = null;
-        if (effectPaths == null // not set
-                || index < 0 || index >= effectPaths.length // out of bound
-                || TextUtils.isEmpty((path = effectPaths[index]))) { // not set
+        if (getEffectId(index) < 0) {
             return false;
         }
+        String path = effectPaths[index];
         int effectId = effectIndexToEffectId(index);
 
         NERtcCreateAudioEffectOption option = new NERtcCreateAudioEffectOption();
@@ -228,6 +226,34 @@ class AudioPlayImpl implements AudioPlay {
         option.playbackVolume = effectVolume;
         engine.stopEffect(effectId);
         return engine.playEffect(effectId, option) == 0;
+    }
+    /**
+     * 获取音效 id
+     *
+     * @param index 音乐文件索引
+     * @return 音效 id
+     */
+    private int getEffectId(int index) {
+        if (effectPaths == null // not set
+                || index < 0 || index >= effectPaths.length // out of bound
+                || TextUtils.isEmpty(effectPaths[index])) { // not set
+            return -1;
+        }
+        return effectIndexToEffectId(index);
+    }
+
+    @Override
+    public boolean stopEffect(int index) {
+        int effectId;
+        if ((effectId = getEffectId(index)) < 0) {
+            return false;
+        }
+        return engine.stopEffect(effectId) == 0;
+    }
+
+    @Override
+    public boolean stopAllEffects() {
+        return engine.stopAllEffects() == 0;
     }
 
     private static int getNextAudioMixingIndex(int index, @NonNull String[] paths) {

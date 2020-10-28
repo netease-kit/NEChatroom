@@ -108,6 +108,7 @@ class AudienceImpl implements Audience {
         sendNotification(SeatCommands.cancelSeatApply(voiceRoomInfo, user, mySeat), new RequestCallbackEx<Void>(callback) {
             @Override
             public void onSuccess(Void param) {
+                mySeat.cancelApply();
                 mySeat = null;
 
                 super.onSuccess(param);
@@ -142,6 +143,7 @@ class AudienceImpl implements Audience {
                    EnterChatRoomResultData result) {
         this.voiceRoomInfo = voiceRoomInfo;
         this.user = user;
+        clearSeats();
         ChatRoomMember member = result.getMember();
         ChatRoomInfo roomInfo = result.getRoomInfo();
         if (roomInfo.isMute() ||
@@ -171,10 +173,13 @@ class AudienceImpl implements Audience {
     }
 
     void initSeats(@NonNull List<VoiceRoomSeat> seats) {
-        VoiceRoomSeat seat = VoiceRoomSeat.find(seats, user.account);
-        if (seat != null && seat.isOn()) {
-            mySeat = seat;
-            onEnterSeat(seat, true);
+        List<VoiceRoomSeat> userSeats = VoiceRoomSeat.find(seats, user.account);
+        for (VoiceRoomSeat seat : userSeats) {
+            if (seat != null && seat.isOn()) {
+                mySeat = seat;
+                onEnterSeat(seat, true);
+                break;
+            }
         }
     }
 
@@ -182,7 +187,7 @@ class AudienceImpl implements Audience {
         mySeat = null;
     }
 
-    void seatChange(VoiceRoomSeat seat){
+    void seatChange(VoiceRoomSeat seat) {
         // my seat is 'STATUS_CLOSE'
         if (seat.getStatus() == Status.CLOSED
                 && mySeat != null && mySeat.isSameIndex(seat)) {
@@ -259,7 +264,7 @@ class AudienceImpl implements Audience {
     }
 
     private void onEnterSeat(VoiceRoomSeat seat, boolean last) {
-        voiceRoom.stopLocalAudio();
+        voiceRoom.startLocalAudio();
         if (voiceRoom.isLocalAudioMute()) {
             voiceRoom.muteLocalAudio(false);
         }
@@ -289,6 +294,7 @@ class AudienceImpl implements Audience {
             }
             return;
         }
+        notification.setSendToOnlineUserOnly(false);
         msgService.sendCustomNotification(notification).setCallback(callback);
     }
 }
