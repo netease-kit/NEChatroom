@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.netease.audioroom.demo.model.AccountInfo;
+import com.netease.audioroom.demo.util.ToastHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class DemoCache {
@@ -44,6 +47,9 @@ public class DemoCache {
         if (accountInfo != null) {
             //用户token过期
             if (new Date().getTime() > accountInfo.availableAt) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINESE);
+                String time = simpleDateFormat.format(new Date(accountInfo.availableAt));
+                ToastHelper.showToastLong("用户信息已过期，有效期为 " + time);
                 return new AccountInfo("null", "null", "null", "null", 0);
             } else {
                 return accountInfo;
