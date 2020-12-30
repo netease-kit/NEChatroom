@@ -486,8 +486,8 @@ public class AnchorActivity extends VoiceRoomBaseActivity implements Anchor.Call
     //
 
     private static String MUSIC_DIR = "music";
-    private static String MUSIC1 = "music1.m4a";
-    private static String MUSIC2 = "music2.m4a";
+    private static String MUSIC1 = "music1.mp3";
+    private static String MUSIC2 = "music2.mp3";
     private static String EFFECT1 = "effect1.wav";
     private static String EFFECT2 = "effect2.wav";
 
