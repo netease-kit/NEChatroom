@@ -231,7 +231,7 @@
         NSMutableArray *temp = [NSMutableArray array];
         for (int i = 0; i < 2; i++) {
             NSString *name = [NSString stringWithFormat:@"%d", i + 1];
-            NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"m4a"];
+            NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"mp3"];
             if (path) {
                 NERtcCreateAudioMixingOption *opt = [[NERtcCreateAudioMixingOption alloc] init];
                 opt.path = path;
