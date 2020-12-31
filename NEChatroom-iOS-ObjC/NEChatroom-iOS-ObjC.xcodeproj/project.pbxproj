@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		21B979C8D71B0EEFAA5208F7 /* libPods-NEChatroom-iOS-ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C84D6952B9FA499FC466B /* libPods-NEChatroom-iOS-ObjC.a */; };
+		86AC1E6E259D78E3006C6001 /* 2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86AC1E6C259D78E3006C6001 /* 2.mp3 */; };
+		86AC1E6F259D78E3006C6001 /* 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86AC1E6D259D78E3006C6001 /* 1.mp3 */; };
 		86BE5AC624ED4EA900F2B082 /* NTESSettingPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86BE5AC524ED4EA900F2B082 /* NTESSettingPanelView.m */; };
-		86C9516F24F66074009ECC0A /* 1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 86C9515D24F65A4C009ECC0A /* 1.m4a */; };
-		86C9517024F66074009ECC0A /* 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 86C9515C24F65A4C009ECC0A /* 2.m4a */; };
 		86EF6EFB24E641D60096B5F3 /* audio_effect_1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 86EF6EF924E641D60096B5F3 /* audio_effect_1.wav */; };
 		86EF6EFC24E641D60096B5F3 /* audio_effect_0.wav in Resources */ = {isa = PBXBuildFile; fileRef = 86EF6EFA24E641D60096B5F3 /* audio_effect_0.wav */; };
 		872CD15C229E778A00C06C1E /* NTESAudioPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 872CD15B229E778A00C06C1E /* NTESAudioPanelView.m */; };
@@ -98,10 +98,10 @@
 
 /* Begin PBXFileReference section */
 		003C84D6952B9FA499FC466B /* libPods-NEChatroom-iOS-ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NEChatroom-iOS-ObjC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		86AC1E6C259D78E3006C6001 /* 2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 2.mp3; sourceTree = "<group>"; };
+		86AC1E6D259D78E3006C6001 /* 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1.mp3; sourceTree = "<group>"; };
 		86BE5AC424ED4EA900F2B082 /* NTESSettingPanelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESSettingPanelView.h; sourceTree = "<group>"; };
 		86BE5AC524ED4EA900F2B082 /* NTESSettingPanelView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESSettingPanelView.m; sourceTree = "<group>"; };
-		86C9515C24F65A4C009ECC0A /* 2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.m4a; sourceTree = "<group>"; };
-		86C9515D24F65A4C009ECC0A /* 1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.m4a; sourceTree = "<group>"; };
 		86CD6C2824F8D5A200E42725 /* NERtcSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NERtcSDK.framework; path = Frameworks/NERtcSDK.framework; sourceTree = "<group>"; };
 		86CD6C2924F8D5A200E42725 /* NMCBasicModuleFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NMCBasicModuleFramework.framework; path = Frameworks/NMCBasicModuleFramework.framework; sourceTree = "<group>"; };
 		86EF6EF924E641D60096B5F3 /* audio_effect_1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio_effect_1.wav; sourceTree = "<group>"; };
@@ -281,8 +281,8 @@
 		86EF6EF824E641D60096B5F3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				86C9515D24F65A4C009ECC0A /* 1.m4a */,
-				86C9515C24F65A4C009ECC0A /* 2.m4a */,
+				86AC1E6D259D78E3006C6001 /* 1.mp3 */,
+				86AC1E6C259D78E3006C6001 /* 2.mp3 */,
 				86EF6EF924E641D60096B5F3 /* audio_effect_1.wav */,
 				86EF6EFA24E641D60096B5F3 /* audio_effect_0.wav */,
 			);
@@ -794,11 +794,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86C9516F24F66074009ECC0A /* 1.m4a in Resources */,
-				86C9517024F66074009ECC0A /* 2.m4a in Resources */,
 				90CFDD4E21EC610B00DDDFED /* LaunchScreen.storyboard in Resources */,
 				86EF6EFC24E641D60096B5F3 /* audio_effect_0.wav in Resources */,
+				86AC1E6F259D78E3006C6001 /* 1.mp3 in Resources */,
 				90CFDD4B21EC610B00DDDFED /* Assets.xcassets in Resources */,
+				86AC1E6E259D78E3006C6001 /* 2.mp3 in Resources */,
 				86EF6EFB24E641D60096B5F3 /* audio_effect_1.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
