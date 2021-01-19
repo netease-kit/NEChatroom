@@ -8,8 +8,14 @@
 
 #import "NTESDemoConfig.h"
 
-NSString *const kAppKey = @"<#请填入您的APPKey#>";
-NSString *const kApiHost = @"<#请填入您的服务器域名#>";
+//测试环境
+NSString *const kAppKey = @"56813bdfbaa1c2a29bbea391ffbbe27a";
+NSString *const kApiHost = @"https://yiyong-qa.netease.im/voicechat";
+NSString *const kRtcAppKey = @"5887359c380d534ad99b33a07d8723e5";
+
+//正式环境
+//NSString *const kAppKey = @"";
+//NSString *const kApiHost = @"";
 
 @implementation NTESDemoConfig
 
@@ -29,6 +35,8 @@ NSString *const kApiHost = @"<#请填入您的服务器域名#>";
     {
         _appKey = kAppKey;
         _apiURL = kApiHost;
+        _rtcAppKey = kRtcAppKey;
+        
     }
     return self;
 }
@@ -45,4 +53,8 @@ NSString *const kApiHost = @"<#请填入您的服务器域名#>";
     return _apiURL;
 }
 
+- (NSString *)rtcAppKey {
+    NSAssert((_rtcAppKey.length != 0), @"请填入rtc的APPKEY");
+    return _rtcAppKey;
+}
 @end

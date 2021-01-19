@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		21B979C8D71B0EEFAA5208F7 /* libPods-NEChatroom-iOS-ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C84D6952B9FA499FC466B /* libPods-NEChatroom-iOS-ObjC.a */; };
+		393A702D25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A702C25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m */; };
 		86AC1E6E259D78E3006C6001 /* 2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86AC1E6C259D78E3006C6001 /* 2.mp3 */; };
 		86AC1E6F259D78E3006C6001 /* 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86AC1E6D259D78E3006C6001 /* 1.mp3 */; };
 		86BE5AC624ED4EA900F2B082 /* NTESSettingPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86BE5AC524ED4EA900F2B082 /* NTESSettingPanelView.m */; };
@@ -98,6 +99,8 @@
 
 /* Begin PBXFileReference section */
 		003C84D6952B9FA499FC466B /* libPods-NEChatroom-iOS-ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NEChatroom-iOS-ObjC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		393A702B25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESPlanChooseAlertView.h; sourceTree = "<group>"; };
+		393A702C25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESPlanChooseAlertView.m; sourceTree = "<group>"; };
 		86AC1E6C259D78E3006C6001 /* 2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 2.mp3; sourceTree = "<group>"; };
 		86AC1E6D259D78E3006C6001 /* 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1.mp3; sourceTree = "<group>"; };
 		86BE5AC424ED4EA900F2B082 /* NTESSettingPanelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESSettingPanelView.h; sourceTree = "<group>"; };
@@ -571,6 +574,8 @@
 				E6DD28E4222D390000B58CAD /* NTESHomePageStateView.m */,
 				9040876B21F080ED00E79DF8 /* NTESChatroomTableViewCell.h */,
 				9040876C21F080ED00E79DF8 /* NTESChatroomTableViewCell.m */,
+				393A702B25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.h */,
+				393A702C25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -926,6 +931,7 @@
 				900FC35721F9A82900DBC8D8 /* NTESJsonUtil.m in Sources */,
 				900FC39C22034C2300DBC8D8 /* NTESConnectAlertView.m in Sources */,
 				90A3DAB221EDE717009AA63E /* NTESDemoTask.m in Sources */,
+				393A702D25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m in Sources */,
 				90A3DAAF21EDCC59009AA63E /* NTESDemoService.m in Sources */,
 				E61F332B222FA5E400DA2F05 /* NTESDataCenter.m in Sources */,
 				900FC3902200801F00DBC8D8 /* NTESMicInviteeListViewController.m in Sources */,

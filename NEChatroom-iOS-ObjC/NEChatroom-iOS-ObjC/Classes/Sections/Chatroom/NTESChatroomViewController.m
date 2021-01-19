@@ -94,7 +94,7 @@
 - (void)setupRTCEngine
 {
     NERtcEngineContext *context = [[NERtcEngineContext alloc] init];
-    context.appKey = [NTESDemoConfig sharedConfig].appKey;
+    context.appKey = [NTESDemoConfig sharedConfig].rtcAppKey;
     context.engineDelegate = self;
     NERtcEngine *coreEngine = [NERtcEngine sharedEngine];
     [coreEngine setAudioProfile:kNERtcAudioProfileHighQualityStereo scenario:kNERtcAudioScenarioMusic];

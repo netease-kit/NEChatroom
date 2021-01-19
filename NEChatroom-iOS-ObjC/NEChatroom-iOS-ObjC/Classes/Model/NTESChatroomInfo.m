@@ -9,6 +9,8 @@
 #import "NTESChatroomInfo.h"
 #import "NSDictionary+NTESJson.h"
 #import "NSString+NTES.h"
+#import "MJExtension.h"
+
 
 @implementation NTESChatroomInfo
 
@@ -30,6 +32,9 @@ static NSString *const kCreateTime = @"createTime";
         _thumbnail = [dic jsonString:@"thumbnail"];
         _onlineUserCount = [dic jsonInteger:@"onlineUserCount"];
         _createTime = [dic jsonInteger:@"createTime"];
+        _pushType = [dic jsonInteger:@"pushType"];
+        [self dealCDNConfig:[dic jsonString:@"liveConfig"]];
+//        _liveConfig = [dic jsonString:@"liveConfig"];
     }
     return self;
 }
@@ -51,6 +56,11 @@ static NSString *const kCreateTime = @"createTime";
     _micMute = (anchorMicMuteInt ==  1 ? YES : NO);
 }
 
+- (void)dealCDNConfig:(NSString *)cdnValue {
+    NSDictionary *cdnDict = [NSDictionary dictionaryWithJsonString:cdnValue];
+    NTESCDNLiveConfigModel *model = [NTESCDNLiveConfigModel mj_objectWithKeyValues:cdnDict];
+    _liveConfig = model;
+}
 #pragma mark - <NSCoding>
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
@@ -72,6 +82,11 @@ static NSString *const kCreateTime = @"createTime";
     [aCoder encodeObject:@(_onlineUserCount) forKey:kOnlineUserCount];
     [aCoder encodeObject:@(_createTime) forKey:kCreateTime];
 }
+
+@end
+
+
+@implementation NTESCDNLiveConfigModel
 
 @end
 

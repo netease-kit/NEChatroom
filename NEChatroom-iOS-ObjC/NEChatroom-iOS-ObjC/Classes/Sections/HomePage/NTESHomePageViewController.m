@@ -269,19 +269,19 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
 - (void)doCreateChatroomWithRoomName:(NSString *)roomName {
     NSString *account = _myAccountInfo.account;
     __weak typeof(self) weakSelf = self;
-    [[NTESDemoService sharedService] createChatroomWithSid:account
-                                                  roomName:roomName
-                                                completion:^(NTESChatroomInfo *chatroomInfo, NSError *error) {
-        if (!error) {
-            chatroomInfo.audioQuality = NTESAudioQualityHDMusic;
-            [NTESDataCenter shareCenter].myCreateChatroom = chatroomInfo;
-            [weakSelf showChatRoomVCWithMode:NTESUserModeAnchor
-                                        info:chatroomInfo];
-        } else {
-            [self.view makeToast:@"创建房间失败!" duration:2 position:CSToastPositionCenter];
-            NELPLogError(@"[demo] create room request error![%@]", error);
-        }
-    }];
+//    [[NTESDemoService sharedService] createChatroomWithSid:account
+//                                                  roomName:roomName
+//                                                completion:^(NTESChatroomInfo *chatroomInfo, NSError *error) {
+//        if (!error) {
+//            chatroomInfo.audioQuality = NTESAudioQualityHDMusic;
+//            [NTESDataCenter shareCenter].myCreateChatroom = chatroomInfo;
+//            [weakSelf showChatRoomVCWithMode:NTESUserModeAnchor
+//                                        info:chatroomInfo];
+//        } else {
+//            [self.view makeToast:@"创建房间失败!" duration:2 position:CSToastPositionCenter];
+//            NELPLogError(@"[demo] create room request error![%@]", error);
+//        }
+//    }];
 }
 
 - (void)doDestoryChatroomWithUserId:(NSString *)userId

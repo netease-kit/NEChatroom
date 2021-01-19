@@ -15,6 +15,17 @@ typedef NS_ENUM(NSUInteger, NTESAudioQuality){
     NTESAudioQualityHD,
     NTESAudioQualityHDMusic,
 };
+//cdn配置模型
+@interface NTESCDNLiveConfigModel : NSObject
+//以下三个拉流地址，则其一即可。
+@property (nonatomic, copy) NSString *httpPullUrl;
+@property (nonatomic, copy) NSString *rtmpPullUrl;
+@property (nonatomic, copy) NSString *hlsPullUrl;
+//推流地址
+@property (nonatomic, copy) NSString *pushUrl;
+
+@end
+
 
 @interface NTESChatroomInfo : NSObject<NSCoding>
 
@@ -25,6 +36,12 @@ typedef NS_ENUM(NSUInteger, NTESAudioQuality){
 @property (nonatomic,assign) NSInteger onlineUserCount;
 @property (nonatomic,assign) uint64_t createTime;
 @property (nonatomic,assign) BOOL micMute;
+//0：CDN推流， 1：rtc推流
+@property(nonatomic, assign) NSInteger pushType;
+//CDN配置信息
+//@property(nonatomic, strong) NSDictionary *liveConfig;
+@property(nonatomic, strong) NTESCDNLiveConfigModel *liveConfig;
+
 @property (nonatomic,assign) NTESAudioQuality audioQuality;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
