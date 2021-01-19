@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, NTESAudioQuality){
 @property (nonatomic,assign) uint64_t createTime;
 @property (nonatomic,assign) BOOL micMute;
 //0：CDN推流， 1：rtc推流
-@property(nonatomic, assign) NSInteger pushType;
+@property (nonatomic, assign) NSInteger pushType;
 //CDN配置信息
 //@property(nonatomic, strong) NSDictionary *liveConfig;
 @property(nonatomic, strong) NTESCDNLiveConfigModel *liveConfig;

@@ -58,6 +58,7 @@
 @property (nonatomic,weak) UIAlertController *audioStatusAlert;
 @property (nonatomic,assign) BOOL       enableEarback;  // 耳返状态
 @property (nonatomic,assign) CGFloat    gatherVolume;   // 采集音量
+@property (nonatomic, assign) NTESPushType pushType;
 @end
 
 @implementation NTESChatroomViewController
@@ -71,13 +72,15 @@
 
 - (instancetype)initWithChatroomInfo:(NTESChatroomInfo *)chatroomInfo
                          accountInfo:(NTESAccountInfo *)accountInfo
-                            userMode:(NTESUserMode)userMode;
+                            userMode:(NTESUserMode)userMode
+                            pushType:(NTESPushType)pushType;
 {
     if (self = [super init]) {
         _dataSource = [[NTESChatroomDataSource alloc] init];
         _dataSource.chatroomInfo = chatroomInfo;
         _dataSource.myAccountInfo = accountInfo;
         _dataSource.userMode = userMode;
+        _pushType = pushType;
         _handler = [[NTESChatroomNotificationHandler alloc] initWithDelegate:self];
         _handler.roomId = chatroomInfo.roomId;
         _playerManager = [[NTESAudioPlayerManager alloc] init];

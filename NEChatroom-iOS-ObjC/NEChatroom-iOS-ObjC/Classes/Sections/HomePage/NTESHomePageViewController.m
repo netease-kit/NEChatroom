@@ -20,6 +20,7 @@
 #import <MJRefresh.h>
 #import "NTESDemoSystemManager.h"
 #import "NTESChatroomAlertView.h"
+#import "NTESPlanChooseAlertView.h"
 
 typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
     NTESHomePageProcessDidInit = 0,
@@ -32,7 +33,8 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
                                          UITableViewDataSource,
                                          NTESHomePageStateDelegate,
                                          NTESChatroomVCDelegate,
-                                         UITextFieldDelegate>
+                                         UITextFieldDelegate,
+                                         NTESPlanChooseDelegate>
 
 @property (nonatomic,assign) NTESHomePageProcessStatus status;
 @property (nonatomic,strong) NSMutableArray *chatroomInfos;
@@ -51,6 +53,9 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
 @property (nonatomic,weak) UIAlertAction *createAction;
 @property (nonatomic,assign) NSInteger inputTextLength;
 @property (nonatomic,assign) BOOL inputComplete;
+//输入的房间名称
+@property (nonatomic, strong) NSString *inputRoomName;
+@property (nonatomic, assign) NTESPushType pushType;
 @end
 
 @implementation NTESHomePageViewController
@@ -106,10 +111,14 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
 
 #pragma mark - UI
 - (void)showChatRoomVCWithMode:(NTESUserMode)mode
-                          info:(NTESChatroomInfo *)info {
+                          info:(NTESChatroomInfo *)info
+                          pushType:(NTESPushType)pushType{
+//    NTESChatroomViewController *vc = [[NTESChatroomViewController alloc] initWithChatroomInfo:info
+//                                                                                  accountInfo:_myAccountInfo
+//                                                                                     userMode:mode];
     NTESChatroomViewController *vc = [[NTESChatroomViewController alloc] initWithChatroomInfo:info
-                                                                                  accountInfo:_myAccountInfo
-                                                                                     userMode:mode];
+                                                                                     accountInfo:_myAccountInfo
+                                                                                     userMode:mode pushType:pushType];
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -172,6 +181,12 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
     } else {
         self.emptyView.mode = NTESHomePageStateViewHidden;
     }
+}
+//选择rtc还是cdn方案
+- (void)choosePlan {
+    NTESPlanChooseAlertView *chooseAlertView = [[NTESPlanChooseAlertView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
+    chooseAlertView.delegate = self;
+    [[UIApplication sharedApplication].keyWindow addSubview:chooseAlertView];
 }
 
 #pragma mark - Fuction - Login
@@ -266,9 +281,9 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
      }];
 }
 
-- (void)doCreateChatroomWithRoomName:(NSString *)roomName {
-    NSString *account = _myAccountInfo.account;
-    __weak typeof(self) weakSelf = self;
+- (void)doCreateChatroom {
+//    NSString *account = _myAccountInfo.account;
+    [self choosePlan];//方案选择
 //    [[NTESDemoService sharedService] createChatroomWithSid:account
 //                                                  roomName:roomName
 //                                                completion:^(NTESChatroomInfo *chatroomInfo, NSError *error) {
@@ -374,7 +389,8 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
     UIAlertAction *createAction = [UIAlertAction actionWithTitle:@"创建房间" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *roomNameTextField = alertController.textFields.firstObject;
         weakSelf.inputComplete = NO;
-        [weakSelf doCreateChatroomWithRoomName:roomNameTextField.text];
+        weakSelf.inputRoomName = roomNameTextField.text;
+        [weakSelf choosePlan];
     }];
     _createAction = createAction;
     createAction.enabled = NO;
@@ -413,8 +429,25 @@ typedef NS_ENUM(NSUInteger, NTESHomePageProcessStatus){
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NTESChatroomInfo *chatroomInfo = _chatroomInfos[indexPath.row];
-    [self showChatRoomVCWithMode:NTESUserModeAudience info:chatroomInfo];
+    [self showChatRoomVCWithMode:NTESUserModeAudience info:chatroomInfo pushType:chatroomInfo.pushType];
 }
+#pragma mark - NTESPlanChooseDelegate
+- (void)planChooseResult:(NTESPushType)selectIndex {
+    __weak __typeof(self)weakSelf = self;
+    self.pushType = selectIndex;
+    [[NTESDemoService sharedService] createChatroomWithSid:_myAccountInfo.account roomName:self.inputRoomName pushType:selectIndex completion:^(NTESChatroomInfo * _Nullable chatroomInfo, NSError * _Nullable error) {
+        if (!error) {
+            chatroomInfo.audioQuality = NTESAudioQualityHDMusic;
+            [NTESDataCenter shareCenter].myCreateChatroom = chatroomInfo;
+            [weakSelf showChatRoomVCWithMode:NTESUserModeAnchor
+                                        info:chatroomInfo pushType:self.pushType];
+        } else {
+            [self.view makeToast:@"创建房间失败!" duration:2 position:CSToastPositionCenter];
+            NELPLogError(@"[demo] create room request error![%@]", error);
+        }
+    }];
+}
+
 
 #pragma mark - <NTESHomePageStateDelegate>
 - (void)didInitRetry {

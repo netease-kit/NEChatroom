@@ -11,6 +11,7 @@
 #import "UIView+NTES.h"
 
 
+
 @interface NTESPlanChooseAlertView ()<UITableViewDataSource,UITableViewDelegate>
 @property(nonatomic, strong) UIView *planContainerView;
 @property(nonatomic, strong) UILabel *titleLable;
@@ -32,7 +33,7 @@
 
 - (void)addSubviews {
     
-    self.backgroundColor = UIColorFromRGBA(0x000000, 1.0);
+    self.backgroundColor = UIColorFromRGBA(0x000000, 0.3);
       [UIView animateWithDuration:0.35 animations:^{
           [self addSubview:self.planContainerView];
           [self.planContainerView addSubview:self.tableView];
@@ -69,6 +70,12 @@
     }];
 }
 
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.planContainerView cutViewRounded:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
+}
+
 #pragma mark - UITableViewDelegate UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -77,16 +84,31 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *const reuseIdentifier = @"Cell";
+    static NSString *const reuseIdentifier = @"NETSChoosePlanCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     }
+    cell.textLabel.text = self.titleArray[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:16];
+    cell.textLabel.textColor = UIColorFromRGB(0x222222);
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.imageView.image = [UIImage imageNamed:self.imageArray[indexPath.row]];
+    
+    UIView *divideView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreenWidth, 1)];
+    divideView.backgroundColor = UIColorFromRGB(0xF0F0F2);
+    [cell.contentView addSubview:divideView];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    //1是rtc 0是cdn
+    NTESPushType selectIndex = indexPath.row == 0 ?NTESPushTypeRtc :NTESPushTypeCdn;
+    if (_delegate && [_delegate respondsToSelector:@selector(planChooseResult:)]) {
+        [_delegate planChooseResult:selectIndex];
+    }
+     [self dismissFromSuperView];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -122,7 +144,10 @@
     if (!_titleLable) {
         _titleLable = [[UILabel alloc]init];
         _titleLable.text = @"方案选择";
+        _titleLable.textColor = UIColorFromRGB(0x222222);
         _titleLable.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
+        _titleLable.textAlignment = NSTextAlignmentCenter;
+        _titleLable.backgroundColor = UIColor.whiteColor;
     }
     return _titleLable;
 }
@@ -133,7 +158,8 @@
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = UIColor.blackColor;
+        _tableView.backgroundColor = UIColorFromRGB(0xF0F0F2);
+        _tableView.scrollEnabled =NO; //设置tableview 不能滚动
     }
     return _tableView;
 }
@@ -152,7 +178,7 @@
 
 - (NSArray *)imageArray {
     if (!_imageArray) {
-        _imageArray = @[@"",@""];
+        _imageArray = @[@"icon_mic_mask_small",@"icon_mic_mask_small"];
     }
     return _imageArray;
 }

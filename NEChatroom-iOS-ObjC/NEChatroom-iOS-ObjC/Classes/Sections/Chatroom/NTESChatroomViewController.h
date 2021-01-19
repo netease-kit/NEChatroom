@@ -27,9 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id <NTESChatroomVCDelegate> delegate;
 
+
 - (instancetype)initWithChatroomInfo:(NTESChatroomInfo *)chatroomInfo
                          accountInfo:(NTESAccountInfo *)accountInfo
-                            userMode:(NTESUserMode)userMode;
+                            userMode:(NTESUserMode)userMode
+                            pushType:(NTESPushType)pushType;
 
 @end
 

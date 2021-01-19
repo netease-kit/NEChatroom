@@ -109,7 +109,7 @@
     [request setHTTPMethod:@"Post"];
     [request addValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-    NSString *postString = [NSString stringWithFormat:@"sid=%@&roomName=%@",self.sid ? : @"" ,self.roomName ? : @""];
+    NSString *postString = [NSString stringWithFormat:@"sid=%@&pushType=%@&roomName=%@",self.sid ? : @"",@(self.pushType),self.roomName ? : @""];
     [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
     return request;

@@ -35,6 +35,11 @@ typedef NS_ENUM(NSUInteger, NTESActionType)
     NTESActionTypeSetting,
 };
 
+typedef NS_ENUM(NSUInteger, NTESPushType)
+{
+    NTESPushTypeCdn = 0,//cdn方案
+    NTESPushTypeRtc,//rtc方案
 
+};
 
 #endif /*NTESChatroomDefine_h */

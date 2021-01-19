@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NTESChatroomDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol NTESPlanChooseDelegate <NSObject>
 
-- (void)planChooseResult:(NSInteger)selectIndex;
+- (void)planChooseResult:(NTESPushType)selectIndex;
 
 @end
 
