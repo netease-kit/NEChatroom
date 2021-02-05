@@ -1,4 +1,4 @@
-# NEChatroom
+# NEChatroom（轻松复刻本土Clubhouse）
 
 轻松复刻本土Clubhouse，产品源码全开放，1天上线，领衔语音社交热潮！
 
@@ -34,14 +34,19 @@
 
 ## 体验 Demo
 
-IOS：https://www.pgyer.com/8M0h
-Android：https://www.pgyer.com/SxMc
+IOS：https://www.pgyer.com/8M0h 
+Android：https://www.pgyer.com/SxMc 
 密码：iosNIM
 
+成功运行 Demo 后，在界面上创建房间，输入频道名称，并选择一种房间类型。使用另一台设备进入房间，即为观众观看。观众可以申请上麦从而实现和房主的实时互动。
+
 *本开源示例项目简化了业务相关的逻辑*
+
+## 集成接入
+
+场景概述及接入指引详见
 
 ## 联系我们
 * 如果你遇到了困难，可以先参阅 [知识库](https://faq.yunxin.163.com/kb/main/#/)
 * 完整的 API 文档见 [文档中心](https://dev.yunxin.163.com/?from=bdjjnim0035)
-* 若遇到问题需要开发者帮助，你可以到 [开发者社区](https://yunxin.163.com/dev-blog/question) 提问
 * 如果需要售后技术支持, 你可以在 [网易云信控制台](https://app.yunxin.163.com/index#/issue/submit) 提交工单
