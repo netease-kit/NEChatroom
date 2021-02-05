@@ -22,6 +22,10 @@
 
 该场景在语音社交行业内应用广泛，适用于Clubhouse等兴趣语聊、在线 KTV、连麦开黑、语音电台、多人相亲、歌曲接龙等场景。
 
+多人语音聊天室 Demo界面截图:
+![多人语音聊天室 Demo界面截图](https://yx-web-nosdn.netease.im/quickhtml%2Fassets%2Fyunxin%2Fdefault%2F%E5%AE%89%E5%8D%93%E8%AF%AD%E8%81%8A%E6%88%BF-%E4%BA%A4%E4%BA%92.png)
+
+
 ## 功能列表
 网易云信 可以在你的项目中根据场景需要，实现如下功能：
 
@@ -50,3 +54,4 @@ Android：https://www.pgyer.com/SxMc
 * 如果你遇到了困难，可以先参阅 [知识库](https://faq.yunxin.163.com/kb/main/#/)
 * 完整的 API 文档见 [文档中心](https://dev.yunxin.163.com/?from=bdjjnim0035)
 * 如果需要售后技术支持, 你可以在 [网易云信控制台](https://app.yunxin.163.com/index#/issue/submit) 提交工单
+* 若遇到问题需要开发者帮助，你可以加微信 nim_pscs_jing 咨询
