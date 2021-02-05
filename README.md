@@ -39,7 +39,9 @@
 ## 体验 Demo
 
 IOS：https://www.pgyer.com/8M0h 
+
 Android：https://www.pgyer.com/SxMc 
+
 密码：iosNIM
 
 成功运行 Demo 后，在界面上创建房间，输入频道名称，并选择一种房间类型。使用另一台设备进入房间，即为观众观看。观众可以申请上麦从而实现和房主的实时互动。
@@ -51,7 +53,7 @@ Android：https://www.pgyer.com/SxMc
 场景概述及接入指引详见 [集成接入](https://dev.yunxin.163.com/docs/product/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9A%E8%AF%9D2.0/%E5%9C%BA%E6%99%AF%E5%AE%9E%E8%B7%B5/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E4%BA%BA%E8%AF%AD%E9%9F%B3%E8%81%8A%E5%A4%A9%E5%AE%A4/%E5%9C%BA%E6%99%AF%E6%A6%82%E8%BF%B0)
 
 ## 联系我们
-* 如果你遇到了困难，可以先参阅 [知识库](https://faq.yunxin.163.com/kb/main/#/)
+* 如果您遇到了困难，可以先参阅 [知识库](https://faq.yunxin.163.com/kb/main/#/)
 * 完整的 API 文档见 [文档中心](https://dev.yunxin.163.com/?from=bdjjnim0035)
-* 如果需要售后技术支持, 你可以在 [网易云信控制台](https://app.yunxin.163.com/index#/issue/submit) 提交工单
-* 若遇到问题需要开发者帮助，你可以加微信 nim_pscs_jing 咨询
+* 如果需要售后技术支持, 您可以在 [网易云信控制台](https://app.yunxin.163.com/index#/issue/submit) 提交工单
+* 若遇到其他开发者问题需要帮助，您可以加产品运营微信 nim_pscs_jing 咨询
