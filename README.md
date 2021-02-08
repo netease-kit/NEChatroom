@@ -52,6 +52,10 @@ Android：https://www.pgyer.com/SxMc
 
 场景概述及接入指引详见 [集成接入](https://dev.yunxin.163.com/docs/product/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9A%E8%AF%9D2.0/%E5%9C%BA%E6%99%AF%E5%AE%9E%E8%B7%B5/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E4%BA%BA%E8%AF%AD%E9%9F%B3%E8%81%8A%E5%A4%A9%E5%AE%A4/%E5%9C%BA%E6%99%AF%E6%A6%82%E8%BF%B0)
 
+## 解决方案
+
+解决方案详见  [网易云信多人语聊解决方案](http://yunxin.163.com/voicechat)
+
 ## 联系我们
 * 如果您遇到了困难，可以先参阅 [知识库](https://faq.yunxin.163.com/kb/main/#/)
 * 完整的 API 文档见 [文档中心](https://dev.yunxin.163.com/?from=bdjjnim0035)
