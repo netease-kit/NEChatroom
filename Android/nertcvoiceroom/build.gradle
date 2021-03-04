@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.netease.yunxin:report:2.0.3'
 
     implementation rootProject.ext.nertcSdk
     implementation rootProject.ext.imSdk
