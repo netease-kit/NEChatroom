@@ -26,8 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 //创建房间
 - (void)createChatroomWithSid:(NSString *)sid
-                     roomName:(NSString *)roomName
-                   completion:(NTESCreateChatroomHandler)completion;
+                    roomName:(NSString *)roomName
+                    pushType:(NSInteger)pushType
+              createRoomType:(NTESCreateRoomType)roomType
+                  completion:(NTESCreateChatroomHandler)completion;
 
 
 //关闭房间

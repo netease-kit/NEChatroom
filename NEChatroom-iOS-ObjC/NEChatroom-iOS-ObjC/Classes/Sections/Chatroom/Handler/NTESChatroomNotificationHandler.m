@@ -11,6 +11,7 @@
 #import "NSString+NTES.h"
 #import "NTESChatroomDefine.h"
 #import "NTESMicInfo.h"
+#import "NTESCustomAttachment.h"
 
 @interface NTESChatroomNotificationHandler ()
 
@@ -37,6 +38,7 @@
     NTESMicInfo *micInfo = [[NTESMicInfo alloc] init];
     NTESUserInfo *userInfo = [[NTESUserInfo alloc] init];
     micInfo.userInfo = userInfo;
+    micInfo.notificationId = @(notification.notificationId);
     
     micInfo.micOrder = [[dict objectForKey:@"index"] integerValue] + 1;
     micInfo.userInfo.account = notification.sender;
@@ -81,8 +83,10 @@
                 NSDictionary *dict = content.ext;
                 NSString *key = [dict objectForKey:NIMChatroomEventInfoQueueChangeItemKey];
                 NSString *value = [dict objectForKey:NIMChatroomEventInfoQueueChangeItemValueKey];
-                if (_delegate && [_delegate respondsToSelector:@selector(didUpdateChatroomQueueWithMicInfokey:micInfoValue:)]) {
-                    [self.delegate didUpdateChatroomQueueWithMicInfokey:key micInfoValue:value];
+                // 变更类型（NIMChatroomQueueChangeType）
+                NIMChatroomQueueChangeType type = [[dict objectForKey:NIMChatroomEventInfoQueueChangeTypeKey] integerValue];
+                if (_delegate && [_delegate respondsToSelector:@selector(didUpdateChatroomQueueWithMicInfokey:micInfoValue:changeType:)]) {
+                    [self.delegate didUpdateChatroomQueueWithMicInfokey:key micInfoValue:value changeType:type];
                 }
             }
             else if (content.eventType == NIMChatroomEventTypeEnter) { //进入聊天室
@@ -174,10 +178,13 @@
                     [_delegate didShowMessages:@[message]];
                 }
                 break;
-            case NIMMessageTypeCustom:
-            {
-                break;
+            case NIMMessageTypeCustom: {
+                if (_delegate && [_delegate respondsToSelector:@selector(didReceiveCustomMessage:)]) {
+                    [_delegate didReceiveCustomMessage:message];
+                }
             }
+                 
+                break;
             case NIMMessageTypeNotification:{
                 [self dealWithNotificationMessage:message];
             }
@@ -198,5 +205,14 @@
         }
     }
 }
+
+- (void)chatroom:(NSString *)roomId connectionStateChanged:(NIMChatroomConnectionState)state {
+    if (state == NIMChatroomConnectionStateEnterOK && [roomId isEqualToString:self.roomId]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(didChatroomEnter)]) {
+            [_delegate didChatroomEnter];
+        }
+    }
+}
+
 
 @end

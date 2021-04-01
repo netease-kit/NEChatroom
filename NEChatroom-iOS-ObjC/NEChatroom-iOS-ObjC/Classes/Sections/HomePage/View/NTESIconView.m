@@ -12,6 +12,7 @@
 #import "UIImage+YYWebImage.h"
 #import "UIImageView+YYWebImage.h"
 
+
 @interface NTESIconView ()
 @property (nonatomic, strong) NTESAnimationImageView *image;
 @property (nonatomic, strong) UILabel *titleLab;
@@ -70,6 +71,7 @@
                     completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
             if (!error) {
                 image = [image yy_imageByRoundCornerRadius:(image.size.width/2)];
+//                [weakSelf.image zy_cornerRadiusRoundingRect];
                 weakSelf.image.image = image;
             }
     }];

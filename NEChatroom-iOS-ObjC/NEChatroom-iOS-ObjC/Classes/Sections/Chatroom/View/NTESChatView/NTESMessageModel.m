@@ -33,10 +33,10 @@
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:showMessage];
     switch (_type) {
         case NTESMessageNormal:
-            [text setAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0xffffff),
+            [text setAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0xAAACB7),
                                   NSFontAttributeName:Chatroom_Message_Font}
                           range:_nickRange];
-            [text setAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0x828282),
+            [text setAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0xffffff),
                                   NSFontAttributeName:Chatroom_Message_Font}
                           range:_textRange];
             break;

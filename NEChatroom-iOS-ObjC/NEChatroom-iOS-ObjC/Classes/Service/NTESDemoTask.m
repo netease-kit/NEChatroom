@@ -8,7 +8,7 @@
 
 #import "NTESDemoTask.h"
 #import "NTESAccountInfo.h"
-#import "NTESDemoConfig.h"
+#import "AppKey.h"
 #import "NTESChatroomInfo.h"
 #import "NSDictionary+NTESJson.h"
 
@@ -16,12 +16,13 @@
 
 - (NSURLRequest *)taskRequest
 {
-    NSString *urlString = [[NTESDemoConfig sharedConfig].apiURL stringByAppendingString:@"/user/get"];
+    NSString *urlString = [kApiHost stringByAppendingString:@"/voicechat/user/get"];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
                                                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                             timeoutInterval:10];
     [request setHTTPMethod:@"Post"];
+    [request addValue:kAppKey forHTTPHeaderField:@"appKey"];
     [request addValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     if (self.sid) {
         NSString *postString = self.sid;
@@ -57,13 +58,14 @@
 
 - (NSURLRequest *)taskRequest
 {
-    NSString *urlString = [[NTESDemoConfig sharedConfig].apiURL stringByAppendingString:@"/room/list"];
+    NSString *urlString = [kApiHost stringByAppendingString:@"/voicechat/room/list"];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
                                                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                             timeoutInterval:10];
     [request setHTTPMethod:@"Post"];
+    [request addValue:kAppKey forHTTPHeaderField:@"appKey"];
     [request addValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     NSMutableString *postString = [NSMutableString string];
@@ -100,16 +102,18 @@
 
 - (NSURLRequest *)taskRequest
 {
-    NSString *urlString = [[NTESDemoConfig sharedConfig].apiURL stringByAppendingString:@"/room/create"];
+    NSString *urlString = [kApiHost stringByAppendingString:@"/voicechat/room/create"];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
                                                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                             timeoutInterval:10];
     [request setHTTPMethod:@"Post"];
+    [request addValue:kAppKey forHTTPHeaderField:@"appKey"];
     [request addValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
-    NSString *postString = [NSString stringWithFormat:@"sid=%@&roomName=%@",self.sid ? : @"" ,self.roomName ? : @""];
+    
+    NSString *postString = [NSString stringWithFormat:@"sid=%@&pushType=%@&roomType=%@&roomName=%@",self.sid ? : @"",@(self.pushType),@(self.roomType),self.roomName ? : @""];
     [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
     return request;
@@ -133,13 +137,14 @@
 
 - (NSURLRequest *)taskRequest
 {
-    NSString *urlString = [[NTESDemoConfig sharedConfig].apiURL stringByAppendingString:@"/room/dissolve"];
+    NSString *urlString = [kApiHost stringByAppendingString:@"/voicechat/room/dissolve"];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
                                                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                             timeoutInterval:10];
     [request setHTTPMethod:@"Post"];
+    [request addValue:kAppKey forHTTPHeaderField:@"appKey"];
     [request addValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     NSString *postString = [NSString stringWithFormat:@"sid=%@&roomId=%ld",self.sid ? : @"" ,(long)_roomId];
@@ -166,13 +171,14 @@
 }
 
 - (NSURLRequest *)taskRequest {
-    NSString *urlString = [[NTESDemoConfig sharedConfig].apiURL stringByAppendingString:@"/room/mute"];
+    NSString *urlString = [kApiHost stringByAppendingString:@"/voicechat/room/mute"];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
                                                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                             timeoutInterval:10];
     [request setHTTPMethod:@"Post"];
+    [request addValue:kAppKey forHTTPHeaderField:@"appKey"];
     [request addValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     NSMutableString *postString = [NSMutableString string];

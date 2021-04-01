@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *titleLab;
 @property (nonatomic, strong) UIImage *placeholder;
+@property (nonatomic, strong) UIView *bottomLineView;
+
 @end
 
 @implementation NTESUserInfoCell
@@ -39,6 +41,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self addSubview:self.iconView];
         [self addSubview:self.titleLab];
+        [self addSubview:self.bottomLineView];
     }
     return self;
 }
@@ -54,7 +57,10 @@
                                      _titleLab.height);
         _titleLab.centerY = _iconView.centerY;
         _preRect = self.bounds;
+        _bottomLineView.frame = CGRectMake(20, self.height-0.5, self.width-40, 0.5);
     }
+    [_iconView cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(_iconView.width/2, _iconView.width/2)];
+    
 }
 
 - (void)refresh:(NIMChatroomMember *)member {
@@ -65,16 +71,8 @@
     //image
     if (member.roomAvatar) {
         NSURL *url = [NSURL URLWithString:member.roomAvatar];
-        __weak typeof(self) weakSelf = self;
-        [_iconView yy_setImageWithURL:url
-                          placeholder:_placeholder
-                              options:YYWebImageOptionAvoidSetImage
-                           completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-                            if (!error) {
-                                image = [image yy_imageByRoundCornerRadius:(image.size.width/2)];
-                                weakSelf.iconView.image = image;
-                            }
-                        }];
+        [_iconView yy_setImageWithURL:url placeholder:[UIImage imageNamed:@"default_user_icon"]];
+        
     }
 }
 
@@ -92,12 +90,19 @@
 - (UILabel *)titleLab {
     if (!_titleLab) {
         _titleLab = [[UILabel alloc] init];
-        _titleLab.textColor = [UIColor whiteColor];
-        _titleLab.font = [UIFont systemFontOfSize:15.0];
+        _titleLab.textColor = UIColorFromRGB(0x222222);
+        _titleLab.font = TextFont_14;
         _titleLab.text = @"未知";
         [_titleLab sizeToFit];
     }
     return _titleLab;
 }
 
+- (UIView *)bottomLineView {
+    if (!_bottomLineView) {
+        _bottomLineView = [[UIView alloc]init];
+        _bottomLineView.backgroundColor = UIColorFromRGB(0xE6E7EB);
+    }
+    return _bottomLineView;
+}
 @end

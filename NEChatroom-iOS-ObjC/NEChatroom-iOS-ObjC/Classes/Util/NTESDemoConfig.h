@@ -16,5 +16,6 @@
 @property (nonatomic,copy)  NSString    *appKey;
 @property (nonatomic,copy)  NSString    *apiURL;
 
+
 @end
 

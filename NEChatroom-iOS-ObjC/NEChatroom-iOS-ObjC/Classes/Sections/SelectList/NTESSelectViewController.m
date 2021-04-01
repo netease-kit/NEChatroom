@@ -30,11 +30,13 @@
     [super viewDidLayoutSubviews];
     CGFloat top = (IPHONE_X ? IPHONE_X_HairHeight : 20);
     _navBar.frame = CGRectMake(0, top, self.view.width, 40.0);
+    [_navBar cutViewRounded:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
     _emptyView.frame = CGRectMake(0,
                                   _navBar.bottom,
                                   self.view.width,
                                   self.view.height-_navBar.bottom);
     _tableview.frame = _emptyView.frame;
+    
 }
 
 - (void)didSetUpUI {
@@ -112,7 +114,8 @@
         _tableview.rowHeight = 56.0;
         _tableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         _tableview.backgroundView = nil;
-        _tableview.backgroundColor = [UIColor blackColor];
+        _tableview.backgroundColor = [UIColor whiteColor];
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     return _tableview;
 }
@@ -124,7 +127,11 @@
         _navBar.backBlock = ^(){
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         };
+        _navBar.arrowBackBlock = ^(){
+            [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+        };
         _navBar.title = @"选择成员";
+        _navBar.navType = NTESBanSpeakNavTypeCancel;
     }
     return _navBar;
 }

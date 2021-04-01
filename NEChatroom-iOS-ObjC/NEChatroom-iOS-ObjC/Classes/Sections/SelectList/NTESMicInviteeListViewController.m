@@ -13,9 +13,9 @@
 #import "NTESChatroomQueueHelper.h"
 #import "UIView+NTES.h"
 
-#import "NTESNavBar.h"
+
 #import "NTESUserInfoCell.h"
-#import "NTESChatroomStateView.h"
+
 
 @interface NTESMicInviteeListViewController ()
 

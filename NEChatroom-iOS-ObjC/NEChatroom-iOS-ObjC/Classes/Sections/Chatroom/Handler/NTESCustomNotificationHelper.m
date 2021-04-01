@@ -31,8 +31,9 @@
 }
 
 + (void)sendDropMicNotication:(NSString *)creater
-                      micInfo:(NTESMicInfo *)micInfo {
-    
+                      micInfo:(NTESMicInfo *)micInfo
+                   completion:(nullable NIMSystemNotificationHandler)completion
+{
     NELPLogInfo(@"[demo] Send Drop Mic Request Notication");
     
     NIMCustomSystemNotification *notification = [NTESCustomNotificationHelper notificationWithDropMic:micInfo];
@@ -40,7 +41,7 @@
                                          type:NIMSessionTypeP2P];
     [[NIMSDK sharedSDK].systemNotificationManager sendCustomNotification:notification
                                                                toSession:session
-                                                              completion:nil];
+                                                              completion:completion];
 }
 
 
@@ -120,6 +121,22 @@
     textMessage.text = text;
     textMessage.remoteExt = @{@"type":@(1)};
     return textMessage;
+}
+
++ (void)sendCustomMessage:(NSString *)roomId type:(NTESVoiceChatAttachmentType)type {
+    [self sendCustomMessage:roomId type:type operator:nil error:nil];
+}
+
++ (void)sendCustomMessage:(NSString *)roomId type:(NTESVoiceChatAttachmentType)type operator:(nullable NSString *)operator error:(NSError * _Nullable __autoreleasing * _Nullable)error {
+    NIMSession *session = [NIMSession session:roomId type:NIMSessionTypeChatroom];
+    NIMMessage *message = [[NIMMessage alloc] init];
+    NTESCustomAttachment *attachment = [[NTESCustomAttachment alloc] init];
+    attachment.type = type;
+    attachment.operator = operator;
+    NIMCustomObject *object = [[NIMCustomObject alloc] init];
+    object.attachment = attachment;
+    message.messageObject = object;
+    [[NIMSDK sharedSDK].chatManager sendMessage:message toSession:session error:error];
 }
 
 @end

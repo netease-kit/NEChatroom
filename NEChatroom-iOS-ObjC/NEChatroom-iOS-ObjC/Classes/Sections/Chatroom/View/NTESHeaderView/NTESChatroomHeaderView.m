@@ -11,6 +11,7 @@
 #import "UIView+NTES.h"
 #import "NTESChatroomInfo.h"
 #import "NTESAccountInfo.h"
+#import "NTESRtcConfig.h"
 
 #define kBtnWidth (36.0)
 

@@ -16,11 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onRejectBtnPressedWithMicInfo:(NTESMicInfo *)micInfo;
 @end
 
-@interface NTESConnectListView : UIControl
+@interface NTESConnectListView : UIControl<NIMChatroomManagerDelegate>
 
 @property (nonatomic, weak)id<NTESConnectListViewDelegate> delegate;
 - (void)refreshWithDataArray:(NSMutableArray *)dataArray;
 - (void)showAsAlertOnView:(UIView *)view;
+@property (nonatomic, copy) NSString *roomId;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,8 +12,6 @@
 
 @property (nonatomic,assign)NSUInteger connectCount;
 @property (nonatomic,strong)UILabel *connectCountLabel;
-@property (nonatomic,strong)UIButton *showConnectListBtn;
-
 
 @end
 
@@ -22,7 +20,6 @@
 - (void)layoutSubviews
 {
     self.showConnectListBtn.frame = self.bounds;
-    self.connectCountLabel.frame = self.bounds;
 }
 
 - (void)onShowConnectListBtnPressed:(UIButton *)button
@@ -30,63 +27,36 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(onShowConnectListBtnPressed:)]) {
         [self.delegate onShowConnectListBtnPressed:button];
     }
+    self.showConnectListBtn.hidden = YES;
 }
 
 - (void)updateConnectCount:(NSUInteger)connectCount
 {
-    [self.connectCountLabel setText:[NSString stringWithFormat:@"%zd",connectCount]];
+    NSString *msg = [NSString stringWithFormat:@"申请上麦(%zd)",connectCount];
+    [self.showConnectListBtn setTitle:msg forState:UIControlStateNormal];
 }
 
 - (void)refreshAlertView:(BOOL)listViewPushed
 {
     if (!listViewPushed) {
-        [self.showConnectListBtn setImage:[UIImage imageNamed:@"icon_connect_alert"] forState:UIControlStateNormal];
-        self.connectCountLabel.hidden = NO;
+        self.showConnectListBtn.hidden = NO;
+    } else {
+        self.showConnectListBtn.hidden = YES;
     }
-    else
-    {
-        [self.showConnectListBtn setImage:[UIImage imageNamed:@"icon_connectList_close"] forState:UIControlStateNormal];
-        self.connectCountLabel.hidden = YES;
-    }
-}
-
-- (void)drawBtnCorner
-{
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.showConnectListBtn.bounds      byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight    cornerRadii:CGSizeMake(10, 10)];
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = self.showConnectListBtn.bounds;
-    maskLayer.path = maskPath.CGPath;
-    self.showConnectListBtn.layer.mask = maskLayer;
-}
-
-- (UILabel *)connectCountLabel
-{
-    if (!_connectCountLabel)
-    {
-        UILabel *connectCountLabel = [[UILabel alloc] init];
-        [connectCountLabel setTextAlignment:NSTextAlignmentCenter];
-        connectCountLabel.font = [UIFont systemFontOfSize:15];
-        [connectCountLabel setText:@"1"];
-        [connectCountLabel setTextColor:[UIColor whiteColor]];
-        [connectCountLabel sizeToFit];
-        _connectCountLabel = connectCountLabel;
-        [self.showConnectListBtn addSubview:_connectCountLabel];
-    }
-    return _connectCountLabel;
 }
 
 - (UIButton *)showConnectListBtn
 {
     if (!_showConnectListBtn) {
-        UIButton *showConnectListBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [showConnectListBtn addTarget:self action:@selector(onShowConnectListBtnPressed:)  forControlEvents:UIControlEventTouchUpInside];
-        [showConnectListBtn setImage:[UIImage imageNamed:@"icon_connect_alert"] forState:UIControlStateNormal];
-        _showConnectListBtn = showConnectListBtn;
+        _showConnectListBtn = [NTESViewFactory createSystemBtnFrame:CGRectZero title:@"" titleColor:UIColor.whiteColor backgroundColor:nil target:self action:@selector(onShowConnectListBtnPressed:)];
+        [_showConnectListBtn setGradientBackgroundWithColors:@[UIColorFromRGB(0xdc5aaa),UIColorFromRGB(0xfc8567)] locations:nil startPoint:CGPointMake(0, 0) endPoint:CGPointMake(0, 1)];
+        [_showConnectListBtn setTitle:@"申请上麦(1)" forState:UIControlStateNormal];
+        [_showConnectListBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _showConnectListBtn.layer.cornerRadius = 19.0;
+        _showConnectListBtn.layer.masksToBounds = YES;
         [self addSubview:_showConnectListBtn];
     }
     return _showConnectListBtn;
 }
-
-
 
 @end

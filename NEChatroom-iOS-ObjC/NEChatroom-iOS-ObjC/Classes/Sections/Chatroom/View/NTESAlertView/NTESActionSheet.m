@@ -45,14 +45,6 @@ static const int kitemOriginTag = 23;
 
 static NTESActionSheet *sheet = nil;
 
-+ (void)initialize
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sheet = [[NTESActionSheet alloc] initWithFrame:CGRectZero];
-    });
-}
-
 + (void)showWithDesc:(NSString *)desc
         actionModels:(NSArray<NTESActionSheetModel *> *)models
               action:(void (^)(NTESActionSheetModel *))action{
@@ -63,6 +55,10 @@ static NTESActionSheet *sheet = nil;
         actionModels:(NSArray<NTESActionSheetModel *> *)models
               action:(void (^)(NTESActionSheetModel *))action
               cancel:(dispatch_block_t)cancel {
+    if (sheet) {
+        return;
+    }
+    sheet = [[NTESActionSheet alloc] initWithFrame:CGRectZero];
     sheet.desc = desc;
     sheet.actionModels = models;
     sheet.click = action;
@@ -77,6 +73,8 @@ static NTESActionSheet *sheet = nil;
     [UIView animateWithDuration:0.3 animations:^{
         self.bgView.frame = CGRectMake(0, self.bounds.size.height - self.bgView.bounds.size.height, self.bounds.size.width, self.bgView.bounds.size.height);
     }];
+    self.bgView.frame = CGRectMake(0, self.bounds.size.height - self.bgView.bounds.size.height, self.bounds.size.width, self.bgView.bounds.size.height);
+
 }
 
 +(void)hide{
@@ -89,6 +87,7 @@ static NTESActionSheet *sheet = nil;
 }
 
 -(void)createUI{
+    self.tag = 1236;
     self.backgroundColor = BG_Color;
     self.bgView = [[UIView alloc] init];
     self.bgView.backgroundColor = Bottom_BG_Color;
@@ -197,6 +196,13 @@ static NTESActionSheet *sheet = nil;
         }
         return;
     }
+    
+//    index = index > self.actionModels.count ? 0:index;
+    if (index > self.actionModels.count) {//防止数组越界
+        [self hide];
+        return;
+    }
+    
     NTESActionSheetModel *model = self.actionModels[index];
     if (model.actionBlock) {
         model.actionBlock();
@@ -221,6 +227,7 @@ static NTESActionSheet *sheet = nil;
             self.desc = nil;
             [self.bgView removeFromSuperview];
             [self removeFromSuperview];
+            sheet = nil;
         }
     }];
 }

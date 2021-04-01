@@ -10,8 +10,13 @@
 #import "UIView+NTES.h"
 #import "NTESMicInfo.h"
 #import "UIImageView+YYWebImage.h"
+#import "UIButton+NTES.h"
 
 @interface NTESConnectListViewCell ()
+
+@property (nonatomic, weak)id<NTESConnectListViewCellDelegate> delegate;
+
+@property (nonatomic, strong) UIView    *bottomLine;
 @property (nonatomic, strong) UIImageView *avatar;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIButton *acceptBtn;
@@ -27,10 +32,12 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self addSubview:self.avatar];
-        [self addSubview:self.nameLabel];
-        [self addSubview:self.acceptBtn];
-        [self addSubview:self.rejectBtn];
+        
+        [self.contentView addSubview:self.bottomLine];
+        [self.contentView addSubview:self.avatar];
+        [self.contentView addSubview:self.nameLabel];
+        [self.contentView addSubview:self.acceptBtn];
+        [self.contentView addSubview:self.rejectBtn];
     }
     return self;
 }
@@ -39,26 +46,25 @@
 {
     [super layoutSubviews];
     
-    _avatar.frame = CGRectMake(20, 0, 40.0, 40.0);
+    _bottomLine.frame = CGRectMake(16, self.height - 0.5, self.width - 16.0 * 2, 0.5);
+    _avatar.frame = CGRectMake(16, 0, 32.0, 32.0);
     _avatar.centerY = self.height / 2;
-    _acceptBtn.frame = CGRectMake(self.width-32.0, 0, 32.0, 32.0);
+    _acceptBtn.frame = CGRectMake(self.width - 16.0 - 16, 0, 16.0, 16.0);
     _acceptBtn.centerY = _avatar.centerY;
-    _rejectBtn.frame = CGRectMake(self.width-_acceptBtn.width-32.0, 0, _acceptBtn.width, _acceptBtn.width);
+    _rejectBtn.frame = CGRectMake(self.width - _acceptBtn.width - 32.0 - 16.0, 0, 16, 16);
     _rejectBtn.centerY = _acceptBtn.centerY;
-    _nameLabel.frame = CGRectMake(_avatar.right + 10.0,
+    _nameLabel.frame = CGRectMake(_avatar.right + 8.0,
                                   0,
                                   _rejectBtn.left-_avatar.right-10.0,
                                   _nameLabel.height);
     _nameLabel.centerY = _avatar.centerY;
 }
 
-- (void)refresh:(NTESMicInfo *)micInfo
+- (void)_loadData:(NTESMicInfo *)data indexPath:(NSIndexPath *)indexPath
 {
-    self.micInfo = micInfo;
-    NSString *info = [NSString stringWithFormat:@"%@ 申请麦位%d",
-                      micInfo.userInfo.nickName, (int)micInfo.micOrder];
-    _nameLabel.text = info;
-    [self.avatar yy_setImageWithURL:[NSURL URLWithString:micInfo.userInfo.icon] placeholder:nil];
+    self.micInfo = data;
+    _nameLabel.text = [NSString stringWithFormat:@"%@ 申请麦位%d", data.userInfo.nickName, (int)data.micOrder];
+    [self.avatar yy_setImageWithURL:[NSURL URLWithString:data.userInfo.icon] placeholder:nil];
 }
 
 - (void)onAcceptBtnPressed
@@ -75,12 +81,39 @@
     }
 }
 
++ (NTESConnectListViewCell *)cellWithTableView:(UITableView *)tableView
+                                          datas:(NSArray<NTESMicInfo *> *)datas
+                                      delegate:(id<NTESConnectListViewCellDelegate>)delegate
+                                     indexPath:(NSIndexPath *)indexPath
+{
+    if ([datas count] > indexPath.row) {
+        NTESMicInfo *data = [datas objectAtIndex:indexPath.row];
+        NTESConnectListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NTESConnectListViewCell description]];
+        [cell _loadData:data indexPath:indexPath];
+        cell.delegate = delegate;
+        
+        return cell;
+    }
+    return [NTESConnectListViewCell new];
+}
+
+#pragma mark - lazy load
+
+- (UIView *)bottomLine
+{
+    if (!_bottomLine) {
+        _bottomLine = [[UIView alloc] init];
+        _bottomLine.backgroundColor = [UIColor colorWithWhite:1 alpha:0.2];
+    }
+    return _bottomLine;
+}
+
 - (UIImageView *)avatar
 {
     if (!_avatar) {
-        UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _avatar = avatar;
-        [self.contentView addSubview:_avatar];
+        _avatar = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _avatar.layer.cornerRadius = 16.0;
+        _avatar.layer.masksToBounds = YES;
     }
     return _avatar;
 }
@@ -91,7 +124,7 @@
     {
         UILabel *nameLabel = [[UILabel alloc] init];
         [nameLabel setTextColor:[UIColor whiteColor]];
-        nameLabel.font = [UIFont systemFontOfSize:15];
+        nameLabel.font = [UIFont systemFontOfSize:14];
         nameLabel.text = @"未知";
         nameLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         [nameLabel sizeToFit];

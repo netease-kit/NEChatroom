@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *icon;
 @property (nonatomic,copy) NSString *sid;
 @property (nonatomic,assign) int64_t uid;
+@property (nonatomic,assign) BOOL   isAnchor;
 
 - (instancetype)initWithAccountInfo:(NTESAccountInfo *)accountInfo;
 

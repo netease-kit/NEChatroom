@@ -12,11 +12,12 @@
 #import "NTESMicInfo.h"
 #import "NTESConnectAlertView.h"
 
-#define cellHeight 80
-#define connectAlertViewHeight 57
-#define connectAlertViewWidth 84
+#define cellHeight 48
+#define connectAlertViewHeight 38
+#define connectAlertViewWidth 120
 #define titleLabelHeight  51
 #define tableviewMaxHeight (cellHeight*4 + cellHeight/2)
+#define foldBtnHeight   38
 
 @interface NTESConnectListView ()<UITableViewDelegate, UITableViewDataSource, NTESConnectListViewCellDelegate,NTESConnectAlertViewDelegate>
 {
@@ -30,6 +31,8 @@
 @property (nonatomic ,strong)UIView *coverView;
 @property (nonatomic ,assign)BOOL listViewPushed;
 @property (nonatomic ,assign)BOOL isShown;
+@property (nonatomic, strong)UIButton *foldBtn;
+@property (nonatomic, assign) BOOL chatroomConnectionOk;//进入聊天室是否成功
 @end
 
 @implementation NTESConnectListView
@@ -63,8 +66,9 @@
     self.bottom = 0;
     self.listView.hidden = YES;
     self.titleLable.hidden = YES;
+    self.foldBtn.hidden = YES;
     [UIView animateWithDuration:0.25 animations:^{
-        self.bottom = IPHONE_X ? IPHONE_X_HairHeight + connectAlertViewHeight : connectAlertViewHeight;
+        self.bottom = IPHONE_X ? IPHONE_X_HairHeight + connectAlertViewHeight : (connectAlertViewHeight + 20);
     }];
     self.listViewPushed = NO;
     [self.connectAlertView refreshAlertView:self.listViewPushed];
@@ -75,6 +79,7 @@
 {
     self.listView.hidden = NO;
     self.titleLable.hidden = NO;
+    self.foldBtn.hidden = NO;
     self.bottom = 0;
     [self forceLayoutSubviews];
     [UIView animateWithDuration:0.25 animations:^{
@@ -88,10 +93,11 @@
 - (void)dismissListView
 {
     [UIView animateWithDuration:0.25 animations:^{
-        self.bottom = IPHONE_X ? IPHONE_X_HairHeight + connectAlertViewHeight : connectAlertViewHeight;
+        self.bottom = IPHONE_X ? IPHONE_X_HairHeight + connectAlertViewHeight : (connectAlertViewHeight + 20);
     } completion:^(BOOL finished) {
         self.listView.hidden = YES;
         self.titleLable.hidden = YES;
+        self.foldBtn.hidden = YES;
         self.listViewPushed = NO;
         [self.connectAlertView refreshAlertView:self.listViewPushed];
     }];
@@ -137,6 +143,8 @@
         self.titleLable.frame = CGRectMake(0, self.coverView.bottom ? : 0, self.width, titleLabelHeight);
         
         self.listView.frame = CGRectMake(0, self.titleLable.bottom, self.width, self.listViewHeight);
+        self.foldBtn.frame = CGRectMake(0, self.listView.bottom, self.width, foldBtnHeight);
+        [self.foldBtn cutViewRounded:(UIRectCornerBottomLeft | UIRectCornerBottomRight) cornerRadii:CGSizeMake(8, 8)];
 
         self.connectAlertView.width = connectAlertViewWidth;
         self.connectAlertView.height = connectAlertViewHeight;
@@ -155,15 +163,6 @@
     }
 }
 
-- (void)drawCorner
-{
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.listView.bounds      byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight    cornerRadii:CGSizeMake(20, 20)];
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = self.listView.bounds;
-    maskLayer.path = maskPath.CGPath;
-    self.listView.layer.mask = maskLayer;
-}
-
 - (CGFloat)listViewHeight
 {
     CGFloat tableviewHeight = self.dataArray.count * cellHeight;
@@ -172,7 +171,7 @@
 
 - (CGFloat)barHeight
 {
-   return self.listViewHeight + connectAlertViewHeight + titleLabelHeight + (IPHONE_X ? statusBarHeight : 0);
+   return self.listViewHeight + connectAlertViewHeight + titleLabelHeight + (IPHONE_X ? statusBarHeight : 20);
 }
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>
@@ -193,18 +192,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NTESConnectListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    cell.delegate = self;
-    NTESMicInfo *info = [self.dataArray objectAtIndex:indexPath.row];
-    [cell refresh:info];
-    return cell;
+    return [NTESConnectListViewCell cellWithTableView:tableView datas:self.dataArray delegate:self indexPath:indexPath];
 }
 
 #pragma mark - NTESConnectListViewCellDelegate
 - (void)onAcceptBtnPressedWithMicInfo:(NTESMicInfo *)micInfo
 {
-    if (self.delegate) {
-        [self.delegate onAcceptBtnPressedWithMicInfo:micInfo];
+    if (self.chatroomConnectionOk) {
+        if (self.delegate) {
+            [self.delegate onAcceptBtnPressedWithMicInfo:micInfo];
+        }
+    }else {
+        [NTESProgressHUD ntes_showInfo:@"聊天室连接中"];
     }
 }
 
@@ -215,6 +214,12 @@
     }
 }
 
+- (void)foldConnectList:(UIButton *)sender
+{
+    [self dismissListView];
+    self.connectAlertView.showConnectListBtn.hidden = NO;
+}
+
 #pragma mark - NTESConnectAlertViewDelegate
 -(void)onShowConnectListBtnPressed:(UIButton *)button
 {
@@ -223,6 +228,15 @@
     }
     else{
         [self showListView];
+    }
+}
+
+#pragma mark - NIMChatroomManagerDelegate
+- (void)chatroom:(NSString *)roomId connectionStateChanged:(NIMChatroomConnectionState)state {
+    if (state == NIMChatroomConnectionStateEnterOK && [roomId isEqualToString:self.roomId]) {
+        self.chatroomConnectionOk = YES;
+    }else {
+        self.chatroomConnectionOk = NO;
     }
 }
 
@@ -270,7 +284,7 @@
         UITableView *tableview = [[UITableView alloc]initWithFrame:CGRectZero];
         tableview.delegate = self;
         tableview.dataSource = self;
-        [tableview registerClass:[NTESConnectListViewCell class] forCellReuseIdentifier:@"cell"];
+        [tableview registerClass:[NTESConnectListViewCell class] forCellReuseIdentifier:[NTESConnectListViewCell description]];
         tableview.backgroundColor = UIColorFromRGBA(0x1D1D24, 0.9);
         [tableview setSeparatorColor:UIColorFromRGB(0xE2E2E2)];
         [tableview setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
@@ -289,6 +303,29 @@
         [self.bar addSubview:_connectAlertView];
     }
     return _connectAlertView;
+}
+
+- (UIButton *)foldBtn
+{
+    if (!_foldBtn) {
+        _foldBtn = [[UIButton alloc] init];
+        _foldBtn.backgroundColor = UIColorFromRGBA(0x1D1D24, 0.9);
+        
+        NSMutableAttributedString *res = [[NSMutableAttributedString alloc] initWithString:@"收起 " attributes:@{
+            NSForegroundColorAttributeName: [UIColor whiteColor],
+            NSFontAttributeName: [UIFont systemFontOfSize:14.0]
+        }];
+        NSTextAttachment *attchment = [[NSTextAttachment alloc]init];
+        attchment.bounds = CGRectMake(0, -2, 14, 14);
+        attchment.image = [UIImage imageNamed:@"up_ico_14"];
+        NSAttributedString *icoStr = [NSAttributedString attributedStringWithAttachment:attchment];
+        [res appendAttributedString:icoStr];
+        
+        [_foldBtn setAttributedTitle:[res copy] forState:UIControlStateNormal];
+        [_foldBtn addTarget:self action:@selector(foldConnectList:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bar addSubview:_foldBtn];
+    }
+    return _foldBtn;
 }
 
 @end

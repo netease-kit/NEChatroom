@@ -7,10 +7,9 @@
 //
 
 #import "NTESUnMuteListViewController.h"
-#import "NTESNavBar.h"
 #import "NTESUserInfoCell.h"
 #import "UIView+NTES.h"
-#import "NTESChatroomStateView.h"
+
 
 @interface NTESUnMuteListViewController ()
 
@@ -43,6 +42,7 @@
         }
     }];
     self.showMembers = ret;
+    self.navBar.navType = NTESBanSpeakNavTypeArrow;
 }
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>

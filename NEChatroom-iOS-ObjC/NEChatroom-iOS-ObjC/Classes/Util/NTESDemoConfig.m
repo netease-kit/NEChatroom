@@ -8,8 +8,10 @@
 
 #import "NTESDemoConfig.h"
 
-NSString *const kAppKey = @"<#请填入您的APPKey#>";
-NSString *const kApiHost = @"<#请填入您的服务器域名#>";
+
+NSString *const kAppKey = @"<#appkey#>";
+NSString *const kApiHost = @"<#apiHost#>";
+
 
 @implementation NTESDemoConfig
 

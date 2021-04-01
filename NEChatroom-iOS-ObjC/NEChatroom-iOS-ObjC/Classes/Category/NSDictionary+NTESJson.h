@@ -24,4 +24,10 @@
 - (unsigned long long)jsonUnsignedLongLong:(NSString *)key;
 
 - (double)jsonDouble: (NSString *)key;
+
+
+/**
+ * json字符串转化为字典
+ */
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
 @end

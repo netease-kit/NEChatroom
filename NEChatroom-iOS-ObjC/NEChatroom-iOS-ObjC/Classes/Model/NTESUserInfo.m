@@ -37,4 +37,25 @@
     return [_account longLongValue];
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if (self == object) {
+        return YES;
+    }
+    
+    if (![object isKindOfClass:[NTESUserInfo class]]) {
+        return NO;
+    }
+    
+    return [self _isEqualToUserInfo:(NTESUserInfo *)object];
+}
+
+- (BOOL)_isEqualToUserInfo:(nullable NTESUserInfo *)userInfo
+{
+    if (!userInfo) {
+        return NO;
+    }
+    return [_account isEqualToString:userInfo.account] && [_nickName isEqualToString:userInfo.nickName] && [_icon isEqualToString:userInfo.icon] && [_sid isEqualToString:userInfo.sid];
+}
+
 @end
