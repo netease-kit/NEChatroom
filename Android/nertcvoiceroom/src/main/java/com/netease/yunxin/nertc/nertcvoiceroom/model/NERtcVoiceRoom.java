@@ -13,7 +13,7 @@ public abstract class NERtcVoiceRoom {
     /**
      * 获取实例
      *
-     * @param context     {@link android.content.Context 上下文}
+     * @param context {@link android.content.Context 上下文}
      */
     public static synchronized NERtcVoiceRoom sharedInstance(Context context) {
         return NERtcVoiceRoomImpl.sharedInstance(context);
@@ -29,7 +29,7 @@ public abstract class NERtcVoiceRoom {
     /**
      * 初始化
      *
-     * @param appKey app kay
+     * @param appKey   app kay
      * @param callback {@link com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoomDef.RoomCallback 回调}
      */
     public abstract void init(String appKey, RoomCallback callback);
@@ -45,10 +45,10 @@ public abstract class NERtcVoiceRoom {
      * 初始化房间
      *
      * @param voiceRoomInfo {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo 房间信息}
-     * @param user {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser 资料信息}
+     * @param user          {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser 资料信息}
      */
     public abstract void initRoom(VoiceRoomInfo voiceRoomInfo,
-                                   VoiceRoomUser user);
+                                  VoiceRoomUser user);
 
     /**
      * 进入房间
@@ -102,19 +102,33 @@ public abstract class NERtcVoiceRoom {
     public abstract void setAudioCaptureVolume(int volume);
 
     /**
+     * 获取采集音量
+     *
+     * @return 采集音量
+     */
+    public abstract int getAudioCaptureVolume();
+
+    /**
      * 房间静音
      *
      * @param mute 是否静音
-     * @return  是否静音
+     * @return 是否静音
      */
     public abstract boolean muteRoomAudio(boolean mute);
 
     /**
      * 房间是否静音
      *
-     * @return  是否静音
+     * @return 是否静音
      */
     public abstract boolean isRoomAudioMute();
+
+    /**
+     * 耳返是否可用
+     *
+     * @return 是否耳返可用
+     */
+    public abstract boolean isEarBackEnable();
 
     /**
      * 开启耳返
@@ -136,6 +150,11 @@ public abstract class NERtcVoiceRoom {
      * @return 播放接口
      */
     public abstract AudioPlay getAudioPlay();
+
+    /**
+     * 获取推流方式切换开关
+     */
+    public abstract PushTypeSwitcher getPushTypeSwitcher();
 
     /**
      * 获取观众接口

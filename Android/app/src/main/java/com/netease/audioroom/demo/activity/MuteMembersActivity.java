@@ -1,6 +1,6 @@
 package com.netease.audioroom.demo.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,18 +8,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.netease.audioroom.demo.R;
 import com.netease.audioroom.demo.adapter.MuteMemberListAdapter;
 import com.netease.audioroom.demo.base.BaseActivity;
 import com.netease.audioroom.demo.cache.DemoCache;
+import com.netease.audioroom.demo.dialog.MuteMemberDialog;
 import com.netease.audioroom.demo.http.ChatRoomHttpClient;
 import com.netease.audioroom.demo.util.ToastHelper;
 import com.netease.audioroom.demo.widget.VerticalItemDecoration;
-import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.ErrorCallback;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Anchor;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoom;
@@ -28,6 +24,10 @@ import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 禁言成员页面（可侧滑）
@@ -49,10 +49,12 @@ public class MuteMembersActivity extends BaseActivity {
 
     private Anchor anchor;
 
-    public static void start(Context context, VoiceRoomInfo voiceRoomInfo) {
-        Intent intent = new Intent(context, MuteMembersActivity.class);
-        intent.putExtra(EXTRA_VOICE_ROOM_INFO, voiceRoomInfo);
-        context.startActivity(intent);
+    public static void start(Activity context, VoiceRoomInfo voiceRoomInfo) {
+//        Intent intent = new Intent(context, MuteMembersActivity.class);
+//        intent.putExtra(EXTRA_VOICE_ROOM_INFO, voiceRoomInfo);
+//        context.startActivity(intent);
+
+        new MuteMemberDialog(context,voiceRoomInfo).show();
     }
 
     @Override
@@ -124,7 +126,8 @@ public class MuteMembersActivity extends BaseActivity {
                                     for (String account : accountList) {
                                         accountList.add(0, account);
                                     }
-                                    adapter = new MuteMemberListAdapter(MuteMembersActivity.this, muteList);
+                                    adapter = new MuteMemberListAdapter(MuteMembersActivity.this);
+                                    adapter.updateDataSource(muteList);
                                     recyclerView.setAdapter(adapter);
                                     title.setText("禁言成员 (" + muteList.size() + ")");
                                     adapter.setRemoveMute((p) -> {
@@ -158,7 +161,7 @@ public class MuteMembersActivity extends BaseActivity {
         anchor.getRoomQuery().fetchRoomMute(new RequestCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean isMute) {
-                loadService.showSuccess();
+                loadSuccess();
                 if (isMute) {
                     isAllMute = true;
                     muteAllMember.setText("取消全部禁言");
@@ -170,13 +173,13 @@ public class MuteMembersActivity extends BaseActivity {
 
             @Override
             public void onFailed(int code) {
-                loadService.showSuccess();
+                loadSuccess();
                 ToastHelper.showToast("禁言失败code" + code);
             }
 
             @Override
             public void onException(Throwable exception) {
-                loadService.showSuccess();
+                loadSuccess();
                 ToastHelper.showToast("禁言失败exception" + exception.getMessage());
             }
         });
@@ -186,14 +189,14 @@ public class MuteMembersActivity extends BaseActivity {
         anchor.getRoomQuery().fetchMembersByMuted(true, new RequestCallback<List<VoiceRoomUser>>() {
             @Override
             public void onSuccess(List<VoiceRoomUser> members) {
-                loadService.showSuccess();
-
+                loadSuccess();
                 muteList.clear();
                 muteList.addAll(members);
 
                 if (muteList.size() != 0) {
                     empty_view.setVisibility(View.GONE);
-                    adapter = new MuteMemberListAdapter(MuteMembersActivity.this, muteList);
+                    adapter = new MuteMemberListAdapter(MuteMembersActivity.this);
+                    adapter.updateDataSource(muteList);
                     recyclerView.setAdapter(adapter);
                     title.setText("禁言成员 (" + muteList.size() + ")");
                     adapter.setRemoveMute((p) -> {
@@ -212,12 +215,12 @@ public class MuteMembersActivity extends BaseActivity {
 
             @Override
             public void onFailed(int i) {
-                loadService.showCallback(ErrorCallback.class);
+                showError();
             }
 
             @Override
             public void onException(Throwable throwable) {
-                loadService.showCallback(ErrorCallback.class);
+                showError();
             }
         });
     }
@@ -253,7 +256,7 @@ public class MuteMembersActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Void param) {
                         ToastHelper.showToast(member.getNick() + "已被解除禁言");
-                        muteList.remove(p);
+                            muteList.remove(p);
                         if (muteList.size() == 0) {
                             adapter.notifyDataSetChanged();
                             empty_view.setVisibility(View.VISIBLE);

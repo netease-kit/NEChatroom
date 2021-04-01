@@ -1,19 +1,24 @@
 package com.netease.audioroom.demo.http;
 
-import android.util.Log;
-
-import com.netease.audioroom.demo.BuildConfig;
-import com.netease.audioroom.demo.cache.DemoCache;
+import com.netease.audioroom.demo.http.model.AccountInfoResp;
+import com.netease.audioroom.demo.http.model.MusicListResp;
+import com.netease.audioroom.demo.http.model.RoomInfoResp;
 import com.netease.audioroom.demo.model.AccountInfo;
+import com.netease.yunxin.android.lib.network.common.BaseResponse;
+import com.netease.yunxin.android.lib.network.common.NetworkClient;
+import com.netease.yunxin.android.lib.network.common.transform.CommonScheduleThread;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.Music;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.observers.ResourceSingleObserver;
 
 /**
  * 网易云信Demo聊天室Http客户端。第三方开发者请连接自己的应用服务器。
@@ -22,115 +27,50 @@ import java.util.Map;
  */
 public class ChatRoomHttpClient {
 
-    private static final String TAG = "AudioRoom";
-
-    // code
-    private static final int RESULT_CODE_SUCCESS = 200;
-
-    // api
-    private static final String API_CHAT_ROOM_LIST = "/room/list";
-    private static final String API_GET_USER = "/user/get";
-    private static final String API_CREATE_ROOM = "/room/create";
-    private static final String API_CLOSE_ROOM = "/room/dissolve";
-    private static final String API_ALL_MUTE = "/room/mute";
-
-
-    private static final String HEADER_KEY_CONTENT_TYPE = "Content-Type";
-
-    // result
-    private static final String RESULT_KEY_RES = "code";
-    private static final String RESULT_KEY_MSG = "msg";
-    private static final String RESULT_KEY_DATA = "data";
-
-    // room list result
-    private static final String RESULT_KEY_LIST = "list";
-    private static final String RESULT_KEY_ROOM_ID = "roomId";
-    private static final String RESULT_KEY_NAME = "name";
-    private static final String RESULT_KEY_ONLINE_USER_COUNT = "onlineUserCount";
-    private static final String RESULT_KEY_BACKGROUND_URL = "thumbnail";
-    private static final String RESULT_KEY_CREATOR = "creator";
-
-    //user account result
-    private static final String RESULT_KEY_ACCOUNT = "accid";
-    private static final String RESULT_KEY_NICK = "nickname";
-    private static final String RESULT_KEY_TOKEN = "imToken";
-    private static final String RESULT_KEY_AVATAR = "icon";
-    private static final String RESULT_KEY_AVAILABLEAT = "availableAt";
-
-    // request
-    private static final String REQUEST_LIMIT = "limit";
-    private static final String REQUEST_OFFSET = "offset";
-    private static final String REQUEST_SID = "sid";
-    private static final String REQUEST_ROOM_NAME = "roomName"; // 直播间名字
-    private static final String REQUEST_IS_MUTE = "mute"; // 直播间名字
-
+    private static class InstanceHolder {
+        private static final ChatRoomHttpClient INSTANCE = new ChatRoomHttpClient();
+    }
 
     public static ChatRoomHttpClient getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
     private ChatRoomHttpClient() {
-        NimHttpClient.getInstance().init(DemoCache.getContext());
     }
 
     /**
      * 向网易云信Demo应用服务器请求聊天室列表
      */
-    public void fetchChatRoomList(int offset, int limit, final ChatRoomHttpCallback<ArrayList<VoiceRoomInfo>> callback) {
-        String url = BuildConfig.SERVER_BASE_URL + API_CHAT_ROOM_LIST;
-        String body = null;
-        if (offset >= 0 && limit > 0) {
-            body = REQUEST_OFFSET + "=" + offset + "&" +
-                    REQUEST_LIMIT + "=" + limit;
-        }
-        Map<String, String> headers = new HashMap<>(1);
-        headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
-
-        NimHttpClient.getInstance().execute(url, headers, body, (response, code, errorMsg) -> {
-            if (callback == null) {
-                return;
-            }
-            if (code != 0) {
-                Log.e(TAG, "fetchChatRoomList failed : code = " + code + ", errorMsg = " + errorMsg);
-                callback.onFailed(code, errorMsg);
-                return;
-            }
-            Log.i(TAG, "fetchChatRoomList  : response = " + response);
-            try {
-                JSONObject res = new JSONObject(response);
-                int resCode = res.optInt(RESULT_KEY_RES);
-                errorMsg = res.optString(RESULT_KEY_MSG, null);
-                if (resCode == RESULT_CODE_SUCCESS) {
-                    JSONObject data = res.getJSONObject(RESULT_KEY_DATA);
-                    ArrayList<VoiceRoomInfo> demoRoomInfoList = new ArrayList<>();
-                    if (data != null) {
-                        JSONArray jsonArray = data.getJSONArray(RESULT_KEY_LIST);
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            // room 3
-                            JSONObject object = jsonArray.getJSONObject(i);
-
-                            VoiceRoomInfo roomInfo = new VoiceRoomInfo();
-
-                            roomInfo.setRoomId(object.optString(RESULT_KEY_ROOM_ID));
-                            roomInfo.setName(object.optString(RESULT_KEY_NAME));
-                            roomInfo.setOnlineUserCount(object.optInt(RESULT_KEY_ONLINE_USER_COUNT));
-                            roomInfo.setThumbnail(object.optString(RESULT_KEY_BACKGROUND_URL));
-                            roomInfo.setCreatorAccount(object.optString(RESULT_KEY_CREATOR));
-                            demoRoomInfoList.add(roomInfo);
-                        }
-                    }
-                    callback.onSuccess(demoRoomInfoList);
+    public void fetchChatRoomList(int offset, int limit, int roomType, final ChatRoomHttpCallback<ArrayList<VoiceRoomInfo>> callback) {
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put(ChatRoomNetConstants.PARAM_OFFSET, offset);
+        map.put(ChatRoomNetConstants.PARAM_LIMIT, limit);
+        map.put(ChatRoomNetConstants.PARAM_ROOM_TYPE, roomType);
+        api.fetchRoomList(map).compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<RoomInfoResp>>() {
+            @Override
+            public void onSuccess(@NonNull BaseResponse<RoomInfoResp> response) {
+                if (callback == null) {
                     return;
                 }
+                if (response.isSuccessful() && response.data != null) {
+                    callback.onSuccess(response.data.toVoiceRoomInfoList());
+                } else {
+                    callback.onFailed(response.code, response.msg);
+                }
+            }
 
-                callback.onFailed(resCode, errorMsg);
-
-            } catch (JSONException e) {
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (callback == null) {
+                    return;
+                }
                 e.printStackTrace();
-                callback.onFailed(-1, e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.onFailed(-2, e.getMessage());
+                if (e instanceof JSONException) {
+                    callback.onFailed(-1, e.getMessage());
+                } else {
+                    callback.onFailed(-2, e.getMessage());
+                }
             }
         });
     }
@@ -139,100 +79,61 @@ public class ChatRoomHttpClient {
      * 获取帐号
      */
     public void fetchAccount(String accountId, final ChatRoomHttpCallback<AccountInfo> fetchAccountCallBack) {
-        String url = BuildConfig.SERVER_BASE_URL + API_GET_USER;
-        String body = null;
-
-        if (accountId != null) {
-            body = REQUEST_SID + "=" + accountId;
-        }
-        Map<String, String> headers = new HashMap<>(1);
-        headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
-        NimHttpClient.getInstance().execute(url, headers, body, (response, code, errorMsg) -> {
-            if (fetchAccountCallBack == null) {
-                return;
-            }
-
-            if (code != 0) {
-                Log.e(TAG, "fetchAccount failed : code = " + code + ", errorMsg = " + errorMsg);
-                fetchAccountCallBack.onFailed(code, errorMsg);
-                return;
-            }
-            Log.i(TAG, "fetchAccount  : response = " + response);
-            try {
-                JSONObject res = new JSONObject(response);
-                int resCode = res.optInt(RESULT_KEY_RES);
-                errorMsg = res.optString(RESULT_KEY_MSG, null);
-                if (resCode == RESULT_CODE_SUCCESS) {
-                    JSONObject data = res.getJSONObject(RESULT_KEY_DATA);
-                    String account = data.optString(RESULT_KEY_ACCOUNT);
-                    String nick = data.optString(RESULT_KEY_NICK);
-                    String token = data.optString(RESULT_KEY_TOKEN);
-                    String avatar = data.optString(RESULT_KEY_AVATAR);
-                    long availableAt = data.optLong(RESULT_KEY_AVAILABLEAT);
-                    AccountInfo accountInfo = new AccountInfo(account, nick, token, avatar, availableAt);
-                    fetchAccountCallBack.onSuccess(accountInfo);
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        Map<String, Object> map = new HashMap<>(1);
+        map.put(ChatRoomNetConstants.PARAM_SID, accountId);
+        api.fetchAccount(map).compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<AccountInfoResp>>() {
+            @Override
+            public void onSuccess(@NonNull BaseResponse<AccountInfoResp> response) {
+                if (fetchAccountCallBack == null) {
                     return;
                 }
-                fetchAccountCallBack.onFailed(resCode, errorMsg);
-                return;
-            } catch (JSONException e) {
-                e.printStackTrace();
+                if (response.isSuccessful() && response.data != null) {
+                    fetchAccountCallBack.onSuccess(response.data.toAccountInfo());
+                } else {
+                    fetchAccountCallBack.onFailed(response.code, response.msg);
+                }
             }
-            fetchAccountCallBack.onFailed(-1, errorMsg);
 
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (fetchAccountCallBack != null) {
+                    fetchAccountCallBack.onFailed(-1, e.getMessage());
+                }
+            }
         });
-
     }
-
 
     /**
      * 主播创建直播间
      */
-    public void createRoom(String account, String roomName, final ChatRoomHttpCallback<VoiceRoomInfo> callback) {
-
-        String url = BuildConfig.SERVER_BASE_URL + API_CREATE_ROOM;
-
-        Map<String, String> headers = new HashMap<>(2);
-        headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
-
-        String bodyString = REQUEST_SID + "=" + account + "&" +
-                REQUEST_ROOM_NAME + "=" + roomName;
-
-        NimHttpClient.getInstance().execute(url, headers, bodyString, (response, code, errorMsg) -> {
-
-            if (callback == null) {
-                return;
-            }
-            if (code != 0) {
-                Log.e(TAG, "createRoom failed : code = " + code + ", errorMsg = " + errorMsg);
-                callback.onFailed(code, errorMsg);
-                return;
-            }
-            Log.i(TAG, "createRoom  : response = " + response);
-            try {
-                JSONObject res = new JSONObject(response);
-                int resCode = res.optInt(RESULT_KEY_RES);
-                errorMsg = res.optString(RESULT_KEY_MSG, null);
-
-                if (resCode == RESULT_CODE_SUCCESS) {
-                    JSONObject msg = res.getJSONObject(RESULT_KEY_DATA);
-                    VoiceRoomInfo param = null;
-                    if (msg != null) {
-                        param = new VoiceRoomInfo();
-                        param.setRoomId(msg.optString(RESULT_KEY_ROOM_ID));
-                        param.setName(msg.optString(RESULT_KEY_NAME));
-                        param.setCreatorAccount(msg.optString(RESULT_KEY_CREATOR));
-
-                    }
-                    callback.onSuccess(param);
+    public void createRoom(String account, String roomName, int pushType, int roomType, final ChatRoomHttpCallback<VoiceRoomInfo> callback) {
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        Map<String, Object> map = new HashMap<>(3);
+        if (roomType != 0) {
+            map.put(ChatRoomNetConstants.PARAM_ROOM_TYPE, roomType);
+        }
+        map.put(ChatRoomNetConstants.PARAM_SID, account);
+        map.put(ChatRoomNetConstants.PARAM_ROOM_NAME, roomName);
+        map.put(ChatRoomNetConstants.PARAM_PUSH_TYPE, pushType);
+        api.createRoom(map).compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<RoomInfoResp.RoomInfoItem>>() {
+            @Override
+            public void onSuccess(@NonNull BaseResponse<RoomInfoResp.RoomInfoItem> response) {
+                if (callback == null) {
                     return;
                 }
+                if (response.isSuccessful() && response.data != null) {
+                    callback.onSuccess(response.data.toVoiceRoomInfo());
+                } else {
+                    callback.onFailed(response.code, response.msg);
+                }
+            }
 
-
-                Log.e(TAG, "createRoom failed : code = " + code);
-                callback.onFailed(resCode, errorMsg);
-
-            } catch (JSONException e) {
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (callback == null) {
+                    return;
+                }
                 e.printStackTrace();
                 callback.onFailed(-1, e.getMessage());
             }
@@ -241,105 +142,127 @@ public class ChatRoomHttpClient {
 
     /**
      * 解散房间
-     *
-     * @param account
-     * @param roomID
-     * @param callback
      */
-    public void closeRoom(String account, String roomID, final ChatRoomHttpCallback callback) {
-        String url = BuildConfig.SERVER_BASE_URL + API_CLOSE_ROOM;
-        Map<String, String> headers = new HashMap<>(2);
-        headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
-
-        String bodyString = REQUEST_SID + "=" + account + "&" +
-                RESULT_KEY_ROOM_ID + "=" + roomID;
-        NimHttpClient.getInstance().execute(url, headers, bodyString, (response, code, errorMsg) -> {
-
-            if (callback == null) {
-                return;
-            }
-            if (code != 0) {
-                Log.e(TAG, "closeRoom failed : code = " + code + ", errorMsg = " + errorMsg);
-                callback.onFailed(code, errorMsg);
-                return;
-            }
-            Log.i(TAG, "closeRoom  : response = " + response);
-            try {
-                JSONObject res = new JSONObject(response);
-                int resCode = res.optInt(RESULT_KEY_RES);
-                errorMsg = res.optString(RESULT_KEY_MSG, null);
-
-                if (resCode == RESULT_CODE_SUCCESS) {
-                    callback.onSuccess(null);
+    public void closeRoom(String account, String roomID, final ChatRoomHttpCallback<?> callback) {
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put(ChatRoomNetConstants.PARAM_SID, account);
+        map.put(ChatRoomNetConstants.PARAM_ROOM_ID, roomID);
+        api.closeRoom(map).compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<Void>>() {
+            @Override
+            public void onSuccess(@NonNull BaseResponse<Void> response) {
+                if (callback == null) {
                     return;
                 }
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null);
+                } else {
+                    callback.onFailed(response.code, response.msg);
+                }
+            }
 
-                Log.e(TAG, "closeRoom failed : code = " + code);
-                callback.onFailed(resCode, errorMsg);
-
-            } catch (JSONException e) {
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (callback == null) {
+                    return;
+                }
                 e.printStackTrace();
                 callback.onFailed(-1, e.getMessage());
             }
-
         });
     }
-
 
     /**
      * 禁言所有成员节目
-     *
-     * @param account
-     * @param roomID
-     * @param callback
      */
-    public void muteAll(String account, String roomID, boolean mute, boolean needNotify, boolean notifyExt, final ChatRoomHttpCallback callback) {
+    public void muteAll(String account, String roomID, boolean mute, boolean needNotify, boolean notifyExt, final ChatRoomHttpCallback<?> callback) {
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        Map<String, Object> map = new HashMap<>(5);
+        map.put(ChatRoomNetConstants.PARAM_SID, account);
+        map.put(ChatRoomNetConstants.PARAM_ROOM_ID, roomID);
+        map.put(ChatRoomNetConstants.PARAM_IS_MUTE, mute);
+        map.put("needNotify", needNotify);
+        map.put("notifyExt", notifyExt);
 
-        String url = BuildConfig.SERVER_BASE_URL + API_ALL_MUTE;
-        Map<String, String> headers = new HashMap<>(5);
-        headers.put(HEADER_KEY_CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
-        String bodyString = REQUEST_SID + "=" + account + "&" +
-                RESULT_KEY_ROOM_ID + "=" + roomID + "&" +
-                REQUEST_IS_MUTE + "=" + mute + "&" +
-                "needNotify" + "=" + needNotify + "&" +
-                "notifyExt" + "=" + notifyExt;
-        NimHttpClient.getInstance().execute(url, headers, bodyString, (response, code, errorMsg) -> {
-
-            if (callback == null) {
-                return;
-            }
-            if (code != 0) {
-                Log.e(TAG, "closeRoom failed : code = " + code + ", errorMsg = " + errorMsg);
-                callback.onFailed(code, errorMsg);
-                return;
-            }
-            Log.i(TAG, "closeRoom  : response = " + response);
-            try {
-                JSONObject res = new JSONObject(response);
-                int resCode = res.optInt(RESULT_KEY_RES);
-                errorMsg = res.optString(RESULT_KEY_MSG, null);
-
-                if (resCode == RESULT_CODE_SUCCESS) {
-                    callback.onSuccess(null);
+        api.muteAll(map).compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<Void>>() {
+            @Override
+            public void onSuccess(@NonNull BaseResponse<Void> response) {
+                if (callback == null) {
                     return;
                 }
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null);
+                } else {
+                    callback.onFailed(response.code, response.msg);
+                }
+            }
 
-                Log.e(TAG, "closeRoom failed : code = " + code);
-                callback.onFailed(resCode, errorMsg);
-
-            } catch (JSONException e) {
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (callback == null) {
+                    return;
+                }
                 e.printStackTrace();
                 callback.onFailed(-1, e.getMessage());
             }
-
         });
     }
 
+    public void getMusicList(final ChatRoomHttpCallback<List<Music>> callback, int limit, int offset) {
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        Map<String, Object> params = new HashMap<>(2);
+        params.put("limit", limit);
+        params.put("offset", offset);
+        api.getMusicList(params).compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<MusicListResp>>() {
+            @Override
+            public void onSuccess(@NonNull BaseResponse<MusicListResp> response) {
+                if (callback == null) {
+                    return;
+                }
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.data.list);
+                } else {
+                    callback.onFailed(response.code, response.msg);
+                }
+            }
 
-    private static class InstanceHolder {
-        private static final ChatRoomHttpClient INSTANCE = new ChatRoomHttpClient();
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (callback == null) {
+                    return;
+                }
+                e.printStackTrace();
+                callback.onFailed(-1, e.getMessage());
+            }
+        });
     }
 
+    public void getRandomTopic(final ChatRoomHttpCallback<String> callback){
+        ChatRoomApi api = NetworkClient.getInstance().getService(ChatRoomApi.class);
+        api.getRandomTopic().compose(new CommonScheduleThread<>()).subscribe(new ResourceSingleObserver<BaseResponse<String>>() {
+
+            @Override
+            public void onSuccess(@NonNull BaseResponse<String> response) {
+                if (callback == null) {
+                    return;
+                }
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.data);
+                } else {
+                    callback.onFailed(response.code, response.msg);
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (callback == null) {
+                    return;
+                }
+                e.printStackTrace();
+                callback.onFailed(-1, e.getMessage());
+            }
+        });
+    }
 
     public interface ChatRoomHttpCallback<T> {
 
@@ -347,6 +270,4 @@ public class ChatRoomHttpClient {
 
         void onFailed(int code, String errorMsg);
     }
-
-
 }

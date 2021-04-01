@@ -14,6 +14,12 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -25,9 +31,13 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.netease.yunxin:report:2.0.3'
-
-    implementation rootProject.ext.nertcSdk
+    implementation 'com.netease.yunxin.kit:alog:0.0.3-SNAPSHOT'
+//    implementation rootProject.ext.nertcSdk
     implementation rootProject.ext.imSdk
     implementation rootProject.ext.chatroomSdk
+
+    implementation rootProject.ext.androidUtil
+
+    implementation rootProject.ext.playerSdk
+    implementation rootProject.ext.playerGslbSdk
 }

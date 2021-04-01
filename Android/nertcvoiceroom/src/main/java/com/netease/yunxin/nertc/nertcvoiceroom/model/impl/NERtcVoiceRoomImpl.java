@@ -1,19 +1,26 @@
 package com.netease.yunxin.nertc.nertcvoiceroom.model.impl;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.netease.yunxin.kit.alog.ALog;
 import com.netease.lava.nertc.sdk.NERtcConstants;
 import com.netease.lava.nertc.sdk.NERtcEx;
 import com.netease.lava.nertc.sdk.NERtcOption;
 import com.netease.lava.nertc.sdk.NERtcParameters;
 import com.netease.lava.nertc.sdk.stats.NERtcAudioVolumeInfo;
+import com.netease.lava.nertc.sdk.video.NERtcRemoteVideoStreamType;
 import com.netease.nimlib.sdk.InvocationFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
 import com.netease.nimlib.sdk.chatroom.ChatRoomService;
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
@@ -42,6 +49,8 @@ import com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoom;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoomDef.AccountMapper;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoomDef.RoomCallback;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.PushTypeSwitcher;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.StreamTaskControl;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomMessage;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
@@ -49,6 +58,12 @@ import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat.Status;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.custom.CloseRoomAttach;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.custom.CustomAttachParser;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.custom.CustomAttachmentType;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.custom.MusicControl;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.custom.StreamRestarted;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.MusicSing;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.SEI;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.impl.MusicSingImpl;
 import com.netease.yunxin.nertc.nertcvoiceroom.util.SuccessCallback;
 
 import java.util.ArrayList;
@@ -59,6 +74,8 @@ import java.util.Map;
 import static com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoomDef.RoomAudioQuality;
 
 public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
+    private static final String LOG_TAG = NERtcVoiceRoomImpl.class.getSimpleName();
+
     private static NERtcVoiceRoomImpl sInstance;
 
     public static synchronized NERtcVoiceRoom sharedInstance(Context context) {
@@ -100,6 +117,11 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private VoiceRoomUser user;
 
     /**
+     * 点歌服务
+     */
+    private MusicSing musicSing;
+
+    /**
      * 主播模式
      */
     private boolean anchorMode;
@@ -110,11 +132,23 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private boolean muteRoomAudio;
 
     /**
+     * 耳返状态
+     */
+    private boolean enableEarBack;
+
+    /**
+     * 采集音量，默认100
+     */
+    private int audioCaptureVolume = 100;
+
+    /**
      * 房间状态回调
      */
     private RoomCallback roomCallback;
 
     private final List<VoiceRoomSeat> seats = new ArrayList<>();
+
+    private boolean initial = false;
 
     /**
      * 音视频引擎回调
@@ -122,12 +156,50 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private final NERtcCallbackExImpl callback = new NERtcCallbackExImpl() {
         @Override
         public void onJoinChannel(int result, long channelId, long elapsed) {
-            onEnterRoom(result == NERtcConstants.ErrorCode.OK);
+            if (anchorMode && voiceRoomInfo.isSupportCDN()) {
+                getStreamTaskControl().addStreamTask(accountToVoiceUid(user.account), voiceRoomInfo.getStreamConfig().pushUrl);
+            }
+            ALog.e("NERtcVoiceRoomImpl", "join channel result code is " + result);
+            onEnterRoom(result == NERtcConstants.ErrorCode.OK || result == NERtcConstants.ErrorCode.ENGINE_ERROR_ROOM_ALREADY_JOINED);
+            //设置之前保存的采集音量
+            engine.adjustRecordingSignalVolume(audioCaptureVolume);
+        }
+
+        /**
+         * CDN 模式下添加对应用户的混流设置
+         * @param uid 用户id
+         */
+        @Override
+        public void onUserJoined(long uid) {
+            if (!voiceRoomInfo.isSupportCDN()) {
+                return;
+            }
+            if (anchorMode) {
+                getStreamTaskControl().addMixStreamUser(uid);
+            }
+        }
+
+        /**
+         * CDN 模式下 移除对应用户的混流设置
+         * @param uid 用户id
+         * @param reason 该用户离开原因{@link com.netease.lava.nertc.sdk.NERtcConstants.ErrorCode}
+         */
+        @Override
+        public void onUserLeave(long uid, int reason) {
+            if (!voiceRoomInfo.isSupportCDN()) {
+                return;
+            }
+            if (anchorMode) {
+                getStreamTaskControl().removeMixStreamUser(uid);
+            }
         }
 
         @Override
         public void onLeaveChannel(int result) {
-            onLeaveRoom();
+            ALog.e("NERtcVoiceRoomImpl", "leave channel result code is " + result);
+            if (anchorMode || !initial || !voiceRoomInfo.isSupportCDN()) {
+                onLeaveRoom();
+            }
         }
 
         /**
@@ -142,6 +214,19 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             }
         }
 
+        @Override
+        public void onAudioMixingTimestampUpdate(long timestampMs) {
+            musicSing.receiveSEIMsg(timestampMs);
+            String seiString = GsonUtils.toJson(new SEI(timestampMs));
+            engine.sendSEIMsg(seiString);
+        }
+
+        @Override
+        public void onRecvSEIMsg(long l, String s) {
+            SEI sei = GsonUtils.fromJson(s, SEI.class);
+            musicSing.receiveSEIMsg(sei.audio_mixing_pos);
+        }
+
         /**
          * 通知音效播放完成
          */
@@ -150,6 +235,12 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             if (audioPlay != null) {
                 audioPlay.onAudioEffectFinished(effectId);
             }
+        }
+
+        @Override
+        public void onUserVideoStart(long uid, int maxProfile) {
+            super.onUserVideoStart(uid, maxProfile);
+            engine.subscribeRemoteVideoStream(uid, NERtcRemoteVideoStreamType.kNERtcRemoteVideoStreamTypeHigh, true);
         }
 
         /**
@@ -163,6 +254,13 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             }
             updateVolumes(volumes);
         }
+
+        @Override
+        public void onDisconnect(int reason) {
+            ALog.e("NERtcVoiceRoomImpl", "disconnected from RTC room.  reason is " + reason);
+            leaveRoom();
+            onLeaveRoom();
+        }
     };
 
     private final AnchorImpl anchor = new AnchorImpl(this);
@@ -170,6 +268,10 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private final AudienceImpl audience = new AudienceImpl(this);
 
     private AudioPlayImpl audioPlay;
+
+    private StreamTaskControl streamTaskControl;
+
+    private PushTypeSwitcher switcher;
 
     private final Observer<List<ChatRoomMessage>> messageObserver = new Observer<List<ChatRoomMessage>>() {
         @Override
@@ -189,17 +291,33 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                 MsgAttachment attachment = message.getAttachment();
                 if (attachment instanceof ChatRoomNotificationAttachment) {
                     onNotification((ChatRoomNotificationAttachment) attachment);
-                    return;
+                    continue;
                 }
                 if (message.getMsgType() == MsgTypeEnum.text) {
                     onTextMessage(message);
-                    return;
+                    continue;
                 }
                 if (attachment instanceof CloseRoomAttach) {
                     if (roomCallback != null) {
                         roomCallback.onRoomDismiss();
                     }
                     return;
+                }
+
+                if (attachment instanceof StreamRestarted) {
+                    audience.restartAudioOrNot();
+                    return;
+                }
+
+                if (attachment instanceof MusicControl) {
+                    MusicControl musicControl = (MusicControl) attachment;
+                    int type = musicControl.getType();
+                    if (roomCallback != null) {
+                        VoiceRoomMessage msg = VoiceRoomMessage.createEventMessage(
+                                getMessageTextBuilder().musicEvent(musicControl.operator, type == CustomAttachmentType.MUSIC_PAUSE));
+                        roomCallback.onVoiceRoomMessage(msg);
+                        roomCallback.onMusicStateChange(type);
+                    }
                 }
             }
         }
@@ -222,7 +340,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         }
     };
 
-    private Observer<CustomNotification> customNotification = new Observer<CustomNotification>() {
+    private final Observer<CustomNotification> customNotification = new Observer<CustomNotification>() {
         @Override
         public void onEvent(CustomNotification notification) {
             int command = SeatCommands.commandFrom(notification);
@@ -241,8 +359,24 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             if (!roomId.equals(change.roomId)) {
                 return;
             }
+            if (change.status == StatusCode.LOGINED && musicSing != null) {
+                musicSing.update();
+            }
             if (change.status.wontAutoLogin()) {
                 //
+            }
+        }
+    };
+
+    private static final int MSG_MEMBER_EXIT = 500;
+
+    private static final Handler delayHandler = new Handler(Looper.getMainLooper()) {
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            removeMessages(msg.what);
+            if (msg.obj instanceof Runnable) {
+                ((Runnable) msg.obj).run();
             }
         }
     };
@@ -257,7 +391,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     }
 
     private void destroy() {
-
+        if (engine != null) {
+            engine.release();
+        }
     }
 
     /**
@@ -268,45 +404,43 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         user = null;
         voiceRoomInfo = null;
         anchorMode = false;
+        audioCaptureVolume = 100;
     }
 
     @Override
     public void init(String appKey, RoomCallback callback) {
         roomCallback = callback;
         NERtcOption option = new NERtcOption();
+        musicSing = MusicSing.shareInstance();
         option.logLevel = NERtcConstants.LogLevel.DEBUG;
         try {
-            engine.init(context,
-                    appKey,
-                    this.callback, option);
+            engine.init(context, appKey, this.callback, option);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        initial = true;
     }
 
     @Override
     public void setAudioQuality(int quality) {
-        int profile = NERtcConstants.AudioProfile.STANDARD;
-        int scenario = NERtcConstants.AudioScenario.SPEECH;
+        int scenario = NERtcConstants.AudioScenario.CHATROOM;
+        int profile = NERtcConstants.AudioProfile.HIGH_QUALITY;
         if (quality == RoomAudioQuality.MUSIC_QUALITY) {
-            profile = NERtcConstants.AudioProfile.HIGH_QUALITY;
             scenario = NERtcConstants.AudioScenario.MUSIC;
-        } else if (quality == RoomAudioQuality.HIGH_QUALITY) {
-            profile = NERtcConstants.AudioProfile.HIGH_QUALITY;
-            scenario = NERtcConstants.AudioScenario.SPEECH;
+            profile = NERtcConstants.AudioProfile.HIGH_QUALITY_STEREO;
         }
         engine.setAudioProfile(profile, scenario);
     }
 
     @Override
     public void initRoom(VoiceRoomInfo voiceRoomInfo, VoiceRoomUser user) {
-        if (this.voiceRoomInfo == null) {
-            this.voiceRoomInfo = voiceRoomInfo;
-            this.user = user;
-            this.roomQuery = new RoomQuery(voiceRoomInfo, chatRoomService);
+        this.voiceRoomInfo = voiceRoomInfo;
+        this.user = user;
+        this.roomQuery = new RoomQuery(voiceRoomInfo, chatRoomService);
 
-            anchor.initRoom(voiceRoomInfo);
-        }
+        anchor.initRoom(voiceRoomInfo);
+
+
     }
 
     @Override
@@ -315,15 +449,12 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         EnterChatRoomData roomData = new EnterChatRoomData(voiceRoomInfo.getRoomId());
         roomData.setNick(user.nick);
         roomData.setAvatar(user.avatar);
-        InvocationFuture<EnterChatRoomResultData> future;
-        if (anchorMode) {
-            future = chatRoomService.enterChatRoom(roomData);
-        } else {
-            future = chatRoomService.enterChatRoomEx(roomData, 1);
-        }
+        InvocationFuture<EnterChatRoomResultData> future = anchorMode ? chatRoomService.enterChatRoom(
+                roomData) : chatRoomService.enterChatRoomEx(roomData, 1);
         future.setCallback(new RequestCallback<EnterChatRoomResultData>() {
             @Override
             public void onSuccess(EnterChatRoomResultData param) {
+                ALog.e("====>", "enter room success.");
                 if (roomCallback != null) {
                     roomCallback.onOnlineUserCount(param.getRoomInfo().getOnlineUserCount());
                 }
@@ -341,24 +472,35 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                     }
                 }
 
-                joinChannel();
+                if (anchorMode || !voiceRoomInfo.isSupportCDN()) {
+                    joinChannel();
+                } else {
+                    audience.getAudiencePlay().play(voiceRoomInfo.getStreamConfig().rtmpPullUrl);
+                    onEnterRoom(true);
+                }
+
                 initSeats();
                 initAnchorInfo();
+                initKtv();
             }
 
             @Override
             public void onFailed(int code) {
+                ALog.e("====>", "enter room fail.");
                 if (roomCallback != null) {
                     roomCallback.onEnterRoom(false);
                 }
+                destroy();// must destroy engine
                 restoreInstanceInfo();
             }
 
             @Override
             public void onException(Throwable exception) {
+                ALog.e("====>", "enter room exception.");
                 if (roomCallback != null) {
                     roomCallback.onEnterRoom(false);
                 }
+                destroy();// must destroy engine
                 restoreInstanceInfo();
             }
         });
@@ -366,18 +508,24 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     @Override
     public void leaveRoom() {
+        initial = false;
+        delayHandler.removeMessages(MSG_MEMBER_EXIT);
         listen(false);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if (voiceRoomInfo != null) {
+                    ALog.e("====>", "leave room.");
                     chatRoomService.exitChatRoom(voiceRoomInfo.getRoomId());
                 }
-                engine.leaveChannel();
+                if (anchorMode && voiceRoomInfo.isSupportCDN()) {
+                    getStreamTaskControl().removeStreamTask();
+                }
+                int resultCode = engine.leaveChannel();
+                ALog.e("====>", "level channel code is " + resultCode);
             }
         };
-        if (anchorMode
-                || !audience.leaveRoom(runnable)) {
+        if (anchorMode || !audience.leaveRoom(runnable)) {
             runnable.run();
         }
     }
@@ -422,8 +570,15 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     @Override
     public void setAudioCaptureVolume(int volume) {
+        audioCaptureVolume = volume;
         engine.adjustRecordingSignalVolume(volume);
     }
+
+    @Override
+    public int getAudioCaptureVolume() {
+        return audioCaptureVolume;
+    }
+
 
     @Override
     public boolean muteRoomAudio(boolean mute) {
@@ -431,6 +586,8 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         engine.setPlayoutDeviceMute(mute);
         if (anchorMode) {
             anchor.muteRoomAudio(mute);
+        } else if (voiceRoomInfo.isSupportCDN()) {
+            audience.getAudiencePlay().setVolume(mute ? 0f : 1f);
         }
         return mute;
     }
@@ -441,7 +598,13 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     }
 
     @Override
+    public boolean isEarBackEnable() {
+        return enableEarBack;
+    }
+
+    @Override
     public void enableEarback(boolean enable) {
+        this.enableEarBack = enable;
         engine.enableEarback(enable, 100);
     }
 
@@ -459,6 +622,21 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     }
 
     @Override
+    public PushTypeSwitcher getPushTypeSwitcher() {
+        if (switcher == null) {
+            switcher = new PushTypeSwitcherImpl(context, engine, audience.getAudiencePlay());
+        }
+        return switcher;
+    }
+
+    public StreamTaskControl getStreamTaskControl() {
+        if (streamTaskControl == null) {
+            streamTaskControl = new StreamTaskControlImpl(anchor, engine);
+        }
+        return streamTaskControl;
+    }
+
+    @Override
     public Anchor getAnchor() {
         return anchor;
     }
@@ -473,6 +651,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         this.seats.set(seat.getIndex(), seat);
         if (roomCallback != null) {
             roomCallback.updateSeat(seat);
+        }
+        if (!seat.isOn() &&(seat.getReason() == VoiceRoomSeat.Reason.ANCHOR_KICK || seat.getReason() == VoiceRoomSeat.Reason.LEAVE)&& anchorMode) {
+            musicSing.leaveSet(seat.getUser(), false);
         }
     }
 
@@ -523,6 +704,11 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         });
     }
 
+    @Override
+    boolean isInitial() {
+        return initial;
+    }
+
     private void listen(boolean on) {
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotification, on);
         NIMClient.getService(ChatRoomServiceObserver.class).observeReceiveMessage(messageObserver, on);
@@ -537,9 +723,12 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             // 打开扬声器
             setSpeaker(true);
             // 打开耳返
-            enableEarback(true);
+            enableEarback(false);
             // 设置音量汇报间隔 500ms
             engine.enableAudioVolumeIndication(true, 500);
+            if (!anchorMode) {
+                musicSing.update();
+            }
         }
 
         if (roomCallback != null) {
@@ -548,6 +737,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     }
 
     private void onLeaveRoom() {
+        if (audioPlay!=null){
+            audioPlay.reset();
+        }
         engine.release();
         restoreInstanceInfo();
 
@@ -564,8 +756,8 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         } else {
             stopLocalAudio();
         }
-        int result = engine.joinChannel(null,
-                voiceRoomInfo.getRoomId(), accountToVoiceUid(user.account));
+        int result = engine.joinChannel(null, voiceRoomInfo.getRoomId(), accountToVoiceUid(user.account));
+        ALog.e("====>", "join channel code is " + result);
         if (result != 0) {
             if (roomCallback != null) {
                 roomCallback.onEnterRoom(false);
@@ -576,6 +768,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     private void setupParameters() {
         NERtcParameters parameters = new NERtcParameters();
         parameters.setBoolean(NERtcParameters.KEY_AUTO_SUBSCRIBE_AUDIO, true);
+        if (voiceRoomInfo.isSupportCDN()) {
+            parameters.set(NERtcParameters.KEY_PUBLISH_SELF_STREAM, true);
+        }
         NERtcEx.getInstance().setParameters(parameters);
     }
 
@@ -615,6 +810,12 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         });
     }
 
+    private void initKtv() {
+        musicSing.initRoom(chatRoomService, user, voiceRoomInfo.getRoomId());
+        musicSing.setAudienceInfo(anchorMode, audience);
+        musicSing.setRoomCallback(roomCallback);
+    }
+
     private void initAnchorInfo(VoiceRoomUser user) {
         if (roomCallback != null) {
             roomCallback.onAnchorInfo(user);
@@ -639,7 +840,12 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         });
     }
 
-    private void onNotification(ChatRoomNotificationAttachment notification) {
+    @Override
+    public void refreshSeats() {
+        initSeats();
+    }
+
+    private void onNotification(final ChatRoomNotificationAttachment notification) {
         switch (notification.getType()) {
             case ChatRoomQueueChange: {
                 ChatRoomQueueChangeAttachment queueChange = (ChatRoomQueueChangeAttachment) notification;
@@ -647,16 +853,23 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
                 break;
             }
             case ChatRoomMemberIn: {
+                delayHandler.removeMessages(MSG_MEMBER_EXIT);
                 updateRoomInfo();
                 sendRoomEvent(notification.getTargetNicks(), true);
                 break;
             }
             case ChatRoomMemberExit: {
-                updateRoomInfo();
-                if (anchorMode) {
-                    anchor.memberExit(notification.getOperator());
-                }
-                sendRoomEvent(notification.getTargetNicks(), false);
+                delayHandler.sendMessageDelayed(delayHandler.obtainMessage(MSG_MEMBER_EXIT, new Runnable() {
+                    @Override
+                    public void run() {
+                        updateRoomInfo();
+
+                        if (anchorMode) {
+                            anchor.memberExit(notification.getOperator());
+                        }
+                        sendRoomEvent(notification.getTargetNicks(), false);
+                    }
+                }), 500);
                 break;
             }
             case ChatRoomRoomMuted: {
@@ -720,6 +933,8 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     }
 
     private void onQueueChange(ChatRoomQueueChangeAttachment queueChange) {
+        ALog.i(LOG_TAG, "onQueueChange: type = " + queueChange.getChatRoomQueueChangeType() +
+                " key = " + queueChange.getKey() + " content = " + queueChange.getContent());
         ChatRoomQueueChangeType type = queueChange.getChatRoomQueueChangeType();
         if (type == ChatRoomQueueChangeType.DROP) {
             if (anchorMode) {
@@ -731,13 +946,30 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
             return;
         }
 
-        if (type == ChatRoomQueueChangeType.OFFER) {
+        if (type == ChatRoomQueueChangeType.OFFER || type == ChatRoomQueueChangeType.POLL) {
             String content = queueChange.getContent();
+            String key = queueChange.getKey();
             if (TextUtils.isEmpty(content)) {
                 return;
             }
-            VoiceRoomSeat seat = VoiceRoomSeat.fromJson(content);
-            if (seat != null) {
+            if (MusicSingImpl.isMusicKey(key)) {
+                if (type == ChatRoomQueueChangeType.OFFER) {
+                    musicSing.addSongFromQueue(content);
+                } else {
+                    musicSing.removeSongFromQueue(content);
+                }
+            } else if (type == ChatRoomQueueChangeType.OFFER) {
+                VoiceRoomSeat seat = VoiceRoomSeat.fromJson(content);
+                if (seat == null) {
+                    return;
+                }
+                VoiceRoomSeat currentSeat = getSeat(seat.getIndex());
+                if (currentSeat != null && currentSeat.isOn() && seat.getStatus() == Status.INIT && seat.getReason() == VoiceRoomSeat.Reason.CANCEL_APPLY) {
+                    if (!anchorMode){
+                        audience.initSeats(seats);
+                    }
+                    return;
+                }
                 if (anchorMode) {
                     if (anchor.seatChange(seat)) {
                         updateSeat(seat);
@@ -787,6 +1019,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
     }
 
     private void sendMessage(String text, boolean event) {
+        if (voiceRoomInfo == null) {
+            return;
+        }
         ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(
                 voiceRoomInfo.getRoomId(),
                 text);
@@ -837,10 +1072,9 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         return value instanceof Integer && (Integer) value == ChatRoomMsgExtKey.TYPE_EVENT;
     }
 
-    private static final int SEAT_COUNT = 8;
 
     private static List<VoiceRoomSeat> createSeats() {
-        int size = SEAT_COUNT;
+        int size = VoiceRoomSeat.SEAT_COUNT;
         List<VoiceRoomSeat> seats = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             seats.add(new VoiceRoomSeat(i));

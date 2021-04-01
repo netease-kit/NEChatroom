@@ -2,9 +2,6 @@ package com.netease.audioroom.demo.dialog;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +12,29 @@ import android.widget.TextView;
 
 import com.netease.audioroom.demo.R;
 import com.netease.audioroom.demo.adapter.SeatApplyAdapter;
-import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
+import com.netease.audioroom.demo.util.ScreenUtil;
 import com.netease.audioroom.demo.widget.VerticalItemDecoration;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class SeatApplyDialog extends BaseDialogFragment {
+
     RecyclerView requesterRecyclerView;
+
     SeatApplyAdapter adapter;
+
     View view;
 
     TextView title;
+
     TextView tvDismiss;
 
     private final List<VoiceRoomSeat> seats = new ArrayList<>();
@@ -47,7 +54,7 @@ public class SeatApplyDialog extends BaseDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(android.app.DialogFragment.STYLE_NO_TITLE, R.style.request_dialog_fragment);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.request_dialog_fragment);
     }
 
 
@@ -63,11 +70,10 @@ public class SeatApplyDialog extends BaseDialogFragment {
         } else {
             dismiss();
         }
-        view = inflater.inflate(R.layout.dialog_requestlink, container, false);
+        view = inflater.inflate(R.layout.apply_list_dialog_layout, container, false);
         // 设置宽度为屏宽、靠近屏幕底部。
         final Window window = getDialog().getWindow();
         window.setBackgroundDrawableResource(R.color.color_00000000);
-        window.getDecorView().setPadding(20, 0, 20, 0);
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.gravity = Gravity.TOP;
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -84,26 +90,26 @@ public class SeatApplyDialog extends BaseDialogFragment {
 
     }
 
-
     private void initView() {
         requesterRecyclerView = view.findViewById(R.id.requesterRecyclerView);
         requesterRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        requesterRecyclerView.addItemDecoration
-                (new VerticalItemDecoration(getResources().getColor(R.color.color_000000), 1));
+        int padding = ScreenUtil.dip2px(requesterRecyclerView.getContext(),16);
+        requesterRecyclerView.addItemDecoration(
+                new VerticalItemDecoration(getResources().getColor(R.color.color_33ffffff), 1, padding, padding));
         title = view.findViewById(R.id.title);
         tvDismiss = view.findViewById(R.id.dismiss);
-
-        buidHeadView();
-
+        buildHeadView();
         refresh();
     }
 
-    private void buidHeadView() {
+    private void buildHeadView() {
         adapter = new SeatApplyAdapter(new ArrayList<>(), getActivity());
         requesterRecyclerView.setAdapter(adapter);
         requesterRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
+
             @Override
-            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec,
+                                  int heightSpec) {
                 int count = state.getItemCount();
                 if (count > 0) {
                     if (count > 4) {
@@ -131,6 +137,7 @@ public class SeatApplyDialog extends BaseDialogFragment {
 
     public void initListener() {
         adapter.setApplyAction(new SeatApplyAdapter.IApplyAction() {
+
             @Override
             public void refuse(VoiceRoomSeat seat) {
                 requestAction.refuse(seat);
@@ -152,14 +159,13 @@ public class SeatApplyDialog extends BaseDialogFragment {
     public void update(Collection<VoiceRoomSeat> seats) {
         this.seats.clear();
         this.seats.addAll(seats);
-
         if (isVisible()) {
             refresh();
         }
     }
 
     private void refresh() {
-        title.setText("申请上麦 (" + seats.size() + ") ");
+        title.setText(getString(R.string.apply_micro, seats.size()));
         adapter.setItems(seats);
     }
 

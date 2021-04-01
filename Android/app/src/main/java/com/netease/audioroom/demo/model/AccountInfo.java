@@ -1,16 +1,12 @@
 package com.netease.audioroom.demo.model;
 
 
-import android.text.TextUtils;
-
 import com.netease.yunxin.nertc.nertcvoiceroom.util.JsonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-
-import static java.lang.Math.abs;
 
 public class AccountInfo implements Serializable {
 
@@ -64,13 +60,13 @@ public class AccountInfo implements Serializable {
     }
 
     public static long accountToVoiceUid(String accountId) {
-        if (!TextUtils.isEmpty(accountId) && accountId.startsWith("user")) {
-            try {
-                return Long.parseLong(accountId.substring(4));
-            } catch (Throwable tr) {
-                tr.printStackTrace();
-            }
+        long result = -1;
+        try {
+            result = Long.parseLong(accountId);
+        } catch (Throwable tr) {
+            tr.printStackTrace();
         }
-        return -1;
+
+        return result;
     }
 }

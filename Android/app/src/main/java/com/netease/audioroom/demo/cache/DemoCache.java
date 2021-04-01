@@ -45,15 +45,16 @@ public class DemoCache {
 
     public static AccountInfo getAccountInfo() {
         if (accountInfo != null) {
-            //用户token过期
-            if (new Date().getTime() > accountInfo.availableAt) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINESE);
-                String time = simpleDateFormat.format(new Date(accountInfo.availableAt));
-                ToastHelper.showToastLong("用户信息已过期，有效期为 " + time);
-                return new AccountInfo("null", "null", "null", "null", 0);
-            } else {
-                return accountInfo;
-            }
+//            //用户token过期
+//            if (new Date().getTime() > accountInfo.availableAt) {
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINESE);
+//                String time = simpleDateFormat.format(new Date(accountInfo.availableAt));
+//                ToastHelper.showToastLong("用户信息已过期，有效期为 " + time + "，请退出重新启动");
+//                return new AccountInfo("null", "null", "null", "null", 0);
+//            } else {
+//                return accountInfo;
+//            }
+            return accountInfo;
 
         }
         String jsonStr = getSharedPreferences().getString(ACCOUNT_INFO_KEY, null);

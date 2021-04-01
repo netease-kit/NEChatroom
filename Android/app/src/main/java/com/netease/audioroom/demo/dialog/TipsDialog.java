@@ -1,7 +1,6 @@
 package com.netease.audioroom.demo.dialog;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,15 +11,21 @@ import android.widget.TextView;
 
 import com.netease.audioroom.demo.R;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 public class TipsDialog extends BaseDialogFragment {
 
     View mConentView;
 
     TextView tvContent;
+
     TextView tvTips;
+
     String content;
 
     public interface IClickListener {
+
         void onClick();
     }
 
@@ -29,7 +34,7 @@ public class TipsDialog extends BaseDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(android.app.DialogFragment.STYLE_NO_TITLE, R.style.create_dialog_fragment);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.create_dialog_fragment);
 
     }
 

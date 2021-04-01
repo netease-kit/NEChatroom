@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="4dp"
+    android:clipToPadding="false"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_add_mute_member"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_corner_20_f2f3f5_bg"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="添加禁言成员"
+        android:textColor="#ff222222"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_mute_all_members"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mute_all_members"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_corner_20_f2f3f5_bg"
+        android:gravity="center"
+        android:text="全部禁言"
+        android:textColor="#ff222222"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_add_mute_member"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divide1"
+        app:layout_constraintTop_toBottomOf="@id/tv_add_mute_member"
+        android:layout_width="match_parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="-20dp"
+        android:layout_marginEnd="-20dp"
+        android:layout_height="0.5dp"
+        android:background="#ffe6e7eb"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_member_list"
+        app:layout_constraintTop_toBottomOf="@id/divide1"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:layout_marginStart="-20dp"
+        android:layout_marginEnd="-20dp"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

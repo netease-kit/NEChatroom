@@ -7,10 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.netease.audioroom.demo.R;
 import com.netease.audioroom.demo.adapter.MemberListAdapter;
 import com.netease.audioroom.demo.base.BaseActivity;
@@ -18,7 +14,6 @@ import com.netease.audioroom.demo.util.ScreenUtil;
 import com.netease.audioroom.demo.util.ToastHelper;
 import com.netease.audioroom.demo.widget.VerticalItemDecoration;
 import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.EmptyChatRoomListCallback;
-import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.ErrorCallback;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Anchor;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoom;
@@ -27,6 +22,10 @@ import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 选择成员
@@ -100,21 +99,21 @@ public class MemberSelectActivity extends BaseActivity {
         RequestCallback<List<VoiceRoomUser>> callback = new RequestCallback<List<VoiceRoomUser>>() {
             @Override
             public void onSuccess(List<VoiceRoomUser> members) {
-                loadService.showSuccess();
+                loadSuccess();
                 if (members.size() != 0) {
                     adapter = new MemberListAdapter(members, MemberSelectActivity.this);
                     recyclerView.setLayoutManager(new LinearLayoutManager(MemberSelectActivity.this));
                     recyclerView.setAdapter(adapter);
-                    adapter.setItemClickListener((m, p) -> {
-                        VoiceRoomUser member = members.get(p);
-                        Intent intent = new Intent();
-                        intent.putExtra(RESULT_MEMBER, member);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    });
+//                    adapter.setItemClickListener((m, p) -> {
+//                        VoiceRoomUser member = members.get(p);
+//                        Intent intent = new Intent();
+//                        intent.putExtra(RESULT_MEMBER, member);
+//                        setResult(RESULT_OK, intent);
+//                        finish();
+//                    });
                 } else {
-                    loadService.showCallback(EmptyChatRoomListCallback.class);
-                    loadService.setCallBack(EmptyChatRoomListCallback.class, (context, view) -> {
+                    loadShowCallback(EmptyChatRoomListCallback.class);
+                    setLoadCallBack(EmptyChatRoomListCallback.class, (context, view) -> {
                         ((TextView) (view.findViewById(R.id.toolsbar).findViewById(R.id.title))).setText("选择成员");
                         view.findViewById(R.id.toolsbar).findViewById(R.id.icon).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -128,12 +127,12 @@ public class MemberSelectActivity extends BaseActivity {
 
             @Override
             public void onFailed(int i) {
-                loadService.showCallback(ErrorCallback.class);
+                showError();
             }
 
             @Override
             public void onException(Throwable throwable) {
-                loadService.showCallback(ErrorCallback.class);
+                showError();
             }
         };
         if (excludeAccounts != null) {

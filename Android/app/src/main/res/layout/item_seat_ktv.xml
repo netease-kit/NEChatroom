@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="16dp"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/avatar_bg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_dialog_utils_icon_circle_bg"
+        android:src="@drawable/nim_avatar_default"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/circle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/point_empty"
+        android:visibility="visible" />
+
+    <com.netease.audioroom.demo.widget.HeadImageView
+        android:id="@+id/iv_user_avatar"
+        android:layout_width="wrap_content"
+        android:visibility="visible"
+        android:layout_alignEnd="@id/avatar_bg"
+        android:layout_alignStart="@id/avatar_bg"
+        android:layout_alignTop="@id/avatar_bg"
+        android:layout_margin="1dp"
+        android:layout_alignBottom="@id/avatar_bg"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/iv_user_stats"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:background="@drawable/seat_item_round_bg"
+        android:scaleType="center"
+        android:padding="4dp"
+        tools:src="@drawable/seat_add_member" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_apply"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/apply_seat" />
+
+    <TextView
+        android:id="@+id/tv_user_nick"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_user_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_ffffff"
+        android:textSize="12dp"
+        tools:text="麦位1" />
+
+    <ImageView
+        android:id="@+id/iv_user_status_hint"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignEnd="@+id/iv_user_avatar"
+        android:layout_alignBottom="@+id/iv_user_avatar"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/iv_user_singing"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignEnd="@+id/iv_user_avatar"
+        android:layout_alignBottom="@+id/iv_user_avatar"
+        android:src="@drawable/icon_singing"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
+</RelativeLayout>

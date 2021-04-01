@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-
-import com.netease.audioroom.demo.base.LoginManager;
 import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.BaseCallback;
 import com.netease.audioroom.demo.widget.unitepage.loadsir.callback.SuccessCallback;
 
@@ -24,8 +22,7 @@ public class LoadService<T> {
         View oldContent = targetContext.getOldContent();
         ViewGroup.LayoutParams oldLayoutParams = oldContent.getLayoutParams();
         loadLayout = new LoadLayout(context, onReloadListener);
-        loadLayout.setupSuccessLayout(new SuccessCallback(oldContent, context,
-                onReloadListener));
+        loadLayout.setupSuccessLayout(new SuccessCallback(oldContent, context, onReloadListener));
         if (targetContext.getParentView() != null) {
             targetContext.getParentView().addView(loadLayout, targetContext.getChildIndex(), oldLayoutParams);
         }

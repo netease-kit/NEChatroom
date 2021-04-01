@@ -7,14 +7,15 @@ import androidx.annotation.NonNull;
 import com.netease.lava.nertc.sdk.NERtcEx;
 import com.netease.lava.nertc.sdk.audio.NERtcCreateAudioEffectOption;
 import com.netease.lava.nertc.sdk.audio.NERtcCreateAudioMixingOption;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.MusicOrderedItem;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.MusicSing;
 
 import java.util.Arrays;
 
 import static com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay.AudioMixingPlayState.STATE_PAUSED;
 import static com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay.AudioMixingPlayState.STATE_PLAYING;
 import static com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay.AudioMixingPlayState.STATE_STOPPED;
-
-import com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay;
 
 class AudioPlayImpl implements AudioPlay {
     private final NERtcEx engine;
@@ -24,7 +25,9 @@ class AudioPlayImpl implements AudioPlay {
     /**
      * 混音音量
      */
-    private int audioMixingVolume = 100;
+    private int audioMixingVolume = 50;
+
+    private int ktvAudioMixingVolume = 50;
 
     /**
      * 混音文件
@@ -51,6 +54,16 @@ class AudioPlayImpl implements AudioPlay {
      */
     private String[] effectPaths;
 
+    /**
+     * 是否是KTV唱歌(自己或者他人)
+     */
+    private boolean isKtvSinging;
+
+    /**
+     * 自己是否正在唱歌
+     */
+    private boolean isSinging;
+
     AudioPlayImpl(NERtcEx engine) {
         this.engine = engine;
     }
@@ -61,10 +74,78 @@ class AudioPlayImpl implements AudioPlay {
     }
 
     @Override
-    public void setMixingVolume(int volume) {
+    public void setMixingVolume(int volume, boolean isKtv) {
         engine.setAudioMixingSendVolume(volume);
         engine.setAudioMixingPlaybackVolume(volume);
-        audioMixingVolume = volume;
+        if (isKtv) {
+            ktvAudioMixingVolume = volume;
+        } else {
+            audioMixingVolume = volume;
+        }
+    }
+
+    @Override
+    public void onSingFinish(boolean needSetStatus, boolean stopMixing) {
+        if (stopMixing || isKtvSinging) {
+            audioMixingState = STATE_STOPPED;
+            audioMixingIndex = 0;
+            engine.stopAudioMixing();
+        }
+        if (needSetStatus) {
+            isKtvSinging = false;
+            isSinging = false;
+        }
+    }
+
+    @Override
+    public void onSingStart() {
+        isKtvSinging = true;
+        if (callback != null) {
+            callback.onAudioReset();
+        }
+    }
+
+    @Override
+    public int setKtvMusicPlay(MusicOrderedItem music) {
+        NERtcCreateAudioMixingOption option = new NERtcCreateAudioMixingOption();
+        option.path = music.musicUrl;
+        option.playbackVolume = ktvAudioMixingVolume;
+        option.sendVolume = ktvAudioMixingVolume;
+        engine.stopAudioMixing();
+        int result = engine.startAudioMixing(option);
+        if (result == 0) {
+            isSinging = true;
+        }
+        return result;
+    }
+
+    @Override
+    public int pauseKtvMusic() {
+        if (isSinging) {
+            return engine.pauseAudioMixing();
+        }
+        return -1;
+    }
+
+    @Override
+    public int resumeKtvMusic() {
+        if (isSinging) {
+            return engine.resumeAudioMixing();
+        }
+        return -1;
+    }
+
+    @Override
+    public int stopKtvMusic() {
+        return engine.stopAudioMixing();
+    }
+
+    @Override
+    public int getMixingVolume(boolean isKtv) {
+        if (isKtv) {
+            return ktvAudioMixingVolume;
+        }
+        return audioMixingVolume;
     }
 
     @Override
@@ -100,11 +181,27 @@ class AudioPlayImpl implements AudioPlay {
 
     @Override
     public boolean playOrPauseMixing() {
+        if (!ktvCheck()) {
+            return false;
+        }
         return shiftPlayState();
+    }
+
+    private boolean ktvCheck() {
+        if (isKtvSinging) {
+            if (callback != null) {
+                callback.onError("演唱过程中不支持此操作");
+            }
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean playNextMixing() {
+        if (!ktvCheck()) {
+            return false;
+        }
         stopAudioMixing();
         audioMixingIndex = getNextAudioMixingIndex(audioMixingIndex, audioMixingFilePaths);
 
@@ -113,6 +210,9 @@ class AudioPlayImpl implements AudioPlay {
 
     @Override
     public boolean playMixing(int index) {
+        if (!ktvCheck()) {
+            return false;
+        }
         if (isAudioMixingIndexInvalid(index, audioMixingFilePaths)) {
             return false;
         }
@@ -173,6 +273,10 @@ class AudioPlayImpl implements AudioPlay {
     }
 
     void onAudioMixingStateChanged(int reason) {
+        if (isSinging) {
+            MusicSing.shareInstance().nextMusic(null);
+            return;
+        }
         switch (reason) {
             case 0:
                 playNextMixing();
@@ -254,6 +358,27 @@ class AudioPlayImpl implements AudioPlay {
     @Override
     public boolean stopAllEffects() {
         return engine.stopAllEffects() == 0;
+    }
+
+    @Override
+    public int getCurrentState() {
+        return audioMixingState;
+    }
+
+    @Override
+    public int getPlayingMixIndex() {
+        return audioMixingIndex;
+    }
+
+    @Override
+    public void reset() {
+        stopAudioMixing();
+        audioMixingIndex = 0;
+        audioMixingVolume = 50;
+        ktvAudioMixingVolume = 50;
+        effectVolume = 50;
+        isKtvSinging = false;
+        isSinging = false;
     }
 
     private static int getNextAudioMixingIndex(int index, @NonNull String[] paths) {

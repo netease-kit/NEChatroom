@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rv_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_tab"
+        android:layout_width="match_parent"
+        app:tabSelectedTextColor="@color/color_222222"
+        app:tabTextColor="@color/color_999999"
+        app:tabIndicatorFullWidth="false"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabRippleColor="@color/color_00000000"
+        app:tabGravity="center"
+        app:tabMaxWidth="100dp"
+        app:tabMinWidth="0dp"
+        app:tabPaddingEnd="24dp"
+        app:tabPaddingStart="24dp"
+        android:layout_height="44dp"
+        android:background="#00000000" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:src="@drawable/icon_list_arrow_left"
+        android:layout_height="44dp"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_fragment"
+        android:layout_below="@id/tl_tab"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/iv_new_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/icon_live_start" />
+
+</RelativeLayout>

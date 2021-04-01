@@ -52,11 +52,20 @@ public class VoiceRoomMessage {
         /**
          * 麦位事件
          *
-         * @param seat     {@link VoiceRoomSeat 麦位}
+         * @param seat  {@link VoiceRoomSeat 麦位}
          * @param enter 进入或退出麦位
          * @return text
          */
         String seatEvent(VoiceRoomSeat seat, boolean enter);
+
+        /**
+         * 音乐控制信息
+         *
+         * @param nick
+         * @param isPause 是否暂停，不暂停就是恢复
+         * @return
+         */
+        String musicEvent(String nick, boolean isPause);
     }
 
     private static final MessageTextBuilder defaultMessageTextBuilder = new DefaultMessageTextBuilder();
@@ -68,12 +77,17 @@ public class VoiceRoomMessage {
     private static final class DefaultMessageTextBuilder implements MessageTextBuilder {
         @Override
         public String roomEvent(String nick, boolean enter) {
-            return (enter ? "enter" : "leave") + " room" ;
+            return (enter ? "enter" : "leave") + " room";
         }
 
         @Override
         public String seatEvent(@NonNull VoiceRoomSeat seat, boolean enter) {
-            return (enter ? "enter" : "leave") + " seat " +  (seat.getIndex() + 1);
+            return (enter ? "enter" : "leave") + " seat " + (seat.getIndex() + 1);
+        }
+
+        @Override
+        public String musicEvent(String nick, boolean isPause) {
+            return isPause ? "pause" : "resume";
         }
     }
 }

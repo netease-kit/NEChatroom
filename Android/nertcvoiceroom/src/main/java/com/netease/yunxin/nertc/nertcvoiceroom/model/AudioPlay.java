@@ -1,5 +1,7 @@
 package com.netease.yunxin.nertc.nertcvoiceroom.model;
 
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.MusicOrderedItem;
+
 /**
  * 播放操作接口
  */
@@ -8,8 +10,56 @@ public interface AudioPlay {
      * 设置伴音音量（播放和发送音量）
      *
      * @param volume 混音音量 0-100
+     * @param isKtv  是否ktv
      */
-    void setMixingVolume(int volume);
+    void setMixingVolume(int volume, boolean isKtv);
+
+    /**
+     * 停止KTV唱歌
+     *
+     * @param needSetStatus 是否需要设置状态
+     * @param stopMixing    停止伴音
+     */
+    void onSingFinish(boolean needSetStatus, boolean stopMixing);
+
+    /**
+     * KTV开始唱歌（自己或者他人）
+     */
+    void onSingStart();
+
+    /**
+     * KTV模式混音
+     *
+     * @param music
+     * @return
+     */
+    int setKtvMusicPlay(MusicOrderedItem music);
+
+    /**
+     * ktv 暂停
+     *
+     * @return
+     */
+    int pauseKtvMusic();
+
+    /**
+     * 恢复 ktv
+     *
+     * @return
+     */
+    int resumeKtvMusic();
+
+    /**
+     * 停止ktv
+     *
+     * @return
+     */
+    int stopKtvMusic();
+
+    /**
+     * 获取当前伴音音量
+     */
+    int getMixingVolume(boolean isKtv);
 
     /**
      * 设置伴音文件
@@ -97,6 +147,23 @@ public interface AudioPlay {
     boolean stopAllEffects();
 
     /**
+     * 获取当前播放状态
+     *
+     * @return {@link AudioMixingPlayState}
+     * */
+    int getCurrentState();
+
+    /**
+     * 获取当前正在播放伴音 index
+     */
+    int getPlayingMixIndex();
+
+    /**
+     * 播放状态初始化
+     */
+    void reset();
+
+    /**
      * 伴音播放状态
      */
     interface AudioMixingPlayState {
@@ -139,6 +206,18 @@ public interface AudioPlay {
          * @param index 音效文件索引
          */
         void onAudioEffectPlayFinished(int index);
+
+        /**
+         * 混音重置
+         */
+        void onAudioReset();
+
+        /**
+         * 错误信息
+         *
+         * @param msg
+         */
+        void onError(String msg);
     }
 
     /**

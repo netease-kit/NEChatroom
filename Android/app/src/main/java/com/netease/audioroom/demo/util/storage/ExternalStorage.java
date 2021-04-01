@@ -7,7 +7,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.netease.yunxin.kit.alog.ALog;
 
 import java.io.File;
 import java.io.IOException;
@@ -212,7 +213,7 @@ class ExternalStorage {
 	 */
 	private boolean checkPermission(Context context) {
 		if (context == null) {
-			Log.e(TAG, "checkMPermission context null");
+			ALog.e(TAG, "checkMPermission context null");
 			return false;
 		}
 
@@ -223,7 +224,7 @@ class ExternalStorage {
 			// M 先看看有没有读写权限
 			if (context.checkSelfPermission(p1) != PackageManager.PERMISSION_GRANTED ||
 					context.checkSelfPermission(p2) != PackageManager.PERMISSION_GRANTED) {
-				Log.e(TAG, "without permission to access storage");
+				ALog.e(TAG, "without permission to access storage");
 				return false;
 			}
 		}
@@ -240,7 +241,7 @@ class ExternalStorage {
 
 		hasPermission = checkPermission(context); // 检查是否已经获取权限了
 		if (hasPermission) {
-			Log.i(TAG, "get permission to access storage");
+			ALog.i(TAG, "get permission to access storage");
 
 			// 已经重新获得权限，那么重新检查一遍初始化过程
 			createSubFolders();

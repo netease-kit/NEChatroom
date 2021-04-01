@@ -1,14 +1,18 @@
 package com.netease.audioroom.demo.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.netease.audioroom.demo.R;
 import com.netease.audioroom.demo.base.adapter.BaseAdapter;
+import com.netease.audioroom.demo.widget.ChatMessageSpannableStr;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomMessage;
 
 import java.util.ArrayList;
@@ -33,25 +37,26 @@ public class MessageListAdapter extends BaseAdapter<VoiceRoomMessage> {
         if (message == null) {
             return;
         }
+
         if (message.type == VoiceRoomMessage.Type.TEXT) {
-            msgHolder.tvNick.setText(message.nick + "：");
-            msgHolder.tvContent.setText(message.content);
+            CharSequence content = new ChatMessageSpannableStr.Builder()
+                    .append(message.nick + "：", Color.parseColor("#99ffffff"))
+                    .append(message.content)
+                    .build().getMessageInfo();
+            msgHolder.tvContent.setText(content);
         } else if (message.type == VoiceRoomMessage.Type.EVENT) {
-            msgHolder.tvNick.setText(message.content);
-            msgHolder.tvContent.setText(null);
+            msgHolder.tvContent.setText(message.content);
         }
 
     }
 
 
     private static class MsgHolder extends RecyclerView.ViewHolder {
-        TextView tvNick;
         TextView tvContent;
 
         public MsgHolder(View itemView) {
             super(itemView);
-            tvNick = itemView.findViewById(R.id.tv_nick);
-            tvContent = itemView.findViewById(R.id.tv_content);
+            tvContent = itemView.findViewById(R.id.tv_chat_content);
         }
     }
 }

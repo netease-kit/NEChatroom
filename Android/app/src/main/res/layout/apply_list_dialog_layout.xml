@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apply_list_dialog_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_height"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold"
+            tools:text="sssss" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/requesterRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#33ffffff" />
+
+        <TextView
+            android:id="@+id/dismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_40"
+            android:layout_gravity="center"
+            android:drawableRight="@drawable/arrow_up"
+            android:gravity="center"
+            android:padding="@dimen/dimen_5"
+            android:paddingLeft="@dimen/dimen_30"
+            android:paddingRight="@dimen/dimen_30"
+            android:text="@string/pick_up_has_blank"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_14" />
+
+    </LinearLayout>
+
+</LinearLayout>
