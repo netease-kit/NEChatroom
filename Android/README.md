@@ -27,8 +27,8 @@
 
 | key | value | note
 | - | - | - |
-| nimVersion | 7.8.4 | nim相关版本
-| nertcVersion | 3.7.0 | NERTC版本
+| nimVersion | 8.2.0 | nim相关版本
+| nertcVersion | 3.9.103 | NERTC版本
 
 ### 使用示例项目
 源码Demo的包含两个模块，app和nertcvoiceroom。nertcvoiceroom实现了对语音聊天室业务逻辑的组件封装，而app实现ui的搭建。

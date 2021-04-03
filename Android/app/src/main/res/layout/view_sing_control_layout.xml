@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/fly_singing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:id="@+id/rly_music_singing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/singing_song_round_bg"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/lly_music_info_sing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/icon_music"
+                    android:layout_width="@dimen/dimen_12"
+                    android:layout_height="@dimen/dimen_12"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/icon_music_white" />
+
+                <TextView
+                    android:id="@+id/tv_music_singing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_ffffff"
+                    android:gravity="start"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/dimen_2" />
+
+                <TextView
+                    android:id="@+id/tv_music_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_marginEnd="@dimen/dimen_10"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color_ffffff" />
+            </LinearLayout>
+
+            <com.netease.audioroom.demo.widget.lrc.LrcView
+                android:id="@+id/lrc_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/lly_music_info_sing"
+                android:layout_above="@+id/lly_control"
+                app:lrcTextSize="12sp"
+                app:lrcNormalTextColor="#9AFFFFFF"
+                app:lrcCurrentTextColor="@color/color_ffffff"
+                app:isLrcCurrentTextBold="true"
+                app:lrcCurrentTextSize="18sp"
+                app:lrcLineSpaceSize="@dimen/dimen_10"
+                app:noLrcTextSize="12sp"
+                app:noLrcTextColor="@color/color_ffffff"
+                android:layout_marginTop="@dimen/dimen_10" />
+
+            <TextView
+                android:id="@+id/tv_continue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                app:drawableStartCompat="@drawable/icon_resume_light"
+                android:text="继续播放"
+                android:textSize="@dimen/text_12"
+                android:textColor="@color/color_ffffff"
+                android:paddingTop="@dimen/dimen_2"
+                android:paddingBottom="@dimen/dimen_2"
+                android:paddingStart="@dimen/dimen_8"
+                android:paddingEnd="@dimen/dimen_8"
+                android:visibility="gone"
+                android:drawablePadding="@dimen/dimen_2"
+                android:background="@drawable/shape_corner_18_80_bg" />
+
+            <TextView
+                android:id="@+id/tv_paused"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="暂停中"
+                android:textSize="@dimen/text_12"
+                android:textColor="@color/color_ffffff"
+                android:paddingTop="@dimen/dimen_2"
+                android:paddingBottom="@dimen/dimen_2"
+                android:paddingStart="@dimen/dimen_8"
+                android:paddingEnd="@dimen/dimen_8"
+                android:visibility="gone"
+                android:background="@drawable/shape_corner_18_80_bg" />
+
+            <LinearLayout
+                android:id="@+id/lly_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/dimen_10"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_set_sound"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="3dp"
+                    android:src="@drawable/icon_set_sound_light"
+                    android:background="@drawable/seat_item_round_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_pause"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="3dp"
+                    android:src="@drawable/icon_music_state_switch"
+                    android:background="@drawable/seat_item_round_bg" />
+
+                <ImageView
+                    android:id="@+id/iv_next_music"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="3dp"
+                    android:src="@drawable/icon_next_light"
+                    android:background="@drawable/seat_item_round_bg" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lly_ready"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/singing_song_round_bg"
+            tools:visibility="gone"
+            android:orientation="vertical">
+
+            <com.netease.audioroom.demo.widget.HeadImageView
+                android:id="@+id/iv_user_avatar"
+                android:layout_marginTop="@dimen/dimen_40"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_user_nick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/color_ffffff"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/color_ffffff"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_music_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/color_ffffff"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+    <!--    无已点歌曲-->
+    <LinearLayout
+        android:id="@+id/lly_no_ordered_song"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:visibility="gone"
+        android:background="@drawable/no_song_round_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂时无人点歌"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="@dimen/dimen_35"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:alpha="0.5"
+            android:text="唱歌时请佩戴耳机避免回音"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen_15"
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我要点歌"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen_32"
+            android:paddingTop="@dimen/dimen_5"
+            android:paddingBottom="@dimen/dimen_5"
+            android:paddingStart="@dimen/dimen_20"
+            android:paddingEnd="@dimen/dimen_20"
+            android:background="@drawable/white_round_bg"
+            android:textColor="#222222" />
+
+    </LinearLayout>
+
+</FrameLayout>

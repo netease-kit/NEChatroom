@@ -1,22 +1,23 @@
 package com.netease.audioroom.demo.adapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.netease.yunxin.kit.alog.ALog;
 import com.netease.audioroom.demo.R;
 import com.netease.audioroom.demo.base.adapter.BaseAdapter;
+import com.netease.audioroom.demo.widget.HeadImageView;
+import com.netease.yunxin.android.lib.picture.ImageLoader;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser;
-import com.netease.audioroom.demo.util.CommonUtil;
-import com.netease.audioroom.demo.widget.HeadImageView;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class SeatApplyAdapter extends BaseAdapter<VoiceRoomSeat> {
     public interface IApplyAction {
@@ -36,7 +37,7 @@ public class SeatApplyAdapter extends BaseAdapter<VoiceRoomSeat> {
 
     @Override
     protected RecyclerView.ViewHolder onCreateBaseViewHolder(ViewGroup parent, int viewType) {
-        return new ApplyViewHolder(layoutInflater.inflate(R.layout.item_requestlink, parent, false));
+        return new ApplyViewHolder(layoutInflater.inflate(R.layout.apply_item_layout, parent, false));
     }
 
     @Override
@@ -49,13 +50,13 @@ public class SeatApplyAdapter extends BaseAdapter<VoiceRoomSeat> {
         VoiceRoomUser user = seat.getUser();
         if (user != null) {
             int index = seat.getIndex() + 1;
-            CommonUtil.loadImage(context, user.getAvatar(), viewHolder.ivAvatar, R.drawable.nim_avatar_default, 0);
+            ImageLoader.with(context).load(user.getAvatar()).error(R.drawable.nim_avatar_default).into(viewHolder.ivAvatar);
             viewHolder.tvContent.setText(user.getNick() + "\t申请麦位(" + index + ")");
             viewHolder.ivRefuse.setOnClickListener((v) -> applyAction.refuse(seat));
             viewHolder.ivAfree.setOnClickListener((v) ->
                     applyAction.agree(seat));
         } else {
-            Log.e("偶现看不到申请者情形", user.toString());
+            ALog.e("偶现看不到申请者情形", user.toString());
         }
 
 

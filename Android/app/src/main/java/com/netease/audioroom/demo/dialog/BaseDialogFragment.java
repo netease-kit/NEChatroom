@@ -8,7 +8,7 @@ public class BaseDialogFragment extends DialogFragment {
     @Override
     public void show(FragmentManager manager, String tag) {
         if (manager.findFragmentByTag(TAG) != null && manager.findFragmentByTag(TAG).isVisible()) {
-            ((DialogFragment) manager.findFragmentByTag(TAG)).dismiss();
+            ((DialogFragment) manager.findFragmentByTag(TAG)).dismissAllowingStateLoss();
         }
         try {
             //在每个add事务前增加一个remove事务，防止连续的add
@@ -24,7 +24,7 @@ public class BaseDialogFragment extends DialogFragment {
     @Override
     public void dismiss() {
         if (getFragmentManager() != null) {
-            super.dismiss();
+            super.dismissAllowingStateLoss();
         }
     }
 }

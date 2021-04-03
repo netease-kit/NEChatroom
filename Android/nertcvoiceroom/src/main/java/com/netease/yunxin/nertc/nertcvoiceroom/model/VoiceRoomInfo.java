@@ -6,6 +6,7 @@ import java.io.Serializable;
  * 语聊房信息
  */
 public class VoiceRoomInfo implements Serializable {
+
     /**
      * 房间id
      */
@@ -27,6 +28,11 @@ public class VoiceRoomInfo implements Serializable {
     private String thumbnail;
 
     /**
+     * 房间type
+     */
+    private int roomType;
+
+    /**
      * 房间音质 {@link com.netease.yunxin.nertc.nertcvoiceroom.model.NERtcVoiceRoomDef.RoomAudioQuality}
      */
     private int audioQuality = NERtcVoiceRoomDef.RoomAudioQuality.DEFAULT_QUALITY;
@@ -35,6 +41,26 @@ public class VoiceRoomInfo implements Serializable {
      * 房间在线用户数
      */
     private int onlineUserCount;
+
+    /**
+     * 用户昵称
+     */
+    private String nickname;
+
+    /**
+     * 当前歌曲作者
+     */
+    private String currentMusicAuthor;
+
+    /**
+     * 当前正在演唱的歌曲
+     */
+    private String currentMusicName;
+
+    /**
+     * CDN 模式下的推拉流配置信息
+     */
+    private StreamConfig streamConfig;
 
     public VoiceRoomInfo() {
     }
@@ -85,5 +111,49 @@ public class VoiceRoomInfo implements Serializable {
 
     public void setOnlineUserCount(int onlineUserCount) {
         this.onlineUserCount = onlineUserCount;
+    }
+
+    public StreamConfig getStreamConfig() {
+        return streamConfig;
+    }
+
+    public void setStreamConfig(StreamConfig config) {
+        this.streamConfig = config;
+    }
+
+    public boolean isSupportCDN() {
+        return this.streamConfig != null;
+    }
+
+    public void setRoomType(int roomType) {
+        this.roomType = roomType;
+    }
+
+    public int getRoomType() {
+        return roomType;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getCurrentMusicName() {
+        return currentMusicName;
+    }
+
+    public void setCurrentMusicName(String currentMusicName) {
+        this.currentMusicName = currentMusicName;
+    }
+
+    public String getCurrentMusicAuthor() {
+        return currentMusicAuthor;
+    }
+
+    public void setCurrentMusicAuthor(String currentMusicAuthor) {
+        this.currentMusicAuthor = currentMusicAuthor;
     }
 }

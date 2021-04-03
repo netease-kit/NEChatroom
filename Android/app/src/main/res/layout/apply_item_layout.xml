@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_48"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.netease.audioroom.demo.widget.HeadImageView
+        android:id="@+id/item_requestlink_headicon"
+        android:layout_width="@dimen/dimen_32"
+        android:layout_height="@dimen/dimen_32"
+        android:layout_marginLeft="@dimen/dimen_16" />
+
+    <TextView
+        android:id="@+id/item_requestlink_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/text_14" />
+
+    <ImageView
+        android:id="@+id/refuse"
+        android:layout_width="@dimen/dimen_20"
+        android:layout_height="@dimen/dimen_20"
+        android:layout_marginLeft="@dimen/dimen_12"
+        android:layout_marginRight="@dimen/dimen_12"
+        android:padding="@dimen/dimen_2"
+        android:scaleType="fitXY"
+        android:src="@drawable/close_icon" />
+
+    <ImageView
+        android:id="@+id/agree"
+        android:layout_width="@dimen/dimen_20"
+        android:layout_height="@dimen/dimen_20"
+        android:layout_marginRight="@dimen/dimen_16"
+        android:padding="@dimen/dimen_2"
+        android:scaleType="fitXY"
+        android:src="@drawable/right_icon" />
+
+
+</LinearLayout>

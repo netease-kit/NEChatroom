@@ -1,3 +1,22 @@
 <resources>
-    <string name="app_name">语音聊天室</string>
+    <string name="app_name">网易云信语聊房</string>
+    <string name="room_chat">语聊</string>
+    <string name="room_ktv">KTV</string>
+    <string name="room_list_empty">暂时没有房间\n请点击下方\"+\"号创建房间</string>
+    <string name="notice">公告</string>
+    <string name="notice_tips">本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。
+    感谢网易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。</string>
+    <string name="function_desc">从单人直播到主播间PK、观众连麦多种玩法</string>
+    <string name="funciton_title">云信Live</string>
+    <string name="voice_chat">语音聊天室</string>
+    <string name="ktv">KTV</string>
+    <string name="network_broken">网络断开</string>
+    <string name="cancel">取消</string>
+    <string name="apply_micro">申请上麦(%d)</string>
+    <string name="apply_micro_has_arrow">申请上麦(%d)</string>
+    <string name="pick_up_has_blank">收起</string>
+    <string name="room_name_empty">房间名称不能为空</string>
+    <string name="crate_room_error">创建房间失败，返回信息为空</string>
+    <string name="params_error">参数错误</string>
+    <string name="applying_now">正在申请</string>
 </resources>

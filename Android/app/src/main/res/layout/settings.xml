@@ -83,7 +83,7 @@
                 android:progress="100"
                 android:progressDrawable="@drawable/background_music_control_seekbar_bg"
                 android:saveEnabled="true"
-                android:thumb="@drawable/background_music_control_seekbar_thumb_selector" />
+                android:thumb="@drawable/shape_music_control_seekbar_thumb" />
         </LinearLayout>
 
     </RelativeLayout>

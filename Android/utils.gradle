@@ -1,0 +1,16 @@
+def getGitCommit() {
+    def gitDir = new File(rootDir,'.git')
+    if (!gitDir.isDirectory()) {
+        return 'non-git-build'
+    }
+
+    def cmd = 'git log --pretty=format:%h -1'
+    def gitCommit = cmd.execute().text.trim()
+    assert !gitCommit.isEmpty()
+    gitCommit
+}
+
+ext{
+    // 获取git commit hashcode
+    getGitCommit = this.&getGitCommit
+}

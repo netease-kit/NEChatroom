@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cl_root"
+    android:background="@drawable/icon_create_room_chat_room_bg"
+    tools:context=".activity.CreateRoomActivity">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:src="@drawable/icon_create_room_back"
+        android:layout_height="44dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/top_bg"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_back"
+        android:background="@drawable/shape_create_room_top_bg"
+        android:layout_height="116dp"/>
+
+    <View
+        android:id="@+id/top_divide"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="@id/top_bg"
+        app:layout_constraintEnd_toEndOf="@id/top_bg"
+        app:layout_constraintTop_toTopOf="@id/top_bg"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="#33ffffff"
+        android:layout_height="0.5dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_divide"
+        android:layout_width="0dp"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="vertical"
+        android:layout_height="0dp"/>
+
+    <ImageView
+        android:id="@+id/iv_icon_chat_room"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_chat_room"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/top_bg"
+        android:src="@drawable/icon_create_room_chat_room"
+        app:layout_constraintBottom_toBottomOf="@id/tv_chat_room"
+        app:layout_constraintTop_toTopOf="@id/tv_chat_room" />
+
+    <TextView
+        android:id="@+id/tv_chat_room"
+        app:layout_constraintBottom_toBottomOf="@id/top_divide"
+        app:layout_constraintStart_toEndOf="@id/iv_icon_chat_room"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="语音聊天室"
+        android:textColor="#ffffffff"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toStartOf="@id/gl_divide"
+        app:layout_constraintTop_toTopOf="@id/top_bg" />
+
+    <ImageView
+        android:id="@+id/iv_icon_ktv"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintStart_toEndOf="@id/gl_divide"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:src="@drawable/icon_create_room_ktv"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_ktv"
+        app:layout_constraintBottom_toBottomOf="@id/tv_ktv"
+        app:layout_constraintTop_toTopOf="@id/tv_ktv" />
+    
+    <View
+        android:id="@+id/indicator_chat_room"
+        android:background="#337eff"
+        app:layout_constraintBottom_toTopOf="@id/top_divide"
+        app:layout_constraintStart_toStartOf="@id/iv_icon_chat_room"
+        app:layout_constraintEnd_toEndOf="@id/tv_chat_room"
+        android:layout_width="20dp"
+        android:layout_height="3dp"/>
+
+    <TextView
+        android:id="@+id/tv_ktv"
+        app:layout_constraintStart_toEndOf="@id/iv_icon_ktv"
+        app:layout_constraintBottom_toBottomOf="@id/top_divide"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="KTV"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:textColor="#ffffffff"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/top_bg" />
+
+    <View
+        android:id="@+id/indicator_ktv"
+        android:background="#337eff"
+        app:layout_constraintBottom_toTopOf="@id/top_divide"
+        app:layout_constraintStart_toStartOf="@id/iv_icon_ktv"
+        app:layout_constraintEnd_toEndOf="@id/tv_ktv"
+        android:visibility="gone"
+        android:layout_width="20dp"
+        android:layout_height="3dp"/>
+
+    <ImageView
+        android:id="@+id/iv_random"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/icon_create_room_random_name"
+        app:layout_constraintEnd_toEndOf="@id/top_bg"
+        app:layout_constraintTop_toBottomOf="@id/top_divide" />
+
+    <EditText
+        android:id="@+id/et_room_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        android:background="#00000000"
+        android:ellipsize="end"
+        android:maxLength="20"
+        android:maxLines="2"
+        android:text="随机"
+        android:textColor="#ffffffff"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@id/top_bg"
+        app:layout_constraintEnd_toStartOf="@id/iv_random"
+        app:layout_constraintStart_toStartOf="@id/top_bg"
+        app:layout_constraintTop_toBottomOf="@id/top_divide" />
+
+    <TextView
+        android:id="@+id/tv_create_room"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:background="@drawable/shape_create_room_btn_chat_room_bg"
+        android:text="开启房间"
+        android:textColor="#ffffffff"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,18 @@
     <color name="color_77777">#777777</color>
     <color name="color_e4e4e4">#e4e4e4</color>
     <color name="color_3399ff">#3399ff</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_E6E7EB">#E6E7EB</color>
+    <color name="color_FF9966">#FF9966</color>
+    <color name="color_FF66B2">#FF66B2</color>
 
+    <color name="color_50_000000">#80000000</color>
+    <color name="color_30_000000">#AA000000</color>
+    <color name="color_20_ffffff">#BAffffff</color>
+    <color name="color_33ffffff">#33ffffff</color>
+    <color name="color_ktv_bg_audience">#4c221A33</color>
+    <color name="color_ktv_bg_singer">#cc221A33</color>
 
 
 </resources>

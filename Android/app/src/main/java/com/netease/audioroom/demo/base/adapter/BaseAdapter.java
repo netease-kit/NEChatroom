@@ -1,12 +1,13 @@
 package com.netease.audioroom.demo.base.adapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.netease.audioroom.demo.R;
 
@@ -85,7 +86,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
 
 
     @Override
-    public final void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         onBindBaseViewHolder(holder, position);
         holder.itemView.setTag(R.id.base_adapter_model_tag, dataList.get(position));
         holder.itemView.setTag(R.id.base_adapter_position_tag, position);
@@ -132,8 +133,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
         }
         int start = dataList.size();
         dataList.addAll(items);
-        notifyItemRangeChanged(start, items.size());
-//        notifyDataSetChanged();
+//        notifyItemRangeChanged(start, items.size());
+        notifyDataSetChanged();
 
 
     }

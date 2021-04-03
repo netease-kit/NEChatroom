@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_20"
+    android:paddingEnd="@dimen/dimen_20"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/tv_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_999999"
+                android:layout_gravity="center"
+                android:textSize="12sp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lav_playing"
+                android:layout_width="@dimen/dimen_18"
+                android:layout_height="22dp" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_music_avatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_music_author_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:textSize="14sp"
+                android:textColor="@color/color_222222" />
+
+            <ImageView
+                android:id="@+id/iv_user_avatar"
+                android:layout_width="@dimen/dimen_15"
+                android:layout_height="@dimen/dimen_15"
+                android:layout_below="@+id/tv_music_author_name" />
+
+            <TextView
+                android:id="@+id/tv_user_nick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_999999"
+                android:textSize="12sp"
+                android:layout_below="@+id/tv_music_author_name"
+                android:layout_toRightOf="@+id/iv_user_avatar" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp">
+
+            <TextView
+                android:id="@+id/tv_playing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#337eff"
+                android:text="正在播放" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/color_222222"
+                android:background="@drawable/whitebg_blackframe"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingStart="@dimen/dimen_10"
+                android:paddingEnd="@dimen/dimen_10"
+                android:text="取消" />
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_E6E7EB" />
+</LinearLayout>
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.netease.audioroom.demo.widget.pullloadmorerecyclerview.PullLoadMoreRecyclerView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rv_room_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dimen_160">
+
+        <TextView
+            android:id="@+id/room_list_empty_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/color_E6E7EB"
+            android:textSize="@dimen/text_100"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_12"
+            android:gravity="center"
+            android:text="@string/room_list_empty"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_14"></TextView>
+
+    </LinearLayout>
+
+</FrameLayout>

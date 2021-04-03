@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_1a1a23"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/dimen_8">
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:background="@drawable/layer_room_member_item_bg"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <com.netease.audioroom.demo.widget.HeadImageView
         android:id="@+id/headview"
-        android:layout_width="@dimen/dimen_50"
-        android:layout_height="@dimen/dimen_50"
-        android:layout_margin="2dp" />
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
 
     <TextView
         android:id="@+id/chatroom_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_8"
-        android:textColor="@color/color_ffffff"
-        android:textSize="20sp" />
+        android:layout_marginStart="@dimen/dimen_8"
+        android:textColor="#ff222222"
+        android:textSize="14dp" />
 
 </LinearLayout>

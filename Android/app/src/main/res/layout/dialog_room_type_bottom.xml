@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/room_type_icon_rtc"
+        android:layout_width="24dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/room_type_rtc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/room_type_icon_cdn"
+        android:layout_width="24dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/room_type_cdn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/room_type_txt_rtc" />
+
+    <TextView
+        android:id="@+id/room_type_txt_rtc"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="12dp"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="20dp"
+        android:text="RTC"
+        android:textColor="#ff222222"
+        android:textSize="16dp"
+        android:drawableEnd="@drawable/right_arrow_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/room_type_icon_rtc"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/room_type_txt_cdn"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:text="CDN"
+        android:textColor="#ff222222"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="12dp"
+        android:drawableEnd="@drawable/right_arrow_gray"
+        android:textSize="16dp"
+        app:layout_constraintStart_toEndOf="@id/room_type_icon_rtc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/room_type_txt_rtc" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffe6e7eb"
+        app:layout_constraintTop_toBottomOf="@id/room_type_txt_rtc" />
+
+    <View
+        android:id="@+id/room_type_divide"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#fff0f0f2"
+        app:layout_constraintTop_toBottomOf="@id/room_type_txt_cdn"
+        app:layout_constraintBottom_toTopOf="@id/room_type_cancel" />
+
+    <TextView
+        android:id="@+id/room_type_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#ff222222"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

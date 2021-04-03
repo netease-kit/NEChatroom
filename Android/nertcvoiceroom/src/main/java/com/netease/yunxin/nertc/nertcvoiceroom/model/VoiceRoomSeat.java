@@ -23,6 +23,12 @@ import java.util.List;
  * 麦位信息
  */
 public class VoiceRoomSeat implements Serializable, Parcelable {
+
+    /**
+     * 麦位容量
+     */
+    public static final int SEAT_COUNT = 8;
+
     public interface Status {
         /**
          * 麦位初始化状态（没人）
@@ -278,7 +284,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
         status = Status.APPLY;
     }
 
-    public void muteSelf() {
+    public void muteSelf(boolean muted) {
         switch (status) {
             case Status.AUDIO_CLOSED:
                 status = Status.ON;
@@ -291,7 +297,9 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
                 status = Status.AUDIO_CLOSED_AND_MUTED;
                 break;
             default:
-                status = Status.AUDIO_CLOSED;
+                if (muted) {
+                    status = Status.AUDIO_CLOSED;
+                }
                 break;
         }
     }
@@ -466,5 +474,9 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
 
     public static boolean remove(Collection<VoiceRoomSeat> seats, VoiceRoomSeat seat) {
         return seats.remove(seat);
+    }
+
+    public VoiceRoomSeat getBackup() {
+        return new VoiceRoomSeat(index, status, reason, user);
     }
 }

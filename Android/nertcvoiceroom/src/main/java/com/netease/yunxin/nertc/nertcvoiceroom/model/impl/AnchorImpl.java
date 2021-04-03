@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
 import com.netease.nimlib.sdk.chatroom.ChatRoomService;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomUpdateInfo;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Anchor;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat.Status;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.custom.StreamRestarted;
 import com.netease.yunxin.nertc.nertcvoiceroom.util.RequestCallbackEx;
 import com.netease.yunxin.nertc.nertcvoiceroom.util.SuccessCallback;
 
@@ -55,8 +57,11 @@ class AnchorImpl implements Anchor {
      */
     private final Map<String, VoiceRoomSeat> seats = new ConcurrentHashMap<>();
 
+    private final SeatStatusHelper statusRecorder;
+
     AnchorImpl(NERtcVoiceRoomInner voiceRoom) {
         this.voiceRoom = voiceRoom;
+        this.statusRecorder = new SeatStatusHelper(voiceRoom);
         this.chatRoomService = NIMClient.getService(ChatRoomService.class);
     }
 
@@ -97,56 +102,126 @@ class AnchorImpl implements Anchor {
     }
 
     @Override
-    public void openSeat(VoiceRoomSeat seat, RequestCallback<Void> callback) {
-        seat.open();
-        voiceRoom.sendSeatUpdate(seat, callback);
+    public void openSeat(final VoiceRoomSeat seat, final RequestCallback<Void> callback) {
+        VoiceRoomSeat backup = seat.getBackup();
+        backup.open();
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
+            @Override
+            public void onSuccess() {
+                seat.open();
+                voiceRoom.sendSeatUpdate(seat, callback);
+            }
+
+            @Override
+            public void onFail() {
+                if (callback != null) {
+                    callback.onFailed(-1);
+                }
+            }
+        });
+
     }
 
     @Override
-    public void closeSeat(final VoiceRoomSeat seat, RequestCallback<Void> callback) {
-        seat.close();
-        voiceRoom.sendSeatUpdate(seat, new RequestCallbackEx<Void>(callback) {
+    public void closeSeat(final VoiceRoomSeat seat, final RequestCallback<Void> callback) {
+        VoiceRoomSeat backup = seat.getBackup();
+        backup.close();
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
             @Override
-            public void onSuccess(Void param) {
-                removeApplySeat(seat);
+            public void onSuccess() {
+                seat.close();
+                voiceRoom.sendSeatUpdate(seat, new RequestCallbackEx<Void>(callback) {
+                    @Override
+                    public void onSuccess(Void param) {
+                        removeApplySeat(seat);
 
-                super.onSuccess(param);
+                        super.onSuccess(param);
+                    }
+                });
+            }
+
+            @Override
+            public void onFail() {
+                if (callback != null) {
+                    callback.onFailed(-1);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void muteSeat(final VoiceRoomSeat seat, final RequestCallback<Void> callback) {
+        VoiceRoomSeat backup = seat.getBackup();
+        backup.mute();
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
+            @Override
+            public void onSuccess() {
+                seat.mute();
+                voiceRoom.sendSeatUpdate(seat, callback);
+            }
+
+            @Override
+            public void onFail() {
+                if (callback != null) {
+                    callback.onFailed(-1);
+                }
             }
         });
     }
 
     @Override
-    public void muteSeat(VoiceRoomSeat seat, RequestCallback<Void> callback) {
-        seat.mute();
-        voiceRoom.sendSeatUpdate(seat, callback);
+    public boolean inviteSeat(final VoiceRoomSeat seat, final RequestCallback<Void> callback0) {
+        VoiceRoomSeat backup = seat.getBackup();
+        backup.invite();
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
+            @Override
+            public void onSuccess() {
+                voiceRoom.sendSeatUpdate(seat, new RequestCallbackEx<Void>(callback0) {
+                    @Override
+                    public void onSuccess(Void param) {
+                        voiceRoom.sendSeatEvent(seat, true);
+                        removeApplySeat(seat);
+                        super.onSuccess(param);
+                    }
+                });
+            }
+
+            @Override
+            public void onFail() {
+                if (callback0 != null) {
+                    callback0.onFailed(-1);
+                }
+            }
+        });
+        return seat.invite();
     }
 
     @Override
-    public boolean inviteSeat(final VoiceRoomSeat seat, RequestCallback<Void> callback0) {
-        if (!seat.invite()) {
-            return false;
-        }
-        voiceRoom.sendSeatUpdate(seat, new RequestCallbackEx<Void>(callback0) {
+    public void kickSeat(final VoiceRoomSeat seat, final RequestCallback<Void> callback0) {
+        VoiceRoomSeat backup = seat.getBackup();
+        backup.kick();
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
             @Override
-            public void onSuccess(Void param) {
-                voiceRoom.sendSeatEvent(seat, true);
-                removeApplySeat(seat);
-                super.onSuccess(param);
+            public void onSuccess() {
+                seat.kick();
+                voiceRoom.sendSeatUpdate(seat, new RequestCallbackEx<Void>(callback0) {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        voiceRoom.sendSeatEvent(seat, false);
+                        super.onSuccess(aVoid);
+                    }
+                });
             }
-        });
-        return true;
-    }
 
-    @Override
-    public void kickSeat(final VoiceRoomSeat seat, RequestCallback<Void> callback0) {
-        seat.kick();
-        voiceRoom.sendSeatUpdate(seat, new RequestCallbackEx<Void>(callback0) {
             @Override
-            public void onSuccess(Void aVoid) {
-                voiceRoom.sendSeatEvent(seat, false);
-                super.onSuccess(aVoid);
+            public void onFail() {
+                if (callback0 != null) {
+                    callback0.onFailed(-1);
+                }
             }
         });
+
     }
 
     @Override
@@ -169,6 +244,16 @@ class AnchorImpl implements Anchor {
         return roomQuery;
     }
 
+    @Override
+    public void notifyStreamRestarted() {
+        if (voiceRoomInfo == null) {
+            return;
+        }
+        // 重新开始推流
+        chatRoomService
+                .sendMessage(ChatRoomMessageBuilder.createChatRoomCustomMessage(voiceRoomInfo.getRoomId(), new StreamRestarted()), false);
+    }
+
     void initRoom(VoiceRoomInfo voiceRoomInfo) {
         this.voiceRoomInfo = voiceRoomInfo;
         this.roomQuery = new RoomQuery(voiceRoomInfo, chatRoomService);
@@ -189,12 +274,32 @@ class AnchorImpl implements Anchor {
                 } else {
                     local = seat;
                 }
-                local.apply();
-                if (voiceRoom.getSeat(local.getIndex()).getStatus() == Status.CLOSED) {
-                    return;
-                }
-                voiceRoom.sendSeatUpdate(local, null);
-                addApplySeat(seat);
+                VoiceRoomSeat backup = local.getBackup();
+                backup.apply();
+                final VoiceRoomSeat finalLocal = local;
+                statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
+                    @Override
+                    public void onSuccess() {
+                        if (!statusRecorder.checkSeat(new ArrayList<>(applySeats), seat)) {
+                            return;
+                        }
+                        finalLocal.apply();
+                        if (voiceRoom.getSeat(finalLocal.getIndex()).getStatus() == Status.CLOSED) {
+                            return;
+                        }
+                        voiceRoom.sendSeatUpdate(finalLocal, new SuccessCallback<Void>() {
+                            @Override
+                            public void onSuccess(Void param) {
+                                addApplySeat(seat);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+                });
+
                 break;
             }
             case SeatCommandDef.CANCEL_SEAT_APPLY: {
@@ -202,24 +307,55 @@ class AnchorImpl implements Anchor {
                 if (local == null) {
                     local = seat;
                 }
-                local.cancelApply();
-                final VoiceRoomSeat tmp = local;
-                voiceRoom.sendSeatUpdate(local, new SuccessCallback<Void>() {
+                VoiceRoomSeat backup = local.getBackup();
+                backup.cancelApply();
+                final VoiceRoomSeat finalLocal = local;
+                statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        removeApplySeat(tmp);
+                    public void onSuccess() {
+                        seats.put(seat.getKey(), finalLocal);
+                        VoiceRoomSeat currentSeat = voiceRoom.getSeat(seat.getIndex());
+                        if (currentSeat != null && currentSeat.isOn()) {
+                            removeApplySeat(finalLocal);
+                            return;
+                        }
+                        finalLocal.cancelApply();
+                        voiceRoom.sendSeatUpdate(finalLocal, new SuccessCallback<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                removeApplySeat(finalLocal);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFail() {
+
                     }
                 });
+
                 break;
             }
             case SeatCommandDef.LEAVE_SEAT: {
                 final VoiceRoomSeat local = seats.get(seat.getKey());
                 if (local != null) {
-                    local.leave();
-                    voiceRoom.sendSeatUpdate(local, new SuccessCallback<Void>() {
+                    VoiceRoomSeat backup = local.getBackup();
+                    backup.leave();
+                    statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
                         @Override
-                        public void onSuccess(Void param) {
-                            voiceRoom.sendSeatEvent(local, false);
+                        public void onSuccess() {
+                            local.leave();
+                            voiceRoom.sendSeatUpdate(local, new SuccessCallback<Void>() {
+                                @Override
+                                public void onSuccess(Void param) {
+                                    voiceRoom.sendSeatEvent(local, false);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFail() {
+
                         }
                     });
                 }
@@ -257,6 +393,7 @@ class AnchorImpl implements Anchor {
                 addApplySeat(seat);
             }
         }
+
     }
 
     void clearSeats() {

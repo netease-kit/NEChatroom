@@ -1,8 +1,8 @@
 package com.netease.yunxin.nertc.nertcvoiceroom.model.custom;
 
-import com.netease.yunxin.nertc.nertcvoiceroom.util.JsonUtil;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachmentParser;
+import com.netease.yunxin.nertc.nertcvoiceroom.util.JsonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +24,13 @@ public class CustomAttachParser implements MsgAttachmentParser {
         switch (type) {
             case CustomAttachmentType.CLOSER_ROOM:
                 attachment = new CloseRoomAttach();
+                break;
+            case CustomAttachmentType.STREAM_RESTARTED:
+                attachment = new StreamRestarted();
+                break;
+            case CustomAttachmentType.MUSIC_PAUSE:
+            case CustomAttachmentType.MUSIC_RESUME:
+                attachment = new MusicControl(type);
                 break;
         }
 

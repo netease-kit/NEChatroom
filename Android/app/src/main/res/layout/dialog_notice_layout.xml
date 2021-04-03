@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="@dimen/dimen_15"
+        app:cardPreventCornerOverlap="false">
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_256"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_12"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/text_16" />
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_20"
+                android:text="@string/notice"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tips"
+                android:layout_marginTop="@dimen/dimen_60"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="@dimen/dimen_20"
+                android:paddingRight="@dimen/dimen_20"
+                android:paddingBottom="@dimen/dimen_20"
+                android:gravity="left"
+                android:text="@string/notice_tips"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/text_14" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
+

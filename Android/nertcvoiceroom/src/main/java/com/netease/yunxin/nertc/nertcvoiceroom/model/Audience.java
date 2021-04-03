@@ -9,7 +9,7 @@ public interface Audience {
     /**
      * 申请上麦
      *
-     * @param seat {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat 麦位}
+     * @param seat     {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat 麦位}
      * @param callback {@link com.netease.nimlib.sdk.RequestCallback 回调}
      */
     void applySeat(VoiceRoomSeat seat, RequestCallback<Void> callback);
@@ -36,6 +36,23 @@ public interface Audience {
     VoiceRoomSeat getSeat();
 
     /**
+     * 获取当前 CDN 模式下播放器控制
+     *
+     * @return {@link com.netease.yunxin.nertc.nertcvoiceroom.model.AudiencePlay 观众播放器控制}
+     */
+    AudiencePlay getAudiencePlay();
+
+    /**
+     * 根据当前是否在CDN模式下以及是否在麦位上决定是否重新通过播放器拉流
+     */
+    void restartAudioOrNot();
+
+    /**
+     * 刷新当前房间的麦位信息
+     */
+    void refreshSeat();
+
+    /**
      * 观众回调接口
      */
     interface Callback {
@@ -49,16 +66,16 @@ public interface Audience {
         /**
          * 进入麦位
          *
-         * @return {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat 麦位}
          * @param last 是否为恢复时
+         * @return {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat 麦位}
          */
         void onEnterSeat(VoiceRoomSeat seat, boolean last);
 
         /**
          * 离开麦位
          *
-         * @return {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat 麦位}
          * @param bySelf 是否为自己下麦
+         * @return {@link com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat 麦位}
          */
         void onLeaveSeat(VoiceRoomSeat seat, boolean bySelf);
 
@@ -81,7 +98,7 @@ public interface Audience {
     /**
      * 设置观众回调
      *
-     * @param callback     {@link com.netease.yunxin.nertc.nertcvoiceroom.model.Audience.Callback 回调}
+     * @param callback {@link com.netease.yunxin.nertc.nertcvoiceroom.model.Audience.Callback 回调}
      */
     void setCallback(Callback callback);
 }

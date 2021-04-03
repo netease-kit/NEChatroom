@@ -1,5 +1,7 @@
 package com.netease.yunxin.nertc.nertcvoiceroom.model.impl;
 
+import android.graphics.Rect;
+
 import com.netease.lava.nertc.sdk.NERtcCallbackEx;
 import com.netease.lava.nertc.sdk.stats.NERtcAudioVolumeInfo;
 
@@ -35,18 +37,26 @@ public class NERtcCallbackExImpl implements NERtcCallbackEx {
     @Override
     public void onDisconnect(int reason) {}
 
-    // ex
+    @Override
+    public void onClientRoleChange(int i, int i1) {
+
+    }
+
+    @Override
+    public void onUserSubStreamVideoStart(long l, int i) {
+
+    }
+
+    @Override
+    public void onUserSubStreamVideoStop(long l) {
+
+    }
 
     @Override
     public void onUserAudioMute(long uid, boolean muted) {}
 
     @Override
     public void onUserVideoMute(long uid, boolean muted) {}
-
-    @Override
-    public void onClientRoleChange(int i, int i1) {
-
-    }
 
     @Override
     public void onFirstAudioDataReceived(long uid) {}
@@ -100,6 +110,27 @@ public class NERtcCallbackExImpl implements NERtcCallbackEx {
 
     @Override
     public void onLiveStreamState(String taskId, String pushUrl, int liveState) {}
+
+    @Override
+    public void onConnectionStateChanged(int i, int i1) {
+
+    }
+
+    @Override
+    public void onCameraFocusChanged(Rect rect) {
+
+    }
+
+    @Override
+    public void onCameraExposureChanged(Rect rect) {
+
+    }
+
+    @Override
+    public void onRecvSEIMsg(long l, String s) {
+
+    }
+
 
     @Override
     public void onError(int code) {}

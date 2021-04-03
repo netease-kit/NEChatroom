@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/tv_music_order"
+        android:layout_width="18dp"
+        android:layout_height="wrap_content"
+        android:text="01"
+        android:textColor="#ff999999"
+        android:layout_marginTop="8dp"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_playing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_music_order"
+        app:layout_constraintBottom_toBottomOf="@id/tv_music_order"
+        android:layout_width="18dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_music_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:singleLine="true"
+        android:text="歌曲名称"
+        android:textColor="#ff222222"
+        android:textSize="14dp"
+        app:layout_constraintStart_toEndOf="@id/tv_music_order"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_music_singer"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_music_name"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:singleLine="true"
+        android:text="歌手名称"
+        android:textColor="#ff999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toEndOf="@id/tv_music_order" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffe6e7eb"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

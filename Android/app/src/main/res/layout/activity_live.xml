@@ -4,252 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/apply_hint"
-        android:layout_width="@dimen/dimen_65"
-        android:layout_height="@dimen/dimen_35"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/semicircle"
-        android:gravity="center_horizontal"
-        android:textColor="@color/color_ffffff"
-        android:textSize="16sp"
-        tools:text="1" />
-
     <include
         layout="@layout/base_audio_ui"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
-    <RelativeLayout
+    <TextView
+        android:id="@+id/apply_hint"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="66dp"
-        android:background="@drawable/play_music_contronal"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        tools:visibility="gone">
-
-
-        <TextView
-            android:id="@+id/tv_music_play_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/color_c7c7c7" />
-
-        <ImageView
-            android:id="@+id/iv_pause_or_play"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_below="@id/tv_music_play_hint"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/play_pause_state_bg" />
-
-        <ImageView
-            android:id="@+id/iv_next"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_below="@id/tv_music_play_hint"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/iv_pause_or_play"
-            android:src="@drawable/music_control_next" />
-
-
-        <ImageView
-            android:id="@+id/iv_more_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_music_play_hint"
-            android:layout_toRightOf="@id/iv_next"
-            android:paddingLeft="12dp"
-            android:paddingTop="4dp"
-            android:paddingRight="12dp"
-            android:src="@drawable/music_action_more" />
-
-    </RelativeLayout>
-
-
-    <FrameLayout
-        android:id="@+id/fl_music_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-
-        <RelativeLayout
-            android:id="@+id/rl_music_action_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/color_000000"
-            android:paddingLeft="20dp"
-            android:paddingTop="20dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="12dp">
-
-            <TextView
-                android:id="@+id/tv_background_music"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="背景音乐"
-                android:textColor="@color/color_ffffff"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_select_file"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_toRightOf="@id/tv_background_music"
-                android:text="选择文件"
-                android:textColor="@color/color_37d4ff"
-                android:textSize="16sp" />
-
-
-            <TextView
-                android:id="@+id/tv_music_file"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/music_selector_bg"
-                android:text="文件"
-                android:textColor="@color/color_ffffff"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_music_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@id/tv_music_file"
-                android:background="@drawable/music_selector_bg"
-                android:text="音乐2"
-                android:textColor="@color/color_ffffff"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_music_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@id/tv_music_2"
-                android:background="@drawable/music_selector_bg"
-                android:text="音乐1"
-                android:textColor="@color/color_ffffff"
-                android:textSize="14sp" />
-
-
-            <LinearLayout
-                android:id="@+id/ll_music_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_music_2"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/sound_loud" />
-
-                <SeekBar
-                    android:id="@+id/music_song_volume_control"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:max="100"
-                    android:maxHeight="2dp"
-                    android:paddingLeft="10dp"
-                    android:progress="100"
-                    android:progressDrawable="@drawable/background_music_control_seekbar_bg"
-                    android:saveEnabled="true"
-                    android:thumb="@drawable/background_music_control_seekbar_thumb_selector" />
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/tv_audio_effect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_music_container"
-                android:layout_marginTop="20dp"
-                android:text="音效"
-                android:textColor="@color/color_ffffff"
-                android:textSize="16sp" />
-
-
-            <TextView
-                android:id="@+id/tv_audio_effect_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_music_container"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/music_selector_bg"
-                android:text="音效2"
-                android:textColor="@color/color_ffffff"
-                android:textSize="14sp" />
-
-
-            <TextView
-                android:id="@+id/tv_audio_effect_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_music_container"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@id/tv_audio_effect_2"
-                android:background="@drawable/music_selector_bg"
-                android:text="音效1"
-                android:textColor="@color/color_ffffff"
-                android:textSize="14sp" />
-
-
-            <LinearLayout
-                android:id="@+id/ll_audio_effect_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_audio_effect_2"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/sound_loud" />
-
-                <SeekBar
-                    android:id="@+id/audio_effect_volume_control"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:max="100"
-                    android:maxHeight="2dp"
-                    android:paddingLeft="10dp"
-                    android:progress="100"
-                    android:progressDrawable="@drawable/background_music_control_seekbar_bg"
-                    android:saveEnabled="true"
-                    android:thumb="@drawable/background_music_control_seekbar_thumb_selector" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </FrameLayout>
+        android:layout_height="@dimen/dimen_38"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/apply_tips_bg"
+        android:gravity="center"
+        android:text="@string/apply_micro"
+        android:drawableRight="@drawable/arrow_down"
+        android:textColor="@color/color_ffffff"
+        android:paddingLeft="@dimen/dimen_12"
+        android:paddingRight="@dimen/dimen_12"
+        android:textSize="@dimen/text_14" />
 
     <include
         layout="@layout/settings"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </FrameLayout>

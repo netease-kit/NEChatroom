@@ -10,13 +10,34 @@
     <dimen name="dimen_5">5dp</dimen>
     <dimen name="dimen_8">8dp</dimen>
     <dimen name="dimen_10">10dp</dimen>
+    <dimen name="dimen_12">12dp</dimen>
     <dimen name="dimen_15">15dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dimen_19">19dp</dimen>
     <dimen name="dimen_20">20dp</dimen>
     <dimen name="dimen_25">25dp</dimen>
+    <dimen name="dimen_32">32dp</dimen>
     <dimen name="dimen_35">35dp</dimen>
     <dimen name="dimen_40">40dp</dimen>
+    <dimen name="dimen_48">48dp</dimen>
     <dimen name="dimen_50">50dp</dimen>
     <dimen name="dimen_55">55dp</dimen>
+    <dimen name="dimen_60">60dp</dimen>
     <dimen name="dimen_65">65dp</dimen>
+    <dimen name="dimen_120">120dp</dimen>
+    <dimen name="dimen_160">160dp</dimen>
+    <dimen name="dimen_44">44dp</dimen>
+    <dimen name="dimen_38">38dp</dimen>
+    <dimen name="dimen_256">256dp</dimen>
+    <dimen name="dimen_58">58dp</dimen>
 
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_27">27sp</dimen>
+    <dimen name="text_100">100sp</dimen>
+    <dimen name="text_13">13sp</dimen>
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="dimen_17">17sp</dimen>
+    <dimen name="dimen_18">18dp</dimen>
+    <dimen name="dimen_30">30dp</dimen>
 </resources>

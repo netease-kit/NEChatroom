@@ -1,5 +1,7 @@
 package com.netease.audioroom.demo.util;
 
+import java.util.Objects;
+
 public class Network {
     private boolean wifi;
     private boolean mobile;
@@ -41,4 +43,22 @@ public class Network {
         this.mobile = mobile;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Network network = (Network) o;
+        //return wifi == network.wifi && mobile == network.mobile && connected == network.connected;
+        return connected == network.connected;
+    }
+
+    @Override
+    public int hashCode() {
+        //return Objects.hash(wifi, mobile, connected);
+        return Objects.hash(connected);
+    }
 }

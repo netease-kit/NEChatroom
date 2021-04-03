@@ -4,12 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.netease.audioroom.demo.R;
 import com.netease.audioroom.demo.cache.DemoCache;
 import com.netease.nimlib.sdk.nos.model.NosThumbParam;
 import com.netease.nimlib.sdk.nos.util.NosThumbImageUtil;
+import com.netease.yunxin.android.lib.picture.ImageLoader;
 
 
 public class HeadImageView extends CircleImageView {
@@ -58,16 +57,12 @@ public class HeadImageView extends CircleImageView {
 //        final String thumbUrl = makeAvatarThumbNosUrl(url, thumbSize);
         final String thumbUrl = url;
 
-        RequestOptions requestOptions = new RequestOptions()
-                .centerCrop()
-                .placeholder(defaultResId)
-                .error(defaultResId)
-                .override(thumbSize, thumbSize);
-
-        Glide.with(getContext().getApplicationContext())
+        ImageLoader.with(getContext().getApplicationContext())
                 .asBitmap()
                 .load(thumbUrl)
-                .apply(requestOptions)
+                .error(defaultResId)
+                .placeholder(defaultResId)
+                .override(thumbSize)
                 .into(this);
     }
 

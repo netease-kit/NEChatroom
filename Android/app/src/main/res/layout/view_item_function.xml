@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="10dp">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="102dp"/>
+
+    <TextView
+        android:id="@+id/tv_function_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="#ffffffff"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tv_function_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_function_name"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:singleLine="true"
+        android:textColor="#ffffffff"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_alignTop="@id/tv_function_name"
+        android:layout_alignBottom="@id/tv_function_name"
+        android:src="@drawable/icon_function_item_arrow_right" />
+</RelativeLayout>

@@ -96,6 +96,8 @@ public interface Anchor {
      */
     RoomQuery getRoomQuery();
 
+    void notifyStreamRestarted();
+
     /**
      * 主播回调接口
      */

@@ -9,10 +9,28 @@
         <item name="actionBarSize">@dimen/action_bar_height</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/background_img</item>
-
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_img</item>
+    </style>
+
+    <style name="BottomDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">#00000000</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowAnimationStyle">@style/BottomDialogAnimation</item>
+    </style>
+
+    <style name="CommonDialog" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">#00000000</item>
+    </style>
+
+    <style name="BottomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_exit</item>
+    </style>
 
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension" />
@@ -71,7 +89,19 @@
         <item name="android:windowBackground">@color/color_00000000</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowAnimationStyle">@style/request_dialog_Animation</item>
+        <item name="android:windowSoftInputMode">adjustNothing</item>
+<!--        <item name="android:windowAnimationStyle">@style/request_dialog_Animation</item>-->
     </style>
 
+    <style name="TransBottomDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">#00000000</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/Animation</item>
+    </style>
+
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">16dp</item>
+    </style>
 </resources>

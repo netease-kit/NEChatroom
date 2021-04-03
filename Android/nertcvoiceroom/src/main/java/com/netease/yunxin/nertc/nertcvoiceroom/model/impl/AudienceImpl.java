@@ -1,7 +1,10 @@
 package com.netease.yunxin.nertc.nertcvoiceroom.model.impl;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
+import com.netease.yunxin.kit.alog.ALog;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo;
@@ -10,11 +13,14 @@ import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Audience;
-import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.AudiencePlay;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.StreamConfig;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat.Reason;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomSeat.Status;
-import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomInfo;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.VoiceRoomUser;
+import com.netease.yunxin.nertc.nertcvoiceroom.model.ktv.MusicSing;
 import com.netease.yunxin.nertc.nertcvoiceroom.util.DoneCallback;
 import com.netease.yunxin.nertc.nertcvoiceroom.util.RequestCallbackEx;
 
@@ -48,8 +54,16 @@ class AudienceImpl implements Audience {
      */
     private Callback callback;
 
+    /**
+     * cdn 模式下播放器控制
+     */
+    private final AudiencePlay audiencePlay = new AudiencePlayImpl();
+
+    private final SeatStatusHelper statusRecorder;
+
     AudienceImpl(NERtcVoiceRoomImpl voiceRoom) {
         this.voiceRoom = voiceRoom;
+        this.statusRecorder = new SeatStatusHelper(voiceRoom);
         this.msgService = NIMClient.getService(MsgService.class);
     }
 
@@ -59,7 +73,33 @@ class AudienceImpl implements Audience {
     }
 
     @Override
-    public void applySeat(VoiceRoomSeat seat, final RequestCallback<Void> callback) {
+    public void applySeat(final VoiceRoomSeat seat, final RequestCallback<Void> callback) {
+        if (mySeat != null && (mySeat.isOn() || mySeat.getStatus() == Status.APPLY)) {
+            if (callback != null) {
+                callback.onFailed(-1);
+            }
+            return;
+        }
+        VoiceRoomSeat backup = seat.getBackup();
+        backup.apply();
+        backup.setUser(user);
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
+            @Override
+            public void onSuccess() {
+                doApplySeat(seat, callback);
+            }
+
+            @Override
+            public void onFail() {
+                if (callback != null) {
+                    callback.onFailed(-1);
+                }
+            }
+        });
+
+    }
+
+    private void doApplySeat(VoiceRoomSeat seat, final RequestCallback<Void> callback) {
         mySeat = seat;
 
         sendNotification(SeatCommands.applySeat(voiceRoomInfo, user, seat), new RequestCallback<Void>() {
@@ -76,6 +116,8 @@ class AudienceImpl implements Audience {
                     return;
                 }
                 mySeat.setStatus(Status.APPLY);
+//                mySeat.setUser(user);
+//                voiceRoom.updateSeat(mySeat);
 
                 if (callback != null) {
                     callback.onSuccess(param);
@@ -99,25 +141,46 @@ class AudienceImpl implements Audience {
     }
 
     @Override
-    public void cancelSeatApply(RequestCallback<Void> callback) {
-        VoiceRoomSeat seat = mySeat;
-        if (seat.getStatus() == Status.CLOSED) {
+    public void cancelSeatApply(final RequestCallback<Void> callback) {
+        if (mySeat == null) {
             return;
         }
-        seat.setReason(Reason.CANCEL_APPLY);
-        sendNotification(SeatCommands.cancelSeatApply(voiceRoomInfo, user, mySeat), new RequestCallbackEx<Void>(callback) {
+        VoiceRoomSeat backup = mySeat.getBackup();
+        backup.cancelApply();
+        backup.setUser(user);
+        statusRecorder.updateSeat(backup, new SeatStatusHelper.ExecuteAction() {
             @Override
-            public void onSuccess(Void param) {
-                mySeat.cancelApply();
-                mySeat = null;
+            public void onSuccess() {
+                final VoiceRoomSeat seat = mySeat;
+                if (seat == null || seat.getStatus() == Status.CLOSED) {
+                    return;
+                }
+                seat.setReason(Reason.CANCEL_APPLY);
+                sendNotification(SeatCommands.cancelSeatApply(voiceRoomInfo, user, seat), new RequestCallbackEx<Void>(callback) {
+                    @Override
+                    public void onSuccess(Void param) {
+                        if (mySeat != null && mySeat.getReason() == Reason.CANCEL_APPLY) {
+                            seat.cancelApply();
+                            mySeat = null;
+                        }
 
-                super.onSuccess(param);
+                        super.onSuccess(param);
+                    }
+                });
+            }
+
+            @Override
+            public void onFail() {
+                if (callback != null) {
+                    callback.onFailed(-1);
+                }
             }
         });
+
     }
 
     @Override
-    public void leaveSeat(RequestCallback<Void> callback) {
+    public void leaveSeat(final RequestCallback<Void> callback) {
         if (mySeat == null) {
             return;
         }
@@ -127,7 +190,6 @@ class AudienceImpl implements Audience {
             public void onSuccess(Void param) {
                 onLeaveSeat(mySeat, true);
                 mySeat = null;
-
                 super.onSuccess(param);
             }
         });
@@ -136,6 +198,36 @@ class AudienceImpl implements Audience {
     @Override
     public VoiceRoomSeat getSeat() {
         return mySeat != null ? voiceRoom.getSeat(mySeat.getIndex()) : null;
+    }
+
+    @Override
+    public AudiencePlay getAudiencePlay() {
+        return audiencePlay;
+    }
+
+    @Override
+    public void refreshSeat() {
+        voiceRoom.refreshSeats();
+    }
+
+    // wifi 2 4G  if enter room async delay, may be npe
+    @Override
+    public void restartAudioOrNot() {
+        if (voiceRoomInfo == null) {
+            return;
+        }
+        StreamConfig config = voiceRoomInfo.getStreamConfig();
+        if (config == null) {
+            return;
+        }
+        if (TextUtils.isEmpty(config.rtmpPullUrl)) {
+            return;
+        }
+        VoiceRoomSeat seat = getSeat();
+        if (seat != null && seat.isOn()) {
+            return;
+        }
+        getAudiencePlay().play(config.rtmpPullUrl);
     }
 
     void enterRoom(VoiceRoomInfo voiceRoomInfo,
@@ -153,7 +245,11 @@ class AudienceImpl implements Audience {
     }
 
     boolean leaveRoom(Runnable runnable) {
+        if (!audiencePlay.isReleased()) {
+            audiencePlay.release();
+        }
         if (mySeat == null) {
+            ALog.e("AudienceImpl", "leaveRoom seat is null.");
             return false;
         }
         leaveSeat(new DoneCallback<Void>(runnable));
@@ -253,7 +349,7 @@ class AudienceImpl implements Audience {
         if (mySeat == null) {
             return;
         }
-        mySeat.muteSelf();
+        mySeat.muteSelf(muted);
         voiceRoom.sendSeatUpdate(mySeat, null);
     }
 
@@ -264,6 +360,10 @@ class AudienceImpl implements Audience {
     }
 
     private void onEnterSeat(VoiceRoomSeat seat, boolean last) {
+        mySeat = seat;
+        if (voiceRoomInfo.isSupportCDN()) {
+            voiceRoom.getPushTypeSwitcher().toRTC(voiceRoomInfo, Long.parseLong(user.account));
+        }
         voiceRoom.startLocalAudio();
         if (voiceRoom.isLocalAudioMute()) {
             voiceRoom.muteLocalAudio(false);
@@ -274,6 +374,12 @@ class AudienceImpl implements Audience {
     }
 
     private void onLeaveSeat(VoiceRoomSeat seat, boolean bySelf) {
+        if (voiceRoomInfo.isSupportCDN() && voiceRoom.isInitial()) {
+            voiceRoom.getPushTypeSwitcher().toCDN(voiceRoomInfo.getStreamConfig().httpPullUrl);
+        }
+
+        MusicSing.shareInstance().leaveSet(user, true);
+        voiceRoom.enableEarback(false);
         voiceRoom.stopLocalAudio();
         if (callback != null) {
             callback.onLeaveSeat(seat, bySelf);
