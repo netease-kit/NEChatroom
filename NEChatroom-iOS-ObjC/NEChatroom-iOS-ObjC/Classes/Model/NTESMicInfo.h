@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, NTESMicStatus) {
     //上麦,但是用户自己关闭了话筒
     NTESMicStatusConnectFinishedWithMuted = 6,
     //上麦,但是用户自己关闭了话筒,且被主播屏蔽
-    NTESMicStatusConnectFinishedWithMutedAndMasked = 7,
+    NTESMicStatusConnectFinishedWithMutedAndMasked = 7
 };
 
 typedef NS_ENUM(NSUInteger, NTESMicReason) {
@@ -61,6 +61,8 @@ typedef NS_ENUM(NSUInteger, NTESMicReason) {
 @property (nonatomic,assign) NTESMicReason micReason;
 @property (nonatomic,strong) NTESUserInfo *userInfo;
 @property (nonatomic,assign) BOOL isMicMute;
+//消息通知id
+@property(nonatomic, strong) NSNumber *notificationId;
 
 - (BOOL)isOnMicStatus;
 

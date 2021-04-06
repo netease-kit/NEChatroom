@@ -36,8 +36,10 @@
 - (void)startNetworkAuthorityListener {
     _cellularData = [[CTCellularData alloc] init];
     _cellularData.cellularDataRestrictionDidUpdateNotifier = ^(CTCellularDataRestrictedState state){
-        if ([[NTESDemoSystemManager shareInstance] netStatus] == NotReachable) {
-            [NTESAuthorityHelper showWarnningAlert:@"网络设置出错，请前往系统设置进行修改"];
+        if (state == kCTCellularDataRestricted) {
+            if ([[NTESDemoSystemManager shareInstance] netStatus] == NotReachable) {
+                [NTESAuthorityHelper showWarnningAlert:@"网络设置出错，请前往系统设置进行修改"];
+            }
         }
     };
 }

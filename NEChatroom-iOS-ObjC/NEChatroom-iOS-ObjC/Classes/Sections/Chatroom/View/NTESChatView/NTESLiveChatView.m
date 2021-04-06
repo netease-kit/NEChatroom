@@ -10,6 +10,8 @@
 #import "UIView+NTES.h"
 #import "NTESMessageModel.h"
 #import "NTESLiveChatTextCell.h"
+#import "NTESChatroomDefine.h"
+#import "NTESCustomNotificationHelper.h"
 
 @interface NTESLiveChatView()<UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 {
@@ -18,6 +20,9 @@
 @property (nonatomic,strong) NSMutableArray<NTESMessageModel *> *messages;
 
 @property (nonatomic,strong) NSMutableArray *pendingMessages;   //缓存的插入消息,聊天室需要在另外个线程计算高度,减少UI刷新
+
+- (void)musicDidPause:(NSNotification *)notification;
+- (void)musicDidResume:(NSNotification *)notification;
 
 @end
 
@@ -34,9 +39,16 @@
         UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doTap:)];
         tap.delegate=self;
         [self addGestureRecognizer:tap];
-
+        
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(musicDidPause:) name:kNTESChatroomPauseMusicNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(musicDidResume:) name:kNTESChatroomResumeMusicNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [NSNotificationCenter.defaultCenter removeObserver:self name:kNTESChatroomPauseMusicNotification object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:kNTESChatroomResumeMusicNotification object:nil];
 }
 
 - (void)layoutSubviews {
@@ -77,7 +89,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NTESMessageModel *model = self.messages[indexPath.row];
-    return (model.size.height + 8.0 + 9.0);
+    return (model.size.height + 8.0 + 4.0);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,6 +115,20 @@
     return _tableView;
 }
 
+
+#pragma mark - Notification
+
+- (void)musicDidPause:(NSNotification *)notification {
+    NSString *operator = notification.userInfo[kNTESChatroomPauseMusicOperatorUserInfoKey];
+    NIMMessage *message = [NTESChatroomMessageHelper systemMessageWithText:[NSString stringWithFormat:@"\"%@\"暂停了歌曲", operator]];
+    [self addMessages:@[message]];
+}
+
+- (void)musicDidResume:(NSNotification *)notification {
+    NSString *operator = notification.userInfo[kNTESChatroomResumeMusicOperatorUserInfoKey];
+    NIMMessage *message = [NTESChatroomMessageHelper systemMessageWithText:[NSString stringWithFormat:@"\"%@\"恢复了歌曲", operator]];
+    [self addMessages:@[message]];
+}
 
 #pragma mark - Private
 
@@ -206,7 +232,7 @@
     if (insets.top != 0 ) {
         CGFloat height = 0;
         for (NTESMessageModel *model in newModels) {
-            height += (model.size.height + 8.0 + 9.0);
+            height += (model.size.height + 8.0 + 4.0);
         }
         CGFloat top = insets.top - height;
         insets.top = MAX(top, 0);

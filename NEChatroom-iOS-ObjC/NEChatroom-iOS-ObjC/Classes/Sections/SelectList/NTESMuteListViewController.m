@@ -7,8 +7,6 @@
 //
 
 #import "NTESMuteListViewController.h"
-#import "NTESNavBar.h"
-#import "NTESChatroomStateView.h"
 #import "UIView+NTES.h"
 #import "NTESUserInfoCell.h"
 #import "NTESUnMuteListViewController.h"
@@ -19,6 +17,7 @@
 @property (nonatomic, strong) UIView *actionWrapper;
 @property (nonatomic, strong) UIButton *addMutePerson;
 @property (nonatomic, strong) UIButton *muteAll;
+@property (nonatomic, strong) UIView *bottomLineView;
 
 @property (nonatomic, strong) NSMutableArray <NIMChatroomMember *> *members;
 @property (nonatomic, assign) BOOL chatroomMute;
@@ -45,17 +44,28 @@
     _actionWrapper.frame = CGRectMake(0, self.navBar.bottom, self.navBar.width, 60.0);
     
     CGFloat width = (self.view.width -  3*16.0)/2;
-    CGFloat height = _actionWrapper.height - 2*8.0;
-    _addMutePerson.frame = CGRectMake(16.0, 8.0, width, height);
+    CGFloat height = _actionWrapper.height - 2*12.0;
+    _addMutePerson.frame = CGRectMake(16.0, 12.0, width, height);
     _muteAll.frame = CGRectMake(_addMutePerson.right + 16.0,
                                 _addMutePerson.top,
                                 _addMutePerson.width,
                                 _addMutePerson.height);
+    _bottomLineView.frame = CGRectMake(0, _actionWrapper.height-0.5, _actionWrapper.width, 0.5);
     self.emptyView.frame = CGRectMake(0,
                                   _actionWrapper.bottom,
                                   self.view.width,
                                   self.view.height-_actionWrapper.bottom);
     self.tableview.frame = self.emptyView.frame;
+    
+    [_addMutePerson cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(20, 20)];
+    [_muteAll cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(20, 20)];
+
+}
+
+- (CGSize)preferredContentSize
+{
+    CGFloat preferedHeight = UIScreenHeight * 0.8 + kSafeAreaHeight;
+    return CGSizeMake(UIScreenWidth, preferedHeight);
 }
 
 - (void)didSetUpUI {
@@ -64,6 +74,8 @@
     [self.view addSubview:self.actionWrapper];
     [self.actionWrapper addSubview:self.addMutePerson];
     [self.actionWrapper addSubview:self.muteAll];
+    [self.actionWrapper addSubview:self.bottomLineView];
+
 }
 
 - (void)fetchChatroomMembers {
@@ -132,7 +144,8 @@
         vc = [[NTESUnMuteListViewController alloc] initWithMembers:nil];
     }
     vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)muteAllAciton:(UIButton *)sender {
@@ -204,7 +217,7 @@
 - (UIView *)actionWrapper {
     if (!_actionWrapper) {
         _actionWrapper = [[UIView alloc] init];
-        _actionWrapper.backgroundColor = [UIColor blackColor];
+        _actionWrapper.backgroundColor = [UIColor whiteColor];
     }
     return _actionWrapper;
 }
@@ -213,10 +226,9 @@
     if (!_addMutePerson) {
         _addMutePerson = [UIButton buttonWithType:UIButtonTypeCustom];
         [_addMutePerson setTitle:@"添加禁言成员" forState:UIControlStateNormal];
-        [_addMutePerson setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _addMutePerson.titleLabel.font = [UIFont systemFontOfSize:15.0];
-        _addMutePerson.layer.cornerRadius = 4.0;
-        _addMutePerson.backgroundColor = UIColorFromRGBA(0x383841, 1.0);
+        [_addMutePerson setTitleColor:UIColorFromRGB(0x222222) forState:UIControlStateNormal];
+        _addMutePerson.titleLabel.font = TextFont_14;
+        _addMutePerson.backgroundColor = UIColorFromRGBA(0xF2F3F5, 1.0);
         [_addMutePerson addTarget:self action:@selector(mutePersionAction:)
                  forControlEvents:UIControlEventTouchUpInside];
     }
@@ -228,10 +240,9 @@
         _muteAll = [UIButton buttonWithType:UIButtonTypeCustom];
         [_muteAll setTitle:@"全部禁言" forState:UIControlStateNormal];
         [_muteAll setTitle:@"解除全部禁言" forState:UIControlStateSelected];
-        [_muteAll setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _muteAll.titleLabel.font = [UIFont systemFontOfSize:15.0];
-        _muteAll.layer.cornerRadius = 4.0;
-        _muteAll.backgroundColor = UIColorFromRGBA(0x383841, 1.0);
+        [_muteAll setTitleColor:UIColorFromRGB(0x222222) forState:UIControlStateNormal];
+        _muteAll.titleLabel.font = TextFont_14;
+        _muteAll.backgroundColor = UIColorFromRGBA(0xF2F3F5, 1.0);
         [_muteAll addTarget:self action:@selector(muteAllAciton:)
                  forControlEvents:UIControlEventTouchUpInside];
         _muteAll.selected = _chatroomMute;
@@ -239,4 +250,11 @@
     return _muteAll;
 }
 
+- (UIView *)bottomLineView {
+    if (!_bottomLineView) {
+        _bottomLineView = [[UIView alloc]init];
+        _bottomLineView.backgroundColor = UIColorFromRGB(0xE6E7EB);
+    }
+    return _bottomLineView;
+}
 @end

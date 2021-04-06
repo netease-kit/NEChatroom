@@ -41,7 +41,7 @@
     switch (model.type) {
         case NTESMessageNormal:
         {
-            self.contentView.backgroundColor = UIColorFromRGBA(0xffffff, 0.1);
+            self.contentView.backgroundColor = UIColorFromRGBA(0x000000, 0.5);
             break;
         }
         case NTESMessageNotication:

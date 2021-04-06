@@ -20,7 +20,7 @@
 
 - (instancetype)initWithInfo:(NSString *)info {
     if (self = [super init]) {
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor whiteColor];
         _info = info;
         [self addSubview:self.imgView];
         [self addSubview:self.infoLab];
@@ -31,7 +31,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    _imgView.size = CGSizeMake(120, 120);
+    _imgView.size = CGSizeMake(80, 80);
     _imgView.top = 54.0;
     _imgView.centerX = self.width/2;
     _infoLab.top = _imgView.bottom + 18.0;
@@ -43,7 +43,7 @@
     if (!_imgView) {
         _imgView = [[UIImageView alloc] init];
         _imgView.contentMode = UIViewContentModeScaleAspectFit;
-        _imgView.image = [UIImage imageNamed:@"empty_mute_list"];
+        _imgView.image = [UIImage imageNamed:@"empty_ico"];
     }
     return _imgView;
 }
@@ -51,7 +51,7 @@
 - (UILabel *)infoLab {
     if (!_infoLab) {
         _infoLab = [[UILabel alloc] init];
-        _infoLab.textColor = [UIColor whiteColor];
+        _infoLab.textColor = UIColorFromRGB(0xBFBFBF);
         _infoLab.font = [UIFont systemFontOfSize:15.0];
         _infoLab.text = _info ?: @"";
         [_infoLab sizeToFit];

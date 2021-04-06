@@ -12,6 +12,7 @@
 #import "UIImage+YYWebImage.h"
 #import "UIButton+YYWebImage.h"
 #import "NTESAnimationButton.h"
+#import "UIImage+NTES.h"
 
 @interface NTESChatroomCollectionViewCell()
 
@@ -61,7 +62,8 @@
         case NTESMicStatusNone:
         {
             self.nameLabel.text = [NSString stringWithFormat:@"麦位%zd",micInfo.micOrder];
-            [self.connectBtn setImage:[UIImage imageNamed:@"icon_plus_n"] forState:UIControlStateNormal];
+            [self.connectBtn setImage:[UIImage imageNamed:@"mic_none_ico"] forState:UIControlStateNormal];
+            self.connectBtn.layer.borderWidth = 0;
             micInfo.isMicMute = YES;
             [self.connectBtn stopCustomAnimation];
             self.smallIcon.hidden = YES;
@@ -71,6 +73,7 @@
         {
             self.nameLabel.text = micInfo.userInfo.nickName ? : @"";
             [self.connectBtn setImage:[UIImage imageNamed:@"icon_connecting_n"] forState:UIControlStateNormal];
+            self.connectBtn.layer.borderWidth = 1;
             micInfo.isMicMute = YES;
             [self.connectBtn stopCustomAnimation];
             self.smallIcon.hidden = YES;
@@ -80,7 +83,9 @@
         {
             self.nameLabel.text = micInfo.userInfo.nickName ? : @"";
             [self setImageWithUrl:micInfo.userInfo.icon];
-            self.smallIcon.hidden = YES;
+            self.connectBtn.layer.borderWidth = 1;
+            [self.smallIcon setImage:[UIImage imageNamed:@"mic_open_ico"]];
+            self.smallIcon.hidden = NO;
             if (micInfo.isMicMute) {
                 [self.connectBtn stopCustomAnimation];
             } else {
@@ -92,6 +97,7 @@
         {
             self.nameLabel.text = [NSString stringWithFormat:@"麦位%zd",micInfo.micOrder];
             [self.connectBtn setImage:[UIImage imageNamed:@"icon_mic_closed_n"] forState:UIControlStateNormal];
+            self.connectBtn.layer.borderWidth = 0;
             micInfo.isMicMute = YES;
             [self.connectBtn stopCustomAnimation];
             self.smallIcon.hidden = YES;
@@ -101,6 +107,7 @@
         {
             self.nameLabel.text = [NSString stringWithFormat:@"麦位%zd",micInfo.micOrder];
             [self.connectBtn setImage:[UIImage imageNamed:@"icon_mic_mask_n"] forState:UIControlStateNormal];
+            self.connectBtn.layer.borderWidth = 0;
             micInfo.isMicMute = YES;
             [self.connectBtn stopCustomAnimation];
             
@@ -111,7 +118,8 @@
         {
             self.nameLabel.text = micInfo.userInfo.nickName ? : @"";
             [self setImageWithUrl:micInfo.userInfo.icon];
-            [self.smallIcon setImage:[UIImage imageNamed:@"icon_mic_mask_small"]];
+            self.connectBtn.layer.borderWidth = 1;
+            [self.smallIcon setImage:[UIImage imageNamed:@"mic_shield_ico"]];
             self.smallIcon.hidden = NO;
             micInfo.isMicMute = YES;
             [self.connectBtn stopCustomAnimation];
@@ -122,7 +130,8 @@
         {
             self.nameLabel.text = micInfo.userInfo.nickName ? : @"";
             [self setImageWithUrl:micInfo.userInfo.icon];
-            [self.smallIcon setImage:[UIImage imageNamed:@"icon_mic_off_small"]];
+            self.connectBtn.layer.borderWidth = 1;
+            [self.smallIcon setImage:[UIImage imageNamed:@"mic_close_ico"]];
             self.smallIcon.hidden = NO;
             
             micInfo.isMicMute = YES;
@@ -174,9 +183,12 @@
     if (!_connectBtn) {
         NTESAnimationButton *connectBtn = [NTESAnimationButton buttonWithType:UIButtonTypeCustom];
         [connectBtn addTarget:self action:@selector(onConnectBtnPressed)  forControlEvents:UIControlEventTouchUpInside];
-        [connectBtn setImage:[UIImage imageNamed:@"icon_plus_n"] forState:UIControlStateNormal];
+        UIImage *img = [UIImage imageNamed:@"mic_none_ico"];
+        [connectBtn setImage:img forState:UIControlStateNormal];
         _connectBtn = connectBtn;
-        _connectBtn.backgroundColor = UIColorFromRGBA(0xffffff, 0.1);
+        _connectBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:0.1];
+        _connectBtn.layer.masksToBounds = YES;
+        _connectBtn.layer.borderColor = [UIColor whiteColor].CGColor;
         [self.contentView addSubview:_connectBtn];
     }
     return _connectBtn;

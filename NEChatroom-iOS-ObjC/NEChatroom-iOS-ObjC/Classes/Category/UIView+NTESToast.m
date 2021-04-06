@@ -15,7 +15,6 @@
 @interface NTESToastBar : UIView
 
 @property (nonatomic, assign) NTESToastState state;
-@property (nonatomic, strong) UIView *wrapperView;
 @property (nonatomic, strong) UILabel *infoLab;
 @property (nonatomic, strong) UIImageView *imgView;
 @property (nonatomic, strong) UIButton *cancelBtn;
@@ -60,13 +59,13 @@
     bar.tag = NTES_TOAST_BAR_TAG;
     CGFloat width = [bar setInfo:message];
     width = MIN(width, self.bounds.size.width);
-    CGFloat offset = (state == NTESToastCancel ? 48.0 : 38.0);
+    CGFloat offset = 38.0;
     bar.frame = CGRectMake(0, -offset, width, offset);
     bar.centerX = self.bounds.size.width/2;
     
     [self addSubview:bar];
     [UIView animateWithDuration:0.25 animations:^{
-        bar.top = (IPHONE_X ? IPHONE_X_HairHeight : 0);
+        bar.top = (IPHONE_X ? IPHONE_X_HairHeight : 20);
     }];
 }
 
@@ -76,11 +75,9 @@
     
     UIView *bar = [self viewWithTag:NTES_TOAST_BAR_TAG];
     CGFloat offset = bar.height;
-    [UIView animateWithDuration:0.25 animations:^{
-        bar.top = -offset;
-    } completion:^(BOOL finished) {
-        [bar removeFromSuperview];
-    }];
+    
+    bar.top = -offset;
+    [bar removeFromSuperview];
 }
 @end
 
@@ -89,7 +86,8 @@
 - (instancetype)initWithState:(NTESToastState)state {
     if (self = [super init]) {
         self.clipsToBounds = YES;
-        [self addSubview:self.wrapperView];
+        self.backgroundColor = [UIColor whiteColor];
+        self.layer.cornerRadius = 19;
         
         switch (state) {
             case NTESToastStateSuccess:
@@ -116,8 +114,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _wrapperView.frame = CGRectMake(0, -10, self.width, self.height + 10.0);
-    _wrapperView.layer.cornerRadius = 10.0;
     
     switch (_state) {
         case NTESToastStateSuccess:
@@ -160,13 +156,6 @@
 }
 
 #pragma mark - Getter
-- (UIView *)wrapperView {
-    if (!_wrapperView) {
-        _wrapperView = [[UIView alloc] init];
-        _wrapperView.backgroundColor = UIColorFromRGBA(0xffe1b5, 1.0);
-    }
-    return _wrapperView;
-}
 
 - (UIImageView *)imgView {
     if (!_imgView) {
@@ -180,7 +169,7 @@
     if (!_infoLab) {
         _infoLab = [[UILabel alloc] init];
         _infoLab.font = [UIFont systemFontOfSize:14.0];
-        _infoLab.textColor = UIColorFromRGBA(0x9f6830, 1.0);
+        _infoLab.textColor = UIColorFromRGBA(0x222222, 1.0);
     }
     return _infoLab;
 }

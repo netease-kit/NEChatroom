@@ -8,11 +8,153 @@
 
 /* Begin PBXBuildFile section */
 		21B979C8D71B0EEFAA5208F7 /* libPods-NEChatroom-iOS-ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C84D6952B9FA499FC466B /* libPods-NEChatroom-iOS-ObjC.a */; };
+		392B928625D01ADA00C8A1D2 /* NTESKeyboardToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 392B928525D01ADA00C8A1D2 /* NTESKeyboardToolbarView.m */; };
+		392B928925D165AE00C8A1D2 /* UIButton+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 392B928825D165AE00C8A1D2 /* UIButton+Layout.m */; };
+		393A702D25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A702C25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m */; };
+		393A703025B85F8A00C9A0A2 /* NTESCdnStreamService.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A702F25B85F8900C9A0A2 /* NTESCdnStreamService.m */; };
+		393A703625BAF50E00C9A0A2 /* NTESCustomAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A703525BAF50E00C9A0A2 /* NTESCustomAttachment.m */; };
+		393A704325C011EE00C9A0A2 /* NTESBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A703B25C011ED00C9A0A2 /* NTESBaseTableViewController.m */; };
+		393A704425C011EE00C9A0A2 /* NTESBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A703C25C011EE00C9A0A2 /* NTESBaseWebViewController.m */; };
+		393A704525C011EE00C9A0A2 /* NTESBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A703D25C011EE00C9A0A2 /* NTESBaseViewController.m */; };
+		393A704B25C0154B00C9A0A2 /* NTESViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A704825C0154B00C9A0A2 /* NTESViewFactory.m */; };
+		393A704C25C0154B00C9A0A2 /* NTESDeviceSizeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A704A25C0154B00C9A0A2 /* NTESDeviceSizeInfo.m */; };
+		393A705025C28BDE00C9A0A2 /* UIImageView+CornerRadius.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A704F25C28BDE00C9A0A2 /* UIImageView+CornerRadius.m */; };
+		393A705325C2DA4200C9A0A2 /* NTESOpenRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 393A705225C2DA4200C9A0A2 /* NTESOpenRoomViewController.m */; };
+		3983F73525E62C590022FC8A /* UILabel+ChangeSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 3983F73425E62C590022FC8A /* UILabel+ChangeSpace.m */; };
+		39B5909B25C7E19300B8EABA /* NTESMusicConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B5909925C7E19300B8EABA /* NTESMusicConsoleViewController.m */; };
+		39B5909E25C7E3DD00B8EABA /* NTESHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B5909D25C7E3DD00B8EABA /* NTESHomeViewController.m */; };
+		39B590A125C7EB2700B8EABA /* NTESHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590A025C7EB2700B8EABA /* NTESHomeTableViewCell.m */; };
+		39B590A525C7EFF500B8EABA /* NTESHomePageCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590A425C7EFF500B8EABA /* NTESHomePageCellModel.m */; };
+		39B590AB25C81ED700B8EABA /* NTESBaseTabViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590AA25C81ED600B8EABA /* NTESBaseTabViewCell.m */; };
+		39B590B125C8340200B8EABA /* NTESSegmentCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590AF25C8340200B8EABA /* NTESSegmentCtrl.m */; };
+		39B590B425C834A500B8EABA /* NSObject+additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590B325C834A500B8EABA /* NSObject+additions.m */; };
+		39B590B725C835CB00B8EABA /* UIView+Gradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590B625C835CB00B8EABA /* UIView+Gradient.m */; };
+		39B590BB25C8F79E00B8EABA /* NTESBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590B925C8F79E00B8EABA /* NTESBaseView.m */; };
+		39B590C425C93CEE00B8EABA /* NTESCreateRoomTitleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590C325C93CEE00B8EABA /* NTESCreateRoomTitleButton.m */; };
+		39B590C725C94E5B00B8EABA /* NTESCreateRoomNameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590C525C94E5A00B8EABA /* NTESCreateRoomNameView.m */; };
+		39B590CE25C96FDC00B8EABA /* NTESChatRoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590CD25C96FDC00B8EABA /* NTESChatRoomListViewController.m */; };
+		39B590D125C9745000B8EABA /* NTESLiveListMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590D025C9745000B8EABA /* NTESLiveListMainViewController.m */; };
+		39B590D425C9770600B8EABA /* NELiveListMainPageNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590D225C9770600B8EABA /* NELiveListMainPageNavView.m */; };
+		39B590D725C981FD00B8EABA /* NETSEmptyListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590D625C981FD00B8EABA /* NETSEmptyListView.m */; };
+		39B590DA25C983A700B8EABA /* NETSLiveListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590D825C983A600B8EABA /* NETSLiveListCell.m */; };
+		39B590E025CA493700B8EABA /* NTESLiveRoomListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590DF25CA493700B8EABA /* NTESLiveRoomListModel.m */; };
+		39B590E425CA750000B8EABA /* NETSLiveListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590E225CA750000B8EABA /* NETSLiveListViewModel.m */; };
+		39B590E725CAA1AD00B8EABA /* NTESKtvListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590E625CAA1AD00B8EABA /* NTESKtvListViewController.m */; };
+		39B590EB25CB9B9300B8EABA /* NTESProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590EA25CB9B9300B8EABA /* NTESProgressHUD.m */; };
+		39B590F125CBDCDB00B8EABA /* NTESLiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590F025CBDCDB00B8EABA /* NTESLiveRoomViewController.m */; };
+		39B590F625CBDE2400B8EABA /* NTESLiveRoomHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590F525CBDE2400B8EABA /* NTESLiveRoomHeaderView.m */; };
+		39B590F925CC1EFE00B8EABA /* NTESLiveRoomFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590F825CC1EFE00B8EABA /* NTESLiveRoomFooterView.m */; };
+		39B590FC25CCE09C00B8EABA /* NTESNoticePopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B590FA25CCE09C00B8EABA /* NTESNoticePopView.m */; };
+		4819908325C3F06900E8FBED /* NTESBackgroundMusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4819908225C3F06900E8FBED /* NTESBackgroundMusicViewController.m */; };
+		4819908625C40BE900E8FBED /* NTESBackgroundMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 4819908525C40BE900E8FBED /* NTESBackgroundMusic.m */; };
+		4819908925C415C600E8FBED /* NTESBackgroundMusicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4819908825C415C600E8FBED /* NTESBackgroundMusicCell.m */; };
+		4825703625CA3D0C00303F83 /* NTESMusicPanelLyricLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4825703525CA3D0C00303F83 /* NTESMusicPanelLyricLoader.m */; };
+		4825703825CA438B00303F83 /* audio_effect_1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4825703725CA438B00303F83 /* audio_effect_1.wav */; };
+		4825703C25CA7D8400303F83 /* NTESRtcConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4825703B25CA7D8400303F83 /* NTESRtcConfig.m */; };
+		482EA4B425CD015600A32E74 /* 3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 482EA4B325CD015500A32E74 /* 3.mp3 */; };
+		48360FE525C7E7AE006FE443 /* playing.json in Resources */ = {isa = PBXBuildFile; fileRef = 48360FE425C7E7AD006FE443 /* playing.json */; };
+		48360FE925C7F16D006FE443 /* lyric_bg@3x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48360FE725C7F16D006FE443 /* lyric_bg@3x.jpg */; };
+		48360FEA25C7F16D006FE443 /* lyric_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48360FE825C7F16D006FE443 /* lyric_bg@2x.jpg */; };
+		4844A71B25BFAC2700F7BA00 /* NTESLyricFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A71625BFAC2700F7BA00 /* NTESLyricFrame.m */; };
+		4844A71C25BFAC2700F7BA00 /* NTESLyricCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A71925BFAC2700F7BA00 /* NTESLyricCell.m */; };
+		4844A71D25BFAC2700F7BA00 /* NTESLyricView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A71A25BFAC2700F7BA00 /* NTESLyricView.m */; };
+		4844A72E25C00C9500F7BA00 /* NTESMusicPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A72D25C00C9500F7BA00 /* NTESMusicPanelViewController.m */; };
+		4844A73225C01B9D00F7BA00 /* NTESMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A73125C01B9D00F7BA00 /* NTESMoreViewController.m */; };
+		4844A73525C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A73425C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.m */; };
+		4844A73A25C02B6300F7BA00 /* NTESActionSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4844A73925C02B6300F7BA00 /* NTESActionSheetPresentationController.m */; };
+		4852485D25C921EE0023E4C3 /* NTESChatroomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4852485C25C921EE0023E4C3 /* NTESChatroomTableViewCell.m */; };
+		48557F6325DF597000D3B9A2 /* ne_strip_archs.sh in Resources */ = {isa = PBXBuildFile; fileRef = 48557F6225DF597000D3B9A2 /* ne_strip_archs.sh */; };
+		489390DF25C1043E009F9EF0 /* NTESActionSheetDismissalController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489390DE25C1043E009F9EF0 /* NTESActionSheetDismissalController.m */; };
+		489390E825C13283009F9EF0 /* NTESMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489390E725C13282009F9EF0 /* NTESMoreCell.m */; };
+		489390EB25C133B3009F9EF0 /* NTESMoreItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 489390EA25C133B3009F9EF0 /* NTESMoreItem.m */; };
+		489390F925C17BFB009F9EF0 /* NTESActionSheetNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489390F825C17BFB009F9EF0 /* NTESActionSheetNavigationController.m */; };
+		86403C6325CBF2D500B4240E /* NTESHasPickedSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86403C6225CBF2D500B4240E /* NTESHasPickedSongCell.m */; };
+		8652CB0325CD696300B5334F /* NTESPickMusicService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8652CB0225CD696300B5334F /* NTESPickMusicService.m */; };
+		8652CB1C25CF894800B5334F /* es_playing.json in Resources */ = {isa = PBXBuildFile; fileRef = 8652CB1B25CF894800B5334F /* es_playing.json */; };
+		8652CB4625CFDB3E00B5334F /* NTESListEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8652CB4425CFDB3E00B5334F /* NTESListEmptyView.m */; };
+		865F8C1C25C7D2FC00259171 /* UIImage+NTES.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8C1B25C7D2FC00259171 /* UIImage+NTES.m */; };
+		865F8E5425C8EA7B00259171 /* NTESMusicConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E5225C8EA7B00259171 /* NTESMusicConsoleViewController.m */; };
+		865F8EE625C8EA9A00259171 /* LOTRenderNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E5A25C8EA9900259171 /* LOTRenderNode.m */; };
+		865F8EE725C8EA9A00259171 /* LOTTrimPathNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E5F25C8EA9900259171 /* LOTTrimPathNode.m */; };
+		865F8EE825C8EA9A00259171 /* LOTColorInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6125C8EA9900259171 /* LOTColorInterpolator.m */; };
+		865F8EE925C8EA9A00259171 /* LOTPathInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6225C8EA9900259171 /* LOTPathInterpolator.m */; };
+		865F8EEA25C8EA9A00259171 /* LOTSizeInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6A25C8EA9900259171 /* LOTSizeInterpolator.m */; };
+		865F8EEB25C8EA9A00259171 /* LOTPointInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6C25C8EA9900259171 /* LOTPointInterpolator.m */; };
+		865F8EEC25C8EA9A00259171 /* LOTValueInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6D25C8EA9900259171 /* LOTValueInterpolator.m */; };
+		865F8EED25C8EA9A00259171 /* LOTTransformInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6E25C8EA9900259171 /* LOTTransformInterpolator.m */; };
+		865F8EEE25C8EA9A00259171 /* LOTArrayInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E6F25C8EA9900259171 /* LOTArrayInterpolator.m */; };
+		865F8EEF25C8EA9A00259171 /* LOTNumberInterpolator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7025C8EA9900259171 /* LOTNumberInterpolator.m */; };
+		865F8EF025C8EA9A00259171 /* LOTAnimatorNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7125C8EA9900259171 /* LOTAnimatorNode.m */; };
+		865F8EF125C8EA9A00259171 /* LOTPathAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7325C8EA9900259171 /* LOTPathAnimator.m */; };
+		865F8EF225C8EA9A00259171 /* LOTPolystarAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7425C8EA9900259171 /* LOTPolystarAnimator.m */; };
+		865F8EF325C8EA9A00259171 /* LOTPolygonAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7525C8EA9900259171 /* LOTPolygonAnimator.m */; };
+		865F8EF425C8EA9A00259171 /* LOTCircleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7725C8EA9900259171 /* LOTCircleAnimator.m */; };
+		865F8EF525C8EA9A00259171 /* LOTRoundedRectAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7B25C8EA9900259171 /* LOTRoundedRectAnimator.m */; };
+		865F8EF625C8EA9A00259171 /* LOTRenderGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7E25C8EA9900259171 /* LOTRenderGroup.m */; };
+		865F8EF725C8EA9A00259171 /* LOTGradientFillRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E7F25C8EA9900259171 /* LOTGradientFillRender.m */; };
+		865F8EF825C8EA9A00259171 /* LOTStrokeRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E8425C8EA9900259171 /* LOTStrokeRenderer.m */; };
+		865F8EF925C8EA9A00259171 /* LOTFillRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E8525C8EA9900259171 /* LOTFillRenderer.m */; };
+		865F8EFA25C8EA9A00259171 /* LOTRepeaterRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E8725C8EA9900259171 /* LOTRepeaterRenderer.m */; };
+		865F8EFB25C8EA9A00259171 /* UIBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E8A25C8EA9900259171 /* UIBezierPath.m */; };
+		865F8EFC25C8EA9A00259171 /* UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E8D25C8EA9A00259171 /* UIColor.m */; };
+		865F8EFD25C8EA9A00259171 /* NSValue+Compat.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9025C8EA9A00259171 /* NSValue+Compat.m */; };
+		865F8EFE25C8EA9A00259171 /* CALayer+Compat.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9125C8EA9A00259171 /* CALayer+Compat.m */; };
+		865F8EFF25C8EA9A00259171 /* LOTMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9325C8EA9A00259171 /* LOTMask.m */; };
+		865F8F0025C8EA9A00259171 /* LOTLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9425C8EA9A00259171 /* LOTLayer.m */; };
+		865F8F0125C8EA9A00259171 /* LOTAssetGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9525C8EA9A00259171 /* LOTAssetGroup.m */; };
+		865F8F0225C8EA9A00259171 /* LOTLayerGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9A25C8EA9A00259171 /* LOTLayerGroup.m */; };
+		865F8F0325C8EA9A00259171 /* LOTShapeStar.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9B25C8EA9A00259171 /* LOTShapeStar.m */; };
+		865F8F0425C8EA9A00259171 /* LOTShapeTrimPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8E9C25C8EA9A00259171 /* LOTShapeTrimPath.m */; };
+		865F8F0525C8EA9A00259171 /* LOTShapeGradientFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EA025C8EA9A00259171 /* LOTShapeGradientFill.m */; };
+		865F8F0625C8EA9A00259171 /* LOTAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EA325C8EA9A00259171 /* LOTAsset.m */; };
+		865F8F0725C8EA9A00259171 /* LOTShapeRepeater.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EA525C8EA9A00259171 /* LOTShapeRepeater.m */; };
+		865F8F0825C8EA9A00259171 /* LOTShapeRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EA725C8EA9A00259171 /* LOTShapeRectangle.m */; };
+		865F8F0925C8EA9A00259171 /* LOTShapeCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EAC25C8EA9A00259171 /* LOTShapeCircle.m */; };
+		865F8F0A25C8EA9A00259171 /* LOTShapePath.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EAD25C8EA9A00259171 /* LOTShapePath.m */; };
+		865F8F0B25C8EA9A00259171 /* LOTShapeGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EAE25C8EA9A00259171 /* LOTShapeGroup.m */; };
+		865F8F0C25C8EA9A00259171 /* LOTShapeFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EB025C8EA9A00259171 /* LOTShapeFill.m */; };
+		865F8F0D25C8EA9A00259171 /* LOTShapeTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EB125C8EA9A00259171 /* LOTShapeTransform.m */; };
+		865F8F0E25C8EA9A00259171 /* LOTShapeStroke.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EB325C8EA9A00259171 /* LOTShapeStroke.m */; };
+		865F8F0F25C8EA9A00259171 /* CGGeometry+LOTAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EB725C8EA9A00259171 /* CGGeometry+LOTAdditions.m */; };
+		865F8F1025C8EA9A00259171 /* LOTBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EB825C8EA9A00259171 /* LOTBezierPath.m */; };
+		865F8F1125C8EA9A00259171 /* LOTRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EBA25C8EA9A00259171 /* LOTRadialGradientLayer.m */; };
+		865F8F1225C8EA9A00259171 /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EBD25C8EA9A00259171 /* UIColor+Expanded.m */; };
+		865F8F1325C8EA9A00259171 /* LOTAnimationCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EBF25C8EA9A00259171 /* LOTAnimationCache.m */; };
+		865F8F1425C8EA9A00259171 /* LOTComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC025C8EA9A00259171 /* LOTComposition.m */; };
+		865F8F1525C8EA9A00259171 /* LOTValueCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC125C8EA9A00259171 /* LOTValueCallback.m */; };
+		865F8F1625C8EA9A00259171 /* LOTBlockCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC225C8EA9A00259171 /* LOTBlockCallback.m */; };
+		865F8F1725C8EA9A00259171 /* LOTAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC325C8EA9A00259171 /* LOTAnimationView.m */; };
+		865F8F1825C8EA9A00259171 /* LOTAnimationTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC425C8EA9A00259171 /* LOTAnimationTransitionController.m */; };
+		865F8F1925C8EA9A00259171 /* LOTKeypath.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC625C8EA9A00259171 /* LOTKeypath.m */; };
+		865F8F1A25C8EA9A00259171 /* LOTCacheProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC725C8EA9A00259171 /* LOTCacheProvider.m */; };
+		865F8F1B25C8EA9A00259171 /* LOTAnimatedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC825C8EA9A00259171 /* LOTAnimatedControl.m */; };
+		865F8F1C25C8EA9A00259171 /* LOTInterpolatorCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8EC925C8EA9A00259171 /* LOTInterpolatorCallback.m */; };
+		865F8F1D25C8EA9A00259171 /* LOTAnimatedSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8ECA25C8EA9A00259171 /* LOTAnimatedSwitch.m */; };
+		865F8F1E25C8EA9A00259171 /* LOTKeyframe.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8ECC25C8EA9A00259171 /* LOTKeyframe.m */; };
+		865F8F1F25C8EA9A00259171 /* LOTBezierData.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8ECD25C8EA9A00259171 /* LOTBezierData.m */; };
+		865F8F2025C8EA9A00259171 /* LOTLayerContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8ED125C8EA9A00259171 /* LOTLayerContainer.m */; };
+		865F8F2125C8EA9A00259171 /* LOTCompositionContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8ED525C8EA9A00259171 /* LOTCompositionContainer.m */; };
+		865F8F2225C8EA9A00259171 /* LOTMaskContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8ED625C8EA9A00259171 /* LOTMaskContainer.m */; };
+		865F8F3025C8EAAB00259171 /* NTESRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F2625C8EAAB00259171 /* NTESRequest.m */; };
+		865F8F3125C8EAAB00259171 /* NTESApiOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F2825C8EAAB00259171 /* NTESApiOptions.m */; };
+		865F8F3225C8EAAB00259171 /* NTESService.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F2C25C8EAAB00259171 /* NTESService.m */; };
+		865F8F3325C8EAAB00259171 /* SKVObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F2E25C8EAAB00259171 /* SKVObject.m */; };
+		865F8F3425C8EAAB00259171 /* NTESApiModelMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F2F25C8EAAB00259171 /* NTESApiModelMapping.m */; };
+		865F8F4C25C8EC1100259171 /* NTESPickSongVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F4825C8EC1100259171 /* NTESPickSongVC.m */; };
+		865F8F4D25C8EC1100259171 /* NTESPickSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F4925C8EC1100259171 /* NTESPickSongCell.m */; };
+		865F8F5225C8ECEB00259171 /* NTESPickSongModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F5125C8ECEB00259171 /* NTESPickSongModel.m */; };
+		865F8F5A25C8EF6200259171 /* NTESChatroomApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 865F8F5925C8EF6200259171 /* NTESChatroomApi.m */; };
+		866CBF0725CA3B970047C287 /* NTESMicQueueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 866CBF0625CA3B970047C287 /* NTESMicQueueCell.m */; };
+		866CBF0C25CA3BF30047C287 /* NTESChatroomMicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 866CBF0B25CA3BF30047C287 /* NTESChatroomMicCell.m */; };
+		866CBF1125CA3C1B0047C287 /* NTESKtvMicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 866CBF1025CA3C1B0047C287 /* NTESKtvMicCell.m */; };
+		866CBF1625CA42290047C287 /* NTESMicQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = 866CBF1525CA42290047C287 /* NTESMicQueueView.m */; };
+		86A7F7FD25CA82F9006ED564 /* NTESKtvMicQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A7F7FC25CA82F9006ED564 /* NTESKtvMicQueueView.m */; };
+		86A7F80225CAA9A8006ED564 /* NTESQueueMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A7F80125CAA9A8006ED564 /* NTESQueueMusic.m */; };
+		86A7F80825CAF779006ED564 /* NTESHasPickedSongsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A7F80725CAF779006ED564 /* NTESHasPickedSongsVC.m */; };
 		86AC1E6E259D78E3006C6001 /* 2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86AC1E6C259D78E3006C6001 /* 2.mp3 */; };
 		86AC1E6F259D78E3006C6001 /* 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 86AC1E6D259D78E3006C6001 /* 1.mp3 */; };
 		86BE5AC624ED4EA900F2B082 /* NTESSettingPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86BE5AC524ED4EA900F2B082 /* NTESSettingPanelView.m */; };
-		86EF6EFB24E641D60096B5F3 /* audio_effect_1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 86EF6EF924E641D60096B5F3 /* audio_effect_1.wav */; };
-		86EF6EFC24E641D60096B5F3 /* audio_effect_0.wav in Resources */ = {isa = PBXBuildFile; fileRef = 86EF6EFA24E641D60096B5F3 /* audio_effect_0.wav */; };
+		86EF6EFB24E641D60096B5F3 /* audio_effect_2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 86EF6EF924E641D60096B5F3 /* audio_effect_2.wav */; };
 		872CD15C229E778A00C06C1E /* NTESAudioPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 872CD15B229E778A00C06C1E /* NTESAudioPanelView.m */; };
 		90018BE02224096200391035 /* NTESLiveChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90018BDE2224096200391035 /* NTESLiveChatView.m */; };
 		90018BEA22240B0100391035 /* NTESTextInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 90018BE222240B0000391035 /* NTESTextInputView.m */; };
@@ -35,20 +177,14 @@
 		900FC3992202D53500DBC8D8 /* NTESChatroomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 900FC3982202D53500DBC8D8 /* NTESChatroomAlertView.m */; };
 		900FC39C22034C2300DBC8D8 /* NTESConnectAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 900FC39B22034C2300DBC8D8 /* NTESConnectAlertView.m */; };
 		9040875D21EF26FE00E79DF8 /* NTESAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040875C21EF26FE00E79DF8 /* NTESAccountInfo.m */; };
-		9040876221EF2E3F00E79DF8 /* NTESDemoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040876121EF2E3F00E79DF8 /* NTESDemoConfig.m */; };
 		9040876521F0634A00E79DF8 /* NTESChatroomInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040876421F0634A00E79DF8 /* NTESChatroomInfo.m */; };
 		9040876921F0729400E79DF8 /* UIView+NTES.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040876821F0729400E79DF8 /* UIView+NTES.m */; };
-		9040876D21F080ED00E79DF8 /* NTESChatroomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040876C21F080ED00E79DF8 /* NTESChatroomTableViewCell.m */; };
-		9040877021F171C500E79DF8 /* NTESChatroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9040876F21F171C500E79DF8 /* NTESChatroomViewController.m */; };
-		90A3DAAB21EDBDEC009AA63E /* NTESHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A3DAAA21EDBDEC009AA63E /* NTESHomePageViewController.m */; };
 		90A3DAAF21EDCC59009AA63E /* NTESDemoService.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A3DAAE21EDCC59009AA63E /* NTESDemoService.m */; };
 		90A3DAB221EDE717009AA63E /* NTESDemoTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 90A3DAB121EDE717009AA63E /* NTESDemoTask.m */; };
 		90CFDD4321EC610900DDDFED /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CFDD4221EC610900DDDFED /* AppDelegate.m */; };
 		90CFDD4B21EC610B00DDDFED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90CFDD4A21EC610B00DDDFED /* Assets.xcassets */; };
 		90CFDD4E21EC610B00DDDFED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90CFDD4C21EC610B00DDDFED /* LaunchScreen.storyboard */; };
 		90CFDD5121EC610B00DDDFED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CFDD5021EC610B00DDDFED /* main.m */; };
-		90CFDD5B21EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CFDD5A21EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.m */; };
-		90CFDD6621EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CFDD6521EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.m */; };
 		E61F3328222FA59400DA2F05 /* NTESUserUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E61F3327222FA59400DA2F05 /* NTESUserUtil.m */; };
 		E61F332B222FA5E400DA2F05 /* NTESDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E61F332A222FA5E400DA2F05 /* NTESDataCenter.m */; };
 		E61F3335222FCD7A00DA2F05 /* NTESMuteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E61F3334222FCD7A00DA2F05 /* NTESMuteListViewController.m */; };
@@ -64,7 +200,6 @@
 		E64ED8342242433900E71513 /* NTESAuthorityHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E64ED8332242433900E71513 /* NTESAuthorityHelper.m */; };
 		E6756D162244CB8800968F5C /* NTESSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6756D152244CB8800968F5C /* NTESSelectViewController.m */; };
 		E6796D01222E4F8000AF1825 /* NTESChatroomHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6796D00222E4F8000AF1825 /* NTESChatroomHeaderView.m */; };
-		E6796D04222E734E00AF1825 /* NTESChatroomMicQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6796D03222E734E00AF1825 /* NTESChatroomMicQueueView.m */; };
 		E6999490223121B9008EA92E /* NTESUnMuteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E699948F223121B9008EA92E /* NTESUnMuteListViewController.m */; };
 		E699949C22314129008EA92E /* NTESAudioPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E699949B22314129008EA92E /* NTESAudioPlayerView.m */; };
 		E69EDE842230F24F00566E7E /* NTESChatroomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E69EDE832230F24E00566E7E /* NTESChatroomDataSource.m */; };
@@ -77,6 +212,8 @@
 		E6AC744D223A5A4200DC78B3 /* NELPLogMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC7447223A5A4100DC78B3 /* NELPLogMessage.m */; };
 		E6AC744E223A5A4200DC78B3 /* NELPLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC7449223A5A4100DC78B3 /* NELPLogUtil.m */; };
 		E6DD28E5222D390000B58CAD /* NTESHomePageStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DD28E4222D390000B58CAD /* NTESHomePageStateView.m */; };
+		FD910C8125D11F7F003675A0 /* apply_on_mic.json in Resources */ = {isa = PBXBuildFile; fileRef = FD910C8025D11F7F003675A0 /* apply_on_mic.json */; };
+		FD910C8825D12EAB003675A0 /* UIButton+NTES.m in Sources */ = {isa = PBXBuildFile; fileRef = FD910C8725D12EAB003675A0 /* UIButton+NTES.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,16 +233,321 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		489390F325C1468E009F9EF0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		003C84D6952B9FA499FC466B /* libPods-NEChatroom-iOS-ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NEChatroom-iOS-ObjC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		392B928425D01AD900C8A1D2 /* NTESKeyboardToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESKeyboardToolbarView.h; sourceTree = "<group>"; };
+		392B928525D01ADA00C8A1D2 /* NTESKeyboardToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESKeyboardToolbarView.m; sourceTree = "<group>"; };
+		392B928725D165AE00C8A1D2 /* UIButton+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Layout.h"; sourceTree = "<group>"; };
+		392B928825D165AE00C8A1D2 /* UIButton+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Layout.m"; sourceTree = "<group>"; };
+		393A702B25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESPlanChooseAlertView.h; sourceTree = "<group>"; };
+		393A702C25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESPlanChooseAlertView.m; sourceTree = "<group>"; };
+		393A702E25B85F8900C9A0A2 /* NTESCdnStreamService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESCdnStreamService.h; sourceTree = "<group>"; };
+		393A702F25B85F8900C9A0A2 /* NTESCdnStreamService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESCdnStreamService.m; sourceTree = "<group>"; };
+		393A703425BAF50E00C9A0A2 /* NTESCustomAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESCustomAttachment.h; sourceTree = "<group>"; };
+		393A703525BAF50E00C9A0A2 /* NTESCustomAttachment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESCustomAttachment.m; sourceTree = "<group>"; };
+		393A703A25C011ED00C9A0A2 /* NTESBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseWebViewController.h; sourceTree = "<group>"; };
+		393A703B25C011ED00C9A0A2 /* NTESBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBaseTableViewController.m; sourceTree = "<group>"; };
+		393A703C25C011EE00C9A0A2 /* NTESBaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBaseWebViewController.m; sourceTree = "<group>"; };
+		393A703D25C011EE00C9A0A2 /* NTESBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBaseViewController.m; sourceTree = "<group>"; };
+		393A703E25C011EE00C9A0A2 /* NTESBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseTableViewController.h; sourceTree = "<group>"; };
+		393A704125C011EE00C9A0A2 /* NTESBaseViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseViewControllerProtocol.h; sourceTree = "<group>"; };
+		393A704225C011EE00C9A0A2 /* NTESBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseViewController.h; sourceTree = "<group>"; };
+		393A704725C0154B00C9A0A2 /* NTESDeviceSizeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESDeviceSizeInfo.h; sourceTree = "<group>"; };
+		393A704825C0154B00C9A0A2 /* NTESViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESViewFactory.m; sourceTree = "<group>"; };
+		393A704925C0154B00C9A0A2 /* NTESViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESViewFactory.h; sourceTree = "<group>"; };
+		393A704A25C0154B00C9A0A2 /* NTESDeviceSizeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESDeviceSizeInfo.m; sourceTree = "<group>"; };
+		393A704D25C01B4900C9A0A2 /* NTESFontMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESFontMacro.h; sourceTree = "<group>"; };
+		393A704E25C28BD600C9A0A2 /* UIImageView+CornerRadius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+CornerRadius.h"; sourceTree = "<group>"; };
+		393A704F25C28BDE00C9A0A2 /* UIImageView+CornerRadius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+CornerRadius.m"; sourceTree = "<group>"; };
+		393A705125C2DA4200C9A0A2 /* NTESOpenRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESOpenRoomViewController.h; sourceTree = "<group>"; };
+		393A705225C2DA4200C9A0A2 /* NTESOpenRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESOpenRoomViewController.m; sourceTree = "<group>"; };
+		3983F73325E62C590022FC8A /* UILabel+ChangeSpace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+ChangeSpace.h"; sourceTree = "<group>"; };
+		3983F73425E62C590022FC8A /* UILabel+ChangeSpace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ChangeSpace.m"; sourceTree = "<group>"; };
+		39B5909925C7E19300B8EABA /* NTESMusicConsoleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESMusicConsoleViewController.m; sourceTree = "<group>"; };
+		39B5909A25C7E19300B8EABA /* NTESMusicConsoleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESMusicConsoleViewController.h; sourceTree = "<group>"; };
+		39B5909C25C7E3DD00B8EABA /* NTESHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHomeViewController.h; sourceTree = "<group>"; };
+		39B5909D25C7E3DD00B8EABA /* NTESHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHomeViewController.m; sourceTree = "<group>"; };
+		39B5909F25C7EB2700B8EABA /* NTESHomeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHomeTableViewCell.h; sourceTree = "<group>"; };
+		39B590A025C7EB2700B8EABA /* NTESHomeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHomeTableViewCell.m; sourceTree = "<group>"; };
+		39B590A325C7EFF500B8EABA /* NTESHomePageCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHomePageCellModel.h; sourceTree = "<group>"; };
+		39B590A425C7EFF500B8EABA /* NTESHomePageCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHomePageCellModel.m; sourceTree = "<group>"; };
+		39B590A825C81E9A00B8EABA /* NTESBaseTabViewCellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseTabViewCellProtocol.h; sourceTree = "<group>"; };
+		39B590A925C81ED600B8EABA /* NTESBaseTabViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseTabViewCell.h; sourceTree = "<group>"; };
+		39B590AA25C81ED600B8EABA /* NTESBaseTabViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBaseTabViewCell.m; sourceTree = "<group>"; };
+		39B590AD25C81FF000B8EABA /* NTESBaseModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseModelProtocol.h; sourceTree = "<group>"; };
+		39B590AF25C8340200B8EABA /* NTESSegmentCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESSegmentCtrl.m; sourceTree = "<group>"; };
+		39B590B025C8340200B8EABA /* NTESSegmentCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESSegmentCtrl.h; sourceTree = "<group>"; };
+		39B590B225C834A500B8EABA /* NSObject+additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+additions.h"; sourceTree = "<group>"; };
+		39B590B325C834A500B8EABA /* NSObject+additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+additions.m"; sourceTree = "<group>"; };
+		39B590B525C835CB00B8EABA /* UIView+Gradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Gradient.h"; sourceTree = "<group>"; };
+		39B590B625C835CB00B8EABA /* UIView+Gradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Gradient.m"; sourceTree = "<group>"; };
+		39B590B825C8F79E00B8EABA /* NTESBaseViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseViewProtocol.h; sourceTree = "<group>"; };
+		39B590B925C8F79E00B8EABA /* NTESBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESBaseView.m; sourceTree = "<group>"; };
+		39B590BA25C8F79E00B8EABA /* NTESBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESBaseView.h; sourceTree = "<group>"; };
+		39B590C225C93CEE00B8EABA /* NTESCreateRoomTitleButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESCreateRoomTitleButton.h; sourceTree = "<group>"; };
+		39B590C325C93CEE00B8EABA /* NTESCreateRoomTitleButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESCreateRoomTitleButton.m; sourceTree = "<group>"; };
+		39B590C525C94E5A00B8EABA /* NTESCreateRoomNameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESCreateRoomNameView.m; sourceTree = "<group>"; };
+		39B590C625C94E5A00B8EABA /* NTESCreateRoomNameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESCreateRoomNameView.h; sourceTree = "<group>"; };
+		39B590C825C95A4B00B8EABA /* NTESEnumerationDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESEnumerationDefinition.h; sourceTree = "<group>"; };
+		39B590CC25C96FDC00B8EABA /* NTESChatRoomListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatRoomListViewController.h; sourceTree = "<group>"; };
+		39B590CD25C96FDC00B8EABA /* NTESChatRoomListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatRoomListViewController.m; sourceTree = "<group>"; };
+		39B590CF25C9745000B8EABA /* NTESLiveListMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESLiveListMainViewController.h; sourceTree = "<group>"; };
+		39B590D025C9745000B8EABA /* NTESLiveListMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESLiveListMainViewController.m; sourceTree = "<group>"; };
+		39B590D225C9770600B8EABA /* NELiveListMainPageNavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NELiveListMainPageNavView.m; sourceTree = "<group>"; };
+		39B590D325C9770600B8EABA /* NELiveListMainPageNavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NELiveListMainPageNavView.h; sourceTree = "<group>"; };
+		39B590D525C981FD00B8EABA /* NETSEmptyListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NETSEmptyListView.h; sourceTree = "<group>"; };
+		39B590D625C981FD00B8EABA /* NETSEmptyListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NETSEmptyListView.m; sourceTree = "<group>"; };
+		39B590D825C983A600B8EABA /* NETSLiveListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NETSLiveListCell.m; sourceTree = "<group>"; };
+		39B590D925C983A600B8EABA /* NETSLiveListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NETSLiveListCell.h; sourceTree = "<group>"; };
+		39B590DE25CA493700B8EABA /* NTESLiveRoomListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESLiveRoomListModel.h; sourceTree = "<group>"; };
+		39B590DF25CA493700B8EABA /* NTESLiveRoomListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESLiveRoomListModel.m; sourceTree = "<group>"; };
+		39B590E225CA750000B8EABA /* NETSLiveListViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NETSLiveListViewModel.m; sourceTree = "<group>"; };
+		39B590E325CA750000B8EABA /* NETSLiveListViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NETSLiveListViewModel.h; sourceTree = "<group>"; };
+		39B590E525CAA1AD00B8EABA /* NTESKtvListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESKtvListViewController.h; sourceTree = "<group>"; };
+		39B590E625CAA1AD00B8EABA /* NTESKtvListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESKtvListViewController.m; sourceTree = "<group>"; };
+		39B590E925CB9B9300B8EABA /* NTESProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESProgressHUD.h; sourceTree = "<group>"; };
+		39B590EA25CB9B9300B8EABA /* NTESProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESProgressHUD.m; sourceTree = "<group>"; };
+		39B590EF25CBDCDB00B8EABA /* NTESLiveRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESLiveRoomViewController.h; sourceTree = "<group>"; };
+		39B590F025CBDCDB00B8EABA /* NTESLiveRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESLiveRoomViewController.m; sourceTree = "<group>"; };
+		39B590F425CBDE2400B8EABA /* NTESLiveRoomHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESLiveRoomHeaderView.h; sourceTree = "<group>"; };
+		39B590F525CBDE2400B8EABA /* NTESLiveRoomHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESLiveRoomHeaderView.m; sourceTree = "<group>"; };
+		39B590F725CC1EFE00B8EABA /* NTESLiveRoomFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESLiveRoomFooterView.h; sourceTree = "<group>"; };
+		39B590F825CC1EFE00B8EABA /* NTESLiveRoomFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESLiveRoomFooterView.m; sourceTree = "<group>"; };
+		39B590FA25CCE09C00B8EABA /* NTESNoticePopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESNoticePopView.m; sourceTree = "<group>"; };
+		39B590FB25CCE09C00B8EABA /* NTESNoticePopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESNoticePopView.h; sourceTree = "<group>"; };
+		4819908125C3F06900E8FBED /* NTESBackgroundMusicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESBackgroundMusicViewController.h; sourceTree = "<group>"; };
+		4819908225C3F06900E8FBED /* NTESBackgroundMusicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESBackgroundMusicViewController.m; sourceTree = "<group>"; };
+		4819908425C40BE900E8FBED /* NTESBackgroundMusic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESBackgroundMusic.h; sourceTree = "<group>"; };
+		4819908525C40BE900E8FBED /* NTESBackgroundMusic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESBackgroundMusic.m; sourceTree = "<group>"; };
+		4819908725C415C600E8FBED /* NTESBackgroundMusicCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESBackgroundMusicCell.h; sourceTree = "<group>"; };
+		4819908825C415C600E8FBED /* NTESBackgroundMusicCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESBackgroundMusicCell.m; sourceTree = "<group>"; };
+		4825703425CA3D0C00303F83 /* NTESMusicPanelLyricLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMusicPanelLyricLoader.h; sourceTree = "<group>"; };
+		4825703525CA3D0C00303F83 /* NTESMusicPanelLyricLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMusicPanelLyricLoader.m; sourceTree = "<group>"; };
+		4825703725CA438B00303F83 /* audio_effect_1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio_effect_1.wav; sourceTree = "<group>"; };
+		4825703A25CA7D8400303F83 /* NTESRtcConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESRtcConfig.h; sourceTree = "<group>"; };
+		4825703B25CA7D8400303F83 /* NTESRtcConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESRtcConfig.m; sourceTree = "<group>"; };
+		482EA4B325CD015500A32E74 /* 3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 3.mp3; sourceTree = "<group>"; };
+		48360FE425C7E7AD006FE443 /* playing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = playing.json; sourceTree = "<group>"; };
+		48360FE725C7F16D006FE443 /* lyric_bg@3x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "lyric_bg@3x.jpg"; sourceTree = "<group>"; };
+		48360FE825C7F16D006FE443 /* lyric_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "lyric_bg@2x.jpg"; sourceTree = "<group>"; };
+		4844A71525BFAC2700F7BA00 /* NTESLyricCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESLyricCell.h; sourceTree = "<group>"; };
+		4844A71625BFAC2700F7BA00 /* NTESLyricFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESLyricFrame.m; sourceTree = "<group>"; };
+		4844A71725BFAC2700F7BA00 /* NTESLyricView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESLyricView.h; sourceTree = "<group>"; };
+		4844A71825BFAC2700F7BA00 /* NTESLyricFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESLyricFrame.h; sourceTree = "<group>"; };
+		4844A71925BFAC2700F7BA00 /* NTESLyricCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESLyricCell.m; sourceTree = "<group>"; };
+		4844A71A25BFAC2700F7BA00 /* NTESLyricView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESLyricView.m; sourceTree = "<group>"; };
+		4844A72C25C00C9500F7BA00 /* NTESMusicPanelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMusicPanelViewController.h; sourceTree = "<group>"; };
+		4844A72D25C00C9500F7BA00 /* NTESMusicPanelViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMusicPanelViewController.m; sourceTree = "<group>"; };
+		4844A73025C01B9D00F7BA00 /* NTESMoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMoreViewController.h; sourceTree = "<group>"; };
+		4844A73125C01B9D00F7BA00 /* NTESMoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMoreViewController.m; sourceTree = "<group>"; };
+		4844A73325C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESActionSheetTransitioningDelegate.h; sourceTree = "<group>"; };
+		4844A73425C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESActionSheetTransitioningDelegate.m; sourceTree = "<group>"; };
+		4844A73625C02AC700F7BA00 /* NTESActionSheetPresentationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESActionSheetPresentationController.h; sourceTree = "<group>"; };
+		4844A73925C02B6300F7BA00 /* NTESActionSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESActionSheetPresentationController.m; sourceTree = "<group>"; };
+		4852485B25C921EE0023E4C3 /* NTESChatroomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESChatroomTableViewCell.h; sourceTree = "<group>"; };
+		4852485C25C921EE0023E4C3 /* NTESChatroomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomTableViewCell.m; sourceTree = "<group>"; };
+		48557F6225DF597000D3B9A2 /* ne_strip_archs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = ne_strip_archs.sh; sourceTree = "<group>"; };
+		489390DD25C1043E009F9EF0 /* NTESActionSheetDismissalController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESActionSheetDismissalController.h; sourceTree = "<group>"; };
+		489390DE25C1043E009F9EF0 /* NTESActionSheetDismissalController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESActionSheetDismissalController.m; sourceTree = "<group>"; };
+		489390E625C13282009F9EF0 /* NTESMoreCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMoreCell.h; sourceTree = "<group>"; };
+		489390E725C13282009F9EF0 /* NTESMoreCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMoreCell.m; sourceTree = "<group>"; };
+		489390E925C133B3009F9EF0 /* NTESMoreItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMoreItem.h; sourceTree = "<group>"; };
+		489390EA25C133B3009F9EF0 /* NTESMoreItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMoreItem.m; sourceTree = "<group>"; };
+		489390F725C17BFB009F9EF0 /* NTESActionSheetNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESActionSheetNavigationController.h; sourceTree = "<group>"; };
+		489390F825C17BFB009F9EF0 /* NTESActionSheetNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESActionSheetNavigationController.m; sourceTree = "<group>"; };
+		86403C6125CBF2D500B4240E /* NTESHasPickedSongCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHasPickedSongCell.h; sourceTree = "<group>"; };
+		86403C6225CBF2D500B4240E /* NTESHasPickedSongCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHasPickedSongCell.m; sourceTree = "<group>"; };
+		8652CB0125CD696300B5334F /* NTESPickMusicService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESPickMusicService.h; sourceTree = "<group>"; };
+		8652CB0225CD696300B5334F /* NTESPickMusicService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESPickMusicService.m; sourceTree = "<group>"; };
+		8652CB1B25CF894800B5334F /* es_playing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = es_playing.json; sourceTree = "<group>"; };
+		8652CB4425CFDB3E00B5334F /* NTESListEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESListEmptyView.m; sourceTree = "<group>"; };
+		8652CB4525CFDB3E00B5334F /* NTESListEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESListEmptyView.h; sourceTree = "<group>"; };
+		865F8C1A25C7D2FC00259171 /* UIImage+NTES.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+NTES.h"; sourceTree = "<group>"; };
+		865F8C1B25C7D2FC00259171 /* UIImage+NTES.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+NTES.m"; sourceTree = "<group>"; };
+		865F8E5225C8EA7B00259171 /* NTESMusicConsoleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESMusicConsoleViewController.m; sourceTree = "<group>"; };
+		865F8E5325C8EA7B00259171 /* NTESMusicConsoleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESMusicConsoleViewController.h; sourceTree = "<group>"; };
+		865F8E5A25C8EA9900259171 /* LOTRenderNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTRenderNode.m; sourceTree = "<group>"; };
+		865F8E5B25C8EA9900259171 /* LOTAnimatorNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimatorNode.h; sourceTree = "<group>"; };
+		865F8E5C25C8EA9900259171 /* LOTRenderNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTRenderNode.h; sourceTree = "<group>"; };
+		865F8E5E25C8EA9900259171 /* LOTTrimPathNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTTrimPathNode.h; sourceTree = "<group>"; };
+		865F8E5F25C8EA9900259171 /* LOTTrimPathNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTTrimPathNode.m; sourceTree = "<group>"; };
+		865F8E6125C8EA9900259171 /* LOTColorInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTColorInterpolator.m; sourceTree = "<group>"; };
+		865F8E6225C8EA9900259171 /* LOTPathInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTPathInterpolator.m; sourceTree = "<group>"; };
+		865F8E6325C8EA9900259171 /* LOTSizeInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTSizeInterpolator.h; sourceTree = "<group>"; };
+		865F8E6425C8EA9900259171 /* LOTValueInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTValueInterpolator.h; sourceTree = "<group>"; };
+		865F8E6525C8EA9900259171 /* LOTPointInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTPointInterpolator.h; sourceTree = "<group>"; };
+		865F8E6625C8EA9900259171 /* LOTNumberInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTNumberInterpolator.h; sourceTree = "<group>"; };
+		865F8E6725C8EA9900259171 /* LOTTransformInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTTransformInterpolator.h; sourceTree = "<group>"; };
+		865F8E6825C8EA9900259171 /* LOTArrayInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTArrayInterpolator.h; sourceTree = "<group>"; };
+		865F8E6925C8EA9900259171 /* LOTColorInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTColorInterpolator.h; sourceTree = "<group>"; };
+		865F8E6A25C8EA9900259171 /* LOTSizeInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTSizeInterpolator.m; sourceTree = "<group>"; };
+		865F8E6B25C8EA9900259171 /* LOTPathInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTPathInterpolator.h; sourceTree = "<group>"; };
+		865F8E6C25C8EA9900259171 /* LOTPointInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTPointInterpolator.m; sourceTree = "<group>"; };
+		865F8E6D25C8EA9900259171 /* LOTValueInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTValueInterpolator.m; sourceTree = "<group>"; };
+		865F8E6E25C8EA9900259171 /* LOTTransformInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTTransformInterpolator.m; sourceTree = "<group>"; };
+		865F8E6F25C8EA9900259171 /* LOTArrayInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTArrayInterpolator.m; sourceTree = "<group>"; };
+		865F8E7025C8EA9900259171 /* LOTNumberInterpolator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTNumberInterpolator.m; sourceTree = "<group>"; };
+		865F8E7125C8EA9900259171 /* LOTAnimatorNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAnimatorNode.m; sourceTree = "<group>"; };
+		865F8E7325C8EA9900259171 /* LOTPathAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTPathAnimator.m; sourceTree = "<group>"; };
+		865F8E7425C8EA9900259171 /* LOTPolystarAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTPolystarAnimator.m; sourceTree = "<group>"; };
+		865F8E7525C8EA9900259171 /* LOTPolygonAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTPolygonAnimator.m; sourceTree = "<group>"; };
+		865F8E7625C8EA9900259171 /* LOTRoundedRectAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTRoundedRectAnimator.h; sourceTree = "<group>"; };
+		865F8E7725C8EA9900259171 /* LOTCircleAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTCircleAnimator.m; sourceTree = "<group>"; };
+		865F8E7825C8EA9900259171 /* LOTPolystarAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTPolystarAnimator.h; sourceTree = "<group>"; };
+		865F8E7925C8EA9900259171 /* LOTPathAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTPathAnimator.h; sourceTree = "<group>"; };
+		865F8E7A25C8EA9900259171 /* LOTCircleAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTCircleAnimator.h; sourceTree = "<group>"; };
+		865F8E7B25C8EA9900259171 /* LOTRoundedRectAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTRoundedRectAnimator.m; sourceTree = "<group>"; };
+		865F8E7C25C8EA9900259171 /* LOTPolygonAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTPolygonAnimator.h; sourceTree = "<group>"; };
+		865F8E7E25C8EA9900259171 /* LOTRenderGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTRenderGroup.m; sourceTree = "<group>"; };
+		865F8E7F25C8EA9900259171 /* LOTGradientFillRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTGradientFillRender.m; sourceTree = "<group>"; };
+		865F8E8025C8EA9900259171 /* LOTFillRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTFillRenderer.h; sourceTree = "<group>"; };
+		865F8E8125C8EA9900259171 /* LOTStrokeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTStrokeRenderer.h; sourceTree = "<group>"; };
+		865F8E8225C8EA9900259171 /* LOTRepeaterRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTRepeaterRenderer.h; sourceTree = "<group>"; };
+		865F8E8325C8EA9900259171 /* LOTRenderGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTRenderGroup.h; sourceTree = "<group>"; };
+		865F8E8425C8EA9900259171 /* LOTStrokeRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTStrokeRenderer.m; sourceTree = "<group>"; };
+		865F8E8525C8EA9900259171 /* LOTFillRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTFillRenderer.m; sourceTree = "<group>"; };
+		865F8E8625C8EA9900259171 /* LOTGradientFillRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTGradientFillRender.h; sourceTree = "<group>"; };
+		865F8E8725C8EA9900259171 /* LOTRepeaterRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTRepeaterRenderer.m; sourceTree = "<group>"; };
+		865F8E8925C8EA9900259171 /* UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColor.h; sourceTree = "<group>"; };
+		865F8E8A25C8EA9900259171 /* UIBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBezierPath.m; sourceTree = "<group>"; };
+		865F8E8B25C8EA9900259171 /* CALayer+Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Compat.h"; sourceTree = "<group>"; };
+		865F8E8C25C8EA9900259171 /* NSValue+Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+Compat.h"; sourceTree = "<group>"; };
+		865F8E8D25C8EA9A00259171 /* UIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColor.m; sourceTree = "<group>"; };
+		865F8E8E25C8EA9A00259171 /* LOTPlatformCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTPlatformCompat.h; sourceTree = "<group>"; };
+		865F8E8F25C8EA9A00259171 /* UIBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBezierPath.h; sourceTree = "<group>"; };
+		865F8E9025C8EA9A00259171 /* NSValue+Compat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+Compat.m"; sourceTree = "<group>"; };
+		865F8E9125C8EA9A00259171 /* CALayer+Compat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Compat.m"; sourceTree = "<group>"; };
+		865F8E9325C8EA9A00259171 /* LOTMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTMask.m; sourceTree = "<group>"; };
+		865F8E9425C8EA9A00259171 /* LOTLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTLayer.m; sourceTree = "<group>"; };
+		865F8E9525C8EA9A00259171 /* LOTAssetGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAssetGroup.m; sourceTree = "<group>"; };
+		865F8E9625C8EA9A00259171 /* LOTShapeRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeRectangle.h; sourceTree = "<group>"; };
+		865F8E9725C8EA9A00259171 /* LOTShapeRepeater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeRepeater.h; sourceTree = "<group>"; };
+		865F8E9825C8EA9A00259171 /* LOTAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAsset.h; sourceTree = "<group>"; };
+		865F8E9925C8EA9A00259171 /* LOTShapeCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeCircle.h; sourceTree = "<group>"; };
+		865F8E9A25C8EA9A00259171 /* LOTLayerGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTLayerGroup.m; sourceTree = "<group>"; };
+		865F8E9B25C8EA9A00259171 /* LOTShapeStar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeStar.m; sourceTree = "<group>"; };
+		865F8E9C25C8EA9A00259171 /* LOTShapeTrimPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeTrimPath.m; sourceTree = "<group>"; };
+		865F8E9D25C8EA9A00259171 /* LOTShapeGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeGroup.h; sourceTree = "<group>"; };
+		865F8E9E25C8EA9A00259171 /* LOTShapePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapePath.h; sourceTree = "<group>"; };
+		865F8E9F25C8EA9A00259171 /* LOTShapeStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeStroke.h; sourceTree = "<group>"; };
+		865F8EA025C8EA9A00259171 /* LOTShapeGradientFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeGradientFill.m; sourceTree = "<group>"; };
+		865F8EA125C8EA9A00259171 /* LOTShapeFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeFill.h; sourceTree = "<group>"; };
+		865F8EA225C8EA9A00259171 /* LOTShapeTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeTransform.h; sourceTree = "<group>"; };
+		865F8EA325C8EA9A00259171 /* LOTAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAsset.m; sourceTree = "<group>"; };
+		865F8EA425C8EA9A00259171 /* LOTModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTModels.h; sourceTree = "<group>"; };
+		865F8EA525C8EA9A00259171 /* LOTShapeRepeater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeRepeater.m; sourceTree = "<group>"; };
+		865F8EA625C8EA9A00259171 /* LOTAssetGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAssetGroup.h; sourceTree = "<group>"; };
+		865F8EA725C8EA9A00259171 /* LOTShapeRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeRectangle.m; sourceTree = "<group>"; };
+		865F8EA825C8EA9A00259171 /* LOTLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTLayer.h; sourceTree = "<group>"; };
+		865F8EA925C8EA9A00259171 /* LOTMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTMask.h; sourceTree = "<group>"; };
+		865F8EAA25C8EA9A00259171 /* LOTShapeStar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeStar.h; sourceTree = "<group>"; };
+		865F8EAB25C8EA9A00259171 /* LOTLayerGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTLayerGroup.h; sourceTree = "<group>"; };
+		865F8EAC25C8EA9A00259171 /* LOTShapeCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeCircle.m; sourceTree = "<group>"; };
+		865F8EAD25C8EA9A00259171 /* LOTShapePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapePath.m; sourceTree = "<group>"; };
+		865F8EAE25C8EA9A00259171 /* LOTShapeGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeGroup.m; sourceTree = "<group>"; };
+		865F8EAF25C8EA9A00259171 /* LOTShapeTrimPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeTrimPath.h; sourceTree = "<group>"; };
+		865F8EB025C8EA9A00259171 /* LOTShapeFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeFill.m; sourceTree = "<group>"; };
+		865F8EB125C8EA9A00259171 /* LOTShapeTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeTransform.m; sourceTree = "<group>"; };
+		865F8EB225C8EA9A00259171 /* LOTShapeGradientFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTShapeGradientFill.h; sourceTree = "<group>"; };
+		865F8EB325C8EA9A00259171 /* LOTShapeStroke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTShapeStroke.m; sourceTree = "<group>"; };
+		865F8EB525C8EA9A00259171 /* LOTHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTHelpers.h; sourceTree = "<group>"; };
+		865F8EB625C8EA9A00259171 /* LOTRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTRadialGradientLayer.h; sourceTree = "<group>"; };
+		865F8EB725C8EA9A00259171 /* CGGeometry+LOTAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+LOTAdditions.m"; sourceTree = "<group>"; };
+		865F8EB825C8EA9A00259171 /* LOTBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTBezierPath.m; sourceTree = "<group>"; };
+		865F8EB925C8EA9A00259171 /* UIColor+Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Expanded.h"; sourceTree = "<group>"; };
+		865F8EBA25C8EA9A00259171 /* LOTRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTRadialGradientLayer.m; sourceTree = "<group>"; };
+		865F8EBB25C8EA9A00259171 /* CGGeometry+LOTAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+LOTAdditions.h"; sourceTree = "<group>"; };
+		865F8EBC25C8EA9A00259171 /* LOTBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTBezierPath.h; sourceTree = "<group>"; };
+		865F8EBD25C8EA9A00259171 /* UIColor+Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Expanded.m"; sourceTree = "<group>"; };
+		865F8EBF25C8EA9A00259171 /* LOTAnimationCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAnimationCache.m; sourceTree = "<group>"; };
+		865F8EC025C8EA9A00259171 /* LOTComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTComposition.m; sourceTree = "<group>"; };
+		865F8EC125C8EA9A00259171 /* LOTValueCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTValueCallback.m; sourceTree = "<group>"; };
+		865F8EC225C8EA9A00259171 /* LOTBlockCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTBlockCallback.m; sourceTree = "<group>"; };
+		865F8EC325C8EA9A00259171 /* LOTAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAnimationView.m; sourceTree = "<group>"; };
+		865F8EC425C8EA9A00259171 /* LOTAnimationTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAnimationTransitionController.m; sourceTree = "<group>"; };
+		865F8EC525C8EA9A00259171 /* LOTAnimationView_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimationView_Internal.h; sourceTree = "<group>"; };
+		865F8EC625C8EA9A00259171 /* LOTKeypath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTKeypath.m; sourceTree = "<group>"; };
+		865F8EC725C8EA9A00259171 /* LOTCacheProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTCacheProvider.m; sourceTree = "<group>"; };
+		865F8EC825C8EA9A00259171 /* LOTAnimatedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAnimatedControl.m; sourceTree = "<group>"; };
+		865F8EC925C8EA9A00259171 /* LOTInterpolatorCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTInterpolatorCallback.m; sourceTree = "<group>"; };
+		865F8ECA25C8EA9A00259171 /* LOTAnimatedSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTAnimatedSwitch.m; sourceTree = "<group>"; };
+		865F8ECC25C8EA9A00259171 /* LOTKeyframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTKeyframe.m; sourceTree = "<group>"; };
+		865F8ECD25C8EA9A00259171 /* LOTBezierData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTBezierData.m; sourceTree = "<group>"; };
+		865F8ECE25C8EA9A00259171 /* LOTKeyframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTKeyframe.h; sourceTree = "<group>"; };
+		865F8ECF25C8EA9A00259171 /* LOTBezierData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTBezierData.h; sourceTree = "<group>"; };
+		865F8ED125C8EA9A00259171 /* LOTLayerContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTLayerContainer.m; sourceTree = "<group>"; };
+		865F8ED225C8EA9A00259171 /* LOTCompositionContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTCompositionContainer.h; sourceTree = "<group>"; };
+		865F8ED325C8EA9A00259171 /* LOTMaskContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTMaskContainer.h; sourceTree = "<group>"; };
+		865F8ED425C8EA9A00259171 /* LOTLayerContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTLayerContainer.h; sourceTree = "<group>"; };
+		865F8ED525C8EA9A00259171 /* LOTCompositionContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTCompositionContainer.m; sourceTree = "<group>"; };
+		865F8ED625C8EA9A00259171 /* LOTMaskContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOTMaskContainer.m; sourceTree = "<group>"; };
+		865F8ED825C8EA9A00259171 /* LOTValueDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTValueDelegate.h; sourceTree = "<group>"; };
+		865F8ED925C8EA9A00259171 /* LOTAnimatedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimatedControl.h; sourceTree = "<group>"; };
+		865F8EDA25C8EA9A00259171 /* LOTCacheProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTCacheProvider.h; sourceTree = "<group>"; };
+		865F8EDB25C8EA9A00259171 /* LOTKeypath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTKeypath.h; sourceTree = "<group>"; };
+		865F8EDC25C8EA9A00259171 /* LOTInterpolatorCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTInterpolatorCallback.h; sourceTree = "<group>"; };
+		865F8EDD25C8EA9A00259171 /* LOTAnimatedSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimatedSwitch.h; sourceTree = "<group>"; };
+		865F8EDE25C8EA9A00259171 /* LOTAnimationCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimationCache.h; sourceTree = "<group>"; };
+		865F8EDF25C8EA9A00259171 /* Lottie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lottie.h; sourceTree = "<group>"; };
+		865F8EE025C8EA9A00259171 /* LOTComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTComposition.h; sourceTree = "<group>"; };
+		865F8EE125C8EA9A00259171 /* LOTAnimationTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimationTransitionController.h; sourceTree = "<group>"; };
+		865F8EE225C8EA9A00259171 /* LOTAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimationView.h; sourceTree = "<group>"; };
+		865F8EE325C8EA9A00259171 /* LOTAnimationView_Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTAnimationView_Compat.h; sourceTree = "<group>"; };
+		865F8EE425C8EA9A00259171 /* LOTValueCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTValueCallback.h; sourceTree = "<group>"; };
+		865F8EE525C8EA9A00259171 /* LOTBlockCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOTBlockCallback.h; sourceTree = "<group>"; };
+		865F8F2625C8EAAB00259171 /* NTESRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESRequest.m; sourceTree = "<group>"; };
+		865F8F2725C8EAAB00259171 /* NTESService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESService.h; sourceTree = "<group>"; };
+		865F8F2825C8EAAB00259171 /* NTESApiOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESApiOptions.m; sourceTree = "<group>"; };
+		865F8F2925C8EAAB00259171 /* SKVObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKVObject.h; sourceTree = "<group>"; };
+		865F8F2A25C8EAAB00259171 /* NTESApiModelMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESApiModelMapping.h; sourceTree = "<group>"; };
+		865F8F2B25C8EAAB00259171 /* NTESApiOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESApiOptions.h; sourceTree = "<group>"; };
+		865F8F2C25C8EAAB00259171 /* NTESService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESService.m; sourceTree = "<group>"; };
+		865F8F2D25C8EAAB00259171 /* NTESRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESRequest.h; sourceTree = "<group>"; };
+		865F8F2E25C8EAAB00259171 /* SKVObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKVObject.m; sourceTree = "<group>"; };
+		865F8F2F25C8EAAB00259171 /* NTESApiModelMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESApiModelMapping.m; sourceTree = "<group>"; };
+		865F8F4825C8EC1100259171 /* NTESPickSongVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESPickSongVC.m; sourceTree = "<group>"; };
+		865F8F4925C8EC1100259171 /* NTESPickSongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESPickSongCell.m; sourceTree = "<group>"; };
+		865F8F4A25C8EC1100259171 /* NTESPickSongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESPickSongCell.h; sourceTree = "<group>"; };
+		865F8F4B25C8EC1100259171 /* NTESPickSongVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESPickSongVC.h; sourceTree = "<group>"; };
+		865F8F5025C8ECEB00259171 /* NTESPickSongModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESPickSongModel.h; sourceTree = "<group>"; };
+		865F8F5125C8ECEB00259171 /* NTESPickSongModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESPickSongModel.m; sourceTree = "<group>"; };
+		865F8F5825C8EF6200259171 /* NTESChatroomApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomApi.h; sourceTree = "<group>"; };
+		865F8F5925C8EF6200259171 /* NTESChatroomApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomApi.m; sourceTree = "<group>"; };
+		865F8F6E25C914D200259171 /* AppKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKey.h; sourceTree = "<group>"; };
+		866CBF0525CA3B970047C287 /* NTESMicQueueCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMicQueueCell.h; sourceTree = "<group>"; };
+		866CBF0625CA3B970047C287 /* NTESMicQueueCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMicQueueCell.m; sourceTree = "<group>"; };
+		866CBF0A25CA3BF30047C287 /* NTESChatroomMicCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomMicCell.h; sourceTree = "<group>"; };
+		866CBF0B25CA3BF30047C287 /* NTESChatroomMicCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomMicCell.m; sourceTree = "<group>"; };
+		866CBF0F25CA3C1B0047C287 /* NTESKtvMicCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESKtvMicCell.h; sourceTree = "<group>"; };
+		866CBF1025CA3C1B0047C287 /* NTESKtvMicCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESKtvMicCell.m; sourceTree = "<group>"; };
+		866CBF1425CA42290047C287 /* NTESMicQueueView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMicQueueView.h; sourceTree = "<group>"; };
+		866CBF1525CA42290047C287 /* NTESMicQueueView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESMicQueueView.m; sourceTree = "<group>"; };
+		86A7F7FB25CA82F9006ED564 /* NTESKtvMicQueueView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESKtvMicQueueView.h; sourceTree = "<group>"; };
+		86A7F7FC25CA82F9006ED564 /* NTESKtvMicQueueView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESKtvMicQueueView.m; sourceTree = "<group>"; };
+		86A7F80025CAA9A8006ED564 /* NTESQueueMusic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESQueueMusic.h; sourceTree = "<group>"; };
+		86A7F80125CAA9A8006ED564 /* NTESQueueMusic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESQueueMusic.m; sourceTree = "<group>"; };
+		86A7F80625CAF779006ED564 /* NTESHasPickedSongsVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHasPickedSongsVC.h; sourceTree = "<group>"; };
+		86A7F80725CAF779006ED564 /* NTESHasPickedSongsVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHasPickedSongsVC.m; sourceTree = "<group>"; };
 		86AC1E6C259D78E3006C6001 /* 2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 2.mp3; sourceTree = "<group>"; };
 		86AC1E6D259D78E3006C6001 /* 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 1.mp3; sourceTree = "<group>"; };
 		86BE5AC424ED4EA900F2B082 /* NTESSettingPanelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESSettingPanelView.h; sourceTree = "<group>"; };
 		86BE5AC524ED4EA900F2B082 /* NTESSettingPanelView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESSettingPanelView.m; sourceTree = "<group>"; };
 		86CD6C2824F8D5A200E42725 /* NERtcSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NERtcSDK.framework; path = Frameworks/NERtcSDK.framework; sourceTree = "<group>"; };
 		86CD6C2924F8D5A200E42725 /* NMCBasicModuleFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NMCBasicModuleFramework.framework; path = Frameworks/NMCBasicModuleFramework.framework; sourceTree = "<group>"; };
-		86EF6EF924E641D60096B5F3 /* audio_effect_1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio_effect_1.wav; sourceTree = "<group>"; };
-		86EF6EFA24E641D60096B5F3 /* audio_effect_0.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio_effect_0.wav; sourceTree = "<group>"; };
+		86EF6EF924E641D60096B5F3 /* audio_effect_2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio_effect_2.wav; sourceTree = "<group>"; };
 		872CD15A229E778A00C06C1E /* NTESAudioPanelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESAudioPanelView.h; sourceTree = "<group>"; };
 		872CD15B229E778A00C06C1E /* NTESAudioPanelView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESAudioPanelView.m; sourceTree = "<group>"; };
 		90018BDE2224096200391035 /* NTESLiveChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESLiveChatView.m; sourceTree = "<group>"; };
@@ -152,25 +594,17 @@
 		9040875B21EF26FE00E79DF8 /* NTESAccountInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESAccountInfo.h; sourceTree = "<group>"; };
 		9040875C21EF26FE00E79DF8 /* NTESAccountInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESAccountInfo.m; sourceTree = "<group>"; };
 		9040875E21EF2B7700E79DF8 /* NEChatroom-iOS-ObjC-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NEChatroom-iOS-ObjC-Prefix.pch"; sourceTree = "<group>"; };
-		9040876021EF2E3F00E79DF8 /* NTESDemoConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESDemoConfig.h; sourceTree = "<group>"; };
-		9040876121EF2E3F00E79DF8 /* NTESDemoConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESDemoConfig.m; sourceTree = "<group>"; };
 		9040876321F0634A00E79DF8 /* NTESChatroomInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomInfo.h; sourceTree = "<group>"; };
 		9040876421F0634A00E79DF8 /* NTESChatroomInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomInfo.m; sourceTree = "<group>"; };
 		9040876721F0729400E79DF8 /* UIView+NTES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+NTES.h"; sourceTree = "<group>"; };
 		9040876821F0729400E79DF8 /* UIView+NTES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+NTES.m"; sourceTree = "<group>"; };
-		9040876B21F080ED00E79DF8 /* NTESChatroomTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomTableViewCell.h; sourceTree = "<group>"; };
-		9040876C21F080ED00E79DF8 /* NTESChatroomTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomTableViewCell.m; sourceTree = "<group>"; };
-		9040876E21F171C500E79DF8 /* NTESChatroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomViewController.h; sourceTree = "<group>"; };
-		9040876F21F171C500E79DF8 /* NTESChatroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomViewController.m; sourceTree = "<group>"; };
 		9040877121F1B27A00E79DF8 /* NTESGlobalMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESGlobalMacro.h; sourceTree = "<group>"; };
-		90A3DAA921EDBDEC009AA63E /* NTESHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHomePageViewController.h; sourceTree = "<group>"; };
-		90A3DAAA21EDBDEC009AA63E /* NTESHomePageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHomePageViewController.m; sourceTree = "<group>"; };
 		90A3DAAD21EDCC59009AA63E /* NTESDemoService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESDemoService.h; sourceTree = "<group>"; };
 		90A3DAAE21EDCC59009AA63E /* NTESDemoService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESDemoService.m; sourceTree = "<group>"; };
 		90A3DAB021EDE717009AA63E /* NTESDemoTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESDemoTask.h; sourceTree = "<group>"; };
 		90A3DAB121EDE717009AA63E /* NTESDemoTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESDemoTask.m; sourceTree = "<group>"; };
 		90A3DAB321EDE893009AA63E /* NTESDemoServiceTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESDemoServiceTask.h; sourceTree = "<group>"; };
-		90CFDD3E21EC610900DDDFED /* G2多人语音聊天室.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "G2多人语音聊天室.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		90CFDD3E21EC610900DDDFED /* 网易云信语聊房.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "网易云信语聊房.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90CFDD4121EC610900DDDFED /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		90CFDD4221EC610900DDDFED /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		90CFDD4A21EC610B00DDDFED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -178,11 +612,7 @@
 		90CFDD4F21EC610B00DDDFED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90CFDD5021EC610B00DDDFED /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		90CFDD5621EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NEChatroom-iOS-ObjCTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		90CFDD5A21EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NEChatroom-iOS-ObjCTests.m"; sourceTree = "<group>"; };
-		90CFDD5C21EC610B00DDDFED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90CFDD6121EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NEChatroom-iOS-ObjCUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		90CFDD6521EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NEChatroom-iOS-ObjCUITests.m"; sourceTree = "<group>"; };
-		90CFDD6721EC610B00DDDFED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		983C6A5CA64985F65A397CDF /* Pods-NEChatroom-iOS-ObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEChatroom-iOS-ObjC.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEChatroom-iOS-ObjC/Pods-NEChatroom-iOS-ObjC.release.xcconfig"; sourceTree = "<group>"; };
 		D783A8CDD4FE36E2796D8F7A /* Pods-NEChatroom-iOS-ObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEChatroom-iOS-ObjC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEChatroom-iOS-ObjC/Pods-NEChatroom-iOS-ObjC.debug.xcconfig"; sourceTree = "<group>"; };
 		E61F3326222FA59400DA2F05 /* NTESUserUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESUserUtil.h; sourceTree = "<group>"; };
@@ -215,8 +645,6 @@
 		E6756D152244CB8800968F5C /* NTESSelectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESSelectViewController.m; sourceTree = "<group>"; };
 		E6796CFF222E4F8000AF1825 /* NTESChatroomHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomHeaderView.h; sourceTree = "<group>"; };
 		E6796D00222E4F8000AF1825 /* NTESChatroomHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomHeaderView.m; sourceTree = "<group>"; };
-		E6796D02222E734E00AF1825 /* NTESChatroomMicQueueView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESChatroomMicQueueView.h; sourceTree = "<group>"; };
-		E6796D03222E734E00AF1825 /* NTESChatroomMicQueueView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESChatroomMicQueueView.m; sourceTree = "<group>"; };
 		E699948E223121B9008EA92E /* NTESUnMuteListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESUnMuteListViewController.h; sourceTree = "<group>"; };
 		E699948F223121B9008EA92E /* NTESUnMuteListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESUnMuteListViewController.m; sourceTree = "<group>"; };
 		E699949A22314129008EA92E /* NTESAudioPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESAudioPlayerView.h; sourceTree = "<group>"; };
@@ -241,6 +669,10 @@
 		E6AC7449223A5A4100DC78B3 /* NELPLogUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NELPLogUtil.m; sourceTree = "<group>"; };
 		E6DD28E3222D390000B58CAD /* NTESHomePageStateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESHomePageStateView.h; sourceTree = "<group>"; };
 		E6DD28E4222D390000B58CAD /* NTESHomePageStateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTESHomePageStateView.m; sourceTree = "<group>"; };
+		FD910C8025D11F7F003675A0 /* apply_on_mic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = apply_on_mic.json; sourceTree = "<group>"; };
+		FD910C8625D12EAB003675A0 /* UIButton+NTES.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+NTES.h"; sourceTree = "<group>"; };
+		FD910C8725D12EAB003675A0 /* UIButton+NTES.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+NTES.m"; sourceTree = "<group>"; };
+		FD910C9225D14F1C003675A0 /* NTESMicQueueViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NTESMicQueueViewProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +701,596 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		392B928325CF8CB600C8A1D2 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				9040876321F0634A00E79DF8 /* NTESChatroomInfo.h */,
+				9040876421F0634A00E79DF8 /* NTESChatroomInfo.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		393A703725C00DF300C9A0A2 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				90CFDD4121EC610900DDDFED /* AppDelegate.h */,
+				90CFDD4221EC610900DDDFED /* AppDelegate.m */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		393A703825C00E9B00C9A0A2 /* Macro */ = {
+			isa = PBXGroup;
+			children = (
+				9040877121F1B27A00E79DF8 /* NTESGlobalMacro.h */,
+				E6A32C25222CD6B300476FD2 /* NTESGlobalMacro.m */,
+				393A704D25C01B4900C9A0A2 /* NTESFontMacro.h */,
+				39B590C825C95A4B00B8EABA /* NTESEnumerationDefinition.h */,
+			);
+			path = Macro;
+			sourceTree = "<group>";
+		};
+		393A703925C00FF100C9A0A2 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				39B590A625C81E5F00B8EABA /* controller */,
+				39B590A725C81E7700B8EABA /* view */,
+				39B590AC25C81FDC00B8EABA /* model */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		393A705425C2DC0E00C9A0A2 /* HomePageView */ = {
+			isa = PBXGroup;
+			children = (
+				39B5909F25C7EB2700B8EABA /* NTESHomeTableViewCell.h */,
+				39B590A025C7EB2700B8EABA /* NTESHomeTableViewCell.m */,
+				E6DD28E3222D390000B58CAD /* NTESHomePageStateView.h */,
+				E6DD28E4222D390000B58CAD /* NTESHomePageStateView.m */,
+				39B590C625C94E5A00B8EABA /* NTESCreateRoomNameView.h */,
+				39B590C525C94E5A00B8EABA /* NTESCreateRoomNameView.m */,
+				39B590C225C93CEE00B8EABA /* NTESCreateRoomTitleButton.h */,
+				39B590C325C93CEE00B8EABA /* NTESCreateRoomTitleButton.m */,
+				393A702B25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.h */,
+				393A702C25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m */,
+				4852485B25C921EE0023E4C3 /* NTESChatroomTableViewCell.h */,
+				4852485C25C921EE0023E4C3 /* NTESChatroomTableViewCell.m */,
+				39B590D325C9770600B8EABA /* NELiveListMainPageNavView.h */,
+				39B590D225C9770600B8EABA /* NELiveListMainPageNavView.m */,
+				39B590D925C983A600B8EABA /* NETSLiveListCell.h */,
+				39B590D825C983A600B8EABA /* NETSLiveListCell.m */,
+				39B590D525C981FD00B8EABA /* NETSEmptyListView.h */,
+				39B590D625C981FD00B8EABA /* NETSEmptyListView.m */,
+			);
+			path = HomePageView;
+			sourceTree = "<group>";
+		};
+		39B5909725C79C9E00B8EABA /* HomePageController */ = {
+			isa = PBXGroup;
+			children = (
+				39B5909C25C7E3DD00B8EABA /* NTESHomeViewController.h */,
+				39B5909D25C7E3DD00B8EABA /* NTESHomeViewController.m */,
+				393A705125C2DA4200C9A0A2 /* NTESOpenRoomViewController.h */,
+				393A705225C2DA4200C9A0A2 /* NTESOpenRoomViewController.m */,
+				39B590CF25C9745000B8EABA /* NTESLiveListMainViewController.h */,
+				39B590D025C9745000B8EABA /* NTESLiveListMainViewController.m */,
+				39B590CC25C96FDC00B8EABA /* NTESChatRoomListViewController.h */,
+				39B590CD25C96FDC00B8EABA /* NTESChatRoomListViewController.m */,
+				39B590E525CAA1AD00B8EABA /* NTESKtvListViewController.h */,
+				39B590E625CAA1AD00B8EABA /* NTESKtvListViewController.m */,
+			);
+			path = HomePageController;
+			sourceTree = "<group>";
+		};
+		39B5909825C7E19300B8EABA /* NTESMusicConsole */ = {
+			isa = PBXGroup;
+			children = (
+				39B5909925C7E19300B8EABA /* NTESMusicConsoleViewController.m */,
+				39B5909A25C7E19300B8EABA /* NTESMusicConsoleViewController.h */,
+			);
+			path = NTESMusicConsole;
+			sourceTree = "<group>";
+		};
+		39B590A225C7EFC200B8EABA /* HomePageModel */ = {
+			isa = PBXGroup;
+			children = (
+				39B590A325C7EFF500B8EABA /* NTESHomePageCellModel.h */,
+				39B590A425C7EFF500B8EABA /* NTESHomePageCellModel.m */,
+				39B590DE25CA493700B8EABA /* NTESLiveRoomListModel.h */,
+				39B590DF25CA493700B8EABA /* NTESLiveRoomListModel.m */,
+			);
+			path = HomePageModel;
+			sourceTree = "<group>";
+		};
+		39B590A625C81E5F00B8EABA /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				393A704225C011EE00C9A0A2 /* NTESBaseViewController.h */,
+				393A703D25C011EE00C9A0A2 /* NTESBaseViewController.m */,
+				393A704125C011EE00C9A0A2 /* NTESBaseViewControllerProtocol.h */,
+				393A703E25C011EE00C9A0A2 /* NTESBaseTableViewController.h */,
+				393A703B25C011ED00C9A0A2 /* NTESBaseTableViewController.m */,
+				393A703A25C011ED00C9A0A2 /* NTESBaseWebViewController.h */,
+				393A703C25C011EE00C9A0A2 /* NTESBaseWebViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		39B590A725C81E7700B8EABA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				39B590BA25C8F79E00B8EABA /* NTESBaseView.h */,
+				39B590B925C8F79E00B8EABA /* NTESBaseView.m */,
+				39B590B825C8F79E00B8EABA /* NTESBaseViewProtocol.h */,
+				39B590A825C81E9A00B8EABA /* NTESBaseTabViewCellProtocol.h */,
+				39B590A925C81ED600B8EABA /* NTESBaseTabViewCell.h */,
+				39B590AA25C81ED600B8EABA /* NTESBaseTabViewCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		39B590AC25C81FDC00B8EABA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				39B590AD25C81FF000B8EABA /* NTESBaseModelProtocol.h */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		39B590AE25C8340200B8EABA /* NTESSegmentCtrl */ = {
+			isa = PBXGroup;
+			children = (
+				39B590B025C8340200B8EABA /* NTESSegmentCtrl.h */,
+				39B590AF25C8340200B8EABA /* NTESSegmentCtrl.m */,
+			);
+			path = NTESSegmentCtrl;
+			sourceTree = "<group>";
+		};
+		39B590E125CA74E700B8EABA /* HomePageViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				39B590E325CA750000B8EABA /* NETSLiveListViewModel.h */,
+				39B590E225CA750000B8EABA /* NETSLiveListViewModel.m */,
+			);
+			path = HomePageViewModel;
+			sourceTree = "<group>";
+		};
+		39B590E825CB9B8D00B8EABA /* NTESProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				39B590E925CB9B9300B8EABA /* NTESProgressHUD.h */,
+				39B590EA25CB9B9300B8EABA /* NTESProgressHUD.m */,
+			);
+			path = NTESProgressHUD;
+			sourceTree = "<group>";
+		};
+		39B590F225CBDD4900B8EABA /* ChatRoomController */ = {
+			isa = PBXGroup;
+			children = (
+				39B590EF25CBDCDB00B8EABA /* NTESLiveRoomViewController.h */,
+				39B590F025CBDCDB00B8EABA /* NTESLiveRoomViewController.m */,
+				489390F725C17BFB009F9EF0 /* NTESActionSheetNavigationController.h */,
+				489390F825C17BFB009F9EF0 /* NTESActionSheetNavigationController.m */,
+			);
+			path = ChatRoomController;
+			sourceTree = "<group>";
+		};
+		39B590F325CBDE0000B8EABA /* chatRoomMainView */ = {
+			isa = PBXGroup;
+			children = (
+				39B590FB25CCE09C00B8EABA /* NTESNoticePopView.h */,
+				39B590FA25CCE09C00B8EABA /* NTESNoticePopView.m */,
+				39B590F425CBDE2400B8EABA /* NTESLiveRoomHeaderView.h */,
+				39B590F525CBDE2400B8EABA /* NTESLiveRoomHeaderView.m */,
+				39B590F725CC1EFE00B8EABA /* NTESLiveRoomFooterView.h */,
+				39B590F825CC1EFE00B8EABA /* NTESLiveRoomFooterView.m */,
+				392B928425D01AD900C8A1D2 /* NTESKeyboardToolbarView.h */,
+				392B928525D01ADA00C8A1D2 /* NTESKeyboardToolbarView.m */,
+			);
+			path = chatRoomMainView;
+			sourceTree = "<group>";
+		};
+		4819908025C3EFFC00E8FBED /* NTESBackgroundMusic */ = {
+			isa = PBXGroup;
+			children = (
+				4819908125C3F06900E8FBED /* NTESBackgroundMusicViewController.h */,
+				4819908225C3F06900E8FBED /* NTESBackgroundMusicViewController.m */,
+				4819908425C40BE900E8FBED /* NTESBackgroundMusic.h */,
+				4819908525C40BE900E8FBED /* NTESBackgroundMusic.m */,
+				4819908725C415C600E8FBED /* NTESBackgroundMusicCell.h */,
+				4819908825C415C600E8FBED /* NTESBackgroundMusicCell.m */,
+			);
+			path = NTESBackgroundMusic;
+			sourceTree = "<group>";
+		};
+		4825703925CA7D6E00303F83 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				4825703A25CA7D8400303F83 /* NTESRtcConfig.h */,
+				4825703B25CA7D8400303F83 /* NTESRtcConfig.m */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		4844A71425BFAC2700F7BA00 /* NTESLyricView */ = {
+			isa = PBXGroup;
+			children = (
+				4844A71525BFAC2700F7BA00 /* NTESLyricCell.h */,
+				4844A71925BFAC2700F7BA00 /* NTESLyricCell.m */,
+				4844A71825BFAC2700F7BA00 /* NTESLyricFrame.h */,
+				4844A71625BFAC2700F7BA00 /* NTESLyricFrame.m */,
+				4844A71725BFAC2700F7BA00 /* NTESLyricView.h */,
+				4844A71A25BFAC2700F7BA00 /* NTESLyricView.m */,
+			);
+			path = NTESLyricView;
+			sourceTree = "<group>";
+		};
+		4844A72B25C00C7D00F7BA00 /* NTESMusicPanel */ = {
+			isa = PBXGroup;
+			children = (
+				4844A72C25C00C9500F7BA00 /* NTESMusicPanelViewController.h */,
+				4844A72D25C00C9500F7BA00 /* NTESMusicPanelViewController.m */,
+				4825703425CA3D0C00303F83 /* NTESMusicPanelLyricLoader.h */,
+				4825703525CA3D0C00303F83 /* NTESMusicPanelLyricLoader.m */,
+			);
+			path = NTESMusicPanel;
+			sourceTree = "<group>";
+		};
+		4844A72F25C01B3200F7BA00 /* NTESMore */ = {
+			isa = PBXGroup;
+			children = (
+				4844A73025C01B9D00F7BA00 /* NTESMoreViewController.h */,
+				4844A73125C01B9D00F7BA00 /* NTESMoreViewController.m */,
+				489390E625C13282009F9EF0 /* NTESMoreCell.h */,
+				489390E725C13282009F9EF0 /* NTESMoreCell.m */,
+				489390E925C133B3009F9EF0 /* NTESMoreItem.h */,
+				489390EA25C133B3009F9EF0 /* NTESMoreItem.m */,
+			);
+			path = NTESMore;
+			sourceTree = "<group>";
+		};
+		489390E425C11989009F9EF0 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				39B590AE25C8340200B8EABA /* NTESSegmentCtrl */,
+				865F8E5825C8EA9900259171 /* lottie-ios */,
+				4844A71425BFAC2700F7BA00 /* NTESLyricView */,
+				489390E525C11A18009F9EF0 /* NTESActionSheetTransitioning */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		489390E525C11A18009F9EF0 /* NTESActionSheetTransitioning */ = {
+			isa = PBXGroup;
+			children = (
+				4844A73325C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.h */,
+				4844A73425C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.m */,
+				4844A73625C02AC700F7BA00 /* NTESActionSheetPresentationController.h */,
+				4844A73925C02B6300F7BA00 /* NTESActionSheetPresentationController.m */,
+				489390DD25C1043E009F9EF0 /* NTESActionSheetDismissalController.h */,
+				489390DE25C1043E009F9EF0 /* NTESActionSheetDismissalController.m */,
+			);
+			path = NTESActionSheetTransitioning;
+			sourceTree = "<group>";
+		};
+		8652CB4325CFDB3E00B5334F /* ListEmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				8652CB4525CFDB3E00B5334F /* NTESListEmptyView.h */,
+				8652CB4425CFDB3E00B5334F /* NTESListEmptyView.m */,
+			);
+			path = ListEmptyView;
+			sourceTree = "<group>";
+		};
+		865F8E5125C8EA7B00259171 /* NTESMusicConsole */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E5325C8EA7B00259171 /* NTESMusicConsoleViewController.h */,
+				865F8E5225C8EA7B00259171 /* NTESMusicConsoleViewController.m */,
+			);
+			path = NTESMusicConsole;
+			sourceTree = "<group>";
+		};
+		865F8E5825C8EA9900259171 /* lottie-ios */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E5925C8EA9900259171 /* RenderSystem */,
+				865F8E8825C8EA9900259171 /* MacCompatibility */,
+				865F8E9225C8EA9A00259171 /* Models */,
+				865F8EB425C8EA9A00259171 /* Extensions */,
+				865F8EBE25C8EA9A00259171 /* Private */,
+				865F8ECB25C8EA9A00259171 /* AnimatableProperties */,
+				865F8ED025C8EA9A00259171 /* AnimatableLayers */,
+				865F8ED725C8EA9A00259171 /* PublicHeaders */,
+			);
+			path = "lottie-ios";
+			sourceTree = "<group>";
+		};
+		865F8E5925C8EA9900259171 /* RenderSystem */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E5A25C8EA9900259171 /* LOTRenderNode.m */,
+				865F8E5B25C8EA9900259171 /* LOTAnimatorNode.h */,
+				865F8E5C25C8EA9900259171 /* LOTRenderNode.h */,
+				865F8E5D25C8EA9900259171 /* ManipulatorNodes */,
+				865F8E6025C8EA9900259171 /* InterpolatorNodes */,
+				865F8E7125C8EA9900259171 /* LOTAnimatorNode.m */,
+				865F8E7225C8EA9900259171 /* AnimatorNodes */,
+				865F8E7D25C8EA9900259171 /* RenderNodes */,
+			);
+			path = RenderSystem;
+			sourceTree = "<group>";
+		};
+		865F8E5D25C8EA9900259171 /* ManipulatorNodes */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E5E25C8EA9900259171 /* LOTTrimPathNode.h */,
+				865F8E5F25C8EA9900259171 /* LOTTrimPathNode.m */,
+			);
+			path = ManipulatorNodes;
+			sourceTree = "<group>";
+		};
+		865F8E6025C8EA9900259171 /* InterpolatorNodes */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E6125C8EA9900259171 /* LOTColorInterpolator.m */,
+				865F8E6225C8EA9900259171 /* LOTPathInterpolator.m */,
+				865F8E6325C8EA9900259171 /* LOTSizeInterpolator.h */,
+				865F8E6425C8EA9900259171 /* LOTValueInterpolator.h */,
+				865F8E6525C8EA9900259171 /* LOTPointInterpolator.h */,
+				865F8E6625C8EA9900259171 /* LOTNumberInterpolator.h */,
+				865F8E6725C8EA9900259171 /* LOTTransformInterpolator.h */,
+				865F8E6825C8EA9900259171 /* LOTArrayInterpolator.h */,
+				865F8E6925C8EA9900259171 /* LOTColorInterpolator.h */,
+				865F8E6A25C8EA9900259171 /* LOTSizeInterpolator.m */,
+				865F8E6B25C8EA9900259171 /* LOTPathInterpolator.h */,
+				865F8E6C25C8EA9900259171 /* LOTPointInterpolator.m */,
+				865F8E6D25C8EA9900259171 /* LOTValueInterpolator.m */,
+				865F8E6E25C8EA9900259171 /* LOTTransformInterpolator.m */,
+				865F8E6F25C8EA9900259171 /* LOTArrayInterpolator.m */,
+				865F8E7025C8EA9900259171 /* LOTNumberInterpolator.m */,
+			);
+			path = InterpolatorNodes;
+			sourceTree = "<group>";
+		};
+		865F8E7225C8EA9900259171 /* AnimatorNodes */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E7325C8EA9900259171 /* LOTPathAnimator.m */,
+				865F8E7425C8EA9900259171 /* LOTPolystarAnimator.m */,
+				865F8E7525C8EA9900259171 /* LOTPolygonAnimator.m */,
+				865F8E7625C8EA9900259171 /* LOTRoundedRectAnimator.h */,
+				865F8E7725C8EA9900259171 /* LOTCircleAnimator.m */,
+				865F8E7825C8EA9900259171 /* LOTPolystarAnimator.h */,
+				865F8E7925C8EA9900259171 /* LOTPathAnimator.h */,
+				865F8E7A25C8EA9900259171 /* LOTCircleAnimator.h */,
+				865F8E7B25C8EA9900259171 /* LOTRoundedRectAnimator.m */,
+				865F8E7C25C8EA9900259171 /* LOTPolygonAnimator.h */,
+			);
+			path = AnimatorNodes;
+			sourceTree = "<group>";
+		};
+		865F8E7D25C8EA9900259171 /* RenderNodes */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E7E25C8EA9900259171 /* LOTRenderGroup.m */,
+				865F8E7F25C8EA9900259171 /* LOTGradientFillRender.m */,
+				865F8E8025C8EA9900259171 /* LOTFillRenderer.h */,
+				865F8E8125C8EA9900259171 /* LOTStrokeRenderer.h */,
+				865F8E8225C8EA9900259171 /* LOTRepeaterRenderer.h */,
+				865F8E8325C8EA9900259171 /* LOTRenderGroup.h */,
+				865F8E8425C8EA9900259171 /* LOTStrokeRenderer.m */,
+				865F8E8525C8EA9900259171 /* LOTFillRenderer.m */,
+				865F8E8625C8EA9900259171 /* LOTGradientFillRender.h */,
+				865F8E8725C8EA9900259171 /* LOTRepeaterRenderer.m */,
+			);
+			path = RenderNodes;
+			sourceTree = "<group>";
+		};
+		865F8E8825C8EA9900259171 /* MacCompatibility */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E8925C8EA9900259171 /* UIColor.h */,
+				865F8E8A25C8EA9900259171 /* UIBezierPath.m */,
+				865F8E8B25C8EA9900259171 /* CALayer+Compat.h */,
+				865F8E8C25C8EA9900259171 /* NSValue+Compat.h */,
+				865F8E8D25C8EA9A00259171 /* UIColor.m */,
+				865F8E8E25C8EA9A00259171 /* LOTPlatformCompat.h */,
+				865F8E8F25C8EA9A00259171 /* UIBezierPath.h */,
+				865F8E9025C8EA9A00259171 /* NSValue+Compat.m */,
+				865F8E9125C8EA9A00259171 /* CALayer+Compat.m */,
+			);
+			path = MacCompatibility;
+			sourceTree = "<group>";
+		};
+		865F8E9225C8EA9A00259171 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				865F8E9325C8EA9A00259171 /* LOTMask.m */,
+				865F8E9425C8EA9A00259171 /* LOTLayer.m */,
+				865F8E9525C8EA9A00259171 /* LOTAssetGroup.m */,
+				865F8E9625C8EA9A00259171 /* LOTShapeRectangle.h */,
+				865F8E9725C8EA9A00259171 /* LOTShapeRepeater.h */,
+				865F8E9825C8EA9A00259171 /* LOTAsset.h */,
+				865F8E9925C8EA9A00259171 /* LOTShapeCircle.h */,
+				865F8E9A25C8EA9A00259171 /* LOTLayerGroup.m */,
+				865F8E9B25C8EA9A00259171 /* LOTShapeStar.m */,
+				865F8E9C25C8EA9A00259171 /* LOTShapeTrimPath.m */,
+				865F8E9D25C8EA9A00259171 /* LOTShapeGroup.h */,
+				865F8E9E25C8EA9A00259171 /* LOTShapePath.h */,
+				865F8E9F25C8EA9A00259171 /* LOTShapeStroke.h */,
+				865F8EA025C8EA9A00259171 /* LOTShapeGradientFill.m */,
+				865F8EA125C8EA9A00259171 /* LOTShapeFill.h */,
+				865F8EA225C8EA9A00259171 /* LOTShapeTransform.h */,
+				865F8EA325C8EA9A00259171 /* LOTAsset.m */,
+				865F8EA425C8EA9A00259171 /* LOTModels.h */,
+				865F8EA525C8EA9A00259171 /* LOTShapeRepeater.m */,
+				865F8EA625C8EA9A00259171 /* LOTAssetGroup.h */,
+				865F8EA725C8EA9A00259171 /* LOTShapeRectangle.m */,
+				865F8EA825C8EA9A00259171 /* LOTLayer.h */,
+				865F8EA925C8EA9A00259171 /* LOTMask.h */,
+				865F8EAA25C8EA9A00259171 /* LOTShapeStar.h */,
+				865F8EAB25C8EA9A00259171 /* LOTLayerGroup.h */,
+				865F8EAC25C8EA9A00259171 /* LOTShapeCircle.m */,
+				865F8EAD25C8EA9A00259171 /* LOTShapePath.m */,
+				865F8EAE25C8EA9A00259171 /* LOTShapeGroup.m */,
+				865F8EAF25C8EA9A00259171 /* LOTShapeTrimPath.h */,
+				865F8EB025C8EA9A00259171 /* LOTShapeFill.m */,
+				865F8EB125C8EA9A00259171 /* LOTShapeTransform.m */,
+				865F8EB225C8EA9A00259171 /* LOTShapeGradientFill.h */,
+				865F8EB325C8EA9A00259171 /* LOTShapeStroke.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		865F8EB425C8EA9A00259171 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				865F8EB525C8EA9A00259171 /* LOTHelpers.h */,
+				865F8EB625C8EA9A00259171 /* LOTRadialGradientLayer.h */,
+				865F8EB725C8EA9A00259171 /* CGGeometry+LOTAdditions.m */,
+				865F8EB825C8EA9A00259171 /* LOTBezierPath.m */,
+				865F8EB925C8EA9A00259171 /* UIColor+Expanded.h */,
+				865F8EBA25C8EA9A00259171 /* LOTRadialGradientLayer.m */,
+				865F8EBB25C8EA9A00259171 /* CGGeometry+LOTAdditions.h */,
+				865F8EBC25C8EA9A00259171 /* LOTBezierPath.h */,
+				865F8EBD25C8EA9A00259171 /* UIColor+Expanded.m */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		865F8EBE25C8EA9A00259171 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				865F8EBF25C8EA9A00259171 /* LOTAnimationCache.m */,
+				865F8EC025C8EA9A00259171 /* LOTComposition.m */,
+				865F8EC125C8EA9A00259171 /* LOTValueCallback.m */,
+				865F8EC225C8EA9A00259171 /* LOTBlockCallback.m */,
+				865F8EC325C8EA9A00259171 /* LOTAnimationView.m */,
+				865F8EC425C8EA9A00259171 /* LOTAnimationTransitionController.m */,
+				865F8EC525C8EA9A00259171 /* LOTAnimationView_Internal.h */,
+				865F8EC625C8EA9A00259171 /* LOTKeypath.m */,
+				865F8EC725C8EA9A00259171 /* LOTCacheProvider.m */,
+				865F8EC825C8EA9A00259171 /* LOTAnimatedControl.m */,
+				865F8EC925C8EA9A00259171 /* LOTInterpolatorCallback.m */,
+				865F8ECA25C8EA9A00259171 /* LOTAnimatedSwitch.m */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		865F8ECB25C8EA9A00259171 /* AnimatableProperties */ = {
+			isa = PBXGroup;
+			children = (
+				865F8ECC25C8EA9A00259171 /* LOTKeyframe.m */,
+				865F8ECD25C8EA9A00259171 /* LOTBezierData.m */,
+				865F8ECE25C8EA9A00259171 /* LOTKeyframe.h */,
+				865F8ECF25C8EA9A00259171 /* LOTBezierData.h */,
+			);
+			path = AnimatableProperties;
+			sourceTree = "<group>";
+		};
+		865F8ED025C8EA9A00259171 /* AnimatableLayers */ = {
+			isa = PBXGroup;
+			children = (
+				865F8ED125C8EA9A00259171 /* LOTLayerContainer.m */,
+				865F8ED225C8EA9A00259171 /* LOTCompositionContainer.h */,
+				865F8ED325C8EA9A00259171 /* LOTMaskContainer.h */,
+				865F8ED425C8EA9A00259171 /* LOTLayerContainer.h */,
+				865F8ED525C8EA9A00259171 /* LOTCompositionContainer.m */,
+				865F8ED625C8EA9A00259171 /* LOTMaskContainer.m */,
+			);
+			path = AnimatableLayers;
+			sourceTree = "<group>";
+		};
+		865F8ED725C8EA9A00259171 /* PublicHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				865F8ED825C8EA9A00259171 /* LOTValueDelegate.h */,
+				865F8ED925C8EA9A00259171 /* LOTAnimatedControl.h */,
+				865F8EDA25C8EA9A00259171 /* LOTCacheProvider.h */,
+				865F8EDB25C8EA9A00259171 /* LOTKeypath.h */,
+				865F8EDC25C8EA9A00259171 /* LOTInterpolatorCallback.h */,
+				865F8EDD25C8EA9A00259171 /* LOTAnimatedSwitch.h */,
+				865F8EDE25C8EA9A00259171 /* LOTAnimationCache.h */,
+				865F8EDF25C8EA9A00259171 /* Lottie.h */,
+				865F8EE025C8EA9A00259171 /* LOTComposition.h */,
+				865F8EE125C8EA9A00259171 /* LOTAnimationTransitionController.h */,
+				865F8EE225C8EA9A00259171 /* LOTAnimationView.h */,
+				865F8EE325C8EA9A00259171 /* LOTAnimationView_Compat.h */,
+				865F8EE425C8EA9A00259171 /* LOTValueCallback.h */,
+				865F8EE525C8EA9A00259171 /* LOTBlockCallback.h */,
+			);
+			path = PublicHeaders;
+			sourceTree = "<group>";
+		};
+		865F8F2525C8EAAB00259171 /* NTESRequest */ = {
+			isa = PBXGroup;
+			children = (
+				865F8F2925C8EAAB00259171 /* SKVObject.h */,
+				865F8F2E25C8EAAB00259171 /* SKVObject.m */,
+				865F8F2A25C8EAAB00259171 /* NTESApiModelMapping.h */,
+				865F8F2F25C8EAAB00259171 /* NTESApiModelMapping.m */,
+				865F8F2B25C8EAAB00259171 /* NTESApiOptions.h */,
+				865F8F2825C8EAAB00259171 /* NTESApiOptions.m */,
+				865F8F2725C8EAAB00259171 /* NTESService.h */,
+				865F8F2C25C8EAAB00259171 /* NTESService.m */,
+				865F8F2D25C8EAAB00259171 /* NTESRequest.h */,
+				865F8F2625C8EAAB00259171 /* NTESRequest.m */,
+			);
+			path = NTESRequest;
+			sourceTree = "<group>";
+		};
+		865F8F4725C8EC1100259171 /* PickSong */ = {
+			isa = PBXGroup;
+			children = (
+				865F8F4B25C8EC1100259171 /* NTESPickSongVC.h */,
+				865F8F4825C8EC1100259171 /* NTESPickSongVC.m */,
+				865F8F4A25C8EC1100259171 /* NTESPickSongCell.h */,
+				865F8F4925C8EC1100259171 /* NTESPickSongCell.m */,
+				865F8F5025C8ECEB00259171 /* NTESPickSongModel.h */,
+				865F8F5125C8ECEB00259171 /* NTESPickSongModel.m */,
+			);
+			path = PickSong;
+			sourceTree = "<group>";
+		};
+		865F8F5725C8EF3D00259171 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				865F8F5825C8EF6200259171 /* NTESChatroomApi.h */,
+				865F8F5925C8EF6200259171 /* NTESChatroomApi.m */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		866CBF0425CA3B6D0047C287 /* MicQueueView */ = {
+			isa = PBXGroup;
+			children = (
+				866CBF0525CA3B970047C287 /* NTESMicQueueCell.h */,
+				866CBF0625CA3B970047C287 /* NTESMicQueueCell.m */,
+				866CBF0A25CA3BF30047C287 /* NTESChatroomMicCell.h */,
+				866CBF0B25CA3BF30047C287 /* NTESChatroomMicCell.m */,
+				866CBF0F25CA3C1B0047C287 /* NTESKtvMicCell.h */,
+				866CBF1025CA3C1B0047C287 /* NTESKtvMicCell.m */,
+				866CBF1425CA42290047C287 /* NTESMicQueueView.h */,
+				866CBF1525CA42290047C287 /* NTESMicQueueView.m */,
+				86A7F7FB25CA82F9006ED564 /* NTESKtvMicQueueView.h */,
+				86A7F7FC25CA82F9006ED564 /* NTESKtvMicQueueView.m */,
+				FD910C9225D14F1C003675A0 /* NTESMicQueueViewProtocol.h */,
+			);
+			path = MicQueueView;
+			sourceTree = "<group>";
+		};
+		86A7F80525CAF724006ED564 /* HasPickedSong */ = {
+			isa = PBXGroup;
+			children = (
+				86A7F80625CAF779006ED564 /* NTESHasPickedSongsVC.h */,
+				86A7F80725CAF779006ED564 /* NTESHasPickedSongsVC.m */,
+				86403C6125CBF2D500B4240E /* NTESHasPickedSongCell.h */,
+				86403C6225CBF2D500B4240E /* NTESHasPickedSongCell.m */,
+			);
+			path = HasPickedSong;
+			sourceTree = "<group>";
+		};
 		86BE5AC324ED4E7200F2B082 /* NTFSSettingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -281,10 +1303,13 @@
 		86EF6EF824E641D60096B5F3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FD910C8025D11F7F003675A0 /* apply_on_mic.json */,
+				8652CB1B25CF894800B5334F /* es_playing.json */,
 				86AC1E6D259D78E3006C6001 /* 1.mp3 */,
 				86AC1E6C259D78E3006C6001 /* 2.mp3 */,
-				86EF6EF924E641D60096B5F3 /* audio_effect_1.wav */,
-				86EF6EFA24E641D60096B5F3 /* audio_effect_0.wav */,
+				482EA4B325CD015500A32E74 /* 3.mp3 */,
+				86EF6EF924E641D60096B5F3 /* audio_effect_2.wav */,
+				4825703725CA438B00303F83 /* audio_effect_1.wav */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -311,6 +1336,8 @@
 				900FC35D21FAAAF800DBC8D8 /* NTESCustomNotificationHelper.m */,
 				900FC38B220023C200DBC8D8 /* NTESChatroomQueueHelper.h */,
 				900FC38C220023C200DBC8D8 /* NTESChatroomQueueHelper.m */,
+				86A7F80025CAA9A8006ED564 /* NTESQueueMusic.h */,
+				86A7F80125CAA9A8006ED564 /* NTESQueueMusic.m */,
 			);
 			path = Handler;
 			sourceTree = "<group>";
@@ -320,8 +1347,6 @@
 			children = (
 				9040875B21EF26FE00E79DF8 /* NTESAccountInfo.h */,
 				9040875C21EF26FE00E79DF8 /* NTESAccountInfo.m */,
-				9040876321F0634A00E79DF8 /* NTESChatroomInfo.h */,
-				9040876421F0634A00E79DF8 /* NTESChatroomInfo.m */,
 				900FC31621F8615000DBC8D8 /* NTESUserInfo.h */,
 				900FC31721F8615000DBC8D8 /* NTESUserInfo.m */,
 				900FC31921F866EB00DBC8D8 /* NTESMicInfo.h */,
@@ -333,8 +1358,8 @@
 		9040875F21EF2E2500E79DF8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				9040876021EF2E3F00E79DF8 /* NTESDemoConfig.h */,
-				9040876121EF2E3F00E79DF8 /* NTESDemoConfig.m */,
+				39B590E825CB9B8D00B8EABA /* NTESProgressHUD */,
+				865F8F2525C8EAAB00259171 /* NTESRequest */,
 				900FC35521F9A82900DBC8D8 /* NTESJsonUtil.h */,
 				900FC35621F9A82900DBC8D8 /* NTESJsonUtil.m */,
 				900FC35F21FAAE6700DBC8D8 /* NTESChatroomDefine.h */,
@@ -342,6 +1367,10 @@
 				E61F3327222FA59400DA2F05 /* NTESUserUtil.m */,
 				E64ED8322242433900E71513 /* NTESAuthorityHelper.h */,
 				E64ED8332242433900E71513 /* NTESAuthorityHelper.m */,
+				393A704725C0154B00C9A0A2 /* NTESDeviceSizeInfo.h */,
+				393A704A25C0154B00C9A0A2 /* NTESDeviceSizeInfo.m */,
+				393A704925C0154B00C9A0A2 /* NTESViewFactory.h */,
+				393A704825C0154B00C9A0A2 /* NTESViewFactory.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -349,6 +1378,16 @@
 		9040876621F0725A00E79DF8 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				392B928725D165AE00C8A1D2 /* UIButton+Layout.h */,
+				392B928825D165AE00C8A1D2 /* UIButton+Layout.m */,
+				3983F73325E62C590022FC8A /* UILabel+ChangeSpace.h */,
+				3983F73425E62C590022FC8A /* UILabel+ChangeSpace.m */,
+				39B590B525C835CB00B8EABA /* UIView+Gradient.h */,
+				39B590B625C835CB00B8EABA /* UIView+Gradient.m */,
+				39B590B225C834A500B8EABA /* NSObject+additions.h */,
+				39B590B325C834A500B8EABA /* NSObject+additions.m */,
+				393A704E25C28BD600C9A0A2 /* UIImageView+CornerRadius.h */,
+				393A704F25C28BDE00C9A0A2 /* UIImageView+CornerRadius.m */,
 				900FC36121FAAF8300DBC8D8 /* NSDictionary+NTESJson.h */,
 				900FC36021FAAF8300DBC8D8 /* NSDictionary+NTESJson.m */,
 				9040876721F0729400E79DF8 /* UIView+NTES.h */,
@@ -359,6 +1398,10 @@
 				E6335CBD223201F60002EBBA /* UIView+NTESToast.m */,
 				900FC36321FABA1500DBC8D8 /* NSString+NTES.h */,
 				900FC36421FABA1500DBC8D8 /* NSString+NTES.m */,
+				865F8C1A25C7D2FC00259171 /* UIImage+NTES.h */,
+				865F8C1B25C7D2FC00259171 /* UIImage+NTES.m */,
+				FD910C8625D12EAB003675A0 /* UIButton+NTES.h */,
+				FD910C8725D12EAB003675A0 /* UIButton+NTES.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -366,11 +1409,15 @@
 		90A3DAA721EDB98B009AA63E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				393A703725C00DF300C9A0A2 /* AppDelegate */,
+				393A703825C00E9B00C9A0A2 /* Macro */,
+				393A703925C00FF100C9A0A2 /* Main */,
 				E699949622313DA1008EA92E /* Sections */,
 				90A3DAAC21EDCC35009AA63E /* Service */,
 				9040875921EF26BE00E79DF8 /* Model */,
 				E6AC743E223A5A4100DC78B3 /* Logger */,
 				9040875F21EF2E2500E79DF8 /* Util */,
+				489390E425C11989009F9EF0 /* Vendor */,
 				9040876621F0725A00E79DF8 /* Category */,
 			);
 			path = Classes;
@@ -396,8 +1443,6 @@
 			isa = PBXGroup;
 			children = (
 				90CFDD4021EC610900DDDFED /* NEChatroom-iOS-ObjC */,
-				90CFDD5921EC610B00DDDFED /* NEChatroom-iOS-ObjCTests */,
-				90CFDD6421EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests */,
 				90CFDD3F21EC610900DDDFED /* Products */,
 				90CFDDA421EC6FC300DDDFED /* Frameworks */,
 				86EF6EF824E641D60096B5F3 /* Resources */,
@@ -409,7 +1454,7 @@
 		90CFDD3F21EC610900DDDFED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				90CFDD3E21EC610900DDDFED /* G2多人语音聊天室.app */,
+				90CFDD3E21EC610900DDDFED /* 网易云信语聊房.app */,
 				90CFDD5621EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.xctest */,
 				90CFDD6121EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.xctest */,
 			);
@@ -419,33 +1464,11 @@
 		90CFDD4021EC610900DDDFED /* NEChatroom-iOS-ObjC */ = {
 			isa = PBXGroup;
 			children = (
+				865F8F6E25C914D200259171 /* AppKey.h */,
 				90A3DAA721EDB98B009AA63E /* Classes */,
-				90CFDD4121EC610900DDDFED /* AppDelegate.h */,
-				90CFDD4221EC610900DDDFED /* AppDelegate.m */,
-				9040877121F1B27A00E79DF8 /* NTESGlobalMacro.h */,
-				E6A32C25222CD6B300476FD2 /* NTESGlobalMacro.m */,
-				90CFDD4A21EC610B00DDDFED /* Assets.xcassets */,
 				E6E98ADC223B3EF900968637 /* Supporting Files */,
 			);
 			path = "NEChatroom-iOS-ObjC";
-			sourceTree = "<group>";
-		};
-		90CFDD5921EC610B00DDDFED /* NEChatroom-iOS-ObjCTests */ = {
-			isa = PBXGroup;
-			children = (
-				90CFDD5A21EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.m */,
-				90CFDD5C21EC610B00DDDFED /* Info.plist */,
-			);
-			path = "NEChatroom-iOS-ObjCTests";
-			sourceTree = "<group>";
-		};
-		90CFDD6421EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests */ = {
-			isa = PBXGroup;
-			children = (
-				90CFDD6521EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.m */,
-				90CFDD6721EC610B00DDDFED /* Info.plist */,
-			);
-			path = "NEChatroom-iOS-ObjCUITests";
 			sourceTree = "<group>";
 		};
 		90CFDDA421EC6FC300DDDFED /* Frameworks */ = {
@@ -483,8 +1506,6 @@
 		E61F332D222FA84100DA2F05 /* NTESMicQueueView */ = {
 			isa = PBXGroup;
 			children = (
-				E6796D02222E734E00AF1825 /* NTESChatroomMicQueueView.h */,
-				E6796D03222E734E00AF1825 /* NTESChatroomMicQueueView.m */,
 				900FC31321F8106100DBC8D8 /* NTESChatroomCollectionViewCell.h */,
 				900FC31421F8106100DBC8D8 /* NTESChatroomCollectionViewCell.m */,
 				E6292F662238FBF0005A530D /* NTESAnimationButton.h */,
@@ -525,9 +1546,10 @@
 		E67B0A33222E44FC00C4538C /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				90A3DAA921EDBDEC009AA63E /* NTESHomePageViewController.h */,
-				90A3DAAA21EDBDEC009AA63E /* NTESHomePageViewController.m */,
+				39B5909725C79C9E00B8EABA /* HomePageController */,
 				E699949222313C99008EA92E /* View */,
+				39B590A225C7EFC200B8EABA /* HomePageModel */,
+				39B590E125CA74E700B8EABA /* HomePageViewModel */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -535,12 +1557,13 @@
 		E67B0A34222E455700C4538C /* Chatroom */ = {
 			isa = PBXGroup;
 			children = (
-				9040876E21F171C500E79DF8 /* NTESChatroomViewController.h */,
-				9040876F21F171C500E79DF8 /* NTESChatroomViewController.m */,
+				39B590F225CBDD4900B8EABA /* ChatRoomController */,
+				E699949122313C74008EA92E /* View */,
+				392B928325CF8CB600C8A1D2 /* model */,
+				865F8F5725C8EF3D00259171 /* Api */,
 				E6AC743C223A52FB00DC78B3 /* DataSource */,
 				E6AC743B223A52EF00DC78B3 /* AudioPlayer */,
 				900FC35821FAA59D00DBC8D8 /* Handler */,
-				E699949122313C74008EA92E /* View */,
 			);
 			path = Chatroom;
 			sourceTree = "<group>";
@@ -548,6 +1571,16 @@
 		E699949122313C74008EA92E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8652CB4325CFDB3E00B5334F /* ListEmptyView */,
+				39B590F325CBDE0000B8EABA /* chatRoomMainView */,
+				865F8F4725C8EC1100259171 /* PickSong */,
+				86A7F80525CAF724006ED564 /* HasPickedSong */,
+				866CBF0425CA3B6D0047C287 /* MicQueueView */,
+				865F8E5125C8EA7B00259171 /* NTESMusicConsole */,
+				4819908025C3EFFC00E8FBED /* NTESBackgroundMusic */,
+				39B5909825C7E19300B8EABA /* NTESMusicConsole */,
+				4844A72F25C01B3200F7BA00 /* NTESMore */,
+				4844A72B25C00C7D00F7BA00 /* NTESMusicPanel */,
 				86BE5AC324ED4E7200F2B082 /* NTFSSettingView */,
 				E61F332E222FA85600DA2F05 /* NTESHeaderView */,
 				E61F332D222FA84100DA2F05 /* NTESMicQueueView */,
@@ -563,14 +1596,11 @@
 		E699949222313C99008EA92E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				393A705425C2DC0E00C9A0A2 /* HomePageView */,
 				E6292F632238F295005A530D /* NTESAnimationImageView.h */,
 				E6292F642238F295005A530D /* NTESAnimationImageView.m */,
 				E6A32C27222D05D100476FD2 /* NTESIconView.h */,
 				E6A32C28222D05D100476FD2 /* NTESIconView.m */,
-				E6DD28E3222D390000B58CAD /* NTESHomePageStateView.h */,
-				E6DD28E4222D390000B58CAD /* NTESHomePageStateView.m */,
-				9040876B21F080ED00E79DF8 /* NTESChatroomTableViewCell.h */,
-				9040876C21F080ED00E79DF8 /* NTESChatroomTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -580,10 +1610,10 @@
 			children = (
 				E6756D142244CB8800968F5C /* NTESSelectViewController.h */,
 				E6756D152244CB8800968F5C /* NTESSelectViewController.m */,
-				900FC38E2200801F00DBC8D8 /* NTESMicInviteeListViewController.h */,
-				900FC38F2200801F00DBC8D8 /* NTESMicInviteeListViewController.m */,
 				E61F3333222FCD7A00DA2F05 /* NTESMuteListViewController.h */,
 				E61F3334222FCD7A00DA2F05 /* NTESMuteListViewController.m */,
+				900FC38E2200801F00DBC8D8 /* NTESMicInviteeListViewController.h */,
+				900FC38F2200801F00DBC8D8 /* NTESMicInviteeListViewController.m */,
 				E699948E223121B9008EA92E /* NTESUnMuteListViewController.h */,
 				E699948F223121B9008EA92E /* NTESUnMuteListViewController.m */,
 				E699949522313D95008EA92E /* View */,
@@ -618,6 +1648,7 @@
 		E699949622313DA1008EA92E /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				4825703925CA7D6E00303F83 /* Common */,
 				E67B0A33222E44FC00C4538C /* HomePage */,
 				E67B0A34222E455700C4538C /* Chatroom */,
 				E699949322313D07008EA92E /* SelectList */,
@@ -650,6 +1681,12 @@
 			children = (
 				E69EDE822230F24E00566E7E /* NTESChatroomDataSource.h */,
 				E69EDE832230F24E00566E7E /* NTESChatroomDataSource.m */,
+				393A702E25B85F8900C9A0A2 /* NTESCdnStreamService.h */,
+				393A702F25B85F8900C9A0A2 /* NTESCdnStreamService.m */,
+				393A703425BAF50E00C9A0A2 /* NTESCustomAttachment.h */,
+				393A703525BAF50E00C9A0A2 /* NTESCustomAttachment.m */,
+				8652CB0125CD696300B5334F /* NTESPickMusicService.h */,
+				8652CB0225CD696300B5334F /* NTESPickMusicService.m */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -675,6 +1712,11 @@
 		E6E98ADC223B3EF900968637 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				48557F6225DF597000D3B9A2 /* ne_strip_archs.sh */,
+				48360FE825C7F16D006FE443 /* lyric_bg@2x.jpg */,
+				48360FE725C7F16D006FE443 /* lyric_bg@3x.jpg */,
+				48360FE425C7E7AD006FE443 /* playing.json */,
+				90CFDD4A21EC610B00DDDFED /* Assets.xcassets */,
 				90CFDD4C21EC610B00DDDFED /* LaunchScreen.storyboard */,
 				90CFDD4F21EC610B00DDDFED /* Info.plist */,
 				90CFDD5021EC610B00DDDFED /* main.m */,
@@ -696,6 +1738,8 @@
 				90CFDD3C21EC610900DDDFED /* Resources */,
 				0DF4140E1790D130D747FB83 /* [CP] Copy Pods Resources */,
 				70F78C8F0EC29B49CCC63B4D /* [CP] Embed Pods Frameworks */,
+				489390F325C1468E009F9EF0 /* Embed Frameworks */,
+				48557F6425DF599A00D3B9A2 /* Strip Archs */,
 			);
 			buildRules = (
 			);
@@ -703,7 +1747,7 @@
 			);
 			name = "NEChatroom-iOS-ObjC";
 			productName = "NEChatroom-iOS-ObjC";
-			productReference = 90CFDD3E21EC610900DDDFED /* G2多人语音聊天室.app */;
+			productReference = 90CFDD3E21EC610900DDDFED /* 网易云信语聊房.app */;
 			productType = "com.apple.product-type.application";
 		};
 		90CFDD5521EC610B00DDDFED /* NEChatroom-iOS-ObjCTests */ = {
@@ -748,6 +1792,7 @@
 		90CFDD3621EC610900DDDFED /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = NTES;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = netease;
 				TargetAttributes = {
@@ -794,12 +1839,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				482EA4B425CD015600A32E74 /* 3.mp3 in Resources */,
+				48360FE925C7F16D006FE443 /* lyric_bg@3x.jpg in Resources */,
+				48360FE525C7E7AE006FE443 /* playing.json in Resources */,
 				90CFDD4E21EC610B00DDDFED /* LaunchScreen.storyboard in Resources */,
-				86EF6EFC24E641D60096B5F3 /* audio_effect_0.wav in Resources */,
 				86AC1E6F259D78E3006C6001 /* 1.mp3 in Resources */,
+				8652CB1C25CF894800B5334F /* es_playing.json in Resources */,
 				90CFDD4B21EC610B00DDDFED /* Assets.xcassets in Resources */,
+				FD910C8125D11F7F003675A0 /* apply_on_mic.json in Resources */,
+				48360FEA25C7F16D006FE443 /* lyric_bg@2x.jpg in Resources */,
+				4825703825CA438B00303F83 /* audio_effect_1.wav in Resources */,
 				86AC1E6E259D78E3006C6001 /* 2.mp3 in Resources */,
-				86EF6EFB24E641D60096B5F3 /* audio_effect_1.wav in Resources */,
+				86EF6EFB24E641D60096B5F3 /* audio_effect_2.wav in Resources */,
+				48557F6325DF597000D3B9A2 /* ne_strip_archs.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,6 +1907,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NEChatroom-iOS-ObjC/Pods-NEChatroom-iOS-ObjC-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		48557F6425DF599A00D3B9A2 /* Strip Archs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Archs";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/bin/sh \"${SRCROOT}/NEChatroom-iOS-ObjC/ne_strip_archs.sh\"\n";
+		};
 		70F78C8F0EC29B49CCC63B4D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -880,66 +1950,199 @@
 			buildActionMask = 2147483647;
 			files = (
 				90018BED22240B0100391035 /* NTESLiveChatTextCell.m in Sources */,
+				865F8EFB25C8EA9A00259171 /* UIBezierPath.m in Sources */,
+				865F8F1625C8EA9A00259171 /* LOTBlockCallback.m in Sources */,
+				865F8F1C25C8EA9A00259171 /* LOTInterpolatorCallback.m in Sources */,
+				8652CB0325CD696300B5334F /* NTESPickMusicService.m in Sources */,
+				393A704425C011EE00C9A0A2 /* NTESBaseWebViewController.m in Sources */,
 				E6DD28E5222D390000B58CAD /* NTESHomePageStateView.m in Sources */,
 				E6AC744E223A5A4200DC78B3 /* NELPLogUtil.m in Sources */,
+				865F8EF725C8EA9A00259171 /* LOTGradientFillRender.m in Sources */,
 				90018BEA22240B0100391035 /* NTESTextInputView.m in Sources */,
+				865F8F2225C8EA9A00259171 /* LOTMaskContainer.m in Sources */,
+				865F8F1E25C8EA9A00259171 /* LOTKeyframe.m in Sources */,
+				865F8F1925C8EA9A00259171 /* LOTKeypath.m in Sources */,
 				9040876921F0729400E79DF8 /* UIView+NTES.m in Sources */,
 				900FC36221FAAF8300DBC8D8 /* NSDictionary+NTESJson.m in Sources */,
-				9040876221EF2E3F00E79DF8 /* NTESDemoConfig.m in Sources */,
+				865F8F4D25C8EC1100259171 /* NTESPickSongCell.m in Sources */,
+				865F8F1A25C8EA9A00259171 /* LOTCacheProvider.m in Sources */,
+				39B590C725C94E5B00B8EABA /* NTESCreateRoomNameView.m in Sources */,
+				865F8F4C25C8EC1100259171 /* NTESPickSongVC.m in Sources */,
+				865F8F1325C8EA9A00259171 /* LOTAnimationCache.m in Sources */,
 				E6335CBE223201F60002EBBA /* UIView+NTESToast.m in Sources */,
 				E6335CC42235F0E00002EBBA /* NTESAudioPlayerManager.m in Sources */,
+				865F8F1225C8EA9A00259171 /* UIColor+Expanded.m in Sources */,
+				489390F925C17BFB009F9EF0 /* NTESActionSheetNavigationController.m in Sources */,
+				865F8EF825C8EA9A00259171 /* LOTStrokeRenderer.m in Sources */,
 				E69EDE842230F24F00566E7E /* NTESChatroomDataSource.m in Sources */,
+				865F8F0225C8EA9A00259171 /* LOTLayerGroup.m in Sources */,
+				865F8F0C25C8EA9A00259171 /* LOTShapeFill.m in Sources */,
+				865F8F1725C8EA9A00259171 /* LOTAnimationView.m in Sources */,
 				E6AC744D223A5A4200DC78B3 /* NELPLogMessage.m in Sources */,
 				900FC31821F8615000DBC8D8 /* NTESUserInfo.m in Sources */,
+				4844A73225C01B9D00F7BA00 /* NTESMoreViewController.m in Sources */,
 				872CD15C229E778A00C06C1E /* NTESAudioPanelView.m in Sources */,
+				865F8EF925C8EA9A00259171 /* LOTFillRenderer.m in Sources */,
 				E6AC744C223A5A4200DC78B3 /* NELPLogMappingFile.m in Sources */,
+				39B590B725C835CB00B8EABA /* UIView+Gradient.m in Sources */,
+				865F8F0E25C8EA9A00259171 /* LOTShapeStroke.m in Sources */,
+				39B590E425CA750000B8EABA /* NETSLiveListViewModel.m in Sources */,
 				E6292F682238FBF0005A530D /* NTESAnimationButton.m in Sources */,
 				E6A32C29222D05D100476FD2 /* NTESIconView.m in Sources */,
+				393A703025B85F8A00C9A0A2 /* NTESCdnStreamService.m in Sources */,
 				E6A8A28A22365CF8007B008E /* UIView+Toast.m in Sources */,
+				865F8F3425C8EAAB00259171 /* NTESApiModelMapping.m in Sources */,
+				865F8F0D25C8EA9A00259171 /* LOTShapeTransform.m in Sources */,
+				392B928625D01ADA00C8A1D2 /* NTESKeyboardToolbarView.m in Sources */,
 				E699949C22314129008EA92E /* NTESAudioPlayerView.m in Sources */,
 				9040875D21EF26FE00E79DF8 /* NTESAccountInfo.m in Sources */,
 				90018BE02224096200391035 /* NTESLiveChatView.m in Sources */,
-				E6796D04222E734E00AF1825 /* NTESChatroomMicQueueView.m in Sources */,
+				39B590F625CBDE2400B8EABA /* NTESLiveRoomHeaderView.m in Sources */,
+				39B5909B25C7E19300B8EABA /* NTESMusicConsoleViewController.m in Sources */,
+				865F8F2125C8EA9A00259171 /* LOTCompositionContainer.m in Sources */,
+				39B590D725C981FD00B8EABA /* NETSEmptyListView.m in Sources */,
+				865F8F1B25C8EA9A00259171 /* LOTAnimatedControl.m in Sources */,
 				90018BF022240B5700391035 /* NTESMessageModel.m in Sources */,
 				E6292F652238F295005A530D /* NTESAnimationImageView.m in Sources */,
+				39B590D125C9745000B8EABA /* NTESLiveListMainViewController.m in Sources */,
+				39B590E025CA493700B8EABA /* NTESLiveRoomListModel.m in Sources */,
 				900FC38D220023C200DBC8D8 /* NTESChatroomQueueHelper.m in Sources */,
+				4825703C25CA7D8400303F83 /* NTESRtcConfig.m in Sources */,
+				865F8EF325C8EA9A00259171 /* LOTPolygonAnimator.m in Sources */,
+				866CBF1125CA3C1B0047C287 /* NTESKtvMicCell.m in Sources */,
+				865F8EFC25C8EA9A00259171 /* UIColor.m in Sources */,
+				865F8F0B25C8EA9A00259171 /* LOTShapeGroup.m in Sources */,
 				E61F333B222FCEDA00DA2F05 /* NTESChatroomStateView.m in Sources */,
+				866CBF0C25CA3BF30047C287 /* NTESChatroomMicCell.m in Sources */,
+				39B590FC25CCE09C00B8EABA /* NTESNoticePopView.m in Sources */,
+				865F8F1F25C8EA9A00259171 /* LOTBezierData.m in Sources */,
 				900FC3992202D53500DBC8D8 /* NTESChatroomAlertView.m in Sources */,
+				865F8F0725C8EA9A00259171 /* LOTShapeRepeater.m in Sources */,
 				E6756D162244CB8800968F5C /* NTESSelectViewController.m in Sources */,
+				865F8F0025C8EA9A00259171 /* LOTLayer.m in Sources */,
+				489390DF25C1043E009F9EF0 /* NTESActionSheetDismissalController.m in Sources */,
+				865F8EEC25C8EA9A00259171 /* LOTValueInterpolator.m in Sources */,
+				865F8F5225C8ECEB00259171 /* NTESPickSongModel.m in Sources */,
 				900FC35B21FAA5C100DBC8D8 /* NTESChatroomNotificationHandler.m in Sources */,
+				489390E825C13283009F9EF0 /* NTESMoreCell.m in Sources */,
+				4819908325C3F06900E8FBED /* NTESBackgroundMusicViewController.m in Sources */,
 				90018BEC22240B0100391035 /* NTESGrowingInternalTextView.m in Sources */,
+				39B590A525C7EFF500B8EABA /* NTESHomePageCellModel.m in Sources */,
+				865F8F0325C8EA9A00259171 /* LOTShapeStar.m in Sources */,
+				865F8F0625C8EA9A00259171 /* LOTAsset.m in Sources */,
+				865F8C1C25C7D2FC00259171 /* UIImage+NTES.m in Sources */,
 				E64ED8312241D67F00E71513 /* NTESActionSheet.m in Sources */,
 				E61F3338222FCE1D00DA2F05 /* NTESNavBar.m in Sources */,
+				865F8EF225C8EA9A00259171 /* LOTPolystarAnimator.m in Sources */,
+				865F8EEB25C8EA9A00259171 /* LOTPointInterpolator.m in Sources */,
 				900FC31521F8106100DBC8D8 /* NTESChatroomCollectionViewCell.m in Sources */,
+				FD910C8825D12EAB003675A0 /* UIButton+NTES.m in Sources */,
+				865F8E5425C8EA7B00259171 /* NTESMusicConsoleViewController.m in Sources */,
+				865F8F0825C8EA9A00259171 /* LOTShapeRectangle.m in Sources */,
+				865F8F0125C8EA9A00259171 /* LOTAssetGroup.m in Sources */,
+				865F8EFF25C8EA9A00259171 /* LOTMask.m in Sources */,
 				E6AC744B223A5A4200DC78B3 /* NELPLogger.m in Sources */,
-				9040876D21F080ED00E79DF8 /* NTESChatroomTableViewCell.m in Sources */,
-				9040877021F171C500E79DF8 /* NTESChatroomViewController.m in Sources */,
+				865F8F3125C8EAAB00259171 /* NTESApiOptions.m in Sources */,
+				865F8EE625C8EA9A00259171 /* LOTRenderNode.m in Sources */,
+				4852485D25C921EE0023E4C3 /* NTESChatroomTableViewCell.m in Sources */,
+				865F8EEF25C8EA9A00259171 /* LOTNumberInterpolator.m in Sources */,
+				865F8F1125C8EA9A00259171 /* LOTRadialGradientLayer.m in Sources */,
+				865F8EEA25C8EA9A00259171 /* LOTSizeInterpolator.m in Sources */,
+				86A7F80225CAA9A8006ED564 /* NTESQueueMusic.m in Sources */,
+				865F8EEE25C8EA9A00259171 /* LOTArrayInterpolator.m in Sources */,
+				865F8F0425C8EA9A00259171 /* LOTShapeTrimPath.m in Sources */,
 				E6A32C26222CD6B400476FD2 /* NTESGlobalMacro.m in Sources */,
+				393A704325C011EE00C9A0A2 /* NTESBaseTableViewController.m in Sources */,
 				86BE5AC624ED4EA900F2B082 /* NTESSettingPanelView.m in Sources */,
 				90CFDD5121EC610B00DDDFED /* main.m in Sources */,
+				865F8F0925C8EA9A00259171 /* LOTShapeCircle.m in Sources */,
+				865F8EE825C8EA9A00259171 /* LOTColorInterpolator.m in Sources */,
+				865F8EF425C8EA9A00259171 /* LOTCircleAnimator.m in Sources */,
+				4825703625CA3D0C00303F83 /* NTESMusicPanelLyricLoader.m in Sources */,
+				865F8F1525C8EA9A00259171 /* LOTValueCallback.m in Sources */,
+				393A704B25C0154B00C9A0A2 /* NTESViewFactory.m in Sources */,
+				393A705325C2DA4200C9A0A2 /* NTESOpenRoomViewController.m in Sources */,
+				4844A72E25C00C9500F7BA00 /* NTESMusicPanelViewController.m in Sources */,
+				865F8EFD25C8EA9A00259171 /* NSValue+Compat.m in Sources */,
+				865F8F3025C8EAAB00259171 /* NTESRequest.m in Sources */,
+				4844A72E25C00C9500F7BA00 /* NTESMusicPanelViewController.m in Sources */,
+				86A7F7FD25CA82F9006ED564 /* NTESKtvMicQueueView.m in Sources */,
 				900FC35E21FAAAF800DBC8D8 /* NTESCustomNotificationHelper.m in Sources */,
+				4844A73A25C02B6300F7BA00 /* NTESActionSheetPresentationController.m in Sources */,
 				E6796D01222E4F8000AF1825 /* NTESChatroomHeaderView.m in Sources */,
+				4819908625C40BE900E8FBED /* NTESBackgroundMusic.m in Sources */,
 				E6999490223121B9008EA92E /* NTESUnMuteListViewController.m in Sources */,
+				39B590B425C834A500B8EABA /* NSObject+additions.m in Sources */,
 				900FC37821FEA53300DBC8D8 /* NTESConnectListView.m in Sources */,
+				4844A71D25BFAC2700F7BA00 /* NTESLyricView.m in Sources */,
+				39B590F925CC1EFE00B8EABA /* NTESLiveRoomFooterView.m in Sources */,
 				9040876521F0634A00E79DF8 /* NTESChatroomInfo.m in Sources */,
-				90A3DAAB21EDBDEC009AA63E /* NTESHomePageViewController.m in Sources */,
+				489390EB25C133B3009F9EF0 /* NTESMoreItem.m in Sources */,
+				865F8EE925C8EA9A00259171 /* LOTPathInterpolator.m in Sources */,
+				39B590D425C9770600B8EABA /* NELiveListMainPageNavView.m in Sources */,
 				900FC35721F9A82900DBC8D8 /* NTESJsonUtil.m in Sources */,
+				39B590B125C8340200B8EABA /* NTESSegmentCtrl.m in Sources */,
 				900FC39C22034C2300DBC8D8 /* NTESConnectAlertView.m in Sources */,
+				39B590C425C93CEE00B8EABA /* NTESCreateRoomTitleButton.m in Sources */,
+				393A703625BAF50E00C9A0A2 /* NTESCustomAttachment.m in Sources */,
 				90A3DAB221EDE717009AA63E /* NTESDemoTask.m in Sources */,
+				39B590BB25C8F79E00B8EABA /* NTESBaseView.m in Sources */,
+				865F8EF525C8EA9A00259171 /* LOTRoundedRectAnimator.m in Sources */,
+				393A702D25B6D1E700C9A0A2 /* NTESPlanChooseAlertView.m in Sources */,
+				39B590AB25C81ED700B8EABA /* NTESBaseTabViewCell.m in Sources */,
 				90A3DAAF21EDCC59009AA63E /* NTESDemoService.m in Sources */,
+				865F8F0A25C8EA9A00259171 /* LOTShapePath.m in Sources */,
+				866CBF1625CA42290047C287 /* NTESMicQueueView.m in Sources */,
+				86A7F80825CAF779006ED564 /* NTESHasPickedSongsVC.m in Sources */,
 				E61F332B222FA5E400DA2F05 /* NTESDataCenter.m in Sources */,
+				865F8F5A25C8EF6200259171 /* NTESChatroomApi.m in Sources */,
 				900FC3902200801F00DBC8D8 /* NTESMicInviteeListViewController.m in Sources */,
+				865F8EE725C8EA9A00259171 /* LOTTrimPathNode.m in Sources */,
 				900FC36521FABA1500DBC8D8 /* NSString+NTES.m in Sources */,
+				4844A73525C01C3700F7BA00 /* NTESActionSheetTransitioningDelegate.m in Sources */,
+				39B5909E25C7E3DD00B8EABA /* NTESHomeViewController.m in Sources */,
+				393A705025C28BDE00C9A0A2 /* UIImageView+CornerRadius.m in Sources */,
+				865F8F1425C8EA9A00259171 /* LOTComposition.m in Sources */,
 				900FC31B21F866EB00DBC8D8 /* NTESMicInfo.m in Sources */,
+				865F8F0F25C8EA9A00259171 /* CGGeometry+LOTAdditions.m in Sources */,
+				4844A71B25BFAC2700F7BA00 /* NTESLyricFrame.m in Sources */,
+				86403C6325CBF2D500B4240E /* NTESHasPickedSongCell.m in Sources */,
+				865F8EF125C8EA9A00259171 /* LOTPathAnimator.m in Sources */,
+				865F8EFA25C8EA9A00259171 /* LOTRepeaterRenderer.m in Sources */,
+				4819908925C415C600E8FBED /* NTESBackgroundMusicCell.m in Sources */,
+				39B590EB25CB9B9300B8EABA /* NTESProgressHUD.m in Sources */,
+				39B590CE25C96FDC00B8EABA /* NTESChatRoomListViewController.m in Sources */,
+				39B590DA25C983A700B8EABA /* NETSLiveListCell.m in Sources */,
+				865F8F3225C8EAAB00259171 /* NTESService.m in Sources */,
+				3983F73525E62C590022FC8A /* UILabel+ChangeSpace.m in Sources */,
+				865F8EED25C8EA9A00259171 /* LOTTransformInterpolator.m in Sources */,
 				E61F333E222FE55C00DA2F05 /* NTESUserInfoCell.m in Sources */,
+				865F8F2025C8EA9A00259171 /* LOTLayerContainer.m in Sources */,
+				865F8F1825C8EA9A00259171 /* LOTAnimationTransitionController.m in Sources */,
+				865F8EF025C8EA9A00259171 /* LOTAnimatorNode.m in Sources */,
+				865F8EFE25C8EA9A00259171 /* CALayer+Compat.m in Sources */,
 				90018BEB22240B0100391035 /* NTESGrowingTextView.m in Sources */,
+				39B590F125CBDCDB00B8EABA /* NTESLiveRoomViewController.m in Sources */,
+				865F8F0525C8EA9A00259171 /* LOTShapeGradientFill.m in Sources */,
 				E6AC744A223A5A4200DC78B3 /* NELPLogAppender.m in Sources */,
+				4844A71C25BFAC2700F7BA00 /* NTESLyricCell.m in Sources */,
+				392B928925D165AE00C8A1D2 /* UIButton+Layout.m in Sources */,
 				90CFDD4321EC610900DDDFED /* AppDelegate.m in Sources */,
 				E61F3335222FCD7A00DA2F05 /* NTESMuteListViewController.m in Sources */,
+				865F8EF625C8EA9A00259171 /* LOTRenderGroup.m in Sources */,
 				900FC37B21FEA96500DBC8D8 /* NTESConnectListViewCell.m in Sources */,
+				39B590A125C7EB2700B8EABA /* NTESHomeTableViewCell.m in Sources */,
+				393A704525C011EE00C9A0A2 /* NTESBaseViewController.m in Sources */,
+				865F8F1025C8EA9A00259171 /* LOTBezierPath.m in Sources */,
 				E61F3328222FA59400DA2F05 /* NTESUserUtil.m in Sources */,
+				865F8F1D25C8EA9A00259171 /* LOTAnimatedSwitch.m in Sources */,
 				E6292F622238E4D8005A530D /* NTESDemoSystemManager.m in Sources */,
+				865F8F3325C8EAAB00259171 /* SKVObject.m in Sources */,
+				866CBF0725CA3B970047C287 /* NTESMicQueueCell.m in Sources */,
+				8652CB4625CFDB3E00B5334F /* NTESListEmptyView.m in Sources */,
 				E64ED8342242433900E71513 /* NTESAuthorityHelper.m in Sources */,
+				393A704C25C0154B00C9A0A2 /* NTESDeviceSizeInfo.m in Sources */,
+				39B590E725CAA1AD00B8EABA /* NTESKtvListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -947,7 +2150,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90CFDD5B21EC610B00DDDFED /* NEChatroom-iOS-ObjCTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,7 +2157,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90CFDD6621EC610B00DDDFED /* NEChatroom-iOS-ObjCUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1114,6 +2315,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Vendors",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/NEChatroom-iOS-ObjC/Classes/Vendor/NERtcSDK",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/NEChatroom-iOS-ObjC/NEChatroom-iOS-ObjC-Prefix.pch";
@@ -1123,10 +2325,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.netease.nmc.demo;
-				PRODUCT_NAME = "G2多人语音聊天室";
+				MARKETING_VERSION = 3.2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
+				PRODUCT_NAME = "网易云信语聊房";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = NO;
 			};
 			name = Debug;
 		};
@@ -1145,6 +2349,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Vendors",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/NEChatroom-iOS-ObjC/Classes/Vendor/NERtcSDK",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/NEChatroom-iOS-ObjC/NEChatroom-iOS-ObjC-Prefix.pch";
@@ -1154,10 +2359,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.netease.nmc.demo;
-				PRODUCT_NAME = "G2多人语音聊天室";
+				MARKETING_VERSION = 3.2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
+				PRODUCT_NAME = "网易云信语聊房";
 				PROVISIONING_PROFILE_SPECIFIER = enterpriseForWildCard;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = NO;
 			};
 			name = Release;
 		};

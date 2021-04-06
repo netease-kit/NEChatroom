@@ -34,6 +34,10 @@ typedef void(^NTESCreateChatroomHandler)(NTESChatroomInfo * _Nullable chatroomIn
 @interface NTESDemoCreateChatroomTask : NSObject<NTESDemoServiceTask>
 @property (nonatomic, copy)NSString * _Nullable sid;
 @property (nonatomic, copy)NSString * _Nullable roomName;
+//1RTC推流 0 CDN推流
+@property (nonatomic, assign)NSInteger pushType;
+// 4 语聊房  5 KTV
+@property (nonatomic, assign)NTESCreateRoomType roomType;
 @property (nonatomic, copy)NTESCreateChatroomHandler _Nullable handler;
 @end
 

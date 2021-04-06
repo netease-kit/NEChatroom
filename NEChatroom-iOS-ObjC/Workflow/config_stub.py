@@ -24,6 +24,7 @@ io = open(APP_CONFIG_FILE, "r+")
 text = io.read()
 
 ret = stubString("kAppKey\s?=\s?@\"\S*\"", "^[a-f0-9]{32}$", text, APP_KEY, 'APP_KEY')
+ret = stubString("kNertcAppkey\s?=\s?@\"\S*\"", "^[a-f0-9]{32}$", text, APP_KEY, 'APP_KEY')
 ret = stubString("kApiHost\s?=\s?@\"\S*\"", "(?:https:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+", ret, API_BASE_URL, 'API_BASE_URL')
 
 io.seek(0)

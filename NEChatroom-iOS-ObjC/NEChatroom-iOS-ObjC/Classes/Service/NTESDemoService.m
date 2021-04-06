@@ -53,11 +53,15 @@
 
 - (void)createChatroomWithSid:(NSString *)sid
                      roomName:(NSString *)roomName
+                    pushType:(NSInteger)pushType
+               createRoomType:(NTESCreateRoomType)roomType
                    completion:(NTESCreateChatroomHandler)completion;
 {
     NTESDemoCreateChatroomTask *task = [[NTESDemoCreateChatroomTask alloc] init];
     task.sid = sid;
     task.roomName = roomName;
+    task.pushType = pushType;
+    task.roomType = roomType;
     task.handler = completion;
     [self runTask:task];
 }

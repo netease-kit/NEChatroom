@@ -70,5 +70,14 @@
  */
 @property (nonatomic) CGSize size;
 
+
+/**
+ 视图切圆角
+
+ @param roundingCorners 指定圆角
+ */
+- (void)cutViewRounded:(UIRectCorner)roundingCorners cornerRadii:(CGSize)cornerRadii;
+
+
 @end
 

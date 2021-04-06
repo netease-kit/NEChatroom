@@ -30,7 +30,7 @@ jobs:
       APP_KEY: ${{ secrets.APP_KEY }}
       API_BASE_URL: ${{ secrets.API_BASE_URL  }}
       KEYCHAIN: ${{ 'temp.keychain' }}
-      APP_CONFIG_FILE_PATH: ${{ './NEChatroom-iOS-ObjC/Classes/Util/NTESDemoConfig.m' }}
+      APP_CONFIG_FILE_PATH: ${{ './NEChatroom-iOS-ObjC/AppKey.h' }}
     defaults:
       run:
         shell: bash

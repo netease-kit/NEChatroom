@@ -8,11 +8,20 @@
 
 #import "NTESChatroomDataSource.h"
 #import "NTESChatroomQueueHelper.h"
+#import "NSString+NTES.h"
+
+#define kDatasourceSonghandleQueue            "com.netease.song.handle.queue"
 
 @interface NTESChatroomDataSource ()
 {
 //    NIMNetCallMeeting *_meeting;
 }
+
+/// 点歌服务
+@property (nonatomic, strong, readwrite)   NTESPickMusicService    *pickService;
+
+// 歌曲变化
+- (void)musicQueueDidChange:(NSNotification *)notification;
 
 @end
 
@@ -37,13 +46,32 @@
             micInfo.micOrder = i + 1;
             [_micInfoArray addObject:micInfo];
         }
+        
+        _pickService = [[NTESPickMusicService alloc] init];
+        _rtcConfig = [[NTESRtcConfig alloc] init];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(musicQueueDidChange:) name:kChatroomKtvMusicQueueChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc  {
+    [NSNotificationCenter.defaultCenter removeObserver:self name:kChatroomKtvMusicQueueChanged object:nil];
 }
 
 - (void)setMyAccountInfo:(NTESAccountInfo *)myAccountInfo {
     _myAccountInfo = myAccountInfo;
     _myMicInfo.userInfo = [[NTESUserInfo alloc] initWithAccountInfo:myAccountInfo];
+    
+    _pickService.userInfo = myAccountInfo;
+}
+
+#pragma mark - setter/getter
+
+- (void)setChatroomInfo:(NTESChatroomInfo *)chatroomInfo
+{
+    _chatroomInfo = chatroomInfo;
+    
+    _pickService.chatroomId = chatroomInfo.roomId;
 }
 
 - (BOOL)userIsCreator:(NSString *)userId {
@@ -52,6 +80,12 @@
         ret = [userId isEqualToString:_chatroom.creator];
     }
     return ret;
+}
+
+- (void)setUserMode:(NTESUserMode)userMode
+{
+    _userMode = userMode;
+    _pickService.userMode = userMode;
 }
 
 - (NTESMicInfo *)userInfoOnMicInfoArray:(NSString *)userId {
@@ -94,8 +128,11 @@
 - (void)buildMicInfoDataWithChatroomQueue:(NSArray<NSDictionary<NSString *,NSString *> *> *)chatroomQueue {
     if (chatroomQueue && chatroomQueue.count) {
         for (NSDictionary *dic in chatroomQueue) {
-            NSArray *allValue = [dic allValues];
-            for (id obj in allValue) {
+            for (NSString *key in [dic allKeys]) {
+                if ([key hasPrefix:@"music_"]) {
+                    continue;
+                }
+                NSString *obj = [dic objectForKey:key];
                 if (obj && [obj isKindOfClass:[NSString class]]) {
                     NTESMicInfo *micInfo = [NTESChatroomQueueHelper micInfoByChatroomQueueValue:obj];
                     NSInteger index = micInfo.micOrder - 1;
@@ -107,6 +144,18 @@
         }
     }
     
+}
+
+- (void)setCurrentBackgroundMusic:(NTESBackgroundMusic *)currentBackgroundMusic {
+    _currentBackgroundMusic = currentBackgroundMusic;
+    _isBackgroundMusicPaused = NO;
+}
+
+- (void)musicQueueDidChange:(NSNotification *)notification {
+    if (self.pickService.pickSongs.count > 0) {
+        self.isBackgroundMusicPaused = NO;
+        self.currentBackgroundMusic = nil;
+    }
 }
 
 @end

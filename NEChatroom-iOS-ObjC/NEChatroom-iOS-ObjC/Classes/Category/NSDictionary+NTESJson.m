@@ -115,4 +115,23 @@
     return 0;
 }
 
+/**
+ * json字符串转化为字典
+ */
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString{
+    if (jsonString == nil) {
+        return nil;
+    }
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err) {
+        return nil;
+    }
+    return dic;
+}
+
+
 @end

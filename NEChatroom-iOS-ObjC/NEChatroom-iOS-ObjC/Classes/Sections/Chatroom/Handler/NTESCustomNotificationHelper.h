@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NTESCustomAttachment.h"
 
 @class NTESMicInfo;
 @class NTESAccountInfo;
@@ -18,8 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
                          micInfo:(NTESMicInfo *)micInfo
                      accountInfo:(NTESAccountInfo *)accountInfo;
 
+/**
+ 发送 下麦 通知
+ @param creater - 创建者ID
+ @param micInfo - 麦位信息
+ @param completion - 完成闭包
+ */
 + (void)sendDropMicNotication:(NSString *)creater
-                      micInfo:(NTESMicInfo *)micInfo;
+                      micInfo:(NTESMicInfo *)micInfo
+                   completion:(nullable NIMSystemNotificationHandler)completion;
 
 + (void)sendCancelMicNotication:(NSString *)creater
                         micInfo:(NTESMicInfo *)micInfo;
@@ -33,6 +41,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)sendSystemMessage:(NSString *)roomId text:(NSString *)text;
 
 + (NIMMessage *)systemMessageWithText:(NSString *)text;
+
++ (void)sendCustomMessage:(NSString *)roomId type:(NTESVoiceChatAttachmentType)type;
+
++ (void)sendCustomMessage:(NSString *)roomId type:(NTESVoiceChatAttachmentType)type operator:(nullable NSString *)operator error:(NSError * _Nullable *)error;
 
 @end
 

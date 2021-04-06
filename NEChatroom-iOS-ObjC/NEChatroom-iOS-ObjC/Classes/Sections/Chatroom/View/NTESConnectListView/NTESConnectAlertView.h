@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NTESConnectAlertView : UIView
 
 @property (nonatomic, weak)id<NTESConnectAlertViewDelegate> delegate;
+@property (nonatomic,strong)UIButton *showConnectListBtn;
+
 - (void)updateConnectCount:(NSUInteger)connectCount;
 - (void)refreshAlertView:(BOOL)listViewPushed;
 

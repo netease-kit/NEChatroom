@@ -22,8 +22,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NTESConnectListViewCell : UITableViewCell
 
-@property (nonatomic, weak)id<NTESConnectListViewCellDelegate> delegate;
-- (void)refresh:(NTESMicInfo *)micInfo;
+/**
+ 创建cell
+ @param tableView   - 展示控件
+ @param datas            - 数据
+ @param delegate    - 代理句柄
+ @param indexPath   - 次序
+ */
++ (NTESConnectListViewCell *)cellWithTableView:(UITableView *)tableView
+                                          datas:(NSArray<NTESMicInfo *> *)datas
+                                      delegate:(id<NTESConnectListViewCellDelegate>)delegate
+                                     indexPath:(NSIndexPath *)indexPath;
 
 @end
 

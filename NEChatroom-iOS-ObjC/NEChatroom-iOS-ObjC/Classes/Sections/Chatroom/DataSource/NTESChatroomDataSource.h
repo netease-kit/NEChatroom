@@ -11,10 +11,14 @@
 #import "NTESAccountInfo.h"
 #import "NTESMicInfo.h"
 #import "NTESChatroomDefine.h"
+#import "NTESPickSongModel.h"
+#import "NTESBackgroundMusic.h"
+#import "NTESPickMusicService.h"
+#import "NTESRtcConfig.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class NERtcAudioVolumeInfo;
+@class NERtcAudioVolumeInfo, NTESQueueMusic, NTESPickSongModel;
 
 #define NTESChatroomAudioQuality  @"chatroomAudioQuality"
 
@@ -36,7 +40,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) BOOL isMasked;  //是否被语音屏蔽
 @property (nonatomic,assign) BOOL isAllSoundMute; //所有声音关闭（主播）
 
+// 配置字段
+@property (nonatomic, strong, nullable) NTESBackgroundMusic *currentBackgroundMusic; // 当前背景乐
+@property (nonatomic, assign) BOOL isBackgroundMusicPaused; // 当前背景乐是否暂停
+
+
 @property (nonatomic,strong) NSArray <NERtcAudioVolumeInfo *> *onSoundUsers;
+/// 主播信息
+@property (nonatomic,strong) NTESAccountInfo    *anchorInfo;
 
 - (BOOL)userIsCreator:(NSString *)userId;
 
@@ -50,6 +61,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 //根据micOrder清除连麦请求者
 - (void)cleanConnectorOnMicOrder:(NSInteger)micOrder;
+
+#pragma mark -  点歌服务
+@property (nonatomic, strong, readonly)   NTESPickMusicService    *pickService;
+#pragma mark - RTC配置
+@property (nonatomic, strong) NTESRtcConfig *rtcConfig;
 
 @end
 
