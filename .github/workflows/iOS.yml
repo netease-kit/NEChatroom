@@ -43,10 +43,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
           python-version: '2.7'
-          
-    - name: Config Stub
-      run: 
-        python $XC_CONFIG_STUB_SCRIPT_PATH $APP_CONFIG_FILE_PATH $APP_KEY $API_BASE_URL
     
     - name: Select Xcode
       run: 
