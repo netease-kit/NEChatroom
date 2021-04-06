@@ -43,10 +43,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
           python-version: '2.7'
-          
-    - name: Config Stub
-      run: 
-        python $XC_CONFIG_STUB_SCRIPT_PATH $APP_CONFIG_FILE_PATH $APP_KEY $API_BASE_URL
     
     - name: Select Xcode
       run: 
@@ -55,10 +51,6 @@ jobs:
     - name: Install Dependencies
       run: pod install
 
-    - name: Archive
+    - name: Build
       run:
-        xcodebuild build -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -sdk iphoneos9.3;
-
-      with:
-        name: NEChatroom-iOS-ObjC
-        path: ./NEChatroom-iOS-ObjC/product/ipa/NEChatroom-iOS-ObjC.ipa
+        xcodebuild build -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration Debug -sdk iphonesimulator;
