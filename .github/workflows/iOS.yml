@@ -53,4 +53,4 @@ jobs:
 
     - name: Build
       run:
-        xcodebuild build -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -sdk iphoneos9.3;
+        xcodebuild build -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration Debug -sdk iphonesimulator;
