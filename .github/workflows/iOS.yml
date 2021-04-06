@@ -58,7 +58,3 @@ jobs:
     - name: Archive
       run:
         xcodebuild build -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -sdk iphoneos9.3;
-
-      with:
-        name: NEChatroom-iOS-ObjC
-        path: ./NEChatroom-iOS-ObjC/product/ipa/NEChatroom-iOS-ObjC.ipa
