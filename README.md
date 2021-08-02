@@ -38,9 +38,9 @@
 
 ## 体验 Demo
 
-IOS：https://www.pgyer.com/8M0h 
+IOS：https://www.pgyer.com/LFki
 
-Android：https://www.pgyer.com/SxMc 
+Android：https://www.pgyer.com/r2Nm
 
 密码：iosNIM
 
