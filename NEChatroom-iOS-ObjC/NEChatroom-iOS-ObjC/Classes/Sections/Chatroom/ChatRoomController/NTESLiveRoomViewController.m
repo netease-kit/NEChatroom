@@ -301,7 +301,13 @@
     context.appKey = kNertcAppkey;
     context.engineDelegate = self;
     NERtcEngine *coreEngine = [NERtcEngine sharedEngine];
-    
+    NERtcLogSetting *setting = [[NERtcLogSetting alloc] init];
+    #if DEBUG
+         setting.logLevel = kNERtcLogLevelInfo;
+    #else
+         setting.logLevel = kNERtcLogLevelWarning;
+    #endif
+    context.logSetting = setting;
     
     [coreEngine setAudioProfile:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioProfileHighQuality:kNERtcAudioProfileHighQualityStereo scenario:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioScenarioChatRoom : kNERtcAudioScenarioMusic];
     [coreEngine setupEngineWithContext:context];
