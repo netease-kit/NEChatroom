@@ -43,6 +43,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.util.Entry;
+import com.netease.yunxin.nertc.nertcvoiceroom.BuildConfig;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Anchor;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.Audience;
 import com.netease.yunxin.nertc.nertcvoiceroom.model.AudioPlay;
@@ -412,7 +413,11 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         roomCallback = callback;
         NERtcOption option = new NERtcOption();
         musicSing = MusicSing.shareInstance();
-        option.logLevel = NERtcConstants.LogLevel.DEBUG;
+        if(BuildConfig.DEBUG){
+            option.logLevel = NERtcConstants.LogLevel.INFO;
+        }else {
+            option.logLevel = NERtcConstants.LogLevel.WARNING;
+        }
         try {
             engine.init(context, appKey, this.callback, option);
         } catch (Exception e) {
@@ -756,6 +761,7 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
         } else {
             stopLocalAudio();
         }
+        engine.setChannelProfile(NERtcConstants.RTCChannelProfile.LIVE_BROADCASTING);
         int result = engine.joinChannel(null, voiceRoomInfo.getRoomId(), accountToVoiceUid(user.account));
         ALog.e("====>", "join channel code is " + result);
         if (result != 0) {
