@@ -312,7 +312,7 @@
     [coreEngine setAudioProfile:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioProfileHighQuality:kNERtcAudioProfileHighQualityStereo scenario:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioScenarioChatRoom : kNERtcAudioScenarioMusic];
     [coreEngine setupEngineWithContext:context];
     [coreEngine enableAudioVolumeIndication:YES interval:1000];
-
+    [coreEngine setChannelProfile:kNERtcChannelProfileLiveBroadcasting];
     [NIMCustomObject registerCustomDecoder:[[NTESCustomAttachmentDecoder alloc] init]];
 
     if (_dataSource.userMode == NTESUserModeAnchor) {
