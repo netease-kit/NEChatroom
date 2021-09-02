@@ -131,10 +131,25 @@ public class NERtcCallbackExImpl implements NERtcCallbackEx {
 
     }
 
+    @Override
+    public void onAudioRecording(int i, String s) {
+
+    }
+
 
     @Override
     public void onError(int code) {}
 
     @Override
     public void onWarning(int code) {}
+
+    @Override
+    public void onMediaRelayStatesChange(int i, String s) {
+
+    }
+
+    @Override
+    public void onMediaRelayReceiveEvent(int i, int i1, String s) {
+
+    }
 }

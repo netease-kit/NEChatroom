@@ -56,7 +56,6 @@ public class PushTypeSwitcherImpl implements PushTypeSwitcher {
         engine.setAudioProfile(NERtcConstants.AudioProfile.HIGH_QUALITY, NERtcConstants.AudioScenario.CHATROOM);
         // 设置加入房间自动订阅音频流
         NERtcParameters parameters = new NERtcParameters();
-        parameters.setBoolean(NERtcParameters.KEY_AUTO_SUBSCRIBE_AUDIO, true);
         parameters.set(NERtcParameters.KEY_PUBLISH_SELF_STREAM, true);
         NERtcEx.getInstance().setParameters(parameters);
         // 设置本地音频采集

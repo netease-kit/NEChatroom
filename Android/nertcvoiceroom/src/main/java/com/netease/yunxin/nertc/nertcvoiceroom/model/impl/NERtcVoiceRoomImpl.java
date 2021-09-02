@@ -773,7 +773,6 @@ public class NERtcVoiceRoomImpl extends NERtcVoiceRoomInner {
 
     private void setupParameters() {
         NERtcParameters parameters = new NERtcParameters();
-        parameters.setBoolean(NERtcParameters.KEY_AUTO_SUBSCRIBE_AUDIO, true);
         if (voiceRoomInfo.isSupportCDN()) {
             parameters.set(NERtcParameters.KEY_PUBLISH_SELF_STREAM, true);
         }
