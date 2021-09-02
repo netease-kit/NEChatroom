@@ -795,7 +795,6 @@
             }];
         } else {
             [[NERtcEngine sharedEngine] setLoudspeakerMode:YES];
-            [[NERtcEngine sharedEngine] uploadSdkInfo];
             //开启CDN，只有加入频道成功后才添加推流任务
             if (wself.pushType == NTESPushTypeCdn && wself.dataSource.userMode == NTESUserModeAnchor) {
                 [self addLiveStream:self.dataSource.chatroomInfo.configModel.pushUrl];
