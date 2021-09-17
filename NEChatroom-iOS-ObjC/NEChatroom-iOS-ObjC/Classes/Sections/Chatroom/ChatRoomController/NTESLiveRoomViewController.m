@@ -308,22 +308,10 @@
          setting.logLevel = kNERtcLogLevelWarning;
     #endif
     context.logSetting = setting;
-    
-    [coreEngine setAudioProfile:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioProfileHighQuality:kNERtcAudioProfileHighQualityStereo scenario:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioScenarioChatRoom : kNERtcAudioScenarioMusic];
+
     [coreEngine setupEngineWithContext:context];
-    [coreEngine enableAudioVolumeIndication:YES interval:1000];
-    [coreEngine setChannelProfile:kNERtcChannelProfileLiveBroadcasting];
+    
     [NIMCustomObject registerCustomDecoder:[[NTESCustomAttachmentDecoder alloc] init]];
-
-    if (_dataSource.userMode == NTESUserModeAnchor) {
-        [coreEngine enableLocalAudio:YES];
-    } else {
-        [coreEngine enableLocalAudio:NO];
-    }
-
-    if (self.pushType == NTESPushTypeCdn) {
-        [coreEngine setParameters:@{kNERtcKeyPublishSelfStreamEnabled: @YES}]; // 打开推流
-    }
 }
 
 - (void)setupNotication {
@@ -781,11 +769,19 @@
 //rtc加入频道
 - (void)rtcEngineJoinChannel {
     
+    NERtcEngine *coreEngine = NERtcEngine.sharedEngine;
+    [coreEngine setAudioProfile:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioProfileHighQuality:kNERtcAudioProfileHighQualityStereo scenario:self.roomType == NTESCreateRoomTypeChatRoom ? kNERtcAudioScenarioChatRoom : kNERtcAudioScenarioMusic];
+    [coreEngine enableAudioVolumeIndication:YES interval:1000];
+    [coreEngine setChannelProfile:kNERtcChannelProfileLiveBroadcasting];
+    [coreEngine enableLocalAudio:_dataSource.userMode == NTESUserModeAnchor || _dataSource.userMode == NTESUserModeConnector];
+    if (self.pushType == NTESPushTypeCdn) {
+        [coreEngine setParameters:@{kNERtcKeyPublishSelfStreamEnabled: @YES}]; // 打开推流
+    }
     __weak typeof(self) wself = self;
-    [[NERtcEngine sharedEngine] joinChannelWithToken:@""
-                                         channelName:_dataSource.chatroomInfo.roomId
-                                               myUid:_dataSource.myAccountInfo.uid
-                                          completion:^(NSError * _Nullable error, uint64_t channelId, uint64_t elapesd) {
+    [coreEngine joinChannelWithToken:@""
+                         channelName:_dataSource.chatroomInfo.roomId
+                               myUid:_dataSource.myAccountInfo.uid
+                          completion:^(NSError * _Nullable error, uint64_t channelId, uint64_t elapesd) {
         if (error) {
             NELPLogError(@"[demo] 加入meeting失败.%@", error);
             [NTESChatroomAlertView showAlertWithMessage:@"进入音视频房间失败" completion:^{
@@ -794,7 +790,7 @@
                                          micInfo:wself.dataSource.myMicInfo];
             }];
         } else {
-            [[NERtcEngine sharedEngine] setLoudspeakerMode:YES];
+            [coreEngine setLoudspeakerMode:YES];
             //开启CDN，只有加入频道成功后才添加推流任务
             if (wself.pushType == NTESPushTypeCdn && wself.dataSource.userMode == NTESUserModeAnchor) {
                 [self addLiveStream:self.dataSource.chatroomInfo.configModel.pushUrl];
@@ -988,6 +984,9 @@
             {}
             break;
         case NTESMicStatusConnectFinished:{
+            //刷新布局
+            _roomfooterView.userMode = NTESUserModeConnector;
+            _dataSource.userMode = NTESUserModeConnector;
             //同意上麦了
             if (micInfo.micReason == NTESMicReasonConnectAccepted) {
                 NELPLogInfo(@"[demo] YAT allow connect");
@@ -1016,9 +1015,6 @@
                 [NTESChatroomAlertView showAlertWithMessage:@"该麦位被主播\"解除语音屏蔽\"\n现在您可以在此进行语音互动了"];
                 _dataSource.isMasked = NO;
             }
-            //刷新布局
-            _roomfooterView.userMode = NTESUserModeConnector;
-            _dataSource.userMode = NTESUserModeConnector;
         }
             break;
         case NTESMicStatusClosed:

@@ -2325,7 +2325,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
 				PRODUCT_NAME = "网易云信语聊房";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
@@ -2359,7 +2359,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
 				PRODUCT_NAME = "网易云信语聊房";
 				PROVISIONING_PROFILE_SPECIFIER = enterpriseForWildCard;
