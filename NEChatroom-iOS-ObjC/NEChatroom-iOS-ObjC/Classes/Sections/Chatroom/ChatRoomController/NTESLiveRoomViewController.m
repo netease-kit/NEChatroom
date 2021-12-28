@@ -1585,7 +1585,7 @@
 - (void)didReceiveMicBeDropped:(NTESMicInfo *)micInfo
 {
     NSInteger micOrder = micInfo.micOrder;
-    if (!(micOrder > 0 && micOrder < [_dataSource.micInfoArray count])) {
+    if (!(micOrder > 0 && micOrder < [_dataSource.micInfoArray count] + 1)) {
         return;
     }
     NTESMicInfo *curMicInfo = _dataSource.micInfoArray[micOrder - 1];
