@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- avatar -->
+    <dimen name="avatar_max_size">60dip</dimen>
+    <dimen name="avatar_size_default">50dip</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
+    <dimen name="dp_280">280dp</dimen>
+
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="dp_minus_8">-8dp</dimen>
+
+</resources>

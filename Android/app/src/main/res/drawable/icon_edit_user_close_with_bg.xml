@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <size
+                android:width="17dp"
+                android:height="17dp" />
+            <solid android:color="#8f8f93" />
+        </shape>
+    </item>
+    <item
+        android:bottom="4dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp">
+        <bitmap android:src="@drawable/icon_edit_user_close" />
+    </item>
+</layer-list>
