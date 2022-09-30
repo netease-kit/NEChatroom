@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 NetEase, Inc. All rights reserved. -->
+<!-- Use of this source code is governed by a MIT license that can be -->
+<!-- found in the LICENSE file. -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/shape_user_center_bg"/>
+
+    <item android:gravity="bottom|center_horizontal" android:bottom="100dp">
+        <bitmap android:src="@drawable/icon_about_logo_big" />
+    </item>
+</layer-list>
