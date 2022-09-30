@@ -16,6 +16,7 @@ import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomMoreDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ListItemDialog;
@@ -80,6 +81,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
         .observe(
             this,
             event -> {
+              ALog.d(TAG, "initDataObserver currentSeatEvent,event:" + event);
               switch (event.getReason()) {
                 case VoiceRoomSeat.Reason.ANCHOR_INVITE:
                 case VoiceRoomSeat.Reason.ANCHOR_APPROVE_APPLY:
@@ -103,14 +105,60 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
             new Observer<Integer>() {
               @Override
               public void onChanged(Integer integer) {
+                ALog.d(TAG, "initDataObserver currentSeatState,integer:" + integer);
                 if (integer != VoiceRoomViewModel.CURRENT_SEAT_STATE_APPLYING) {
                   canShowTip = false;
                   if (topTipsDialog != null) {
                     topTipsDialog.dismiss();
                   }
                 }
+                updateAudioSwitchVisible(integer == VoiceRoomViewModel.CURRENT_SEAT_STATE_ON_SEAT);
+                handleMyAudioState(integer == VoiceRoomViewModel.CURRENT_SEAT_STATE_ON_SEAT);
               }
             });
+  }
+
+  private void handleMyAudioState(boolean isOnSeat) {
+    NEVoiceRoomMember localMember = NEVoiceRoomKit.getInstance().getLocalMember();
+    if (localMember == null) {
+      return;
+    }
+    ALog.d(
+        TAG,
+        "handleMyAudioState,isAudioOn:"
+            + localMember.isAudioOn()
+            + ",isAudioBanned:"
+            + localMember.isAudioBanned());
+    ivLocalAudioSwitch.setSelected(!localMember.isAudioOn());
+    if (isOnSeat && !localMember.isAudioOn()) {
+      NEVoiceRoomKit.getInstance()
+          .unmuteMyAudio(
+              new NEVoiceRoomCallback<Unit>() {
+                @Override
+                public void onSuccess(@Nullable Unit unit) {
+                  ivLocalAudioSwitch.setSelected(false);
+                }
+
+                @Override
+                public void onFailure(int code, @Nullable String msg) {
+                  ivLocalAudioSwitch.setSelected(true);
+                }
+              });
+    } else if (!isOnSeat && localMember.isAudioOn()) {
+      NEVoiceRoomKit.getInstance()
+          .muteMyAudio(
+              new NEVoiceRoomCallback<Unit>() {
+                @Override
+                public void onSuccess(@Nullable Unit unit) {
+                  ivLocalAudioSwitch.setSelected(true);
+                }
+
+                @Override
+                public void onFailure(int code, @Nullable String msg) {
+                  ivLocalAudioSwitch.setSelected(false);
+                }
+              });
+    }
   }
 
   private void watchNetWork() {
