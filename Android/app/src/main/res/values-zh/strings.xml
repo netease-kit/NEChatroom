@@ -10,7 +10,7 @@
     <string name="app_voice_chat">语音聊天室</string>
     <string name="app_random">随机</string>
     <string name="app_open_room">开启房间</string>
-    <string name="app_name">网易云信语聊房</string>
+    <string name="app_app_name">网易云信语聊房</string>
     <string name="app_voiceroom">语聊房</string>
     <string name="app_voiceroom_desc_text">6-8人语聊房，玩家可自由发言，实现线上兴趣/话题式语聊互动场景</string>
     <string name="app_free_trial">免费试用</string>

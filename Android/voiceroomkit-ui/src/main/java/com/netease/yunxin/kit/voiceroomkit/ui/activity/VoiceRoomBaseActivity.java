@@ -616,6 +616,12 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     NEVoiceRoomMember localMember = NEVoiceRoomKit.getInstance().getLocalMember();
     if (localMember == null) return;
     boolean isAudioOn = localMember.isAudioOn();
+    ALog.d(
+        TAG,
+        "toggleMuteLocalAudio,localMember.isAudioOn:"
+            + isAudioOn
+            + ",localMember.isAudioBanned():"
+            + localMember.isAudioBanned());
     if (isAudioOn) {
       NEVoiceRoomKit.getInstance()
           .muteMyAudio(
