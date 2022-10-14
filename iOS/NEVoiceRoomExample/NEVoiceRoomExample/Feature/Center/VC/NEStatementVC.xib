@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NEStatementVC">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本产品按“现状”提供，没有任何形式的明示担保，包括但不限于对适配性、特定目的的实用性和非侵权性的担保。无论是由于与本产品或本产品的使用或其他方式有关的任何合同、侵权或其他形式的行为，网易云信均不对任何索赔、损害或其他责任负责。" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Off-8G-sN3">
+                    <rect key="frame" x="20" y="204.5" width="374" height="84"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="您可以自由选择是否试用本产品提供的服务，如果您下载、安装、试用本产品中所提供的服务，即表明您信任改产品所有人，网易云信对任何原因在试用本产品中提供的服务时可能对您自身或他人造成的任何形式的损失和伤害不承担任何责任。" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMs-iB-dfo">
+                    <rect key="frame" x="20" y="308.5" width="374" height="84"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7SP-Qe-Iwk">
+                    <rect key="frame" x="20" y="84" width="374" height="100.5"/>
+                    <string key="text">网易云信 NERTC（“本产品”）是由网易云信提供的一款测试产品，网易云信享有本产品的著作权和所有权。特此免费授予获得本产品和相关文档文件（以下简称“软件”）副本的任何人无限制地试用软件的权利，包括但不限于试用，赋值，修改，合并，发布，分发，但本产品不得用于任何商业用途，不得在许可和/或出售该软件的副本。</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="7SP-Qe-Iwk" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="40" id="3g1-mL-CQN"/>
+                <constraint firstAttribute="trailing" secondItem="7SP-Qe-Iwk" secondAttribute="trailing" constant="20" id="JgX-64-OJJ"/>
+                <constraint firstItem="Off-8G-sN3" firstAttribute="leading" secondItem="7SP-Qe-Iwk" secondAttribute="leading" id="Qua-m0-NP2"/>
+                <constraint firstItem="tMs-iB-dfo" firstAttribute="trailing" secondItem="7SP-Qe-Iwk" secondAttribute="trailing" id="RKR-Iy-vGe"/>
+                <constraint firstItem="tMs-iB-dfo" firstAttribute="top" secondItem="Off-8G-sN3" secondAttribute="bottom" constant="20" id="e5l-Sw-eez"/>
+                <constraint firstItem="tMs-iB-dfo" firstAttribute="leading" secondItem="7SP-Qe-Iwk" secondAttribute="leading" id="fVr-Rj-cYw"/>
+                <constraint firstItem="Off-8G-sN3" firstAttribute="top" secondItem="7SP-Qe-Iwk" secondAttribute="bottom" constant="20" id="j8p-qy-u4J"/>
+                <constraint firstItem="Off-8G-sN3" firstAttribute="trailing" secondItem="7SP-Qe-Iwk" secondAttribute="trailing" id="md5-ef-cJ0"/>
+                <constraint firstItem="7SP-Qe-Iwk" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="qKe-mf-cGL"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="137.68115942028987" y="92.410714285714278"/>
+        </view>
+    </objects>
+</document>

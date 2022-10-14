@@ -1,0 +1,27 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '10.0'
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'NEVoiceRoomExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  
+  # plugin 'cocoapods-pod-sign'
+  # skip_pod_bundle_sign
+  
+  pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
+  pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
+  
+  pod 'YXLogin'
+  # Pods for NEVoiceRoomExample
+  pod 'Masonry'
+
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
+end
