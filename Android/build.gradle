@@ -67,10 +67,7 @@ ext {
 }
 
 def loadLocalConfig() {
-    String env = System.getProperty("env", "test")
-    if (env != "test") env = "online"
-    println "env=$env"
-    def propertiesFile = file("config/${env}.properties")
+    def propertiesFile = file("config/online.properties")
     if (!propertiesFile.exists()) {
         println "Local properties don't exist."
         return
