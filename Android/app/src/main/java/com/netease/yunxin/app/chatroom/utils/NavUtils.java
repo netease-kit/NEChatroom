@@ -2,18 +2,18 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.utils;
+package com.netease.yunxin.app.chatroom.utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import com.netease.yunxin.app.voiceroom.Constants;
-import com.netease.yunxin.app.voiceroom.main.MainActivity;
-import com.netease.yunxin.app.voiceroom.main.SplashActivity;
-import com.netease.yunxin.app.voiceroom.main.WebViewActivity;
-import com.netease.yunxin.app.voiceroom.user.AppAboutActivity;
-import com.netease.yunxin.app.voiceroom.user.EditUserInfoActivity;
-import com.netease.yunxin.app.voiceroom.user.UserInfoActivity;
+import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.main.MainActivity;
+import com.netease.yunxin.app.chatroom.main.SplashActivity;
+import com.netease.yunxin.app.chatroom.main.WebViewActivity;
+import com.netease.yunxin.app.chatroom.user.AppAboutActivity;
+import com.netease.yunxin.app.chatroom.user.EditUserInfoActivity;
+import com.netease.yunxin.app.chatroom.user.UserInfoActivity;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;

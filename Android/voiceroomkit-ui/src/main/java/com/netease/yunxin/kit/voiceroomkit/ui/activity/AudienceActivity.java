@@ -36,6 +36,8 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   private ImageView ivLeaveSeat;
 
   private ListItemDialog cancelApplyDialog;
+  private int networkErrorCount;
+  private static final int ZERO_COUNT = 0;
 
   @Override
   protected int getContentViewID() {
@@ -168,9 +170,13 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
             this,
             state -> {
               if (state == VoiceRoomViewModel.NET_AVAILABLE) { // 网可用
+                if (networkErrorCount == ZERO_COUNT) {
+                  return;
+                }
                 onNetAvailable();
               } else { // 不可用
                 onNetLost();
+                networkErrorCount++;
               }
             });
   }
@@ -232,6 +238,10 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   }
 
   public void applySeat(int index) {
+    if (NEVoiceRoomKit.getInstance().getLocalMember() == null) {
+      ALog.e(TAG, "not in room");
+      return;
+    }
     NEVoiceRoomKit.getInstance()
         .submitSeatRequest(
             index,
@@ -264,6 +274,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
     bundle.putParcelable(topTipsDialog.TAG, style);
     topTipsDialog.setArguments(bundle);
     topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
+    ALog.d(TAG, "onApplySeatSuccess");
     canShowTip = true;
     topTipsDialog.setClickListener(
         () -> {

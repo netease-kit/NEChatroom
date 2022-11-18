@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.activity;
+package com.netease.yunxin.app.chatroom.activity;
 
 import android.Manifest;
 import android.graphics.Color;
@@ -14,7 +14,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gyf.immersionbar.ImmersionBar;
-import com.netease.yunxin.app.voiceroom.AppStates;
+import com.netease.yunxin.app.chatroom.AppStates;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.EventType;
 import com.netease.yunxin.kit.login.model.LoginEvent;

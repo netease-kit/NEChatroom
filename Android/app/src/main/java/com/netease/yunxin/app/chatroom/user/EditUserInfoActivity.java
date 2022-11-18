@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.user;
+package com.netease.yunxin.app.chatroom.user;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,9 +10,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import com.blankj.utilcode.util.ToastUtils;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
-import com.netease.yunxin.app.voiceroom.databinding.ActivityEditUserInfoBinding;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.databinding.ActivityEditUserInfoBinding;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.LoginCallback;
 import com.netease.yunxin.kit.login.model.UserInfo;

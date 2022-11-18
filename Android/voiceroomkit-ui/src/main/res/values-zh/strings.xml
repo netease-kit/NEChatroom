@@ -86,5 +86,5 @@
 
     <string name="voiceroom_start_live_error">开启语聊房失败</string>
     <string name="voiceroom_join_live_error">加入语聊房失败</string>
-
+    <string name="voiceroom_audio_banned">已屏蔽，不能操作!</string>
 </resources>

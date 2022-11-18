@@ -2,58 +2,52 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.view;
+package com.netease.yunxin.app.chatroom.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.netease.yunxin.app.voiceroom.R;
-import com.scwang.smart.refresh.layout.api.RefreshFooter;
+import com.netease.yunxin.app.chatroom.R;
+import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshKernel;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.constant.RefreshState;
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
 
-public class FooterView extends LinearLayout implements RefreshFooter {
+public class HeaderView extends LinearLayout implements RefreshHeader {
   private Context context;
-  private TextView tvFooter;
-  private boolean noMoreData = false;
+  // 图标
+  private ImageView ivIcon;
 
-  public FooterView(Context context) {
+  // 文案
+  private TextView tvHeaderText;
+
+  public HeaderView(Context context) {
     super(context);
     initView(context);
   }
 
-  public FooterView(Context context, @Nullable AttributeSet attrs) {
+  public HeaderView(Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     initView(context);
   }
 
-  public FooterView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public HeaderView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initView(context);
   }
 
   private void initView(Context context) {
     this.context = context;
-    LayoutInflater.from(context).inflate(R.layout.refresh_footer_layout, this);
-    tvFooter = findViewById(R.id.tv_footer_text);
-  }
-
-  @Override
-  public boolean setNoMoreData(boolean noMoreData) {
-    this.noMoreData = noMoreData;
-    if (noMoreData) {
-      if (tvFooter != null) {
-        tvFooter.setText(context.getString(R.string.app_have_no_more));
-      }
-    }
-    return true;
+    LayoutInflater.from(context).inflate(R.layout.refresh_header_layout, this);
+    ivIcon = findViewById(R.id.iv_icon);
+    tvHeaderText = findViewById(R.id.tv_header_text);
   }
 
   @NonNull
@@ -103,13 +97,17 @@ public class FooterView extends LinearLayout implements RefreshFooter {
       @NonNull RefreshLayout refreshLayout,
       @NonNull RefreshState oldState,
       @NonNull RefreshState newState) {
-    if (noMoreData) {
-      return;
-    }
-
     if (newState == RefreshState.None || newState == RefreshState.PullDownToRefresh) {
-      if (tvFooter != null) {
-        tvFooter.setText(context.getString(R.string.app_load_more));
+      if (tvHeaderText != null) {
+        tvHeaderText.setText(R.string.app_pull_to_refresh);
+      }
+    } else if (newState == RefreshState.Refreshing) {
+      if (tvHeaderText != null) {
+        tvHeaderText.setText(R.string.app_refreshing);
+      }
+    } else if (newState == RefreshState.ReleaseToRefresh) {
+      if (tvHeaderText != null) {
+        tvHeaderText.setText(R.string.app_release_to_refresh);
       }
     }
   }

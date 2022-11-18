@@ -14,9 +14,9 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 30
-        applicationId = "com.netease.yunxin.app.voiceroom"
-        versionCode = 340
-        versionName = "3.4.0"
+        applicationId = "com.netease.yunxin.app.chatroom"
+        versionCode = 341
+        versionName = "3.4.1"
         multiDexEnabled = true
     }
 

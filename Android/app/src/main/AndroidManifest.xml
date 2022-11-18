@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.netease.yunxin.app.voiceroom">
+    package="com.netease.yunxin.app.chatroom">
 
     <!-- 访问网络状态-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -47,7 +47,7 @@
         android:smallScreens="true" />
 
     <application
-        android:name=".VoiceRoomApplication"
+        android:name="com.netease.yunxin.app.chatroom.VoiceRoomApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -71,7 +71,7 @@
             android:value="portrait|landscape" />
 
         <activity
-            android:name="com.netease.yunxin.app.voiceroom.main.SplashActivity"
+            android:name="com.netease.yunxin.app.chatroom.main.SplashActivity"
             android:theme="@style/LaunchTheme"
             android:screenOrientation="portrait"
             android:exported="true"
@@ -84,7 +84,7 @@
         </activity>
 
         <activity
-            android:name="com.netease.yunxin.app.voiceroom.main.MainActivity"
+            android:name="com.netease.yunxin.app.chatroom.main.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false"
@@ -98,28 +98,28 @@
         </activity>
 
         <activity
-            android:name=".main.WebViewActivity"
+            android:name="com.netease.yunxin.app.chatroom.main.WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".user.EditUserInfoActivity"
+            android:name="com.netease.yunxin.app.chatroom.user.EditUserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".user.UserInfoActivity"
+            android:name="com.netease.yunxin.app.chatroom.user.UserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".user.AppAboutActivity"
+            android:name="com.netease.yunxin.app.chatroom.user.AppAboutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
-            android:name=".roomlist.RoomListActivity"
+            android:name="com.netease.yunxin.app.chatroom.roomlist.RoomListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".activity.CreateRoomActivity"
+        <activity android:name="com.netease.yunxin.app.chatroom.activity.CreateRoomActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />

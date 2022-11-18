@@ -1,14 +1,13 @@
 // Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
-package com.netease.yunxin.app.voiceroom.activity;
+package com.netease.yunxin.app.chatroom.activity;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-
-import com.netease.yunxin.app.voiceroom.config.AppConfig;
-import com.netease.yunxin.app.voiceroom.databinding.ActivityCreatRoomBinding;
-import com.netease.yunxin.app.voiceroom.utils.NavUtils;
+import com.netease.yunxin.app.chatroom.config.AppConfig;
+import com.netease.yunxin.app.chatroom.databinding.ActivityCreatRoomBinding;
+import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.voiceroomkit.api.NECreateVoiceRoomOptions;

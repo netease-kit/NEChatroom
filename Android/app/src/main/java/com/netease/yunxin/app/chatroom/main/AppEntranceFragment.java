@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.main;
+package com.netease.yunxin.app.chatroom.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.roomlist.RoomListActivity;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.roomlist.RoomListActivity;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.FunctionAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.fragment.BaseFragment;
 import java.util.ArrayList;

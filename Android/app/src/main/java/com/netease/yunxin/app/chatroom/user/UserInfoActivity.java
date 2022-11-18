@@ -2,13 +2,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.user;
+package com.netease.yunxin.app.chatroom.user;
 
-import static com.netease.yunxin.app.voiceroom.utils.NavUtils.toEditUserInfoPage;
+import static com.netease.yunxin.app.chatroom.utils.NavUtils.toEditUserInfoPage;
 
 import android.os.Bundle;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
-import com.netease.yunxin.app.voiceroom.databinding.ActivityUserInfoBinding;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.databinding.ActivityUserInfoBinding;
 import com.netease.yunxin.kit.common.image.ImageLoader;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.LoginCallback;

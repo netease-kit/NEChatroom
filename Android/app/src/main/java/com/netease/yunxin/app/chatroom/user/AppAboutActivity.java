@@ -2,17 +2,17 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.user;
+package com.netease.yunxin.app.chatroom.user;
 
-import static com.netease.yunxin.app.voiceroom.utils.NavUtils.toBrowsePage;
+import static com.netease.yunxin.app.chatroom.utils.NavUtils.toBrowsePage;
 
 import android.os.Bundle;
-import com.netease.yunxin.app.voiceroom.BuildConfig;
-import com.netease.yunxin.app.voiceroom.Constants;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
-import com.netease.yunxin.app.voiceroom.databinding.ActivityAppAboutBinding;
-import com.netease.yunxin.app.voiceroom.utils.AppUtils;
+import com.netease.yunxin.app.chatroom.BuildConfig;
+import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.databinding.ActivityAppAboutBinding;
+import com.netease.yunxin.app.chatroom.utils.AppUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.statusbar.StatusBarConfig;
 
 public final class AppAboutActivity extends BaseActivity {

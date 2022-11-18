@@ -2,11 +2,11 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.user;
+package com.netease.yunxin.app.chatroom.user;
 
-import static com.netease.yunxin.app.voiceroom.utils.NavUtils.toAppAboutPage;
-import static com.netease.yunxin.app.voiceroom.utils.NavUtils.toBrowsePage;
-import static com.netease.yunxin.app.voiceroom.utils.NavUtils.toUserInfoPage;
+import static com.netease.yunxin.app.chatroom.utils.NavUtils.toAppAboutPage;
+import static com.netease.yunxin.app.chatroom.utils.NavUtils.toBrowsePage;
+import static com.netease.yunxin.app.chatroom.utils.NavUtils.toUserInfoPage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,12 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.netease.yunxin.app.voiceroom.AppStates;
-import com.netease.yunxin.app.voiceroom.Constants;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.config.AppConfig;
-import com.netease.yunxin.app.voiceroom.databinding.FragmentUserCenterBinding;
-import com.netease.yunxin.app.voiceroom.utils.AppUtils;
+import com.netease.yunxin.app.chatroom.AppStates;
+import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.config.AppConfig;
+import com.netease.yunxin.app.chatroom.databinding.FragmentUserCenterBinding;
+import com.netease.yunxin.app.chatroom.utils.AppUtils;
 import com.netease.yunxin.kit.common.image.ImageLoader;
 import com.netease.yunxin.kit.common.ui.dialog.LoadingDialog;
 import com.netease.yunxin.kit.login.AuthorManager;
