@@ -53,7 +53,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   NEVoiceRoomMember *member = [self.showMembers objectAtIndex:indexPath.row];
-  [self pickSeatWithAccount:member.account];  //抱麦
+  [self pickSeatWithAccount:member.account];  // 抱麦
   [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)pickSeatWithAccount:(NSString *)account {

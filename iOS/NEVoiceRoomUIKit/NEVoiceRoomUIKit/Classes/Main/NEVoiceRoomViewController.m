@@ -52,7 +52,7 @@
   [self addNetworkObserver];
   [self checkMicAuthority];
 
-  //禁止返回
+  // 禁止返回
   id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
   UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:traget action:nil];
   [self.view addGestureRecognizer:pan];
@@ -88,16 +88,16 @@
 }
 
 #pragma mark - NETSFunctionAreaDelegate
-//点歌事件
+// 点歌事件
 - (void)footerDidReceiveRequestSongAciton {
 }
 
-//麦克静音事件
+// 麦克静音事件
 - (void)footerDidReceiveMicMuteAction:(BOOL)mute {
   [self handleMuteOperation:mute];
 }
 
-//禁言事件
+// 禁言事件
 - (void)footerDidReceiveNoSpeekingAciton {
 }
 
@@ -111,7 +111,7 @@
   [self presentViewController:nav animated:YES completion:nil];
 }
 
-//输入框点击事件
+// 输入框点击事件
 - (void)footerInputViewDidClickAction {
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
                  dispatch_get_main_queue(), ^{

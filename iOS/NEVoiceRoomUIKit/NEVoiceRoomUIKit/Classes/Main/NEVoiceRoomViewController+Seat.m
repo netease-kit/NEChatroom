@@ -128,7 +128,7 @@
                         }].mutableCopy;
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([self isAnchor]) {
-      //加入请求连麦队列
+      // 加入请求连麦队列
       [self.connectListView refreshWithDataArray:self.connectorArray];
       // 有人在申请，弹出提示框
       if (self.connectorArray.count) {
@@ -150,6 +150,7 @@
 }
 
 - (void)onSeatLeave:(NSInteger)seatIndex account:(NSString *)account {
+  [self NotifityMessage:NELocalizedString(@"已下麦") account:account];
   if (![self isAnchor] && [self isSelfWithSeatAccount:account]) {
     [NEVoiceRoomToast showToast:NELocalizedString(@"您已下麦")];
     [self muteAudio:NO];
@@ -160,6 +161,7 @@
 - (void)onSeatKicked:(NSInteger)seatIndex
              account:(NSString *)account
            operateBy:(NSString *)operateBy {
+  [self NotifityMessage:NELocalizedString(@"已被主播请下麦位") account:account];
   if ([self isAnchor]) {
     NEVoiceRoomMember *member =
         [NEVoiceRoomKit.getInstance.allMemberList ne_find:^BOOL(NEVoiceRoomMember *obj) {
@@ -181,12 +183,15 @@
 
 - (void)onSeatRequestCancelled:(NSInteger)seatIndex account:(NSString *)account {
   NSLog(@"取消申请麦位");
-
+  [self NotifityMessage:NELocalizedString(@"已取消申请上麦") account:account];
   if ([account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) {
     [self.view dismissToast];
   }
 }
 - (void)onSeatRequestSubmitted:(NSInteger)seatIndex account:(NSString *)account {
+  [self NotifityMessage:[NSString stringWithFormat:@"%@(%zd)", NELocalizedString(@"申请上麦"),
+                                                   seatIndex - 1]
+                account:account];
   // 房主
   if ([self isAnchor]) {
     if ([account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) return;
@@ -196,6 +201,7 @@
                       account:(NSString *)account
                     operateBy:(NSString *)operateBy
                   isAutoAgree:(BOOL)isAutoAgree {
+  [self NotifityMessage:NELocalizedString(@"已上麦") account:account];
   if (![account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) return;
   [self.view dismissToast];
   [self unmuteAudio:YES];
@@ -205,6 +211,7 @@
 - (void)onSeatRequestRejected:(NSInteger)seatIndex
                       account:(NSString *)account
                     operateBy:(NSString *)operateBy {
+  [self NotifityMessage:NELocalizedString(@"申请麦位已被拒绝") account:account];
   [self getSeatInfo];
   if ([self isAnchor]) return;
   if (![account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) return;
@@ -215,6 +222,7 @@
 - (void)onSeatInvitationAccepted:(NSInteger)seatIndex
                          account:(NSString *)account
                      isAutoAgree:(BOOL)isAutoAgree {
+  [self NotifityMessage:NELocalizedString(@"已上麦") account:account];
   if ([self isAnchor]) {
     NEVoiceRoomMember *member =
         [NEVoiceRoomKit.getInstance.allMemberList ne_find:^BOOL(NEVoiceRoomMember *obj) {
@@ -282,4 +290,20 @@
   return NO;
 }
 
+- (void)NotifityMessage:(NSString *)msg account:(NSString *)account {
+  NEVoiceRoomMember *member =
+      [NEVoiceRoomKit.getInstance.allMemberList ne_find:^BOOL(NEVoiceRoomMember *obj) {
+        return [account isEqualToString:obj.account];
+      }];
+  if (!member) return;
+
+  NSMutableArray *messages = @[].mutableCopy;
+  NEVoiceRoomChatViewMessage *message = [NEVoiceRoomChatViewMessage new];
+  message.type = NEVoiceRoomChatViewMessageTypeNotication;
+  message.notication = [NSString stringWithFormat:@"%@ %@", member.name, msg];
+  [messages addObject:message];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.chatView addMessages:messages];
+  });
+}
 @end

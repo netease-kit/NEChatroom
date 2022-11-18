@@ -75,7 +75,7 @@
   }];
 
   [RACObserve(self.roomListViewModel, error) subscribeNext:^(NSError *_Nullable err) {
-    if (!err) return;
+    if (!err || ![err isKindOfClass:[NSError class]]) return;
     if (err.code == 1003) {
       [NEVoiceRoomToast showToast:NELocalizedString(@"直播列表为空")];
     } else {

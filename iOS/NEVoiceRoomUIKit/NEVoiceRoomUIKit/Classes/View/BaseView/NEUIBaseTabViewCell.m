@@ -8,7 +8,7 @@
 @interface NEUIBaseTabViewCell ()
 
 @property(nonatomic, readwrite, strong) id model;
-@property(nonatomic, strong) UIView *bottomView;  //底部默认线条
+@property(nonatomic, strong) UIView *bottomView;  // 底部默认线条
 
 @end
 

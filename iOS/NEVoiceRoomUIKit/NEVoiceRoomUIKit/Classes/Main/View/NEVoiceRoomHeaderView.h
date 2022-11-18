@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol NEVoiceRoomHeaderDelegate <NSObject>
 
-//退出事件
+// 退出事件
 - (void)headerExitAction;
 ////点击公告
 //- (void)liveRoomHeaderClickNoticeAction;
@@ -16,11 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface NEVoiceRoomHeaderView : NEUIBaseView
-//事件回调
+// 事件回调
 @property(nonatomic, weak) id<NEVoiceRoomHeaderDelegate> delegate;
-//在线人数
+// 在线人数
 @property(nonatomic, assign) NSInteger onlinePeople;
-//直播间标题
+// 直播间标题
 @property(nonatomic, copy) NSString *title;
 
 @end

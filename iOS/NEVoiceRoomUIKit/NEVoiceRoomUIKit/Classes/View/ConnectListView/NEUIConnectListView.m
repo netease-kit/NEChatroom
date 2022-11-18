@@ -50,7 +50,7 @@ static CGFloat foldBtnHeight = 38;
   if (_isShown) return;
 
   [view addSubview:self];
-  //先刷新宽高
+  // 先刷新宽高
   [self layoutIfNeeded];
   self.bottom = 0;
   self.listView.hidden = YES;

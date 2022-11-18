@@ -9,9 +9,9 @@
  - NEUIActionSheetItemNoraml: 默认都是普通类型的
  */
 typedef NS_OPTIONS(NSUInteger, NEUIActionSheetItemType) {
-  NEUIActionSheetItemNoraml = 0,  //普通
-  NEUIActionSheetItemDelete,      //删除
-  NEUIActionSheetItemSure,        //确定
+  NEUIActionSheetItemNoraml = 0,  // 普通
+  NEUIActionSheetItemDelete,      // 删除
+  NEUIActionSheetItemSure,        // 确定
 };
 
 @interface NEUIActionSheetModel : NSObject

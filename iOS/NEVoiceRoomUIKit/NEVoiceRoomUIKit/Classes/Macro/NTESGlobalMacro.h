@@ -19,7 +19,7 @@ static NSString *kUserAgreementURL = @"http://yunxin.163.com/clauses";
 #define UIHeightAdapter(x) ((x)*UIScreenHeight / 667.0)
 #define UIMinAdapter(x) (UIScreenWidth > UIScreenHeight ? UIHeightAdapter(x) : UIWidthAdapter(x))
 #define UIMaxAdapter(x) (UIScreenWidth < UIScreenHeight ? UIHeightAdapter(x) : UIWidthAdapter(x))
-//状态栏的高度
+// 状态栏的高度
 #define statusBarHeight [UIApplication sharedApplication].statusBarFrame.size.height
 #define IPHONE_X_HairHeight 44
 #define KStatusHeight [[UIApplication sharedApplication] statusBarFrame].size.height
@@ -59,7 +59,7 @@ static NSString *kUserAgreementURL = @"http://yunxin.163.com/clauses";
 
 #define HEXCOLOR(rgbValue) UIColorFromRGBA(rgbValue, 1.0)
 
-//线程
+// 线程
 void ntes_main_sync_safe(dispatch_block_t block);
 void ntes_main_async_safe(dispatch_block_t block);
 

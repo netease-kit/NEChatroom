@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable id)jsonObject;
 
-//数字处理
+// 数字处理
 + (NSString *)praiseStrFormat:(NSUInteger)number;
 
 /**

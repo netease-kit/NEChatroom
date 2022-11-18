@@ -4,7 +4,7 @@
 
 #ifndef NTESFontMacro_h
 #define NTESFontMacro_h
-//字号
+// 字号
 #define Font_Size(fname, fsize) [UIFont fontWithName:fname size:fsize]
 
 #define Font_Default(fsize) [UIFont systemFontOfSize:fsize]

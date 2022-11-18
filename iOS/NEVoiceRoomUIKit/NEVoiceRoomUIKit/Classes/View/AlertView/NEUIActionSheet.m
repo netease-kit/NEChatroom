@@ -92,13 +92,13 @@ static NEUIActionSheet *sheet = nil;
   self.bgView = [[UIView alloc] init];
   self.bgView.backgroundColor = Bottom_BG_Color;
 
-  //加一个介绍
+  // 加一个介绍
   CGFloat orginItemY = 0;
   if (sheet.desc.length) {
     [sheet addDescrioptionLabel];
     orginItemY = [sheet descriptionStringHeight] + 1;
   }
-  //确定整个视图的frame
+  // 确定整个视图的frame
   CGFloat screenWidth = self.bounds.size.width;
   CGFloat screenHeight = self.bounds.size.height;
   self.bgView.frame =
@@ -182,7 +182,7 @@ static NEUIActionSheet *sheet = nil;
   [self.bgView addSubview:view];
 }
 
-//获取描述的label的高度
+// 获取描述的label的高度
 - (CGFloat)descriptionStringHeight {
   CGSize size =
       [self.desc boundingRectWithSize:CGSizeMake(self.bounds.size.width - 15 * 2, CGFLOAT_MAX)
@@ -200,7 +200,7 @@ static NEUIActionSheet *sheet = nil;
   [sheet hide];
   NSInteger index = button.tag - kitemOriginTag;
   if (index == self.actionModels.count) {
-    //用户点击取消
+    // 用户点击取消
     if (_cancel) {
       _cancel();
     }
@@ -208,7 +208,7 @@ static NEUIActionSheet *sheet = nil;
   }
 
   //    index = index > self.actionModels.count ? 0:index;
-  if (index > self.actionModels.count) {  //防止数组越界
+  if (index > self.actionModels.count) {  // 防止数组越界
     [self hide];
     return;
   }

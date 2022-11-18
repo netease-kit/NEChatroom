@@ -94,7 +94,7 @@
   [self.view endEditing:YES];
 }
 
-//开启直播间
+// 开启直播间
 - (void)openRoomAction {
   NSString *roomName = [self.createRoomNameView getRoomName];
   if ([NSObject isNullOrNilWithObject:roomName]) {
@@ -112,7 +112,10 @@
   params.seatCount = 9;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
   params.configId = 569;
-//  params.configId = 75;
+  if ([[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
+          isEqualToString:@"https://roomkit-sg.netease.im"]) {
+    params.configId = 75;
+  }
 
   [[NEVoiceRoomKit getInstance]
       createRoom:params
@@ -139,7 +142,7 @@
   //    [[UIApplication sharedApplication].keyWindow addSubview:chooseAlertView];
 }
 
-///是否是合法字符
+/// 是否是合法字符
 - (BOOL)isValidRoomName:(NSString *)roomName {
   NSString *regex = @"^[a-zA-Z0-9\u4e00-\u9fa5,\\s+]{1,20}$";
   NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
@@ -169,7 +172,7 @@
 }
 
 #pragma mark - NTESPlanChooseDelegate
-//创建房间类型 rtc cdn
+// 创建房间类型 rtc cdn
 - (void)planChooseResult {
   //    if (NELP_AUTHORITY_CHECK) {
   //        selectIndex == NTESPushTypeCdn?NELPLogInfo(@"create CDN room"):NELPLogInfo(@"create RTC

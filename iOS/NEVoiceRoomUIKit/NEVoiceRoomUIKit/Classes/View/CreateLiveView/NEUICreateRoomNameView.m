@@ -88,7 +88,7 @@
                                        imageTitleSpace:2];
 }
 
-//点击语聊房
+// 点击语聊房
 - (void)chatRoomButtonClick {
   self.chatRoomButton.alpha = 1;
   self.ktvButton.alpha = 0.5;
@@ -102,7 +102,7 @@
   }
 }
 
-//点击ktv房间
+// 点击ktv房间
 - (void)ktvButtonClick {
   self.chatRoomButton.alpha = 0.5;
   self.ktvButton.alpha = 1;

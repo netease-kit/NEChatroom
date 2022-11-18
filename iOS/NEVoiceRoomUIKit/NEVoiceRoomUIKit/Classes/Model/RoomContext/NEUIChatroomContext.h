@@ -28,13 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) NEVoiceRoomRole role;
 /// 麦位信息
 @property(nonatomic, strong) NEVoiceRoomSeatInfo *seatInfo;
-//是否全部禁言
+// 是否全部禁言
 @property(nonatomic, assign) BOOL isMuteAll;
-//自己是否禁言
+// 自己是否禁言
 @property(nonatomic, assign) BOOL meIsMute;
-//是否被语音屏蔽
+// 是否被语音屏蔽
 @property(nonatomic, assign) BOOL isMasked;
-//所有声音关闭（主播）
+// 所有声音关闭（主播）
 @property(nonatomic, assign) BOOL isAllSoundMute;
 /// 当前背景音乐
 @property(nonatomic, strong, nullable) NEUIBackgroundMusicModel *currentBgm;

@@ -10,7 +10,7 @@
 + (UITextField *)createTextfieldFrame:(CGRect)frame placeHolder:(NSString *)placeHolder {
   UITextField *textFiled = [[UITextField alloc] initWithFrame:frame];
   textFiled.placeholder = placeHolder;
-  //圆角
+  // 圆角
   textFiled.borderStyle = UITextBorderStyleNone;
   textFiled.clearButtonMode = UITextFieldViewModeWhileEditing;
   return textFiled;
@@ -65,7 +65,7 @@
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
   button.frame = frame;
   [button setTitle:title forState:UIControlStateNormal];
-  //字体颜色修改为黑色
+  // 字体颜色修改为黑色
   [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
   if (image.length) {
     if (bundle) {
@@ -92,7 +92,7 @@
                         forState:UIControlStateHighlighted];
     }
   }
-  //选中图片
+  // 选中图片
   if (selectBgImage.length) {
     if (bundle) {
       [button setBackgroundImage:[UIImage imageNamed:selectBgImage
@@ -125,7 +125,7 @@
   UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
   button.frame = frame;
   [button setTitle:title forState:UIControlStateNormal];
-  //字体颜色修改为黑色
+  // 字体颜色修改为黑色
   [button setTitleColor:titleColor forState:UIControlStateNormal];
   [button setBackgroundColor:bgColor];
   [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];

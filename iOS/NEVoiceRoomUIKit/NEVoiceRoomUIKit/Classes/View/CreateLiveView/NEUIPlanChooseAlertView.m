@@ -149,7 +149,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = HEXCOLOR(0xF0F0F2);
-    _tableView.scrollEnabled = NO;  //设置tableview 不能滚动
+    _tableView.scrollEnabled = NO;  // 设置tableview 不能滚动
   }
   return _tableView;
 }
