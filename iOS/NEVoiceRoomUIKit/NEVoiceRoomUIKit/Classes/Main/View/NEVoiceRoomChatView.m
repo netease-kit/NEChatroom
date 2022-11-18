@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomChatView.h"
-//#import "NEKaraokeUIGiftModel.h"
+// #import "NEKaraokeUIGiftModel.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import "UIImage+VoiceRoom.h"
 
@@ -235,7 +235,7 @@ M80AttributedLabel *NTESCaculateLabel() {
 @property(nonatomic, strong) UITableView *tableView;
 
 @property(nonatomic, strong) NSMutableArray<NEVoiceRoomChatViewMessage *> *messages;
-///缓存的插入消息,聊天室需要在另外个线程计算高度,减少UI刷新
+/// 缓存的插入消息,聊天室需要在另外个线程计算高度,减少UI刷新
 @property(nonatomic, strong) NSMutableArray<NEVoiceRoomChatViewMessage *> *pendingMessages;
 
 @end
@@ -304,7 +304,7 @@ dispatch_queue_t NTESMessageDataPrepareQueue() {
 
 - (void)caculateHeight:(NSArray<NEVoiceRoomChatViewMessage *> *)messages {
   dispatch_async(NTESMessageDataPrepareQueue(), ^{
-    //后台线程处理宽度计算，处理完之后同步抛到主线程插入
+    // 后台线程处理宽度计算，处理完之后同步抛到主线程插入
     BOOL noPendingMessage = self.pendingMessages.count == 0;
     [self.pendingMessages addObjectsFromArray:messages];
     if (noPendingMessage) {
@@ -322,7 +322,7 @@ dispatch_queue_t NTESMessageDataPrepareQueue() {
   }
   dispatch_sync(dispatch_get_main_queue(), ^{
     if (weakSelf.tableView.isDecelerating || weakSelf.tableView.isDragging) {
-      //滑动的时候为保证流畅，暂停插入
+      // 滑动的时候为保证流畅，暂停插入
       NSTimeInterval delay = 1;
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
                      NTESMessageDataPrepareQueue(), ^{
@@ -333,7 +333,7 @@ dispatch_queue_t NTESMessageDataPrepareQueue() {
     width = self.frame.size.width;
   });
 
-  //获取一定量的消息计算高度，并扔回到主线程
+  // 获取一定量的消息计算高度，并扔回到主线程
   static NSInteger NTESMaxInsert = 2;
   NSArray *insert = nil;
   NSRange range;

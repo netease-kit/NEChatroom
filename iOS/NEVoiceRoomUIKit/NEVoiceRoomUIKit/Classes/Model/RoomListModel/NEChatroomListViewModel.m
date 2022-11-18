@@ -34,24 +34,26 @@
                            pageSize:20
                            callback:^(NSInteger code, NSString *_Nullable msg,
                                       NEVoiceRoomList *_Nullable data) {
-                             if (code != 0) {
-                               self.datas = @[];
-                               self.error =
-                                   [NSError errorWithDomain:NSCocoaErrorDomain
-                                                       code:code
-                                                   userInfo:@{NSLocalizedDescriptionKey : msg}];
-                               self.isEnd = YES;
-                               YXAlogError(@"request roomList failed,error: %@", msg.description);
-                             } else {
-                               self.datas = data.list;
-                               self.error = nil;
-                               self.isEnd = ([data.list count] < self.pageSize);
-                             }
-                             self.isLoading = NO;
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                               if (code != 0) {
+                                 self.datas = @[];
+                                 self.error =
+                                     [NSError errorWithDomain:NSCocoaErrorDomain
+                                                         code:code
+                                                     userInfo:@{NSLocalizedDescriptionKey : msg}];
+                                 self.isEnd = YES;
+                                 YXAlogError(@"request roomList failed,error: %@", msg.description);
+                               } else {
+                                 self.datas = data.list;
+                                 self.error = nil;
+                                 self.isEnd = ([data.list count] < self.pageSize);
+                               }
+                               self.isLoading = NO;
+                             });
                            }];
 }
 
-//加载更多
+// 加载更多
 - (void)requestMoreDataWithLiveType:(NELiveRoomType)roomType {
   if (_isEnd) {
     return;
@@ -64,23 +66,25 @@
                            pageSize:20
                            callback:^(NSInteger code, NSString *_Nullable msg,
                                       NEVoiceRoomList *_Nullable data) {
-                             if (code != 0) {
-                               self.datas = @[];
-                               self.error =
-                                   [NSError errorWithDomain:NSCocoaErrorDomain
-                                                       code:code
-                                                   userInfo:@{NSLocalizedDescriptionKey : msg}];
-                               self.isEnd = YES;
-                               YXAlogError(@"request roomList failed,error: %@", msg.description);
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                               if (code != 0) {
+                                 self.datas = @[];
+                                 self.error =
+                                     [NSError errorWithDomain:NSCocoaErrorDomain
+                                                         code:code
+                                                     userInfo:@{NSLocalizedDescriptionKey : msg}];
+                                 self.isEnd = YES;
+                                 YXAlogError(@"request roomList failed,error: %@", msg.description);
 
-                             } else {
-                               NSMutableArray *temp = [NSMutableArray arrayWithArray:self.datas];
-                               [temp addObjectsFromArray:data.list];
-                               self.datas = [temp copy];
-                               self.isEnd = ([data.list count] < self.pageSize);
-                               self.error = nil;
-                             }
-                             self.isLoading = NO;
+                               } else {
+                                 NSMutableArray *temp = [NSMutableArray arrayWithArray:self.datas];
+                                 [temp addObjectsFromArray:data.list];
+                                 self.datas = [temp copy];
+                                 self.isEnd = ([data.list count] < self.pageSize);
+                                 self.error = nil;
+                               }
+                               self.isLoading = NO;
+                             });
                            }];
 }
 

@@ -11,9 +11,9 @@
                                                  byRoundingCorners:roundingCorners
                                                        cornerRadii:cornerRadii];
   CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-  //设置大小
+  // 设置大小
   maskLayer.frame = self.bounds;
-  //设置图形样子
+  // 设置图形样子
   maskLayer.path = maskPath.CGPath;
   self.layer.mask = maskLayer;
 }

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, weak) id<NEUICreateRoomDelegate> delegate;
 
-//获取聊天室名称
+// 获取聊天室名称
 - (NSString *)getRoomName;
 /// 获取房间背景图
 - (nullable NSString *)getRoomBgImageUrl;

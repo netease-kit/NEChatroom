@@ -5,11 +5,13 @@
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <SDWebImage/SDWebImage.h>
 #import "NEInnerSingleton.h"
+#import "NEVoiceRoomKit/NEVoiceRoomKit-Swift.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
 #import "NEVoiceRoomViewController+Seat.h"
 #import "NEVoiceRoomViewController+Utils.h"
+#import "NSArray+NEUIExtension.h"
 #import "NSBundle+NELocalized.h"
 #import "UIView+NEUIToast.h"
 @implementation NEVoiceRoomViewController (Utils)
@@ -19,6 +21,7 @@
   param.roomUuid = self.detail.liveModel.roomUuid;
   param.role = self.role;
   param.liveRecordId = self.detail.liveModel.liveRecordId;
+  NEInnerSingleton.singleton.roomInfo = self.detail;
   @weakify(self);
   [NEVoiceRoomKit.getInstance
       joinRoom:param

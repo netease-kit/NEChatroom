@@ -16,6 +16,10 @@
 "该麦位正在被操作" = "该麦位正在被操作";
 "该麦位正在被申请,请尝试申请其他麦位" = "The seat is being requested. Try to request for another seat.";
 "您已下麦" = "You are moved to audience";
+"申请麦位已被拒绝" = "request was rejected";
+"已下麦" = "are moved to audience";
+"已被主播请下麦位" = "removed from the seat";
+"已上麦" = "have taken a seat";
 "离开房间" = "Leave room";
 "房间关闭" = "Room closed";
 "该麦位已被关闭" = "The seat is closed";

@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   
   s.source_files = 'NEVoiceRoomUIKit/Classes/**/*'
   
-  s.dependency 'NEVoiceRoomKit', '1.0.2'
+  s.dependency 'NEVoiceRoomKit', '1.0.3'
   s.dependency 'Masonry'
   s.dependency 'ReactiveObjC'
   s.dependency 'libextobjc'

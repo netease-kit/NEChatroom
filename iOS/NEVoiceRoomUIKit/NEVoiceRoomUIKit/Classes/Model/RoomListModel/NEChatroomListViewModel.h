@@ -17,10 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 加载error
 @property(nonatomic, assign, readonly) NSError *error;
 
-//麦位组件
-//加载新数据
+// 麦位组件
+// 加载新数据
 - (void)requestNewDataWithLiveType:(NELiveRoomType)roomType;
-//加载更多
+// 加载更多
 - (void)requestMoreDataWithLiveType:(NELiveRoomType)roomType;
 
 @end

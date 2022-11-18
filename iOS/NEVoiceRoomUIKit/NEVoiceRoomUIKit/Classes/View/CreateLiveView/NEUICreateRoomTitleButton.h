@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImage:(NSString *)imageName content:(NSString *)content;
 
 - (void)setLableFont:(UIFont *)lableFont;
-//设置内容
+// 设置内容
 - (void)setContent:(NSString *)content;
 
 - (void)setLeftMargin:(CGFloat)leftMargin imageSize:(CGSize)imageSize;
