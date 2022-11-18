@@ -2,16 +2,16 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.main;
+package com.netease.yunxin.app.chatroom.main;
 
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.netease.yunxin.app.voiceroom.Constants;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
-import com.netease.yunxin.app.voiceroom.utils.NavUtils;
+import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.EventType;

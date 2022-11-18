@@ -2,18 +2,18 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.main;
+package com.netease.yunxin.app.chatroom.main;
 
 import android.os.Bundle;
 import android.text.TextUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.gyf.immersionbar.ImmersionBar;
-import com.netease.yunxin.app.voiceroom.Constants;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
-import com.netease.yunxin.app.voiceroom.databinding.ActivityMainBinding;
-import com.netease.yunxin.app.voiceroom.main.pager.MainPagerAdapter;
-import com.netease.yunxin.app.voiceroom.utils.NavUtils;
+import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.databinding.ActivityMainBinding;
+import com.netease.yunxin.app.chatroom.main.pager.MainPagerAdapter;
+import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.login.AuthorManager;

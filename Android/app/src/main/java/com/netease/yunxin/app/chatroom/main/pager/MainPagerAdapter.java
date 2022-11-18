@@ -2,15 +2,15 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.main.pager;
+package com.netease.yunxin.app.chatroom.main.pager;
 
 import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import com.netease.yunxin.app.voiceroom.main.AppEntranceFragment;
-import com.netease.yunxin.app.voiceroom.user.UserCenterFragment;
+import com.netease.yunxin.app.chatroom.main.AppEntranceFragment;
+import com.netease.yunxin.app.chatroom.user.UserCenterFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
   /** fragment 缓存 */

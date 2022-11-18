@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.roomlist;
+package com.netease.yunxin.app.chatroom.roomlist;
 
 import android.content.Intent;
 import android.graphics.Rect;
@@ -12,13 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
-import com.netease.yunxin.app.voiceroom.activity.CreateRoomActivity;
-import com.netease.yunxin.app.voiceroom.databinding.ActivityRoomListBinding;
-import com.netease.yunxin.app.voiceroom.roomlist.adapter.VoiceRoomListAdapter;
-import com.netease.yunxin.app.voiceroom.view.FooterView;
-import com.netease.yunxin.app.voiceroom.view.HeaderView;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.activity.CreateRoomActivity;
+import com.netease.yunxin.app.chatroom.databinding.ActivityRoomListBinding;
+import com.netease.yunxin.app.chatroom.roomlist.adapter.VoiceRoomListAdapter;
+import com.netease.yunxin.app.chatroom.view.FooterView;
+import com.netease.yunxin.app.chatroom.view.HeaderView;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState;

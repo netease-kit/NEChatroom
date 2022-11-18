@@ -517,7 +517,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private void updateAnchorUI(String nick, String avatar, boolean isAudioOn) {
     ivAnchorAvatar.loadAvatar(avatar);
     tvAnchorNick.setText(nick);
-    ivLocalAudioSwitch.setSelected(!isAudioOn);
     ivAnchorAudioCloseHint.setImageResource(
         isAudioOn ? R.drawable.icon_seat_open_micro : R.drawable.icon_seat_close_micro);
   }
@@ -635,19 +634,24 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                 @Override
                 public void onFailure(int code, @Nullable String msg) {}
               });
-    } else if (!localMember.isAudioBanned()) {
-      NEVoiceRoomKit.getInstance()
-          .unmuteMyAudio(
-              new NEVoiceRoomCallback<Unit>() {
-                @Override
-                public void onSuccess(@Nullable Unit unit) {
-                  ToastUtils.INSTANCE.showShortToast(
-                      VoiceRoomBaseActivity.this, getString(R.string.voiceroom_mic_on));
-                }
+    } else {
+      if (localMember.isAudioBanned()) {
+        ToastUtils.INSTANCE.showShortToast(
+            VoiceRoomBaseActivity.this, getString(R.string.voiceroom_audio_banned));
+      } else {
+        NEVoiceRoomKit.getInstance()
+            .unmuteMyAudio(
+                new NEVoiceRoomCallback<Unit>() {
+                  @Override
+                  public void onSuccess(@Nullable Unit unit) {
+                    ToastUtils.INSTANCE.showShortToast(
+                        VoiceRoomBaseActivity.this, getString(R.string.voiceroom_mic_on));
+                  }
 
-                @Override
-                public void onFailure(int code, @Nullable String msg) {}
-              });
+                  @Override
+                  public void onFailure(int code, @Nullable String msg) {}
+                });
+      }
     }
   }
 

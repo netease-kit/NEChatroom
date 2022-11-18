@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-package com.netease.yunxin.app.voiceroom.main;
+package com.netease.yunxin.app.chatroom.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,9 +16,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.netease.yunxin.app.voiceroom.Constants;
-import com.netease.yunxin.app.voiceroom.R;
-import com.netease.yunxin.app.voiceroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.activity.BaseActivity;
 import com.netease.yunxin.kit.voiceroomkit.ui.statusbar.StatusBarConfig;
 
 public class WebViewActivity extends BaseActivity {
