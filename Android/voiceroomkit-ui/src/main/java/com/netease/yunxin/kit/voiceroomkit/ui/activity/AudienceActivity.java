@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
@@ -26,8 +28,10 @@ import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeatEvent;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
+
 import java.util.Arrays;
 import java.util.List;
+
 import kotlin.Unit;
 
 /** 观众页 */
@@ -234,17 +238,10 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   private boolean canShowTip = false;
 
   private void onApplySeatSuccess() {
-    Bundle bundle = new Bundle();
+
     cancelApplySeatDialog = new CancelApplySeatDialog();
-    String tip =
-        getString(R.string.voiceroom_seat_submited)
-            + "<font color=\"#0888ff\">"
-            + getString(R.string.voiceroom_cancel)
-            + "</color>";
-    CancelApplySeatDialog.Style style = cancelApplySeatDialog.new Style(tip, 0, 0, 0);
-    bundle.putParcelable(cancelApplySeatDialog.TAG, style);
-    cancelApplySeatDialog.setArguments(bundle);
-    cancelApplySeatDialog.show(getSupportFragmentManager(), cancelApplySeatDialog.TAG);
+
+    cancelApplySeatDialog.show(getSupportFragmentManager());
     ALog.d(TAG, "onApplySeatSuccess");
     canShowTip = true;
     cancelApplySeatDialog.setClickListener(
@@ -265,8 +262,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
           bottomDialog.setOnDismissListener(
               dialog1 -> {
                 if (canShowTip) {
-                  cancelApplySeatDialog.show(
-                      getSupportFragmentManager(), cancelApplySeatDialog.TAG);
+                  cancelApplySeatDialog.show(getSupportFragmentManager());
                 }
               });
           bottomDialog.show(
@@ -354,9 +350,9 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
                     R.color.color_00000000,
                     R.drawable.right,
                     R.color.color_black);
-            bundle.putParcelable(topTipsDialog.TAG, style);
+            bundle.putParcelable(topTipsDialog.getDialogTag(), style);
             topTipsDialog.setArguments(bundle);
-            topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
+            topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.getDialogTag());
             new Handler(Looper.getMainLooper()).postDelayed(topTipsDialog::dismiss, 2000); // 延时2秒
             break;
           }

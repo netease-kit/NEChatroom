@@ -19,11 +19,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
@@ -57,7 +59,7 @@ public class TopTipsDialog extends BaseDialogFragment {
       LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
     Bundle bundle = getArguments();
     if (bundle != null) {
-      style = getArguments().getParcelable(TAG);
+      style = getArguments().getParcelable(getDialogTag());
     } else {
       dismiss();
     }

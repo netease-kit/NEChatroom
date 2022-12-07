@@ -5,28 +5,35 @@
 package com.netease.yunxin.kit.voiceroomkit.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.app.*;
+import android.app.Application;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.*;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.airbnb.lottie.*;
+
 import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
-import com.netease.yunxin.kit.common.utils.*;
+import com.netease.yunxin.kit.common.utils.NetworkUtils;
+import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
@@ -35,8 +42,9 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListener;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole;
-import com.netease.yunxin.kit.voiceroomkit.api.model.*;
-import com.netease.yunxin.kit.voiceroomkit.impl.utils.*;
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
+import com.netease.yunxin.kit.voiceroomkit.impl.utils.ScreenUtil;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.base.BaseActivity;
@@ -50,21 +58,29 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NoticeDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
-import com.netease.yunxin.kit.voiceroomkit.ui.gift.*;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GifAnimationView;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftCache;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftDialog;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftRender;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.*;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.InputUtils;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.ViewUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.ChatRoomMsgRecyclerView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import kotlin.Unit;
-import org.jetbrains.annotations.NotNull;
 
 /** 主播与观众基础页，包含所有的通用UI元素 */
 public abstract class VoiceRoomBaseActivity extends BaseActivity
@@ -486,10 +502,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     TopTipsDialog.Style style =
         topTipsDialog
         .new Style(getString(R.string.voiceroom_net_disconnected), 0, R.drawable.neterrricon, 0);
-    bundle.putParcelable(topTipsDialog.TAG, style);
+    bundle.putParcelable(topTipsDialog.getDialogTag(), style);
     topTipsDialog.setArguments(bundle);
     if (!topTipsDialog.isVisible()) {
-      topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
+      topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.getDialogTag());
     }
     netErrorView.setVisibility(View.VISIBLE);
   }

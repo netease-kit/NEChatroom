@@ -15,15 +15,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.LiveBaseAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
+
 import java.util.ArrayList;
 import java.util.List;
 
