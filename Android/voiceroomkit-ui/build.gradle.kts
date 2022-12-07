@@ -26,7 +26,7 @@ dependencies {
     implementation("com.netease.yunxin.kit.common:common-ui:1.1.8")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.6")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.6")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.1")
+    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.3")
     implementation("com.netease.yunxin.kit:alog:1.0.2")
 
 }

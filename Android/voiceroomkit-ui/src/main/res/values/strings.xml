@@ -87,5 +87,16 @@
 
     <string name="voiceroom_start_live_error">Failed to start the audio room</string>
     <string name="voiceroom_join_live_error">Failed to join the audio room</string>
+
+    <string name="voiceroom_glow_stick">Glow stick</string>
+    <string name="voiceroom_arrange">Arrange</string>
+    <string name="voiceroom_sports_car">Sports car</string>
+    <string name="voiceroom_rockets">Rockets</string>
+    <string name="voiceroom_send_gift">Send gift</string>
+    <string name="voiceroom_send">Send</string>
+    <string name="voiceroom_coin">coins</string>
+    <string name="voiceroom_reward_failed">Reward failed</string>
+    <string name="voiceroom_donate">donate</string>
+    <string name="voiceroom_count">count</string>
     <string name="voiceroom_audio_banned">You are banned,unable to operate!</string>
 </resources>

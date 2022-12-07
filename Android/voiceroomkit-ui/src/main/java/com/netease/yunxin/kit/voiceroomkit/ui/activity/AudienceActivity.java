@@ -16,8 +16,8 @@ import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
+import com.netease.yunxin.kit.voiceroomkit.ui.dialog.CancelApplySeatDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomMoreDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ListItemDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
@@ -35,9 +35,10 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   private List<ChatRoomMoreDialog.MoreItem> moreItems;
   private ImageView ivLeaveSeat;
 
-  private ListItemDialog cancelApplyDialog;
+  private ListItemDialog bottomDialog;
   private int networkErrorCount;
   private static final int ZERO_COUNT = 0;
+  private CancelApplySeatDialog cancelApplySeatDialog;
 
   @Override
   protected int getContentViewID() {
@@ -107,60 +108,30 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
             new Observer<Integer>() {
               @Override
               public void onChanged(Integer integer) {
+                //观众断网重连也会走这个逻辑
                 ALog.d(TAG, "initDataObserver currentSeatState,integer:" + integer);
                 if (integer != VoiceRoomViewModel.CURRENT_SEAT_STATE_APPLYING) {
                   canShowTip = false;
-                  if (topTipsDialog != null) {
-                    topTipsDialog.dismiss();
+                  if (cancelApplySeatDialog != null) {
+                    cancelApplySeatDialog.dismiss();
                   }
                 }
-                updateAudioSwitchVisible(integer == VoiceRoomViewModel.CURRENT_SEAT_STATE_ON_SEAT);
-                handleMyAudioState(integer == VoiceRoomViewModel.CURRENT_SEAT_STATE_ON_SEAT);
+                updateAudioSwitchVisible(roomViewModel.isCurrentUserOnSeat());
               }
             });
-  }
 
-  private void handleMyAudioState(boolean isOnSeat) {
-    NEVoiceRoomMember localMember = NEVoiceRoomKit.getInstance().getLocalMember();
-    if (localMember == null) {
-      return;
-    }
-    ALog.d(
-        TAG,
-        "handleMyAudioState,isAudioOn:"
-            + localMember.isAudioOn()
-            + ",isAudioBanned:"
-            + localMember.isAudioBanned());
-    ivLocalAudioSwitch.setSelected(!localMember.isAudioOn());
-    if (isOnSeat && !localMember.isAudioOn()) {
-      NEVoiceRoomKit.getInstance()
-          .unmuteMyAudio(
-              new NEVoiceRoomCallback<Unit>() {
-                @Override
-                public void onSuccess(@Nullable Unit unit) {
-                  ivLocalAudioSwitch.setSelected(false);
+    roomViewModel
+        .getHostLeaveSeatData()
+        .observe(
+            this,
+            new Observer<Boolean>() {
+              @Override
+              public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                  leaveRoom();
                 }
-
-                @Override
-                public void onFailure(int code, @Nullable String msg) {
-                  ivLocalAudioSwitch.setSelected(true);
-                }
-              });
-    } else if (!isOnSeat && localMember.isAudioOn()) {
-      NEVoiceRoomKit.getInstance()
-          .muteMyAudio(
-              new NEVoiceRoomCallback<Unit>() {
-                @Override
-                public void onSuccess(@Nullable Unit unit) {
-                  ivLocalAudioSwitch.setSelected(true);
-                }
-
-                @Override
-                public void onFailure(int code, @Nullable String msg) {
-                  ivLocalAudioSwitch.setSelected(false);
-                }
-              });
-    }
+              }
+            });
   }
 
   private void watchNetWork() {
@@ -264,25 +235,25 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
 
   private void onApplySeatSuccess() {
     Bundle bundle = new Bundle();
-    topTipsDialog = new TopTipsDialog();
+    cancelApplySeatDialog = new CancelApplySeatDialog();
     String tip =
         getString(R.string.voiceroom_seat_submited)
             + "<font color=\"#0888ff\">"
             + getString(R.string.voiceroom_cancel)
             + "</color>";
-    TopTipsDialog.Style style = topTipsDialog.new Style(tip, 0, 0, 0);
-    bundle.putParcelable(topTipsDialog.TAG, style);
-    topTipsDialog.setArguments(bundle);
-    topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
+    CancelApplySeatDialog.Style style = cancelApplySeatDialog.new Style(tip, 0, 0, 0);
+    bundle.putParcelable(cancelApplySeatDialog.TAG, style);
+    cancelApplySeatDialog.setArguments(bundle);
+    cancelApplySeatDialog.show(getSupportFragmentManager(), cancelApplySeatDialog.TAG);
     ALog.d(TAG, "onApplySeatSuccess");
     canShowTip = true;
-    topTipsDialog.setClickListener(
+    cancelApplySeatDialog.setClickListener(
         () -> {
-          topTipsDialog.dismiss();
-          if (cancelApplyDialog != null && cancelApplyDialog.isShowing()) {
-            cancelApplyDialog.dismiss();
+          cancelApplySeatDialog.dismiss();
+          if (bottomDialog != null && bottomDialog.isShowing()) {
+            bottomDialog.dismiss();
           }
-          cancelApplyDialog =
+          bottomDialog =
               new ListItemDialog(AudienceActivity.this)
                   .setOnItemClickListener(
                       item -> {
@@ -291,13 +262,14 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
                           canShowTip = false;
                         }
                       });
-          cancelApplyDialog.setOnDismissListener(
+          bottomDialog.setOnDismissListener(
               dialog1 -> {
                 if (canShowTip) {
-                  topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
+                  cancelApplySeatDialog.show(
+                      getSupportFragmentManager(), cancelApplySeatDialog.TAG);
                 }
               });
-          cancelApplyDialog.show(
+          bottomDialog.show(
               Arrays.asList(
                   getString(R.string.voiceroom_confirm_to_cancel),
                   getString(R.string.voiceroom_cancel)));
@@ -354,11 +326,11 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
                     getString(R.string.voiceroom_get_it),
                     v -> {
                       canShowTip = false;
-                      if (cancelApplyDialog != null && cancelApplyDialog.isShowing()) {
-                        cancelApplyDialog.dismiss();
+                      if (bottomDialog != null && bottomDialog.isShowing()) {
+                        bottomDialog.dismiss();
                       }
-                      if (topTipsDialog != null) {
-                        topTipsDialog.dismiss();
+                      if (cancelApplySeatDialog != null) {
+                        cancelApplySeatDialog.dismiss();
                       }
                     })
                 .show();
@@ -368,11 +340,11 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
         case VoiceRoomSeat.Reason.ANCHOR_APPROVE_APPLY:
           {
             canShowTip = false;
-            if (cancelApplyDialog != null && cancelApplyDialog.isShowing()) {
-              cancelApplyDialog.dismiss();
+            if (bottomDialog != null && bottomDialog.isShowing()) {
+              bottomDialog.dismiss();
             }
-            if (topTipsDialog != null) {
-              topTipsDialog.dismiss();
+            if (cancelApplySeatDialog != null) {
+              cancelApplySeatDialog.dismiss();
             }
             TopTipsDialog topTipsDialog = new TopTipsDialog();
             TopTipsDialog.Style style =
@@ -391,12 +363,12 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
         default:
           break;
       }
-      if (topTipsDialog != null) {
-        topTipsDialog.dismiss();
+      if (cancelApplySeatDialog != null) {
+        cancelApplySeatDialog.dismiss();
       }
     } else {
-      if (topTipsDialog != null) {
-        topTipsDialog.dismiss();
+      if (cancelApplySeatDialog != null) {
+        cancelApplySeatDialog.dismiss();
       }
 
       if (seat.getReason() == VoiceRoomSeat.Reason.ANCHOR_KICK) {
@@ -452,8 +424,8 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   public void onSeatApplyDenied(boolean otherOn) {
     if (otherOn) {
       ToastUtils.INSTANCE.showShortToast(this, getString(R.string.voiceroom_request_rejected));
-      if (topTipsDialog != null) {
-        topTipsDialog.dismiss();
+      if (cancelApplySeatDialog != null) {
+        cancelApplySeatDialog.dismiss();
       }
     } else {
 
@@ -464,11 +436,11 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
               getString(R.string.voiceroom_get_it),
               v -> {
                 canShowTip = false;
-                if (cancelApplyDialog != null && cancelApplyDialog.isShowing()) {
-                  cancelApplyDialog.dismiss();
+                if (bottomDialog != null && bottomDialog.isShowing()) {
+                  bottomDialog.dismiss();
                 }
-                if (topTipsDialog != null && getSupportFragmentManager() != null) {
-                  topTipsDialog.dismiss();
+                if (cancelApplySeatDialog != null && getSupportFragmentManager() != null) {
+                  cancelApplySeatDialog.dismiss();
                 }
               })
           .show();
@@ -491,8 +463,8 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   }
 
   public void onSeatMuted() {
-    if (topTipsDialog != null) {
-      topTipsDialog.dismiss();
+    if (cancelApplySeatDialog != null) {
+      cancelApplySeatDialog.dismiss();
     }
     new NotificationDialog(this)
         .setTitle(getString(R.string.voiceroom_notify))
@@ -502,8 +474,8 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   }
 
   public void onSeatClosed() {
-    if (topTipsDialog != null) {
-      topTipsDialog.dismiss();
+    if (cancelApplySeatDialog != null) {
+      cancelApplySeatDialog.dismiss();
     }
   }
 }

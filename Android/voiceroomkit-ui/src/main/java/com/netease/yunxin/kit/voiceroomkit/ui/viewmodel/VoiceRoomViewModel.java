@@ -17,11 +17,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatRequestItem;
+import com.netease.yunxin.kit.voiceroomkit.api.model.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.chatroom.ChatRoomMsgCreator;
@@ -34,6 +30,7 @@ import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import kotlin.*;
 import org.jetbrains.annotations.NotNull;
 
 public class VoiceRoomViewModel extends ViewModel {
@@ -44,6 +41,7 @@ public class VoiceRoomViewModel extends ViewModel {
   public static final int NET_AVAILABLE = 0; // 网络 可用
   public static final int NET_LOST = 1; // 网络不可用
 
+  MutableLiveData<String> toastData = new MutableLiveData<>(); // toast
   MutableLiveData<CharSequence> chatRoomMsgData = new MutableLiveData<>(); // 聊天列表数据
   MutableLiveData<Integer> memberCountData = new MutableLiveData<>(); // 房间人数
   MutableLiveData<NEVoiceRoomEndReason> errorData = new MutableLiveData<>(); // 错误信息
@@ -53,8 +51,17 @@ public class VoiceRoomViewModel extends ViewModel {
   MutableLiveData<List<VoiceRoomSeat>> applySeatListData = new MutableLiveData<>(); // 申请麦位列表
   MutableLiveData<VoiceRoomSeatEvent> currentSeatEvent = new SingleLiveEvent<>(); // 当前操作的麦位
   MutableLiveData<Integer> netData = new MutableLiveData<>();
+  MutableLiveData<NEVoiceRoomGiftModel> rewardData = new MutableLiveData<>();
+  MutableLiveData<Boolean> hostLeaveSeatData = new MutableLiveData<>();
+  // mute状态（观众主动操作的）
+  private boolean isMute = false;
   private final NEVoiceRoomListenerAdapter listener =
       new NEVoiceRoomListenerAdapter() {
+        @Override
+        public void onReceiveGift(@NonNull NEVoiceRoomGiftModel rewardMsg) {
+          super.onReceiveGift(rewardMsg);
+          rewardData.postValue(rewardMsg);
+        }
 
         @Override
         public void onReceiveTextMessage(@NonNull NEVoiceRoomChatTextMessage message) {
@@ -96,9 +103,12 @@ public class VoiceRoomViewModel extends ViewModel {
 
         @Override
         public void onSeatRequestSubmitted(int seatIndex, @NonNull String account) {
+          if (seatIndex < 1) {
+            return;
+          }
           buildSeatEventMessage(
               account,
-              String.format(getString(R.string.voiceroom_apply_micro_has_arrow), seatIndex));
+              String.format(getString(R.string.voiceroom_apply_micro_has_arrow), seatIndex - 1));
         }
 
         @Override
@@ -147,11 +157,14 @@ public class VoiceRoomViewModel extends ViewModel {
                 new VoiceRoomSeatEvent(account, seatIndex, VoiceRoomSeat.Reason.LEAVE));
           }
           buildSeatEventMessage(account, getString(R.string.voiceroom_down_seat));
+          if (VoiceRoomUtils.isHost(account)) {
+            hostLeaveSeatData.postValue(true);
+          }
         }
 
         @Override
         public void onSeatListChanged(@NonNull List<NEVoiceRoomSeatItem> seatItems) {
-          ALog.i(TAG, "onSeatListChanged seatItems = $seatItems");
+          ALog.i(TAG, "onSeatListChanged seatItems =" + seatItems);
           handleSeatItemListChanged(seatItems);
           if (VoiceRoomUtils.isCurrentHost()) {
             getSeatRequestList();
@@ -181,6 +194,10 @@ public class VoiceRoomViewModel extends ViewModel {
           }
         }
       };
+
+  public MutableLiveData<String> getToastData() {
+    return toastData;
+  }
 
   public MutableLiveData<Integer> getNetData() {
     return netData;
@@ -212,6 +229,14 @@ public class VoiceRoomViewModel extends ViewModel {
 
   public LiveData<VoiceRoomSeatEvent> getCurrentSeatEvent() {
     return currentSeatEvent;
+  }
+
+  public MutableLiveData<NEVoiceRoomGiftModel> getRewardData() {
+    return rewardData;
+  }
+
+  public MutableLiveData<Boolean> getHostLeaveSeatData() {
+    return hostLeaveSeatData;
   }
 
   void updateRoomMemberCount() {
@@ -340,14 +365,53 @@ public class VoiceRoomViewModel extends ViewModel {
   }
 
   private void buildSeatEventMessage(String account, String content) {
-    if (!shouldShowSeatEventMessage(account)) return;
     String nick = SeatUtils.getMemberNick(account);
     if (!TextUtils.isEmpty(nick)) {
       chatRoomMsgData.postValue(ChatRoomMsgCreator.createSeatMessage(nick, content));
     }
   }
 
-  private boolean shouldShowSeatEventMessage(String account) {
-    return VoiceRoomUtils.isMySelf(account) || VoiceRoomUtils.isCurrentHost();
+  public void muteMyAudio(boolean muteBySelf) {
+    NEVoiceRoomKit.getInstance()
+        .muteMyAudio(
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.d(TAG, "muteMyAudio success");
+                if (muteBySelf) {
+                  toastData.postValue(getString(R.string.voiceroom_mic_off));
+                  isMute = true;
+                }
+              }
+
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "muteMyAudio failed,code:" + code + ",msg:" + msg);
+              }
+            });
+  }
+
+  public void unmuteMyAudio(boolean unmuteBySelf) {
+    NEVoiceRoomKit.getInstance()
+        .unmuteMyAudio(
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.d(TAG, "unmuteMyAudio success");
+                if (unmuteBySelf) {
+                  toastData.postValue(getString(R.string.voiceroom_mic_on));
+                  isMute = false;
+                }
+              }
+
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "unmuteMyAudio failed,code:" + code + ",msg:" + msg);
+              }
+            });
+  }
+
+  public boolean isMute() {
+    return isMute;
   }
 }

@@ -150,6 +150,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
                   ? getString(R.string.voiceroom_unmute_seat)
                   : getString(R.string.voiceroom_mute_seat));
         }
+        items.add(getString(R.string.voiceroom_close_seat));
         break;
         // 当前麦位已经被关闭
       case VoiceRoomSeat.Status.CLOSED:

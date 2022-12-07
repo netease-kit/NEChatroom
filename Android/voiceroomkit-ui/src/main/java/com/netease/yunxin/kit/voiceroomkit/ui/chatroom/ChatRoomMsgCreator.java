@@ -6,8 +6,10 @@ package com.netease.yunxin.kit.voiceroomkit.ui.chatroom;
 
 import android.content.Context;
 import android.graphics.Color;
+import com.netease.yunxin.kit.voiceroomkit.impl.utils.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.*;
 
 public class ChatRoomMsgCreator {
 
@@ -75,6 +77,29 @@ public class ChatRoomMsgCreator {
         .append(userNickName, HIGH_COLOR)
         .append(": ", HIGH_COLOR)
         .append(msg, COMMON_COLOR)
+        .build()
+        .getMessageInfo();
+  }
+
+  /**
+   * 创建发送礼物消息
+   *
+   * @param context 上下文
+   * @param userNickName 发送方昵称
+   * @param giftCount 赠送礼物数量
+   * @param giftRes 礼物资源id
+   */
+  public static CharSequence createGiftReward(
+      Context context, String userNickName, int giftCount, int giftRes) {
+    int gifSize = ScreenUtil.dip2px(22f);
+    return new ChatMessageSpannableStr.Builder()
+        .append(userNickName, HIGH_COLOR)
+        .append(": ", HIGH_COLOR)
+        .append(Utils.getApp().getString(R.string.voiceroom_donate) + " × ", COMMON_COLOR)
+        .append(String.valueOf(giftCount), COMMON_COLOR)
+        .append(Utils.getApp().getString(R.string.voiceroom_count), COMMON_COLOR)
+        .append(" ")
+        .append(context, giftRes, gifSize, gifSize)
         .build()
         .getMessageInfo();
   }
