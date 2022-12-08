@@ -4,6 +4,7 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.graphics.Rect;
@@ -21,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
@@ -33,6 +36,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
+import com.netease.yunxin.kit.common.utils.PermissionUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams;
@@ -175,6 +179,24 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private ImageView ivGift;
   private GiftRender giftRender;
+  private static final String RECORD_AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO;
+  private ActivityResultLauncher<String> requestPermissionLauncher =
+      registerForActivityResult(
+          new ActivityResultContracts.RequestPermission(),
+          isGranted -> {
+            if (isGranted) {
+              enterRoomInner(
+                  voiceRoomInfo.getRoomUuid(),
+                  voiceRoomInfo.getNick(),
+                  voiceRoomInfo.getAvatar(),
+                  voiceRoomInfo.getLiveRecordId(),
+                  voiceRoomInfo.getRole());
+            } else {
+              ToastUtils.INSTANCE.showShortToast(
+                  VoiceRoomBaseActivity.this, "Record audio permission failed!");
+              finish();
+            }
+          });
 
   private NEVoiceRoomListener voiceRoomListener =
       new NEVoiceRoomListenerAdapter() {
@@ -295,7 +317,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     setupBaseView();
     rootView = getWindow().getDecorView();
     rootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-    requestLivePermission();
     String countStr = String.format(getString(R.string.voiceroom_people_online), "0");
     tvMemberCount.setText(countStr);
   }
@@ -517,7 +538,20 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     netErrorView.setVisibility(View.GONE);
   }
 
-  protected final void enterRoom(
+  protected final void enterRoom() {
+    if (PermissionUtils.hasPermissions(this, RECORD_AUDIO_PERMISSION)) {
+      enterRoomInner(
+          voiceRoomInfo.getRoomUuid(),
+          voiceRoomInfo.getNick(),
+          voiceRoomInfo.getAvatar(),
+          voiceRoomInfo.getLiveRecordId(),
+          voiceRoomInfo.getRole());
+    } else {
+      requestPermissionLauncher.launch(RECORD_AUDIO_PERMISSION);
+    }
+  }
+
+  private void enterRoomInner(
       String roomUuid, String nick, String avatar, long liveRecordId, String role) {
     NEJoinVoiceRoomParams params =
         new NEJoinVoiceRoomParams(

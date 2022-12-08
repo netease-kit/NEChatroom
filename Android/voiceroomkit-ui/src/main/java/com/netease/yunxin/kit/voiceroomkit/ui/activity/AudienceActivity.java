@@ -54,12 +54,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
     createMoreItems();
     super.onCreate(savedInstanceState);
     netErrorView = findViewById(R.id.view_net_error);
-    enterRoom(
-        voiceRoomInfo.getRoomUuid(),
-        voiceRoomInfo.getNick(),
-        voiceRoomInfo.getAvatar(),
-        voiceRoomInfo.getLiveRecordId(),
-        voiceRoomInfo.getRole());
+    enterRoom();
     watchNetWork();
     initDataObserver();
     isAnchor = false;
