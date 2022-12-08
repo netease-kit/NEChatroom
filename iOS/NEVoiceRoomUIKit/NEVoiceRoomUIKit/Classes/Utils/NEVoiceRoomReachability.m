@@ -19,7 +19,7 @@ NSString *const kNEVoiceRoomReachabilityChangedNotification =
 
 @property(nonatomic, assign) SCNetworkReachabilityRef reachabilityRef;
 @property(nonatomic, strong) dispatch_queue_t reachabilitySerialQueue;
-@property(nonatomic, strong) id reachabilityObject;
+@property(nonatomic, weak) id reachabilityObject;
 
 - (void)reachabilityChanged:(SCNetworkReachabilityFlags)flags;
 - (BOOL)isReachableWithFlags:(SCNetworkReachabilityFlags)flags;
@@ -195,11 +195,17 @@ static void VoiceRoomReachabilityCallback(SCNetworkReachabilityRef target,
       self.reachabilityObject = self;
       return YES;
     } else {
+#ifdef DEBUG
+      NSLog(@"SCNetworkReachabilitySetDispatchQueue() failed: %s", SCErrorString(SCError()));
+#endif
 
       // UH OH - FAILURE - stop any callbacks!
       SCNetworkReachabilitySetCallback(self.reachabilityRef, NULL, NULL);
     }
   } else {
+#ifdef DEBUG
+    NSLog(@"SCNetworkReachabilitySetCallback() failed: %s", SCErrorString(SCError()));
+#endif
   }
 
   // if we get here we fail at the internet

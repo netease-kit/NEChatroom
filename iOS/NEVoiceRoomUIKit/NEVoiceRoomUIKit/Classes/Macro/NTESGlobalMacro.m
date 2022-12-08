@@ -11,17 +11,25 @@
 
 void ntes_main_sync_safe(dispatch_block_t block) {
   if ([NSThread isMainThread]) {
-    block();
+    if (block) {
+      block();
+    }
   } else {
-    dispatch_sync(dispatch_get_main_queue(), block);
+    if (block) {
+      dispatch_sync(dispatch_get_main_queue(), block);
+    }
   }
 }
 
 void ntes_main_async_safe(dispatch_block_t block) {
   if ([NSThread isMainThread]) {
-    block();
+    if (block) {
+      block();
+    }
   } else {
-    dispatch_async(dispatch_get_main_queue(), block);
+    if (block) {
+      dispatch_async(dispatch_get_main_queue(), block);
+    }
   }
 }
 

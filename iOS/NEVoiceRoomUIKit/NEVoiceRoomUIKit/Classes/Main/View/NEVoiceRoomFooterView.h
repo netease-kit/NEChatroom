@@ -22,7 +22,8 @@ typedef NS_ENUM(NSInteger, NEUIFunctionArea) {
   NEUIFunctionAreaInput,       // 输入框
   NEUIFunctionAreaMicrophone,  // 麦克风
   NEUIFunctionAreaBanned,      // 禁言
-  NEUIFunctionAreaMore         // 更多
+  NEUIFunctionAreaMore,        // 更多
+  NEUIFunctionGift             // 礼物
 };
 
 typedef NS_ENUM(NSUInteger, NEUIMuteType) {
@@ -32,6 +33,8 @@ typedef NS_ENUM(NSUInteger, NEUIMuteType) {
 
 @protocol NEVoiceRoomFooterFunctionAreaDelegate <NSObject>
 @optional
+// gift点击事件
+- (void)footerDidReceiveGiftClickAciton;
 // 麦克静音事件
 - (void)footerDidReceiveMicMuteAction:(BOOL)mute;
 // 禁言事件

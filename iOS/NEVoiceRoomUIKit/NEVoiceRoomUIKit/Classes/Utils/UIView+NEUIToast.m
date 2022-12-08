@@ -130,7 +130,7 @@ static NSInteger KNEVoiceRoomToastBarTag = 111;
   _infoLab.text = info ?: @"";
   [_infoLab sizeToFit];
 
-  CGFloat width = kNEVoiceRoomToastMinWitdh;
+  CGFloat width;
   if (_state != NEUIToastCancel) {
     width = _infoLab.width + 20.0 + 18.0 + 5.0 + 20.0;
   } else {

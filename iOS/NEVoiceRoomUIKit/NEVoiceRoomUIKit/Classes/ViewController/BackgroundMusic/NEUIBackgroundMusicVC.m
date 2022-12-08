@@ -305,6 +305,7 @@ static void *KVOContext = &KVOContext;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  [self resumeAction:nil];
   NEUIBackgroundMusicModel *music = self.backgroundMusics[indexPath.row];
   if ([music isEqual:self.context.currentBgm]) {
     return;

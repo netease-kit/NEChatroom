@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NEVoiceRoomViewController (Seat)
 /// 获取麦位信息
 - (void)getSeatInfo;
+/// 获取麦位信息，断网重连调用，包含unmute等操作
+- (void)getSeatInfoWhenRejoinChatRoom;
 /// 主播操作麦位
 - (void)anchorOperationSeatItem:(NEVoiceRoomSeatItem *)seatItem;
 /// 观众操作麦位

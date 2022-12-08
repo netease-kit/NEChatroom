@@ -4,7 +4,7 @@
 
 #import "NEUIConnectListCell.h"
 #import <NEUIKit/UIView+NEUIExtension.h>
-#import <YYWebImage/UIImageView+YYWebImage.h>
+#import <SDWebImage/SDWebImage.h>
 #import "NEVoiceRoomUI.h"
 #import "NSBundle+NELocalized.h"
 
@@ -51,7 +51,7 @@
   _nameLabel.text =
       [NSString stringWithFormat:@"%@ %@%d", data.userName, NELocalizedString(@"申请麦位"),
                                  (int)(data.index - 1)];
-  [self.avatar yy_setImageWithURL:[NSURL URLWithString:data.icon] placeholder:nil];
+  [self.avatar sd_setImageWithURL:[NSURL URLWithString:data.icon]];
 }
 + (NEUIConnectListCell *)cellWithTableView:(UITableView *)tableView
                                      datas:(NSArray<NEVoiceRoomSeatItem *> *)datas

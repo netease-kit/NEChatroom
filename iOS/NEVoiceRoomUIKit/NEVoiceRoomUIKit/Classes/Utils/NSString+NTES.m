@@ -22,7 +22,7 @@
 }
 
 + (NSString *)praiseStrFormat:(NSUInteger)number {
-  NSString *str = @"";
+  NSString *str;
   if (number == 0) {
     str = @"0";
   } else if (number > 0 && number <= 10000) {

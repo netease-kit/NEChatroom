@@ -6,7 +6,7 @@
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
-#import <YYWebImage/UIImageView+YYWebImage.h>
+#import <SDWebImage/SDWebImage.h>
 #import "NEVoiceRoomUI.h"
 #import "NSBundle+NELocalized.h"
 
@@ -66,8 +66,8 @@
   // image
   if (member.avatar) {
     NSURL *url = [NSURL URLWithString:member.avatar];
-    [_iconView yy_setImageWithURL:url
-                      placeholder:[NEVoiceRoomUI ne_imageName:@"default_user_icon"]];
+    [_iconView sd_setImageWithURL:url
+                 placeholderImage:[NEVoiceRoomUI ne_imageName:@"default_user_icon"]];
   }
 }
 

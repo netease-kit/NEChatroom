@@ -6,10 +6,12 @@
 #import <NEUIKit/NEUIBaseNavigationController.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <ReactiveObjC/ReactiveObjC.h>
+#import "NEChatRoomListViewController.h"
 #import "NEUIActionSheetNavigationController.h"
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMoreFunctionVC.h"
 #import "NEVoiceRoomChatView.h"
+#import "NEVoiceRoomSendGiftViewController.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
@@ -19,12 +21,14 @@
 #import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
+
 @interface NEVoiceRoomViewController () <NEVoiceRoomHeaderDelegate,
                                          NEVoiceRoomFooterFunctionAreaDelegate,
                                          NEUIMoreSettingDelegate,
                                          NEUIKeyboardToolbarDelegate,
                                          NEUIMicQueueViewDelegate,
-                                         NEUIConnectListViewDelegate>
+                                         NEUIConnectListViewDelegate,
+                                         NEVoiceRoomSendGiftViewtDelegate>
 
 @end
 
@@ -66,7 +70,7 @@
             if (self.presentedViewController) {
               [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
             }
-            [self.navigationController popViewControllerAnimated:YES];
+            [self backToListViewController];
           });
         }];
   } else {  // 观众
@@ -82,6 +86,18 @@
   }
 }
 
+- (void)backToListViewController {
+  UIViewController *target = nil;
+  for (UIViewController *controller in self.navigationController.viewControllers) {
+    if ([controller isKindOfClass:[NEChatRoomListViewController class]]) {
+      target = controller;
+      break;
+    }
+  }
+  if (target) {
+    [self.navigationController popToViewController:target animated:YES];
+  }
+}
 #pragma mark - NTESLiveRoomHeaderDelegate
 - (void)headerExitAction {
   [self closeRoom];
@@ -97,6 +113,10 @@
   [self handleMuteOperation:mute];
 }
 
+- (void)footerDidReceiveGiftClickAciton {
+  // 发送礼物
+  [NEVoiceRoomSendGiftViewController showWithTarget:self viewController:self];
+}
 // 禁言事件
 - (void)footerDidReceiveNoSpeekingAciton {
 }
@@ -125,12 +145,46 @@
   if (micOn) {
     [self unmuteAudio:YES];
   } else {
+    self.mute = true;
     [self muteAudio:YES];
   }
 }
 - (void)endLive {
   [self closeRoom];
 }
+
+#pragma mark------------------------ NEVoiceRoomSendGiftViewtDelegate ------------------------
+
+- (void)didSendGift:(NEVoiceRoomUIGiftModel *)gift {
+  if (![self checkNetwork]) {
+    return;
+  }
+
+  [self
+      dismissViewControllerAnimated:true
+                         completion:^{
+                           [[NEVoiceRoomKit getInstance]
+                               sendGift:gift.giftId
+                               callback:^(NSInteger code, NSString *_Nullable msg,
+                                          id _Nullable obj) {
+                                 if (code != 0) {
+                                   [NEVoiceRoomToast
+                                       showToast:[NSString stringWithFormat:@"发送礼物失败 %zd %@",
+                                                                            code, msg]];
+                                 }
+                               }];
+                         }];
+}
+
+- (BOOL)checkNetwork {
+  NEVoiceRoomNetworkStatus status = [self.reachability currentReachabilityStatus];
+  if (status == NotReachable) {
+    [NEVoiceRoomToast showToast:@"网络连接断开，请稍后重试"];
+    return false;
+  }
+  return true;
+}
+
 #pragma mark------------------------ NEUIKeyboardToolbarDelegate ------------------------
 - (void)didToolBarSendText:(NSString *)text {
   if (text.length <= 0) {
@@ -180,6 +234,18 @@
     [self.chatView addMessages:messages];
   });
 }
+- (void)onMemberJoinChatroom:(NSArray<NEVoiceRoomMember *> *)members {
+  bool isSelf = false;
+  for (NEVoiceRoomMember *member in members) {
+    if ([member.account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) {
+      isSelf = true;
+      break;
+    }
+  }
+  if (isSelf) {
+    [self getSeatInfoWhenRejoinChatRoom];
+  }
+}
 - (void)onReceiveTextMessage:(NEVoiceRoomChatTextMessage *)message {
   dispatch_async(dispatch_get_main_queue(), ^{
     NEVoiceRoomChatViewMessage *model = [[NEVoiceRoomChatViewMessage alloc] init];
@@ -190,6 +256,24 @@
     [self.chatView addMessages:@[ model ]];
   });
 }
+
+- (void)onReceiveGiftWithGiftModel:(NEVoiceRoomGiftModel *)giftModel {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // 展示礼物动画
+    NEVoiceRoomChatViewMessage *message = [[NEVoiceRoomChatViewMessage alloc] init];
+    message.type = NEVoiceRoomChatViewMessageTypeReward;
+    message.giftId = (int)giftModel.giftId;
+    message.giftFrom = giftModel.sendNick;
+    [self.chatView addMessages:@[ message ]];
+
+    if (self.role != NEVoiceRoomRoleHost) {
+      // 房主不展示礼物
+      NSString *giftName = [NSString stringWithFormat:@"anim_gift_0%zd", giftModel.giftId];
+      [self playGiftWithName:giftName];
+    }
+  });
+}
+
 - (void)onRoomEnded:(enum NEVoiceRoomEndReason)reason {
   dispatch_async(dispatch_get_main_queue(), ^{
     if (reason != NEVoiceRoomEndReasonLeaveBySelf) {
@@ -206,6 +290,22 @@
     [self closeRoom];
   }
 }
+#pragma mark - gift animation
+
+/// 播放礼物动画
+- (void)playGiftWithName:(NSString *)name {
+  [self.view addSubview:self.giftAnimation];
+  [self.view bringSubviewToFront:self.giftAnimation];
+  [self.giftAnimation addGift:name];
+}
+
+- (NEVoiceRoomAnimationView *)giftAnimation {
+  if (!_giftAnimation) {
+    _giftAnimation = [[NEVoiceRoomAnimationView alloc] init];
+  }
+  return _giftAnimation;
+}
+
 #pragma mark------------------------ NEUIMicQueueViewDelegate ------------------------
 - (void)micQueueConnectBtnPressedWithMicInfo:(NEVoiceRoomSeatItem *)micInfo {
   switch (self.role) {
@@ -251,6 +351,7 @@
   }
   return _context;
 }
+
 - (UIImageView *)bgImageView {
   if (!_bgImageView) {
     _bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
