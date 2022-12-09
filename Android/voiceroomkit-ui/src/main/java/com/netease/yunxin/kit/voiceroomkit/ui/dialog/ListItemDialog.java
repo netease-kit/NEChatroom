@@ -8,12 +8,15 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.LiveBaseAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.OnItemClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 

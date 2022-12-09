@@ -4,12 +4,16 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -17,6 +21,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
@@ -24,9 +31,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.utils.NetworkUtils;
+import com.netease.yunxin.kit.common.utils.PermissionUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams;
@@ -38,6 +48,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
+import com.netease.yunxin.kit.voiceroomkit.impl.utils.ScreenUtil;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.base.BaseActivity;
@@ -51,21 +62,29 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NoticeDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GifAnimationView;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftCache;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftDialog;
+import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftRender;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.InputUtils;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.ViewUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.ChatRoomMsgRecyclerView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import kotlin.Unit;
-import org.jetbrains.annotations.NotNull;
 
 /** 主播与观众基础页，包含所有的通用UI元素 */
 public abstract class VoiceRoomBaseActivity extends BaseActivity
@@ -88,10 +107,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   protected static final int MORE_ITEM_FINISH = 4; // 更多菜单 结束房间
 
   protected ConstraintLayout clyAnchorView;
-
-  protected TextView tvOrderMusic;
-
-  protected TextView tvOrderedNum;
 
   //主播基础信息
   protected HeadImageView ivAnchorAvatar;
@@ -160,6 +175,29 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   protected View netErrorView;
 
+  private GiftDialog giftDialog;
+
+  private ImageView ivGift;
+  private GiftRender giftRender;
+  private static final String RECORD_AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO;
+  private ActivityResultLauncher<String> requestPermissionLauncher =
+      registerForActivityResult(
+          new ActivityResultContracts.RequestPermission(),
+          isGranted -> {
+            if (isGranted) {
+              enterRoomInner(
+                  voiceRoomInfo.getRoomUuid(),
+                  voiceRoomInfo.getNick(),
+                  voiceRoomInfo.getAvatar(),
+                  voiceRoomInfo.getLiveRecordId(),
+                  voiceRoomInfo.getRole());
+            } else {
+              ToastUtils.INSTANCE.showShortToast(
+                  VoiceRoomBaseActivity.this, "Record audio permission failed!");
+              finish();
+            }
+          });
+
   private NEVoiceRoomListener voiceRoomListener =
       new NEVoiceRoomListenerAdapter() {
         @Override
@@ -184,6 +222,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         @Override
         public void onMemberAudioBanned(@NonNull NEVoiceRoomMember member, boolean banned) {
           if (VoiceRoomUtils.isMySelf(member.getAccount()) && roomViewModel.isCurrentUserOnSeat()) {
+            if (banned) {
+              roomViewModel.muteMyAudio(false);
+            } else if (!roomViewModel.isMute()) {
+              roomViewModel.unmuteMyAudio(false);
+            }
             ChoiceDialog dialog =
                 new NotificationDialog(VoiceRoomBaseActivity.this)
                     .setTitle(getString(R.string.voiceroom_notify))
@@ -274,7 +317,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     setupBaseView();
     rootView = getWindow().getDecorView();
     rootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-    requestLivePermission();
     String countStr = String.format(getString(R.string.voiceroom_people_online), "0");
     tvMemberCount.setText(countStr);
   }
@@ -288,6 +330,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
       audioPlay.destroy();
     }
     NEVoiceRoomKit.getInstance().removeVoiceRoomListener(voiceRoomListener);
+    giftRender.release();
     super.onDestroy();
   }
 
@@ -335,8 +378,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     tvRoomName = baseAudioView.findViewById(R.id.tv_chat_room_name);
     tvMemberCount = baseAudioView.findViewById(R.id.tv_chat_room_member_count);
     settingsContainer = findViewById(R.id.settings_container);
-    tvOrderMusic = findViewById(R.id.tv_order_music);
-    tvOrderedNum = findViewById(R.id.tv_ordered_num);
     settingsContainer.setOnClickListener(view -> settingsContainer.setVisibility(View.GONE));
     ivSettingSwitch = baseAudioView.findViewById(R.id.iv_settings);
     ivSettingSwitch.setOnClickListener(view -> settingsContainer.setVisibility(View.VISIBLE));
@@ -399,6 +440,40 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           NoticeDialog noticeDialog = new NoticeDialog();
           noticeDialog.show(getSupportFragmentManager(), "");
         });
+    initGiftAnimation(baseAudioView);
+    ivGift = baseAudioView.findViewById(R.id.iv_gift);
+    ivGift.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Application application = Utils.getApp();
+            if (!NetworkUtils.isConnected()) {
+              ToastUtils.INSTANCE.showShortToast(
+                  application, application.getString(R.string.voiceroom_net_error));
+              return;
+            }
+
+            if (giftDialog == null) {
+              giftDialog = new GiftDialog(VoiceRoomBaseActivity.this);
+            }
+            giftDialog.show(
+                giftId ->
+                    NEVoiceRoomKit.getInstance()
+                        .sendGift(
+                            giftId,
+                            new NEVoiceRoomCallback<Unit>() {
+                              @Override
+                              public void onSuccess(@Nullable Unit unit) {}
+
+                              @Override
+                              public void onFailure(int code, @Nullable String msg) {
+                                ToastUtils.INSTANCE.showShortToast(
+                                    application,
+                                    application.getString(R.string.voiceroom_reward_failed));
+                              }
+                            }));
+          }
+        });
   }
 
   protected void doLeaveRoom() {
@@ -448,10 +523,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     TopTipsDialog.Style style =
         topTipsDialog
         .new Style(getString(R.string.voiceroom_net_disconnected), 0, R.drawable.neterrricon, 0);
-    bundle.putParcelable(topTipsDialog.TAG, style);
+    bundle.putParcelable(topTipsDialog.getDialogTag(), style);
     topTipsDialog.setArguments(bundle);
     if (!topTipsDialog.isVisible()) {
-      topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.TAG);
+      topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.getDialogTag());
     }
     netErrorView.setVisibility(View.VISIBLE);
   }
@@ -463,12 +538,26 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     netErrorView.setVisibility(View.GONE);
   }
 
-  protected final void enterRoom(
+  protected final void enterRoom() {
+    if (PermissionUtils.hasPermissions(this, RECORD_AUDIO_PERMISSION)) {
+      enterRoomInner(
+          voiceRoomInfo.getRoomUuid(),
+          voiceRoomInfo.getNick(),
+          voiceRoomInfo.getAvatar(),
+          voiceRoomInfo.getLiveRecordId(),
+          voiceRoomInfo.getRole());
+    } else {
+      requestPermissionLauncher.launch(RECORD_AUDIO_PERMISSION);
+    }
+  }
+
+  private void enterRoomInner(
       String roomUuid, String nick, String avatar, long liveRecordId, String role) {
     NEJoinVoiceRoomParams params =
         new NEJoinVoiceRoomParams(
             roomUuid, nick, avatar, NEVoiceRoomRole.Companion.fromValue(role), liveRecordId, null);
     boolean isAnchor = NEVoiceRoomRole.HOST.getValue().equals(role);
+    ivGift.setVisibility(isAnchor ? View.GONE : View.VISIBLE);
     if (isAnchor) {
       updateAnchorUI(nick, avatar, true);
     }
@@ -523,6 +612,9 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private void initDataObserver() {
     roomViewModel
+        .getToastData()
+        .observe(this, s -> ToastUtils.INSTANCE.showShortToast(VoiceRoomBaseActivity.this, s));
+    roomViewModel
         .getMemberCountData()
         .observe(
             this,
@@ -568,6 +660,25 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                 leaveRoom();
               } else {
                 finish();
+              }
+            });
+
+    roomViewModel
+        .getRewardData()
+        .observe(
+            this,
+            reward -> {
+              if (voiceRoomInfo == null) {
+                return;
+              }
+              rcyChatMsgList.appendItem(
+                  ChatRoomMsgCreator.createGiftReward(
+                      VoiceRoomBaseActivity.this,
+                      reward.getSendNick(),
+                      1,
+                      GiftCache.getGift(reward.getGiftId()).getStaticIconResId()));
+              if (!VoiceRoomUtils.isCurrentHost()) {
+                giftRender.addGift(GiftCache.getGift(reward.getGiftId()).getDynamicIconResId());
               }
             });
     NEVoiceRoomKit.getInstance().addVoiceRoomListener(voiceRoomListener);
@@ -622,35 +733,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             + ",localMember.isAudioBanned():"
             + localMember.isAudioBanned());
     if (isAudioOn) {
-      NEVoiceRoomKit.getInstance()
-          .muteMyAudio(
-              new NEVoiceRoomCallback<Unit>() {
-                @Override
-                public void onSuccess(@Nullable Unit unit) {
-                  ToastUtils.INSTANCE.showShortToast(
-                      VoiceRoomBaseActivity.this, getString(R.string.voiceroom_mic_off));
-                }
-
-                @Override
-                public void onFailure(int code, @Nullable String msg) {}
-              });
+      roomViewModel.muteMyAudio(true);
     } else {
       if (localMember.isAudioBanned()) {
         ToastUtils.INSTANCE.showShortToast(
             VoiceRoomBaseActivity.this, getString(R.string.voiceroom_audio_banned));
       } else {
-        NEVoiceRoomKit.getInstance()
-            .unmuteMyAudio(
-                new NEVoiceRoomCallback<Unit>() {
-                  @Override
-                  public void onSuccess(@Nullable Unit unit) {
-                    ToastUtils.INSTANCE.showShortToast(
-                        VoiceRoomBaseActivity.this, getString(R.string.voiceroom_mic_on));
-                  }
-
-                  @Override
-                  public void onFailure(int code, @Nullable String msg) {}
-                });
+        roomViewModel.unmuteMyAudio(true);
       }
     }
   }
@@ -741,5 +830,22 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   /** 显示调音台 */
   public void showChatRoomMixerDialog() {
     new ChatRoomMixerDialog(VoiceRoomBaseActivity.this, audioPlay, isAnchor).show();
+  }
+
+  private void initGiftAnimation(View baseAudioView) {
+    GifAnimationView gifAnimationView = new GifAnimationView(this);
+    int size = ScreenUtil.getDisplayWidth();
+    FrameLayout.LayoutParams layoutParams =
+        new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+    layoutParams.width = size;
+    layoutParams.height = size;
+    layoutParams.gravity = Gravity.BOTTOM;
+    layoutParams.bottomMargin = ScreenUtil.dip2px(166f);
+    ViewGroup root = (ViewGroup) baseAudioView.findViewById(R.id.rl_base_audio_ui);
+    root.addView(gifAnimationView, layoutParams);
+    gifAnimationView.bringToFront();
+    giftRender = new GiftRender();
+    giftRender.init(gifAnimationView);
   }
 }

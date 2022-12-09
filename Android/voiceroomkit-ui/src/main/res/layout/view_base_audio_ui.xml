@@ -251,6 +251,8 @@
         android:background="@drawable/seat_item_round_bg"
         android:layout_height="@dimen/dimen_36_dp"/>
 
+
+
     <ImageView
         android:id="@+id/iv_local_audio_switch"
         android:layout_marginEnd="@dimen/dimen_10_dp"
@@ -263,37 +265,18 @@
         android:background="@drawable/seat_item_round_bg"
         android:layout_height="@dimen/dimen_36_dp" />
 
-    <TextView
-        android:id="@+id/tv_order_music"
-        android:layout_marginEnd="@dimen/dimen_10_dp"
-        android:layout_width="@dimen/dimen_36_dp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_local_audio_switch"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/dimen_8_dp"
-        tools:text="点歌"
-        android:textSize="@dimen/text_size_10"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="@drawable/seat_item_round_bg"
-        android:visibility="gone"
-        android:layout_height="@dimen/dimen_36_dp" />
-
-    <TextView
-        android:id="@+id/tv_ordered_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_10"
-        android:textColor="@color/black"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/dimen_25_dp"
-        android:layout_marginStart="@dimen/dimen_25_dp"
-        android:minWidth="@dimen/dimen_12_dp"
-        android:gravity="center"
-        tools:text="99"
-        android:paddingHorizontal="@dimen/dimen_2_dp"
-        android:background="@drawable/shape_corner_6_bg_white"
-        app:layout_constraintStart_toStartOf="@+id/tv_order_music"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_order_music" />
+        <ImageView
+            android:id="@+id/iv_gift"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="@dimen/dimen_10_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/dimen_8_dp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_local_audio_switch"
+            android:background="@drawable/dark_cycle_bg"
+            android:padding="5dp"
+            android:src="@drawable/gift"
+            android:visibility="visible" />
 
     <EditText
         android:id="@+id/edt_input_text"
@@ -311,5 +294,4 @@
         android:textColorHint="@color/color_bfbfbf"
         android:textSize="@dimen/text_size_14"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

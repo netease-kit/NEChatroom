@@ -7,8 +7,10 @@ package com.netease.yunxin.kit.voiceroomkit.ui.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
@@ -26,9 +28,11 @@ import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomUser;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.OnItemClickListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import kotlin.Unit;
 
 /** 主播页 */
@@ -50,12 +54,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     super.onCreate(savedInstanceState);
     netErrorView = findViewById(R.id.view_net_error);
     createMoreItems();
-    enterRoom(
-        voiceRoomInfo.getRoomUuid(),
-        voiceRoomInfo.getNick(),
-        voiceRoomInfo.getAvatar(),
-        voiceRoomInfo.getLiveRecordId(),
-        voiceRoomInfo.getRole());
+    enterRoom();
     audioPlay.checkMusicFiles();
     initDataObserver();
     watchNetWork();
@@ -150,6 +149,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
                   ? getString(R.string.voiceroom_unmute_seat)
                   : getString(R.string.voiceroom_mute_seat));
         }
+        items.add(getString(R.string.voiceroom_close_seat));
         break;
         // 当前麦位已经被关闭
       case VoiceRoomSeat.Status.CLOSED:
@@ -232,9 +232,9 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   private void showApplySeats(List<VoiceRoomSeat> seats) {
     seatApplyDialog = new SeatApplyDialog();
     Bundle bundle = new Bundle();
-    bundle.putParcelableArrayList(seatApplyDialog.TAG, new ArrayList<>(seats));
+    bundle.putParcelableArrayList(seatApplyDialog.getDialogTag(), new ArrayList<>(seats));
     seatApplyDialog.setArguments(bundle);
-    seatApplyDialog.show(getSupportFragmentManager(), seatApplyDialog.TAG);
+    seatApplyDialog.show(getSupportFragmentManager(), seatApplyDialog.getDialogTag());
     seatApplyDialog.setRequestAction(
         new SeatApplyDialog.IRequestAction() {
           @Override
