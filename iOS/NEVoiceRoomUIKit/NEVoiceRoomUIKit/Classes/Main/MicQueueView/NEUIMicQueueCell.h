@@ -4,8 +4,6 @@
 
 #import <Lottie/LOTAnimationView.h>
 #import <UIKit/UIKit.h>
-#import <YYWebImage/UIButton+YYWebImage.h>
-#import <YYWebImage/UIImage+YYWebImage.h>
 #import "NEUIAnimationButton.h"
 
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>

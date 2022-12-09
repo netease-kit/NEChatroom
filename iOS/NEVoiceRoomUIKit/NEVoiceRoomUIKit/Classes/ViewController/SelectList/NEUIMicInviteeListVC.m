@@ -36,7 +36,8 @@
   for (NEVoiceRoomMember *m in NEVoiceRoomKit.getInstance.allMemberList) {
     BOOL isExist = NO;
     for (NEVoiceRoomSeatItem *item in seatItems) {
-      if ([item.user isEqualToString:m.account]) {
+      if ([item.user isEqualToString:m.account] &&
+          (item.status == NEVoiceRoomSeatItemStatusTaken)) {
         isExist = YES;
       }
     }
@@ -59,7 +60,7 @@
 - (void)pickSeatWithAccount:(NSString *)account {
   [NEVoiceRoomKit.getInstance
       sendSeatInvitationWithSeatIndex:self.seatIndex
-                                 user:account
+                              account:account
                              callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                                if (code != 0) {
                                  [NEVoiceRoomToast showToast:NELocalizedString(@"操作失败")];

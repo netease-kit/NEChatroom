@@ -4,7 +4,6 @@
 
 #import "NEUIMicQueueCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <YYWebImage/UIImageView+YYWebImage.h>
 #import "NEInnerSingleton.h"
 #import "NEVoiceRoomUI.h"
 #import "NSArray+NEUIExtension.h"
@@ -49,7 +48,7 @@
 /// 刷新主播麦位信息
 - (void)_anchorRefresh:(NEVoiceRoomSeatItem *)micInfo {
   self.nameLabel.text = micInfo.userName ?: NELocalizedString(@"房主");
-  [self.avatar setYy_imageURL:[NSURL URLWithString:micInfo.icon]];
+  [self.avatar sd_setImageWithURL:[NSURL URLWithString:micInfo.icon]];
   self.connectBtn.layer.borderWidth = 1;
 
   NEVoiceRoomMember *anchorMember =
@@ -58,12 +57,16 @@
       }];
 
   if (!anchorMember) return;
-  if (anchorMember.isAudioOn) {
-    [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_open_ico"]];
-    self.smallIcon.hidden = NO;
+  if (anchorMember.isAudioBanned) {
+    [self.smallIcon setImage:[NEVoiceRoomUI ne_imageName:@"mic_shield_ico"]];
   } else {
-    [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_close_ico"]];
-    self.smallIcon.hidden = NO;
+    if (anchorMember.isAudioOn) {
+      [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_open_ico"]];
+      self.smallIcon.hidden = NO;
+    } else {
+      [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_close_ico"]];
+      self.smallIcon.hidden = NO;
+    }
   }
 }
 

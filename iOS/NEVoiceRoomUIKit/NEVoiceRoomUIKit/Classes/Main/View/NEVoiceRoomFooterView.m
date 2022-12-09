@@ -28,6 +28,7 @@ static void *KVOContext = &KVOContext;
 @property(nonatomic, strong) UIButton *microphoneButton;
 @property(nonatomic, strong) UIButton *bannedSpeakButton;
 @property(nonatomic, strong) UIButton *menuButton;
+@property(nonatomic, strong) UIButton *giftButton;
 @property(nonatomic, strong) NSArray *buttonsArray;
 @property(nonatomic, strong) UILabel *markLable;
 
@@ -104,12 +105,11 @@ static void *KVOContext = &KVOContext;
 
 - (void)doLayoutButtons {
   if (self.width != 0 && self.height != 0) {
-    __weak typeof(self) weakSelf = self;
     [self.buttonsArray
         enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
           UIButton *btn = (UIButton *)obj;
-          btn.frame = CGRectMake(weakSelf.width - kBtnWidth * (idx + 1) - 8.0 * idx, 0, kBtnWidth,
-                                 kBtnWidth);
+          btn.frame =
+              CGRectMake(self.width - kBtnWidth * (idx + 1) - 8.0 * idx, 0, kBtnWidth, kBtnWidth);
         }];
   }
 }
@@ -129,7 +129,7 @@ static void *KVOContext = &KVOContext;
       self.buttonsArray = @[ self.menuButton, self.microphoneButton ];
       break;
     case NEVoiceRoomRoleAudience:
-      self.buttonsArray = @[];
+      self.buttonsArray = @[ self.giftButton ];
       break;
       //        case NEVoiceRoomRoleConnector:
       //            self.buttonsArray = @[self.menuButton,self.microphoneButton];
@@ -138,9 +138,15 @@ static void *KVOContext = &KVOContext;
       break;
   }
 }
+
 - (void)updateAudienceOperatingButton:(BOOL)isOnSeat {
   [self.buttonsArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
-  self.buttonsArray = isOnSeat ? @[ self.menuButton, self.microphoneButton ] : @[];
+  if (self.role == NEVoiceRoomRoleHost) {
+    self.buttonsArray = isOnSeat ? @[ self.menuButton, self.microphoneButton ] : @[];
+  } else {
+    self.buttonsArray = isOnSeat ? @[ self.menuButton, self.microphoneButton, self.giftButton ]
+                                 : @[ self.giftButton ];
+  }
   for (UIButton *btn in self.buttonsArray) {
     [self addSubview:btn];
   }
@@ -161,6 +167,11 @@ static void *KVOContext = &KVOContext;
     case NEUIFunctionAreaMore: {
       if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveMenuClickAciton)]) {
         [_delegate footerDidReceiveMenuClickAciton];
+      }
+    } break;
+    case NEUIFunctionGift: {
+      if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveGiftClickAciton)]) {
+        [_delegate footerDidReceiveGiftClickAciton];
       }
     } break;
     default:
@@ -261,6 +272,22 @@ static void *KVOContext = &KVOContext;
     _bannedSpeakButton.layer.cornerRadius = kBtnWidth / 2;
   }
   return _bannedSpeakButton;
+}
+
+- (UIButton *)giftButton {
+  if (!_giftButton) {
+    _giftButton = [NEUIViewFactory createBtnFrame:CGRectZero
+                                            title:@""
+                                          bgImage:@""
+                                    selectBgImage:@""
+                                            image:@"inupt_gift"
+                                           target:self
+                                           action:@selector(footerButtonClickAction:)];
+    [_giftButton setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
+    _giftButton.tag = NEUIFunctionGift;
+    _giftButton.layer.cornerRadius = kBtnWidth / 2;
+  }
+  return _giftButton;
 }
 
 - (UIButton *)menuButton {

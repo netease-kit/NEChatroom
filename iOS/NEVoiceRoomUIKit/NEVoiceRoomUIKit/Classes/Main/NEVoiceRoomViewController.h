@@ -9,6 +9,7 @@
 #import "NEUIConnectListView.h"
 #import "NEUIKeyboardToolbarView.h"
 #import "NEUIMicQueueView.h"
+#import "NEVoiceRoomAnimationView.h"
 #import "NEVoiceRoomChatView.h"
 #import "NEVoiceRoomFooterView.h"
 #import "NEVoiceRoomHeaderView.h"
@@ -44,7 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NEUIConnectListView *connectListView;
 /// 自己状态
 @property(nonatomic, assign) NEVoiceRoomSeatItemStatus selfStatus;
+@property(nonatomic, strong) NEVoiceRoomAnimationView *giftAnimation;  // 礼物动画
 @property(nonatomic, strong) NSMutableArray *connectorArray;
+@property(nonatomic, strong) NEVoiceRoomSeatItem *lastSelfItem;  /// 上次记录麦位角色信息
+@property(nonatomic, assign) bool mute;                          /// 上次是否进行了Mute操作
 
 /// 初始化
 /// @param role 角色

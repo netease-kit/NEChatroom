@@ -24,6 +24,45 @@
     }
   }];
 }
+
+- (void)getSeatInfoWhenRejoinChatRoom {
+  [NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
+                                            NEVoiceRoomSeatInfo *_Nullable seatInfo) {
+    if (code == 0 && seatInfo) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self.micQueueView
+            setAnchorMicInfo:[NEInnerSingleton.singleton fetchAnchorItem:seatInfo.seatItems]];
+        self.micQueueView.datas =
+            [NEInnerSingleton.singleton fetchAudienceSeatItems:seatInfo.seatItems];
+        [self updateAudienceToast:seatInfo.seatItems];
+      });
+    }
+  }];
+}
+- (void)updateAudienceToast:(NSArray *)seatItems {
+  if (![self isAnchor]) {
+    // 观众
+    [self configSelfSeatStatusWithSeatItems:seatItems];
+    bool audienceOnSeat = false;
+    for (NEVoiceRoomSeatItem *item in seatItems) {
+      if ([item.user isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) {
+        /// 当前用户
+        audienceOnSeat = true;
+        if (item.status == NEVoiceRoomSeatItemStatusTaken) {
+          /// 已上麦，上麦行为
+          [self.view dismissToast];
+        } else if (item.status == NEVoiceRoomSeatItemStatusWaiting) {
+          /// 不做任何操作
+        }
+        break;
+      }
+    }
+    if (!audienceOnSeat) {
+      /// 如果不在麦上，则处理 toast
+      [self.view dismissToast];
+    }
+  }
+}
 - (void)anchorOperationSeatItem:(NEVoiceRoomSeatItem *)seatItem {
   // 主播点击自己
   if ([seatItem.user isEqualToString:NEInnerSingleton.singleton.roomInfo.anchor.userUuid]) return;
@@ -142,6 +181,12 @@
         // 自己已经在麦上，更新底部工具栏
         [self.roomFooterView updateAudienceOperatingButton:YES];
         self.context.rtcConfig.micOn = [NEVoiceRoomKit getInstance].localMember.isAudioOn;
+        if (!self.context.rtcConfig.micOn && self.lastSelfItem == nil) {
+          /// 麦克风关闭，并且原来不在麦上
+          /// 打开麦克风
+          [self unmuteAudio:YES];
+        }
+        self.lastSelfItem = selfSeat;
       } else {
         [self.roomFooterView updateAudienceOperatingButton:NO];
       }
@@ -152,10 +197,20 @@
 - (void)onSeatLeave:(NSInteger)seatIndex account:(NSString *)account {
   [self NotifityMessage:NELocalizedString(@"已下麦") account:account];
   if (![self isAnchor] && [self isSelfWithSeatAccount:account]) {
+    self.mute = false;
     [NEVoiceRoomToast showToast:NELocalizedString(@"您已下麦")];
     [self muteAudio:NO];
     [self.roomFooterView updateAudienceOperatingButton:NO];
   }
+  if ([account isEqualToString:self.detail.liveModel.userUuid]) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
+      }
+      [self.navigationController popViewControllerAnimated:YES];
+    });
+  }
+
   NSLog(@"下麦");
 }
 - (void)onSeatKicked:(NSInteger)seatIndex
@@ -173,6 +228,7 @@
     return;
   }
   if ([self isSelfWithSeatAccount:account]) {
+    self.mute = false;
     [NEVoiceRoomToast showToast:NELocalizedString(@"您已被主播踢下麦")];
     [self.view dismissToast];
     [self muteAudio:NO];
@@ -250,11 +306,22 @@
   [self getSeatInfo];
 }
 - (void)onMemberAudioBanned:(NEVoiceRoomMember *)member banned:(BOOL)banned {
+  self.micQueueView.datas = self.micQueueView.datas;
   NSString *anchorTitle = banned ? NELocalizedString(@"该麦位语音已被屏蔽，无法发言")
                                  : NELocalizedString(@"该麦位已\"解除语音屏蔽\"");
   if ([self isAnchor]) {
     [NEVoiceRoomToast showToast:anchorTitle];
     return;
+  }
+  if (![NEVoiceRoomKit.getInstance.localMember.account isEqualToString:member.account]) {
+    return;
+  }
+  if (!banned) {
+    if (!self.mute) {
+      [self unmuteAudio:NO];
+    }
+  } else {
+    [self muteAudio:NO];
   }
   NSString *audienceTitle =
       banned ? NELocalizedString(@"该麦位被主播\"屏蔽语音\"\n现在您已无法进行语音互动")

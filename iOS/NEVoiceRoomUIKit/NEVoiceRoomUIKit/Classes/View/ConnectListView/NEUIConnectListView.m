@@ -179,15 +179,21 @@ static CGFloat foldBtnHeight = 38;
                                                            indexPath:indexPath];
   __weak typeof(self) weakSelf = self;
   cell.acceptBlock = ^(NEVoiceRoomSeatItem *_Nonnull seatItem) {
-    if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(connectListView:
-                                                                        onAcceptWithSeatItem:)]) {
-      [weakSelf.delegate connectListView:weakSelf onAcceptWithSeatItem:seatItem];
+    __strong typeof(self) strongSelf = weakSelf;
+    if (strongSelf) {
+      if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector
+                                                      (connectListView:onAcceptWithSeatItem:)]) {
+        [strongSelf.delegate connectListView:strongSelf onAcceptWithSeatItem:seatItem];
+      }
     }
   };
   cell.rejectBlock = ^(NEVoiceRoomSeatItem *_Nonnull seatItem) {
-    if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(connectListView:
-                                                                        onRejectWithSeatItem:)]) {
-      [weakSelf.delegate connectListView:weakSelf onRejectWithSeatItem:seatItem];
+    __strong typeof(self) strongSelf = weakSelf;
+    if (strongSelf) {
+      if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector
+                                                      (connectListView:onRejectWithSeatItem:)]) {
+        [strongSelf.delegate connectListView:strongSelf onRejectWithSeatItem:seatItem];
+      }
     }
   };
   return cell;
@@ -254,7 +260,8 @@ static CGFloat foldBtnHeight = 38;
     _connectAlertView = [[NEUIConnectAlertView alloc] init];
     __weak typeof(self) weakSelf = self;
     _connectAlertView.actionBlock = ^{
-      weakSelf.listViewPushed ? [weakSelf dismissListView] : [weakSelf showListView];
+      __strong typeof(self) strongSelf = weakSelf;
+      strongSelf.listViewPushed ? [strongSelf dismissListView] : [strongSelf showListView];
     };
     [self.bar addSubview:_connectAlertView];
   }

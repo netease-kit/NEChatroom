@@ -58,6 +58,7 @@
           if (code != 0) {
             [NEVoiceRoomToast showToast:NELocalizedString(@"麦克风打开失败")];
           } else {
+            self.mute = false;
             [self getSeatInfo];
             if (!showToast) return;
             [NEVoiceRoomToast showToast:NELocalizedString(@"麦克风已打开")];
@@ -97,11 +98,8 @@
 - (void)networkStatusChange {
   // 无网络
   if ([self.reachability currentReachabilityStatus] != NotReachable) {
-    [self.view dismissToast];
   } else {
-    [self.view showToastWithMessage:NSLocalizedString(@"网络断开", nil)
-                              state:NEUIToastStateFail
-                        autoDismiss:NO];
+    [NEVoiceRoomToast showToast:NELocalizedString(@"网络断开")];
   }
 }
 - (void)checkMicAuthority {
@@ -143,6 +141,7 @@
       if (NEVoiceRoomKit.getInstance.localMember.isAudioBanned) {
         [NEVoiceRoomToast showToast:NELocalizedString(@"您已被主播屏蔽语音，暂不能操作麦克风")];
       } else {
+        self.mute = true;
         [self muteAudio:YES];
       }
     }

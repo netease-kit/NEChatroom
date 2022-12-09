@@ -4,14 +4,13 @@
 
 #import "NEUILiveListCell.h"
 #import <Masonry/Masonry.h>
-#import <YYWebImage/YYWebImage.h>
+#import <SDWebImage/SDWebImage.h>
 #import "NEUICreateRoomTitleButton.h"
 #import "NEVoiceRoomUI.h"
 #import "NSString+NTES.h"
 #import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIButton+Layout.h"
-#import "UIImage+YYWebImage.h"
 #import "UIImageView+CornerRadius.h"
 
 @interface NEUILiveListCell ()
@@ -78,7 +77,7 @@
 - (void)installWithModel:(NEVoiceRoomInfo *)model indexPath:(NSIndexPath *)indexPath {
   self.roomName.text = model.liveModel.liveTopic;
   self.anchorName.text = model.anchor.userName;
-  [self.coverView yy_setImageWithURL:[NSURL URLWithString:model.liveModel.cover] placeholder:nil];
+  [self.coverView sd_setImageWithURL:[NSURL URLWithString:model.liveModel.cover]];
   self.audienceNum.text = [NSString
       stringWithFormat:@"%@人", [NSString praiseStrFormat:model.liveModel.audienceCount + 1]];
   //    if (model.roomType == NELiveRoomTypeKtv && model.currentMusicName) {

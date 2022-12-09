@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomChatView.h"
-// #import "NEKaraokeUIGiftModel.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
+#import "NEVoiceRoomUIGiftModel.h"
 #import "UIImage+VoiceRoom.h"
 
 @interface NEVoiceRoomChatViewMessage ()
@@ -94,7 +94,7 @@
 }
 
 - (NSString *)showMessage {
-  NSString *showMessage = @"";
+  NSString *showMessage;
   switch (_type) {
     case NEVoiceRoomChatViewMessageTypeNormal: {
       showMessage = [NSString stringWithFormat:@"%@: %@", self.sender, self.text];
@@ -103,13 +103,12 @@
       break;
     }
     case NEVoiceRoomChatViewMessageTypeReward: {
-      //      NEKaraokeUIGiftModel *reward = [NEKaraokeUIGiftModel getRewardWithGiftId:self.giftId];
-      //      self.giftIcon = reward.icon;
-      //      NSString *msg = @"赠送礼物x1 ";
-      //      showMessage = [NSString stringWithFormat:@"%@: %@", self.giftFrom, msg];
-
-      //      _textRange = NSMakeRange(showMessage.length - msg.length, msg.length);
-      //      _nickRange = NSMakeRange(0, showMessage.length - msg.length);
+      NEVoiceRoomUIGiftModel *reward = [NEVoiceRoomUIGiftModel getRewardWithGiftId:self.giftId];
+      self.giftIcon = reward.icon;
+      NSString *msg = @"赠送礼物x1 ";
+      showMessage = [NSString stringWithFormat:@"%@: %@", self.giftFrom, msg];
+      _textRange = NSMakeRange(showMessage.length - msg.length, msg.length);
+      _nickRange = NSMakeRange(0, showMessage.length - msg.length);
       break;
     }
     case NEVoiceRoomChatViewMessageTypeNotication: {
@@ -321,16 +320,23 @@ dispatch_queue_t NTESMessageDataPrepareQueue() {
     return;
   }
   dispatch_sync(dispatch_get_main_queue(), ^{
-    if (weakSelf.tableView.isDecelerating || weakSelf.tableView.isDragging) {
-      // 滑动的时候为保证流畅，暂停插入
-      NSTimeInterval delay = 1;
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
-                     NTESMessageDataPrepareQueue(), ^{
-                       [weakSelf processPendingMessages];
-                     });
-      return;
+    __strong typeof(self) strongSelf = weakSelf;
+    if (strongSelf) {
+      if (strongSelf.tableView.isDecelerating || strongSelf.tableView.isDragging) {
+        // 滑动的时候为保证流畅，暂停插入
+        NSTimeInterval delay = 1;
+        __weak typeof(self) weakSelfSec = strongSelf;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
+                       NTESMessageDataPrepareQueue(), ^{
+                         __strong typeof(self) strongSelfSec = weakSelfSec;
+                         if (strongSelfSec) {
+                           [strongSelfSec processPendingMessages];
+                         }
+                       });
+        return;
+      }
+      width = strongSelf.frame.size.width;
     }
-    width = self.frame.size.width;
   });
 
   // 获取一定量的消息计算高度，并扔回到主线程

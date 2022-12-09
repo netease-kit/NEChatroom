@@ -25,7 +25,7 @@
     isAvalible = YES;
   } else {  // 用户拒绝授权, 提示用户开启麦克风权限
     isAvalible = NO;
-    //        [NEKaraokeToast
+    //        [NEVoiceRoomToast
     //        showToast:@"麦克风权限未打开，请前往系统设置进行修改"];
   }
   return isAvalible;
