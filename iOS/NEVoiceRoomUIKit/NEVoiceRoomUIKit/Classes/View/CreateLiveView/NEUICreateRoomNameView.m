@@ -37,13 +37,13 @@
   [self addSubview:self.chatRoomButton];
   //  [self addSubview:self.ktvButton];
   [self addSubview:self.divideView];
-  [self addSubview:self.slideView];
+  //  [self addSubview:self.slideView];
   [self addSubview:self.contentTextView];
   [self addSubview:self.randomThemeButton];
 
   [self.chatRoomButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.top.equalTo(self);
-    make.centerX.equalTo(self.mas_centerX);
+    make.left.equalTo(self).offset(16);
     make.height.mas_equalTo(48);
   }];
 
@@ -60,11 +60,11 @@
     make.height.mas_equalTo(0.5);
   }];
 
-  [self.slideView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(self.divideView.mas_top);
-    make.centerX.equalTo(self.chatRoomButton);
-    make.size.mas_equalTo(CGSizeMake(20, 3));
-  }];
+  //  [self.slideView mas_makeConstraints:^(MASConstraintMaker *make) {
+  //    make.bottom.equalTo(self.divideView.mas_top);
+  //    make.centerX.equalTo(self.chatRoomButton);
+  //    make.size.mas_equalTo(CGSizeMake(20, 3));
+  //  }];
 
   [self.randomThemeButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.size.mas_equalTo(CGSizeMake(20, 20));

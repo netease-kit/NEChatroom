@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 是否正在加载
 @property(nonatomic, assign, readonly) BOOL isLoading;
 /// 加载error
-@property(nonatomic, assign, readonly) NSError *error;
+@property(nonatomic, strong, readonly) NSError *error;
 
 // 麦位组件
 // 加载新数据
-- (void)requestNewDataWithLiveType:(NELiveRoomType)roomType;
+- (void)requestNewDataWithLiveType:(NEVoiceRoomLiveRoomType)roomType;
 // 加载更多
-- (void)requestMoreDataWithLiveType:(NELiveRoomType)roomType;
+- (void)requestMoreDataWithLiveType:(NEVoiceRoomLiveRoomType)roomType;
 
 @end
 

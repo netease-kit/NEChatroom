@@ -29,6 +29,7 @@
 @property(nonatomic, strong) UIButton *backButton;
 @property(nonatomic, strong) NEUICreateRoomNameView *createRoomNameView;
 @property(nonatomic, strong) UIButton *openLiveButton;
+@property(nonatomic, assign) BOOL clickOpenButton;
 
 @end
 
@@ -38,6 +39,7 @@
   self = [super init];
   if (self) {
     [self createRoomResult];
+    self.clickOpenButton = NO;
   }
   return self;
 }
@@ -96,12 +98,18 @@
 
 // 开启直播间
 - (void)openRoomAction {
+  if (self.clickOpenButton) {
+    return;
+  }
+  self.clickOpenButton = YES;
   NSString *roomName = [self.createRoomNameView getRoomName];
   if ([NSObject isNullOrNilWithObject:roomName]) {
+    self.clickOpenButton = NO;
     [NEVoiceRoomToast showToast:NELocalizedString(@"房间名称为空")];
     return;
   }
   if (![self isValidRoomName:roomName]) {
+    self.clickOpenButton = NO;
     [NEVoiceRoomToast showToast:NELocalizedString(@"房间名含有非法字符")];
     return;
   }
@@ -111,11 +119,7 @@
   params.title = self.createRoomNameView.getRoomName;
   params.seatCount = 9;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
-#ifdef DEBUG
-  params.configId = 76;
-#else
   params.configId = 569;
-#endif
   if ([[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
           isEqualToString:@"https://roomkit-sg.netease.im"]) {
     params.configId = 75;
@@ -126,6 +130,7 @@
          options:[[NECreateVoiceRoomOptions alloc] init]
         callback:^(NSInteger code, NSString *_Nullable msg, NEVoiceRoomInfo *_Nullable obj) {
           [NEVoiceRoomToast hideLoading];
+          self.clickOpenButton = NO;
           if (code == 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
               NEVoiceRoomViewController *vc =

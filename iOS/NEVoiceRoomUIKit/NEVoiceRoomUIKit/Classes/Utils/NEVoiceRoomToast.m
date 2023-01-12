@@ -126,7 +126,10 @@
 }
 
 + (instancetype)viewForApplicationWindow {
-  return [self viewForWindow:[[UIApplication sharedApplication].delegate window]];
+  if ([[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)]) {
+    return [self viewForWindow:[[UIApplication sharedApplication].delegate window]];
+  }
+  return nil;
 }
 
 + (instancetype)viewForStatusBarWindow {

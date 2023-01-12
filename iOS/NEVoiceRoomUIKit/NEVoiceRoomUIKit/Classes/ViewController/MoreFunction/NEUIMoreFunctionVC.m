@@ -84,8 +84,11 @@
 - (CGSize)preferredContentSize {
   CGFloat preferedHeight = 0;
   if (@available(iOS 11.0, *)) {
-    CGFloat safeAreaBottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
-    preferedHeight += 2 * safeAreaBottom;
+    if ([[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)]) {
+      CGFloat safeAreaBottom =
+          UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
+      preferedHeight += 2 * safeAreaBottom;
+    }
   }
   CGFloat preferredWidth = self.navigationController.view.frame.size.width;
   NSInteger itemsPerLine =
@@ -134,6 +137,9 @@
       break;
     }
     case 1: {  // 耳返
+      if (![[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+        return;
+      }
       item.on = !item.on;
       self.context.rtcConfig.earbackOn = item.on;
       [UIView performWithoutAnimation:^{
@@ -202,7 +208,7 @@
                           onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_music_console"]
                          offImage:nil
                               tag:2],
-      [NEUIMoreItem itemWithTitle:NELocalizedString(@"伴音")
+      [NEUIMoreItem itemWithTitle:NELocalizedString(@"音效")
                           onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_accompaniment_sound"]
                          offImage:nil
                               tag:3],

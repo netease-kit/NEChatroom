@@ -81,7 +81,7 @@
   self.audienceNum.text = [NSString
       stringWithFormat:@"%@人", [NSString praiseStrFormat:model.liveModel.audienceCount + 1]];
   //    if (model.roomType == NELiveRoomTypeKtv && model.currentMusicName) {
-  if (model.liveModel.liveType == NELiveRoomTypeKtv) {
+  if (model.liveModel.liveType == NEVoiceRoomLiveRoomTypeListen_together) {
     self.tagButton.hidden = NO;
     //        [self.tagButton setTitle:model.currentMusicName forState:UIControlStateNormal];
   } else {

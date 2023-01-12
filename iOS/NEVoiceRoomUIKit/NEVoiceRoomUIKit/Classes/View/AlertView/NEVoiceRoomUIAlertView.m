@@ -97,15 +97,17 @@
                                    preferredStyle:UIAlertControllerStyleAlert];
   [alertVC addAction:ret];
 
-  UIViewController *topVC =
-      [self currentViewControllerFrom:[UIApplication sharedApplication]
-                                          .delegate.window.rootViewController];
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-    UIPopoverPresentationController *popPresenter = [alertVC popoverPresentationController];
-    popPresenter.sourceView = topVC.view;
-    popPresenter.sourceRect = topVC.view.bounds;
+  if ([[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)]) {
+    UIViewController *topVC =
+        [self currentViewControllerFrom:[UIApplication sharedApplication]
+                                            .delegate.window.rootViewController];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+      UIPopoverPresentationController *popPresenter = [alertVC popoverPresentationController];
+      popPresenter.sourceView = topVC.view;
+      popPresenter.sourceRect = topVC.view.bounds;
+    }
+    [topVC presentViewController:alertVC animated:YES completion:nil];
   }
-  [topVC presentViewController:alertVC animated:YES completion:nil];
 }
 
 + (UIViewController *)currentViewControllerFrom:(UIViewController *)viewController {

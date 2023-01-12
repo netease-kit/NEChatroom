@@ -26,15 +26,51 @@
 }
 
 - (void)getSeatInfoWhenRejoinChatRoom {
+  [[NEOrderSong getInstance] getSongTokenWithCallback:^(NSInteger code, NSString *_Nullable msg,
+                                                        NEOrderSongDynamicToken *_Nullable token) {
+    if (code == 0) {
+      [[NEOrderSong getInstance] renewToken:token.accessToken];
+    }
+  }];
   [NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
                                             NEVoiceRoomSeatInfo *_Nullable seatInfo) {
     if (code == 0 && seatInfo) {
       dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.role == NEVoiceRoomRoleHost) {
+          self.connectorArray = [seatInfo.seatItems ne_filter:^BOOL(NEVoiceRoomSeatItem *obj) {
+                                  return obj.status == NEVoiceRoomSeatItemStatusWaiting;
+                                }].mutableCopy;
+          // 刷新请求连麦队列
+          [self.connectListView refreshWithDataArray:self.connectorArray];
+        } else {
+          NEVoiceRoomSeatItem *selfSeat =
+              [seatInfo.seatItems ne_find:^BOOL(NEVoiceRoomSeatItem *obj) {
+                return [obj.user isEqualToString:[NEVoiceRoomKit getInstance].localMember.account];
+              }];
+          if (selfSeat && selfSeat.status == NEVoiceRoomSeatItemStatusTaken) {
+            // 自己已经在麦上，更新底部工具栏
+            [self.roomFooterView updateAudienceOperatingButton:YES];
+            self.context.rtcConfig.micOn = [NEVoiceRoomKit getInstance].localMember.isAudioOn;
+            if (!self.context.rtcConfig.micOn && self.lastSelfItem == nil) {
+              /// 麦克风关闭，并且原来不在麦上
+              /// 打开麦克风
+              [self unmuteAudio:YES];
+            }
+            self.lastSelfItem = selfSeat;
+          } else {
+            [self.roomFooterView updateAudienceOperatingButton:NO];
+          }
+        }
         [self.micQueueView
             setAnchorMicInfo:[NEInnerSingleton.singleton fetchAnchorItem:seatInfo.seatItems]];
         self.micQueueView.datas =
             [NEInnerSingleton.singleton fetchAudienceSeatItems:seatInfo.seatItems];
+        NEVoiceRoomSeatItemStatus tempStatus = self.selfStatus;
         [self updateAudienceToast:seatInfo.seatItems];
+        if (tempStatus == NEVoiceRoomSeatItemStatusInitial &&
+            self.selfStatus == NEVoiceRoomSeatItemStatusTaken) {
+          [self unmuteAudio:YES];
+        }
       });
     }
   }];
@@ -173,23 +209,6 @@
       if (self.connectorArray.count) {
         [self.connectListView showAsAlertOnView:self.view];
       }
-    } else {
-      NEVoiceRoomSeatItem *selfSeat = [seatItems ne_find:^BOOL(NEVoiceRoomSeatItem *obj) {
-        return [obj.user isEqualToString:[NEVoiceRoomKit getInstance].localMember.account];
-      }];
-      if (selfSeat && selfSeat.status == NEVoiceRoomSeatItemStatusTaken) {
-        // 自己已经在麦上，更新底部工具栏
-        [self.roomFooterView updateAudienceOperatingButton:YES];
-        self.context.rtcConfig.micOn = [NEVoiceRoomKit getInstance].localMember.isAudioOn;
-        if (!self.context.rtcConfig.micOn && self.lastSelfItem == nil) {
-          /// 麦克风关闭，并且原来不在麦上
-          /// 打开麦克风
-          [self unmuteAudio:YES];
-        }
-        self.lastSelfItem = selfSeat;
-      } else {
-        [self.roomFooterView updateAudienceOperatingButton:NO];
-      }
     }
   });
 }
@@ -201,6 +220,7 @@
     [NEVoiceRoomToast showToast:NELocalizedString(@"您已下麦")];
     [self muteAudio:NO];
     [self.roomFooterView updateAudienceOperatingButton:NO];
+    self.lastSelfItem = nil;
   }
   if ([account isEqualToString:self.detail.liveModel.userUuid]) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -233,6 +253,7 @@
     [self.view dismissToast];
     [self muteAudio:NO];
     [self.roomFooterView updateAudienceOperatingButton:NO];
+    self.lastSelfItem = nil;
   }
   NSLog(@"从麦位上被踢");
 }

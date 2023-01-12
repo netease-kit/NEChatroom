@@ -3,62 +3,30 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomUILog.h"
-#import <YXAlog_iOS/YXAlog.h>
+#import <NECoreKit/XKitLog.h>
+
+static XKitLog *_log = nil;
+
 @implementation NEVoiceRoomUILog
-+ (void)setup {
-  YXAlogOptions *opt = [[YXAlogOptions alloc] init];
-  opt.path = [self getDirectoryForDocuments:@"NIMSDK/Logs/extra_log/NEVoiceRoomUIKit"];
-  opt.level = YXAlogLevelInfo;
-  opt.filePrefix = @"NEVoiceRoomUIKit";
-  opt.moduleName = @"NEVoiceRoomUIKit";
-  [[YXAlog shared] setupWithOptions:opt];
++ (void)setUp:(NSString *)appkey {
+  XKitLogOptions *options = [[XKitLogOptions alloc] init];
+  options.level = XKitLogLevelInfo;
+  options.moduleName = @"VoiceRoomUI";
+  options.sensitives = @[ appkey ];
+  _log = [XKitLog setUp:options];
 }
 + (void)infoLog:(NSString *)className desc:(NSString *)desc {
-  [YXAlog.shared logWithLevel:YXAlogLevelInfo
-                          tag:className
-                         type:YXAlogTypeNormal
-                         line:0
-                         desc:@"⚠️ %@", desc];
+  [_log infoLog:className desc:[NSString stringWithFormat:@"⚠️ %@", desc]];
 }
 + (void)successLog:(NSString *)className desc:(NSString *)desc {
-  [YXAlog.shared logWithLevel:YXAlogLevelInfo
-                          tag:className
-                         type:YXAlogTypeNormal
-                         line:0
-                         desc:@"✅ %@", desc];
+  [_log infoLog:className desc:[NSString stringWithFormat:@"✅ %@", desc]];
 }
 /// error类型 log
 + (void)errorLog:(NSString *)className desc:(NSString *)desc {
-  [YXAlog.shared logWithLevel:YXAlogLevelError
-                          tag:className
-                         type:YXAlogTypeNormal
-                         line:0
-                         desc:@"❌%@", desc];
+  [_log errorLog:className desc:[NSString stringWithFormat:@"❌ %@", desc]];
 }
 + (void)messageLog:(NSString *)className desc:(NSString *)desc {
-  [YXAlog.shared logWithLevel:YXAlogLevelInfo
-                          tag:className
-                         type:YXAlogTypeNormal
-                         line:0
-                         desc:@"✉️ %@", desc];
+  [_log infoLog:className desc:[NSString stringWithFormat:@"✉️ %@", desc]];
 }
 
-+ (NSString *)getDocumentPath {
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentsDirectory = [paths objectAtIndex:0];
-  return documentsDirectory;
-}
-
-+ (NSString *)getDirectoryForDocuments:(NSString *)dir {
-  NSString *dirPath = [[self getDocumentPath] stringByAppendingPathComponent:dir];
-  BOOL isDir = NO;
-  BOOL isCreated = [[NSFileManager defaultManager] fileExistsAtPath:dirPath isDirectory:&isDir];
-  if (!isCreated || !isDir) {
-    [[NSFileManager defaultManager] createDirectoryAtPath:dirPath
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:nil];
-  }
-  return dirPath;
-}
 @end

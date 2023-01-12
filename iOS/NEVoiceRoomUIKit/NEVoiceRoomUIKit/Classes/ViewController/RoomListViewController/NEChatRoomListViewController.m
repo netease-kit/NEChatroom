@@ -54,7 +54,7 @@
 }
 
 - (void)getNewData {
-  [self.roomListViewModel requestNewDataWithLiveType:NELiveRoomTypeChatroom];
+  [self.roomListViewModel requestNewDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
 }
 - (void)bindViewModel {
   @weakify(self);
@@ -108,7 +108,7 @@
   @weakify(self);
   MJRefreshGifHeader *mjHeader = [MJRefreshGifHeader headerWithRefreshingBlock:^{
     @strongify(self);
-    [self.roomListViewModel requestNewDataWithLiveType:NELiveRoomTypeChatroom];
+    [self.roomListViewModel requestNewDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
   }];
   [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStateIdle];
   [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStatePulling];
@@ -123,7 +123,7 @@
       [NEVoiceRoomToast showToast:NELocalizedString(@"无更多内容")];
       [self.collectionView.mj_footer endRefreshing];
     } else {
-      [self.roomListViewModel requestMoreDataWithLiveType:NELiveRoomTypeChatroom];
+      [self.roomListViewModel requestMoreDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
     }
   }];
 }

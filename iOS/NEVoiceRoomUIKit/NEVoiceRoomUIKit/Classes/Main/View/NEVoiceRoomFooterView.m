@@ -19,7 +19,7 @@
 #import "UIView+VoiceRoom.h"
 
 static void *KVOContext = &KVOContext;
-
+static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
 #define kBtnWidth 36
 @interface NEVoiceRoomFooterView () <UITextFieldDelegate>
 @property(nonatomic, strong) UIView *searchBarBgView;
@@ -31,6 +31,7 @@ static void *KVOContext = &KVOContext;
 @property(nonatomic, strong) UIButton *giftButton;
 @property(nonatomic, strong) NSArray *buttonsArray;
 @property(nonatomic, strong) UILabel *markLable;
+@property(nonatomic, strong) UIButton *musicButton;
 
 //@property (nonatomic, strong) NTESChatroomDataSource2 *context;
 @property(nonatomic, strong) NEUIChatroomContext *context;
@@ -125,9 +126,15 @@ static void *KVOContext = &KVOContext;
 
 - (void)selectSubviewsWithRole:(NEVoiceRoomRole)role {
   switch (role) {
-    case NEVoiceRoomRoleHost:
-      self.buttonsArray = @[ self.menuButton, self.microphoneButton ];
-      break;
+    case NEVoiceRoomRoleHost: {
+      BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+      if (isOutsea) {
+        self.buttonsArray = @[ self.menuButton, self.microphoneButton ];
+      } else {
+        self.buttonsArray = @[ self.menuButton, self.microphoneButton, self.musicButton ];
+      }
+
+    } break;
     case NEVoiceRoomRoleAudience:
       self.buttonsArray = @[ self.giftButton ];
       break;
@@ -142,11 +149,15 @@ static void *KVOContext = &KVOContext;
 - (void)updateAudienceOperatingButton:(BOOL)isOnSeat {
   [self.buttonsArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
   if (self.role == NEVoiceRoomRoleHost) {
-    self.buttonsArray = isOnSeat ? @[ self.menuButton, self.microphoneButton ] : @[];
+    BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+    self.buttonsArray =
+      isOnSeat ? (isOutsea ? @[ self.menuButton, self.microphoneButton,] :@[ self.menuButton, self.microphoneButton, self.musicButton ])
+                 : @[ self.giftButton ];
   } else {
     self.buttonsArray = isOnSeat ? @[ self.menuButton, self.microphoneButton, self.giftButton ]
                                  : @[ self.giftButton ];
   }
+
   for (UIButton *btn in self.buttonsArray) {
     [self addSubview:btn];
   }
@@ -172,6 +183,11 @@ static void *KVOContext = &KVOContext;
     case NEUIFunctionGift: {
       if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveGiftClickAciton)]) {
         [_delegate footerDidReceiveGiftClickAciton];
+      }
+    } break;
+    case NEUIFunctionMusic: {
+      if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveMusicClickAciton)]) {
+        [_delegate footerDidReceiveMusicClickAciton];
       }
     } break;
     default:
@@ -283,11 +299,25 @@ static void *KVOContext = &KVOContext;
                                             image:@"inupt_gift"
                                            target:self
                                            action:@selector(footerButtonClickAction:)];
-    [_giftButton setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
     _giftButton.tag = NEUIFunctionGift;
     _giftButton.layer.cornerRadius = kBtnWidth / 2;
   }
   return _giftButton;
+}
+
+- (UIButton *)musicButton {
+  if (!_musicButton) {
+    _musicButton = [NEUIViewFactory createBtnFrame:CGRectZero
+                                             title:@""
+                                           bgImage:@""
+                                     selectBgImage:@""
+                                             image:@"music"
+                                            target:self
+                                            action:@selector(footerButtonClickAction:)];
+    _musicButton.tag = NEUIFunctionMusic;
+    _musicButton.layer.cornerRadius = kBtnWidth / 2;
+  }
+  return _musicButton;
 }
 
 - (UIButton *)menuButton {

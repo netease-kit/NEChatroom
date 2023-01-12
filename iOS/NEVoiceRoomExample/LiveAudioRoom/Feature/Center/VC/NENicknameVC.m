@@ -96,7 +96,9 @@
     _nickTextField.layer.cornerRadius = 8;
 
     _nickTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _nickTextField.returnKeyType = UIReturnKeyDone;
+    if ([_nickTextField respondsToSelector:@selector(setReturnKeyType:)]) {
+      _nickTextField.returnKeyType = UIReturnKeyDone;
+    }
 
     UIView *leftview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 40)];
     _nickTextField.leftViewMode = UITextFieldViewModeAlways;
