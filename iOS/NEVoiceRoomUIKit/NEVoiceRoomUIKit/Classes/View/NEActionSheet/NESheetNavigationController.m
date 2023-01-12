@@ -36,6 +36,28 @@
     self.transitioning = [[NTESActionSheetTransitioningDelegate alloc] init];
     self.modalPresentationStyle = UIModalPresentationCustom;
     self.transitioningDelegate = self.transitioning;
+      if (@available(iOS 15.0, *)) {
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+
+        [appearance configureWithOpaqueBackground];
+
+        NSMutableDictionary *textAttribute = [NSMutableDictionary dictionary];
+        textAttribute[NSForegroundColorAttributeName] = [UIColor blackColor];  // 标题颜色
+        textAttribute[NSFontAttributeName] = [UIFont systemFontOfSize:16];     // 标题大小
+        [appearance setTitleTextAttributes:textAttribute];
+
+        // 去除底部黑线
+        [appearance setShadowImage:[UIImage ne_imageWithColor:[UIColor colorWithRed:242 / 255.0
+                                                                              green:243 / 255.0
+                                                                               blue:245 / 255.0
+                                                                              alpha:1.0]]];
+
+        UIColor *color = [UIColor whiteColor];
+        appearance.backgroundColor = color;
+
+        self.navigationBar.standardAppearance = appearance;
+        self.navigationBar.scrollEdgeAppearance = appearance;
+      }
   }
   return self;
 }

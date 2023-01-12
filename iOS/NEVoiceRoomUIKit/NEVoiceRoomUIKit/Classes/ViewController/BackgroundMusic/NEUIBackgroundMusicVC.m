@@ -207,7 +207,7 @@ static void *KVOContext = &KVOContext;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.title = NELocalizedString(@"背景音乐");
+  self.title = NELocalizedString(@"音效");
   //  self.backgroundMusicNames = @[ @"1", @"2", @"3" ];
   //  self.pauseButton.hidden = self.context.isBackgroundMusicPaused;
   //  self.resumeButton.hidden = !self.pauseButton.hidden;
