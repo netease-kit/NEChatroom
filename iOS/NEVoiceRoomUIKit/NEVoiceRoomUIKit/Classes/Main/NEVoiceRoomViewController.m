@@ -3,14 +3,19 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomViewController.h"
+#import <NECopyrightedMedia/NECopyrightedMedia.h>
+#import <NEOrderSong/NEOrderSong-Swift.h>
 #import <NEUIKit/NEUIBaseNavigationController.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <ReactiveObjC/ReactiveObjC.h>
+#import <YYModel/YYModel.h>
 #import "NEChatRoomListViewController.h"
 #import "NEUIActionSheetNavigationController.h"
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMoreFunctionVC.h"
 #import "NEVoiceRoomChatView.h"
+#import "NEVoiceRoomPickSongEngine.h"
+#import "NEVoiceRoomPickSongView.h"
 #import "NEVoiceRoomSendGiftViewController.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
@@ -28,8 +33,12 @@
                                          NEUIKeyboardToolbarDelegate,
                                          NEUIMicQueueViewDelegate,
                                          NEUIConnectListViewDelegate,
-                                         NEVoiceRoomSendGiftViewtDelegate>
+                                         NEVoiceRoomSendGiftViewtDelegate,
+                                         NEVoiceRoomPickSongViewProtocol,
+                                         NESongPointProtocol,
+                                         NEOrderSongCopyrightedMediaListener>
 
+@property(nonatomic, strong) NEVoiceRoomPickSongView *pickSongView;
 @end
 
 @implementation NEVoiceRoomViewController
@@ -38,23 +47,30 @@
     self.detail = detail;
     self.role = role;
     self.context.role = role;
+    self.audioManager = [[NEAudioEffectManager alloc] init];
   }
   return self;
 }
 - (void)dealloc {
   [NEVoiceRoomKit.getInstance removeVoiceRoomListener:self];
   [self destroyNetworkObserver];
+  [[NEVoiceRoomPickSongEngine sharedInstance] removeObserve:self];
+  [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel = nil;
+  [[NEOrderSong getInstance] removeOrderSongListener:self];
+  self.lastSelfItem = nil;
 }
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.ne_UINavigationItem.navigationBarHidden = YES;
   [NEVoiceRoomKit.getInstance addVoiceRoomListener:self];
+  [NEOrderSong.getInstance addOrderSongListener:self];
   [self addSubviews];
   [self joinRoom];
   [self observeKeyboard];
   [self addNetworkObserver];
   [self checkMicAuthority];
+  [[NEVoiceRoomPickSongEngine sharedInstance] addObserve:self];
 
   // 禁止返回
   id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
@@ -98,6 +114,113 @@
     [self.navigationController popToViewController:target animated:YES];
   }
 }
+
+#pragma mark------------------------ Private ------------------------
+
+- (void)showChooseSingViewController {
+  if (![self checkNetwork]) {
+    return;
+  }
+  self.pickSongView = nil;
+  UIViewController *controller = [[UIViewController alloc] init];
+  controller.preferredContentSize = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), 500);
+  self.pickSongView = [[NEVoiceRoomPickSongView alloc]
+      initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 500)
+             detail:self.detail];
+  [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
+  [self.pickSongView setVolume:[NEVoiceRoomKit getInstance].getEffectVolume * 1.0 / 100.00];
+  self.pickSongView.delegate = self;
+  controller.view = self.pickSongView;
+  NEUIActionSheetNavigationController *nav =
+      [[NEUIActionSheetNavigationController alloc] initWithRootViewController:controller];
+  controller.navigationController.navigationBar.hidden = true;
+  nav.dismissOnTouchOutside = YES;
+  [self presentViewController:nav animated:YES completion:nil];
+
+  @weakify(self) @weakify(nav) self.pickSongView.applyOnseat = ^{
+    @strongify(nav) @strongify(self) UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"仅麦上成员可点歌，先申请上麦"
+                                            message:nil
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    @weakify(self)
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction *_Nonnull action) {
+                                                  @strongify(self)[self.pickSongView cancelApply];
+                                                }]];
+    [alert
+        addAction:[UIAlertAction
+                      actionWithTitle:@"申请上麦"
+                                style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction *_Nonnull action) {
+                                if (!
+                                    [NEVoiceRoomAuthorityHelper checkMicAuthority]) {  // 麦克风权限
+                                  [NEVoiceRoomToast showToast:@"请先开启麦克风权限"];
+                                  return;
+                                }
+                                // 申请上麦
+                                [NEVoiceRoomKit.getInstance
+                                    requestSeat:^(NSInteger code, NSString *_Nullable msg,
+                                                  id _Nullable obj) {
+                                      if (code == 0) {
+                                        [self.pickSongView applyFaile];
+                                      } else {
+                                        [self.pickSongView applySuccess];
+                                      }
+                                    }];
+                              }]];
+    UIViewController *controller = nav;
+    if (controller.presentedViewController) {
+      controller = controller.presentedViewController;
+    }
+    [controller presentViewController:alert
+                             animated:true
+                           completion:^{
+                           }];
+  };
+}
+
+- (void)readySongModel:(long)orderId {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[NEOrderSong getInstance]
+        readyPlaySongWithOrderId:orderId
+                        chorusId:nil
+                             ext:nil
+                        callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
+                          if (code != 0) {
+                            [NEVoiceRoomToast
+                                showToast:[NSString stringWithFormat:@"歌曲开始播放失败：%@", msg]];
+                          }
+                        }];
+  });
+}
+
+- (void)singSong:(NEOrderSongSongModel *)songModel {
+  NSString *originPath =
+      [self fetchOriginalFilePathWithSongId:songModel.playMusicInfo.songId
+                                    channel:(int)songModel.playMusicInfo.oc_channel];
+  NSString *accompanyPath =
+      [self fetchAccompanyFilePathWithSongId:songModel.playMusicInfo.songId
+                                     channel:(int)songModel.playMusicInfo.oc_channel];
+  // 默认设置一把采集音量
+  [self.audioManager adjustRecordingSignalVolume:[self.audioManager getRecordingSignalVolume]];
+
+  int volume = [self.audioManager getAudioEffectVolumeWithEffectId:NEVoiceRoomKit.OriginalEffectId];
+
+  if (originPath.length > 0) {
+    NEVoiceRoomCreateAudioEffectOption *option = [NEVoiceRoomCreateAudioEffectOption new];
+    option.startTimeStamp = 3000;
+    option.path = originPath;
+    option.playbackVolume = volume;
+    option.sendVolume = volume;
+    option.sendEnabled = true;
+    option.sendWithAudioType = NEVoiceRoomAudioStreamTypeMain;
+    [[NEVoiceRoomKit getInstance] playEffect:NEVoiceRoomKit.OriginalEffectId option:option];
+  } else if (accompanyPath.length > 0) {
+  } else {
+    /// 无有效数据
+  }
+}
 #pragma mark - NTESLiveRoomHeaderDelegate
 - (void)headerExitAction {
   [self closeRoom];
@@ -119,6 +242,10 @@
 }
 // 禁言事件
 - (void)footerDidReceiveNoSpeekingAciton {
+}
+/// 点击点歌台
+- (void)footerDidReceiveMusicClickAciton {
+  [self showChooseSingViewController];
 }
 
 // menu点击事件
@@ -239,6 +366,7 @@
   for (NEVoiceRoomMember *member in members) {
     if ([member.account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) {
       isSelf = true;
+      self.isInChatRoom = YES;
       break;
     }
   }
@@ -333,6 +461,9 @@
 }
 - (void)connectListView:(NEUIConnectListView *)connectListView
     onRejectWithSeatItem:(NEVoiceRoomSeatItem *)seatItem {
+  if (!self.isInChatRoom) {
+    return;
+  }
   [NEVoiceRoomKit.getInstance
       rejectSeatRequestWithAccount:seatItem.user
                           callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
@@ -424,5 +555,228 @@
     _connectorArray = @[].mutableCopy;
   }
   return _connectorArray;
+}
+
+#pragma mark-----------------------------  NEVoiceRoomSongProtocol  -----------------------------
+/// 列表变更
+- (void)onSongListChanged {
+}
+
+/// 点歌
+- (void)onSongOrdered:(NEOrderSongOrderSongModel *)song {
+  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 点了《%@》",
+                                                             song.actionOperator.userName,
+                                                             song.songName]];
+}
+- (void)onSongDeleted:(NEOrderSongOrderSongModel *)song {
+  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 删除了歌曲《%@》",
+                                                             song.actionOperator.userName,
+                                                             song.songName]];
+  if ([song.songId isEqualToString:[NEVoiceRoomPickSongEngine sharedInstance]
+                                       .currrentSongModel.playMusicInfo.songId]) {
+    if (song.nextOrderSong) {
+      /// 删除的是播放中的歌曲
+      if ([[NEOrderSong getInstance] isSongPreloaded:song.nextOrderSong.songId
+                                             channel:(int)song.nextOrderSong.oc_channel]) {
+        [self readySongModel:song.nextOrderSong.orderId];
+      } else {
+        [[NEOrderSong getInstance] preloadSong:song.nextOrderSong.songId
+                                       channel:(int)song.nextOrderSong.oc_channel
+                                       observe:self];
+      }
+    } else {
+      if ([song.songId isEqualToString:[NEVoiceRoomPickSongEngine sharedInstance]
+                                           .currrentSongModel.playMusicInfo.songId] &&
+          !song.nextOrderSong) {
+        /// 删除播放中的歌，并且没有下一首歌。停止播放
+        [[NEVoiceRoomKit getInstance] stopAllEffects];
+        [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel = nil;
+        self.roomHeaderView.musicTitle = nil;
+      }
+    }
+  }
+}
+
+- (void)onSongTopped:(NEOrderSongOrderSongModel *)song {
+  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 置顶《%@》",
+                                                             song.actionOperator.userName,
+                                                             song.songName]];
+}
+
+- (void)onNextSong:(NEOrderSongOrderSongModel *)song {
+  [self sendChatroomNotifyMessage:[NSString
+                                      stringWithFormat:@"%@ 已切歌", song.actionOperator.userName]];
+  if (song.attachment.length > 0) {
+    // 选定歌曲切
+    NEOrderSongOrderSongModel *nextSong =
+        [NEOrderSongOrderSongModel yy_modelWithJSON:song.attachment];
+    if (nextSong) {
+      if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
+                                             channel:(int)nextSong.oc_channel]) {
+        [self readySongModel:nextSong.orderId];
+      } else {
+        [[NEOrderSong getInstance] preloadSong:nextSong.songId
+                                       channel:(int)nextSong.oc_channel
+                                       observe:self];
+      }
+    }
+  } else {
+    NEOrderSongOrderSongModel *nextSong = song.nextOrderSong;
+    if (nextSong) {
+      if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
+                                             channel:(int)nextSong.oc_channel]) {
+        [self readySongModel:nextSong.orderId];
+      } else {
+        //        self.playingAction = PlayingAction_switchSong;
+        [[NEOrderSong getInstance] preloadSong:nextSong.songId
+                                       channel:(int)nextSong.oc_channel
+                                       observe:self];
+      }
+    }
+  }
+}
+
+#pragma mark---------- NESongPointProtocol -----------
+- (void)onOrderSong:(NEOrderSongOrderSongModel *)songModel error:(NSString *)errorMessage {
+  if (songModel) {
+    // 点歌成功
+    /// 获取房间播放信息，如果存在则不处理
+    [[NEVoiceRoomKit getInstance]
+        queryPlayingSongInfo:self.detail.liveModel.roomUuid
+                    callback:^(NSInteger code, NSString *_Nullable msg,
+                               NEVoiceRoomPlayMusicInfo *_Nullable model) {
+                      if (code == NEVoiceRoomErrorCode.success) {
+                        if (model) {
+                          // 有播放中歌曲
+                        } else {
+                          // 无播放中歌曲
+                          [self readySongModel:songModel.orderId];
+                        }
+                      }
+                    }];
+
+  } else {
+    // 点歌失败 , View 层error已处理
+  }
+}
+
+- (void)onAudioEffectFinished {
+  self.roomHeaderView.musicTitle = @"";
+  if ([self isAnchor]) {
+    [[NEOrderSong getInstance]
+        nextSongWithOrderId:[NEVoiceRoomPickSongEngine sharedInstance]
+                                .currrentSongModel.playMusicInfo.orderId
+                 attachment:@""
+                   callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+
+                   }];
+  }
+}
+
+#pragma mark------------------------ CMD处理 ------------------------
+- (void)onReceiveChorusMessage:(enum NEOrderSongChorusActionType)actionType
+                     songModel:(NEOrderSongSongModel *)songModel {
+  if (actionType == NEOrderSongChorusActionTypeStartSong) {
+    /// 开始唱歌
+    self.playingStatus = PlayingStatus_playing;
+    [self singSong:songModel];
+    [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel = songModel;
+    [self refreshUI];
+    self.roomHeaderView.musicTitle =
+        [NSString stringWithFormat:@"%@-%@", songModel.playMusicInfo.songName,
+                                   songModel.playMusicInfo.singer];
+    if (self.pickSongView) {
+      // 刷新数据
+      [self.pickSongView refreshPickedSongView];
+    }
+
+  } else if (actionType == NEOrderSongChorusActionTypePauseSong) {
+    // 暂停
+    self.playingStatus = PlayingStatus_pause;
+    [[NEVoiceRoomKit getInstance] pauseEffectWithEffectId:NEVoiceRoomKit.OriginalEffectId];
+    [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
+  } else if (actionType == NEOrderSongChorusActionTypeResumeSong) {
+    /// 本地有缓存数据，并且orderId 相同，说明是恢复
+    [[NEVoiceRoomKit getInstance] resumeEffectWithEffectId:NEVoiceRoomKit.OriginalEffectId];
+    self.playingStatus = PlayingStatus_playing;
+    [self refreshUI];
+    [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
+  }
+}
+
+- (void)refreshUI {
+  if (self.pickSongView) {
+    [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
+  }
+}
+
+- (void)voiceroom_onPreloadComplete:(NSString *)songId
+                            channel:(SongChannel)channel
+                              error:(NSError *)error {
+  if ([songId isEqualToString:[NEVoiceRoomPickSongEngine sharedInstance]
+                                  .currrentSongModel.playMusicInfo.songId] &&
+      (channel ==
+       [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.oc_channel)) {
+    if ([NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel) {
+      [self readySongModel:[NEVoiceRoomPickSongEngine sharedInstance]
+                               .currrentSongModel.playMusicInfo.orderId];
+    }
+  }
+}
+
+#pragma mark------ NEListenTogetherPickSongViewProtocol
+
+- (void)pauseSong {
+  [[NEOrderSong getInstance]
+      requestPausePlayingSong:[NEVoiceRoomPickSongEngine sharedInstance]
+                                  .currrentSongModel.playMusicInfo.orderId
+                     callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+                         // 歌曲暂停
+                     }];
+}
+
+- (void)resumeSong {
+  [[NEOrderSong getInstance]
+      requestResumePlayingSong:[NEVoiceRoomPickSongEngine sharedInstance]
+                                   .currrentSongModel.playMusicInfo.orderId
+                      callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+                          /// 继续播放
+                      }];
+}
+
+- (void)nextSong:(NEOrderSongOrderSongModel *_Nullable)orderSongModel {
+  if (orderSongModel) {
+    /// 选的某首歌曲
+    [[NEOrderSong getInstance]
+        nextSongWithOrderId:[NEVoiceRoomPickSongEngine sharedInstance]
+                                .currrentSongModel.playMusicInfo.orderId
+                 attachment:orderSongModel.yy_modelToJSONString
+                   callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+
+                   }];
+  } else {
+    /// 点击切歌按钮
+    [[NEOrderSong getInstance]
+        nextSongWithOrderId:[NEVoiceRoomPickSongEngine sharedInstance]
+                                .currrentSongModel.playMusicInfo.orderId
+                 attachment:@""
+                   callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+
+                   }];
+  }
+}
+
+- (void)volumeChanged:(float)volume {
+  [[NEVoiceRoomKit getInstance] setEffectVolume:NEVoiceRoomKit.OriginalEffectId
+                                         volume:volume * 100];
+}
+
+- (void)onVoiceRoomSongTokenExpired {
+  [[NEOrderSong getInstance] getSongTokenWithCallback:^(NSInteger code, NSString *_Nullable msg,
+                                                        NEOrderSongDynamicToken *_Nullable token) {
+    if (code == 0) {
+      [[NEOrderSong getInstance] renewToken:token.accessToken];
+    }
+  }];
 }
 @end

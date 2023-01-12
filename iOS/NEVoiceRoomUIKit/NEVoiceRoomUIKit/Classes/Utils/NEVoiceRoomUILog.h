@@ -6,9 +6,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define voiceRoomUILog @"NEVoiceRoomUILog"
+
 @interface NEVoiceRoomUILog : NSObject
 /// 初始化
-+ (void)setup;
++ (void)setUp:(NSString *)appkey;
 /// info类型 log
 + (void)infoLog:(NSString *)className desc:(NSString *)desc;
 /// success类型 log

@@ -125,7 +125,7 @@ static void *KVOContext = &KVOContext;
   UIView *tableFoolterView = [[UIView alloc]
       initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, kTableFooterHeight)];
   tableFoolterView.backgroundColor = UIColor.whiteColor;
-  self.tableView.tableFooterView = tableFoolterView;
+  //  self.tableView.tableFooterView = tableFoolterView;
 
   // 暂停
   UIButton *pauseButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -207,31 +207,36 @@ static void *KVOContext = &KVOContext;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.title = NELocalizedString(@"背景音乐");
-  self.backgroundMusicNames = @[ @"1", @"2", @"3" ];
-  self.pauseButton.hidden = self.context.isBackgroundMusicPaused;
-  self.resumeButton.hidden = !self.pauseButton.hidden;
-  [self.context addObserver:self
-                 forKeyPath:@"isBackgroundMusicPaused"
-                    options:NSKeyValueObservingOptionNew
-                    context:KVOContext];
-  [self.context addObserver:self
-                 forKeyPath:@"currentBgm"
-                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                    context:KVOContext];
+  self.title = NELocalizedString(@"音效");
+  //  self.backgroundMusicNames = @[ @"1", @"2", @"3" ];
+  //  self.pauseButton.hidden = self.context.isBackgroundMusicPaused;
+  //  self.resumeButton.hidden = !self.pauseButton.hidden;
+  self.pauseButton.hidden = YES;
+  self.resumeButton.hidden = YES;
+  //  [self.context addObserver:self
+  //                 forKeyPath:@"isBackgroundMusicPaused"
+  //                    options:NSKeyValueObservingOptionNew
+  //                    context:KVOContext];
+  //  [self.context addObserver:self
+  //                 forKeyPath:@"currentBgm"
+  //                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+  //                    context:KVOContext];
 }
 - (void)dealloc {
   self.tableView.dataSource = nil;
   self.tableView.delegate = nil;
-  [self.context removeObserver:self forKeyPath:@"isBackgroundMusicPaused"];
-  [self.context removeObserver:self forKeyPath:@"currentBgm"];
+  //  [self.context removeObserver:self forKeyPath:@"isBackgroundMusicPaused"];
+  //  [self.context removeObserver:self forKeyPath:@"currentBgm"];
 }
 
 - (CGSize)preferredContentSize {
   CGFloat preferedHeight = 0;
   if (@available(iOS 11.0, *)) {
-    CGFloat safeAreaBottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
-    preferedHeight += safeAreaBottom;
+    if ([[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)]) {
+      CGFloat safeAreaBottom =
+          UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
+      preferedHeight += safeAreaBottom;
+    }
   }
   preferedHeight += kTableHeaderHeight;
   preferedHeight += self.backgroundMusics.count * kTableRowHeight;

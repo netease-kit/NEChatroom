@@ -9,19 +9,18 @@ target 'LiveAudioRoom' do
   plugin 'cocoapods-pod-sign'
   skip_pod_bundle_sign
   
- pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
+  pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
   pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
+  pod 'NEOrderSong', :path => '../NEOrderSong/NEOrderSong.podspec'
+  pod 'NEListenTogetherKit', :path => '../NEListenTogetherKit/NEListenTogetherKit.podspec'
+  pod 'NEListenTogetherUIKit', :path => '../NEListenTogetherUIKit/NEListenTogetherUIKit.podspec'
   
-  pod 'NIMSDK_LITE', '9.6.4'
-  pod 'NERtcSDK/RtcBasic', '4.6.22'
-  pod 'NERtcSDK/Beauty', '4.6.22'
-  pod 'NERtcSDK/FaceDetect', '4.6.22'
-  pod 'NERtcSDK/Segment', '4.6.22'
+  pod 'NERoomKit','1.11.0'
+  pod 'NECopyrightedMedia','1.5.0'
 
-  pod 'YXLogin'
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
-
+  pod 'YXLogin'
 end
 
 post_install do |installer|

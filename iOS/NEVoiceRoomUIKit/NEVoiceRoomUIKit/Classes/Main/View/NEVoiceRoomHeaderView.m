@@ -7,6 +7,7 @@
 #import "NEUICreateRoomTitleButton.h"
 #import "NEUINoticePopView.h"
 #import "NEUIViewFactory.h"
+#import "NEVoiceRoomUI.h"
 #import "NSBundle+NELocalized.h"
 #import "NSString+NTES.h"
 #import "NTESFontMacro.h"
@@ -19,6 +20,9 @@
 @property(nonatomic, strong) UILabel *onlinePersonLabel;
 @property(nonatomic, strong) UIButton *closeRoomButton;
 @property(nonatomic, strong) NEUICreateRoomTitleButton *noticeButton;
+@property(nonatomic, strong) UIView *headerMusicView;
+@property(nonatomic, strong) UILabel *headerMusicLabel;
+@property(nonatomic, strong) UIImageView *headerMusicImageView;
 
 @end
 
@@ -30,10 +34,12 @@
   [self addSubview:self.onlinePersonLabel];
   [self addSubview:self.closeRoomButton];
   [self addSubview:self.noticeButton];
+  [self addSubview:self.headerMusicView];
+  [self.headerMusicView addSubview:self.headerMusicImageView];
+  [self.headerMusicView addSubview:self.headerMusicLabel];
 
   [self.roomNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.top.equalTo(self);
-    make.right.equalTo(self.closeRoomButton.mas_left);
   }];
 
   [self.onlinePersonLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -49,6 +55,24 @@
   [self.noticeButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.bottom.equalTo(self);
     make.size.mas_equalTo(CGSizeMake(54, 20));
+  }];
+
+  [self.headerMusicView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.equalTo(self.roomNameLabel.mas_right).offset(20);
+    make.right.equalTo(self.closeRoomButton.mas_left).offset(-5);
+    make.centerY.equalTo(self.roomNameLabel);
+    make.height.equalTo(@20);
+  }];
+
+  [self.headerMusicImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.equalTo(self.headerMusicView.mas_left).offset(-5);
+    make.centerY.equalTo(self.headerMusicView);
+    make.width.height.equalTo(@14);
+  }];
+  [self.headerMusicLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.equalTo(self.headerMusicImageView.mas_right).offset(5);
+    make.centerY.equalTo(self.headerMusicImageView);
+    make.right.equalTo(self.closeRoomButton.mas_left).offset(-2);
   }];
 }
 
@@ -83,6 +107,16 @@
   [self.onlinePersonLabel mas_updateConstraints:^(MASConstraintMaker *make) {
     make.width.mas_equalTo([onLineNumberString sizeWithFont:Font_Default(12) maxH:20].width + 10);
   }];
+}
+
+- (void)setMusicTitle:(NSString *)musicTitle {
+  _musicTitle = musicTitle;
+  if (musicTitle.length > 0) {
+    self.headerMusicView.hidden = NO;
+    self.headerMusicLabel.text = musicTitle;
+  } else {
+    self.headerMusicView.hidden = YES;
+  }
 }
 
 #pragma mark - lazyMethod
@@ -135,5 +169,28 @@
     [_closeRoomButton setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
   }
   return _closeRoomButton;
+}
+
+- (UIView *)headerMusicView {
+  if (!_headerMusicView) {
+    _headerMusicView = [[UIView alloc] init];
+    _headerMusicView.hidden = YES;
+  }
+  return _headerMusicView;
+}
+- (UILabel *)headerMusicLabel {
+  if (!_headerMusicLabel) {
+    _headerMusicLabel = [[UILabel alloc] init];
+    _headerMusicLabel.font = Font_Default(12);
+    _headerMusicLabel.textColor = HEXCOLOR(0xFFFFFF);
+  }
+  return _headerMusicLabel;
+}
+- (UIImageView *)headerMusicImageView {
+  if (!_headerMusicImageView) {
+    _headerMusicImageView = [[UIImageView alloc] init];
+    _headerMusicImageView.image = [NEVoiceRoomUI ne_imageName:@"header_music"];
+  }
+  return _headerMusicImageView;
 }
 @end

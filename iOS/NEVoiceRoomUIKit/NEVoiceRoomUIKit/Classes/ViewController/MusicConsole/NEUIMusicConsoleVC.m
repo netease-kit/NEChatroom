@@ -136,8 +136,11 @@
 - (CGSize)preferredContentSize {
   CGFloat preferedHeight = 0;
   if (@available(iOS 11.0, *)) {
-    CGFloat safeAreaBottom = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
-    preferedHeight += safeAreaBottom;
+    if ([[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)]) {
+      CGFloat safeAreaBottom =
+          UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom;
+      preferedHeight += safeAreaBottom;
+    }
   }
   preferedHeight += [[self.heights valueForKeyPath:@"@sum.self"] doubleValue];
   preferedHeight += 20;

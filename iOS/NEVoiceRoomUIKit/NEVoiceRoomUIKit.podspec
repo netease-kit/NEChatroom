@@ -24,22 +24,25 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/gingerjin1993@gmail.com/NEVoiceRoomUIKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
   
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '9.0'
   
   s.source_files = 'NEVoiceRoomUIKit/Classes/**/*'
   
-  s.dependency 'NEVoiceRoomKit', '1.0.3'
+  s.dependency 'NEVoiceRoomKit'
+  s.dependency 'NEOrderSong'
   s.dependency 'Masonry'
   s.dependency 'ReactiveObjC'
   s.dependency 'libextobjc'
   s.dependency 'YYModel'
   s.dependency 'MJRefresh'
   s.dependency 'M80AttributedLabel'
-  s.dependency 'lottie-ios', '2.5.3'
-  s.dependency 'YYWebImage', '1.0.5'
+  s.dependency 'lottie-ios', '~> 2.5.3'
   s.dependency 'NEUIKit'
-  s.dependency 'SDWebImage', '5.7.1'
+  s.dependency 'SDWebImage'
   s.dependency 'Toast'
+  s.dependency 'NECopyrightedMedia'
+  s.dependency 'NEAudioEffectKit'
+  s.dependency 'NECoreKit'
   
   s.resource_bundles = {
     'NEVoiceRoomUIKit' => ['NEVoiceRoomUIKit/Assets/**/*']

@@ -4,6 +4,7 @@
 
 #import "NEMenuViewController.h"
 #import <Masonry/Masonry.h>
+#import <NEListenTogetherUIKit/NEListenTogetherRoomListViewController.h>
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import <NEVoiceRoomUIKit/NEChatRoomListViewController.h>
 #import <YXLogin/YXLogin.h>
@@ -43,14 +44,18 @@
                   //        [[NENavigator shared] showLiveListVC];
               }];
   NEMenuCellModel *connectMic = [[NEMenuCellModel alloc]
-      initWithTitle:NSLocalizedString(@"KTV", nil)
-           subtitle:NSLocalizedString(@"用户通过一起唱歌形式实现趣味互动，真实还原线下 KTV 场景",
-                                      nil)
+      initWithTitle:NSLocalizedString(@"一起听", nil)
+           subtitle:NSLocalizedString(@"私密房两人听一首歌，操作同步，边听边聊，天涯若比邻", nil)
                icon:@"home_ktv_icon"
               block:^{
                   //        [[NENavigator shared] showLiveListVC];
               }];
-  _datas = @[ @[ live ] ];
+  BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+  if (isOutsea) {
+    _datas = @[ @[ live ] ];
+  } else {
+    _datas = @[ @[ live, connectMic ] ];
+  }
 }
 
 - (void)setupUI {
@@ -109,8 +114,10 @@
       NEChatRoomListViewController *vc = [[NEChatRoomListViewController alloc] init];
       [self.navigationController pushViewController:vc animated:YES];
     } break;
-    default: {  // KTV
-      [self.view makeToast:@"功能开发中" duration:1 position:CSToastPositionCenter];
+    default: {  // 一起听
+      NEListenTogetherRoomListViewController *vc =
+          [[NEListenTogetherRoomListViewController alloc] init];
+      [self.navigationController pushViewController:vc animated:YES];
     } break;
   }
 }

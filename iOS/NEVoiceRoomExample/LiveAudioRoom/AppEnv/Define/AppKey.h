@@ -5,7 +5,7 @@
 #ifndef AppKey_h
 #define AppKey_h
 
-static NSString *isOutOdChinaDataCenter = @"isOutOdChinaDataCenter";
+static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
 
 /// 服务器host
 static NSString *const kApiHost = @"https://yiyong.netease.im";

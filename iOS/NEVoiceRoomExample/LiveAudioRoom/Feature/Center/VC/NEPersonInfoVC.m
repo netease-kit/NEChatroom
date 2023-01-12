@@ -4,6 +4,7 @@
 
 #import "NEPersonInfoVC.h"
 #import <Masonry/Masonry.h>
+#import <NEListenTogetherUIKit/NEListenTogetherUIManager.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEVoiceRoomUIKit/NEVoiceRoomUIManager.h>
 #import <SDWebImage/SDWebImage.h>
@@ -114,27 +115,36 @@
                    if (code == 0) {
                      dispatch_async(dispatch_get_main_queue(), ^{
                        [self.navigationController popToRootViewControllerAnimated:false];
-                       [[AuthorManager shareInstance]
-                           startLoginWithCompletion:^(YXUserInfo *_Nullable userinfo,
-                                                      NSError *_Nullable error) {
-                             if (!error) {
-                               [NSNotificationCenter.defaultCenter
-                                   postNotification:[NSNotification notificationWithName:@"Login"
-                                                                                  object:nil]];
-                               [NEVoiceRoomUIManager.sharedInstance
-                                   loginWithAccount:userinfo.accountId
-                                              token:userinfo.accessToken
-                                           nickname:userinfo.nickname
-                                           callback:^(NSInteger code, NSString *_Nullable msg,
-                                                      id _Nullable objc) {
-                                             if (code == 0) {
-                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                 [self.tableView reloadData];
-                                               });
-                                             }
-                                           }];
-                             }
-                           }];
+                       [[AuthorManager shareInstance] startLoginWithCompletion:^(
+                                                          YXUserInfo *_Nullable userinfo,
+                                                          NSError *_Nullable error) {
+                         if (!error) {
+                           [NSNotificationCenter.defaultCenter
+                               postNotification:[NSNotification notificationWithName:@"Login"
+                                                                              object:nil]];
+                           [NEVoiceRoomUIManager.sharedInstance
+                               loginWithAccount:userinfo.accountId
+                                          token:userinfo.accessToken
+                                       nickname:userinfo.nickname
+                                       callback:^(NSInteger code, NSString *_Nullable msg,
+                                                  id _Nullable objc) {
+                                         if (code == 0) {
+                                           /// 一起听 Manager 登录处理，不做真实登录
+                                           [NEListenTogetherUIManager.sharedInstance
+                                               loginWithAccount:userinfo.accountId
+                                                          token:userinfo.accessToken
+                                                       nickname:userinfo.nickname
+                                                       callback:^(NSInteger, NSString *_Nullable,
+                                                                  id _Nullable){
+
+                                                       }];
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                             [self.tableView reloadData];
+                                           });
+                                         }
+                                       }];
+                         }
+                       }];
                      });
                    }
                  }];

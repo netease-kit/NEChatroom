@@ -39,7 +39,7 @@
   }];
   self.chinaButton = [[UIButton alloc] init];
   self.chinaButton.backgroundColor =
-      [self isOutOdChinaDataCenter] ? [UIColor whiteColor] : [UIColor blueColor];
+      [self isOutOfChinaDataCenter] ? [UIColor whiteColor] : [UIColor blueColor];
   self.chinaButton.tag = 0;
   [self.chinaButton addTarget:self
                        action:@selector(clickChangeDataCenter:)
@@ -64,7 +64,7 @@
 
   self.outOfChinaButton = [[UIButton alloc] init];
   self.outOfChinaButton.backgroundColor =
-      [self isOutOdChinaDataCenter] ? [UIColor blueColor] : [UIColor whiteColor];
+      [self isOutOfChinaDataCenter] ? [UIColor blueColor] : [UIColor whiteColor];
   self.outOfChinaButton.tag = 1;
   [self.outOfChinaButton addTarget:self
                             action:@selector(clickChangeDataCenter:)
@@ -88,12 +88,12 @@
   }];
 }
 
-- (BOOL)isOutOdChinaDataCenter {
-  return [[NSUserDefaults standardUserDefaults] boolForKey:isOutOdChinaDataCenter];
+- (BOOL)isOutOfChinaDataCenter {
+  return [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
 }
 
 - (void)clickChangeDataCenter:(UIButton *)sender {
-  if ([self isOutOdChinaDataCenter] == sender.tag) {
+  if ([self isOutOfChinaDataCenter] == sender.tag) {
     /// 本地记录值和选择一致
     return;
   }
@@ -102,7 +102,7 @@
 
 - (void)updateDataCenter:(long)index {
   [[NSUserDefaults standardUserDefaults] setBool:index == 0 ? NO : YES
-                                          forKey:isOutOdChinaDataCenter];
+                                          forKey:isOutOfChinaDataCenter];
   self.chinaButton.backgroundColor = index == 0 ? [UIColor blueColor] : [UIColor whiteColor];
   self.outOfChinaButton.backgroundColor = index == 0 ? [UIColor whiteColor] : [UIColor blueColor];
   abort();

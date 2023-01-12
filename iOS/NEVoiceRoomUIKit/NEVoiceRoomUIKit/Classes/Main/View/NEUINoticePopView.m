@@ -30,7 +30,7 @@
 
 - (void)buildViewconstraint {
   [self.containerView mas_updateConstraints:^(MASConstraintMaker *make) {
-    make.size.mas_equalTo(CGSizeMake(280, 256));
+    make.size.mas_equalTo(CGSizeMake(280, 150));
     make.center.equalTo(self);
   }];
 
@@ -79,14 +79,12 @@
 
 - (UILabel *)contentLabel {
   if (!_contentLabel) {
-    _contentLabel = [NEUIViewFactory
-        createLabelFrame:CGRectZero
-                   title:NELocalizedString(
-                             @"本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。\n感谢网"
-                             @"易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。")
-               textColor:[UIColor ne_colorWithHex:0x222222]
-           textAlignment:NSTextAlignmentLeft
-                    font:TextFont_14];
+    _contentLabel =
+        [NEUIViewFactory createLabelFrame:CGRectZero
+                                    title:NELocalizedString(@"本应用为示例产品，请勿商用。")
+                                textColor:[UIColor ne_colorWithHex:0x222222]
+                            textAlignment:NSTextAlignmentLeft
+                                     font:TextFont_14];
     //        [UILabel  changeLineSpaceForLabel:_contentLabel WithSpace:5];
     _contentLabel.numberOfLines = 0;
   }

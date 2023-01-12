@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+#import <NECopyrightedMedia/NECopyrightedMedia.h>
 #import "NEVoiceRoomAuthorityHelper.h"
 #import "NEVoiceRoomViewController.h"
 NS_ASSUME_NONNULL_BEGIN
@@ -25,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isAnchor;
 /// 处理静音操作
 - (void)handleMuteOperation:(BOOL)isMute;
+- (NSString *)fetchLyricContentWithSongId:(NSString *)songId channel:(SongChannel)channel;
+- (NSString *)fetchPitchContentWithSongId:(NSString *)songId channel:(SongChannel)channel;
+- (NSString *)fetchOriginalFilePathWithSongId:(NSString *)songId channel:(SongChannel)channel;
+- (NSString *)fetchAccompanyFilePathWithSongId:(NSString *)songId channel:(SongChannel)channel;
 @end
 
 NS_ASSUME_NONNULL_END

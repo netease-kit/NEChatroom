@@ -21,18 +21,12 @@
   });
   return instance;
 }
-- (instancetype)init {
-  self = [super init];
-  if (self) {
-    [NEVoiceRoomUILog setup];
-  }
-  return self;
-}
 - (void)initializeWithConfig:(NEVoiceRoomKitConfig *)config
                     callback:(void (^)(NSInteger, NSString *_Nullable, id _Nullable))callback {
   self.config = config;
   [NEVoiceRoomKit.getInstance initializeWithConfig:config callback:callback];
-  [NEVoiceRoomLog setup];
+  [NEVoiceRoomLog setUp:config.appKey];
+  [NEVoiceRoomUILog setUp:config.appKey];
 }
 
 - (void)loginWithAccount:(NSString *)account

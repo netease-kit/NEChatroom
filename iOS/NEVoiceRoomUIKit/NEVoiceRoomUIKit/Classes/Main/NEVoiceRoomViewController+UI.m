@@ -5,6 +5,7 @@
 #import <Masonry/Masonry.h>
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import <libextobjc/extobjc.h>
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMicInviteeListVC.h"
 #import "NEVoiceRoomToast.h"
@@ -250,4 +251,12 @@
   return actions;
 }
 
+- (void)sendChatroomNotifyMessage:(NSString *)content {
+  NEVoiceRoomChatViewMessage *message = [[NEVoiceRoomChatViewMessage alloc] init];
+  message.type = NEVoiceRoomChatViewMessageTypeNotication;
+  message.notication = content;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.chatView addMessages:@[ message ]];
+  });
+}
 @end

@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, NTESUserMode) {
   NTESUserModeAudience = 1,
   // 连麦者
   NTESUserModeConnector = 2,
+  NEUIFunctionMusic,  // 音乐
 };
 
 typedef NS_ENUM(NSInteger, NEUIFunctionArea) {
@@ -43,6 +44,8 @@ typedef NS_ENUM(NSUInteger, NEUIMuteType) {
 - (void)footerDidReceiveMenuClickAciton;
 // 输入框点击事件
 - (void)footerInputViewDidClickAction;
+// music点击事件
+- (void)footerDidReceiveMusicClickAciton;
 @end
 
 @interface NEVoiceRoomFooterView : NEUIBaseView
@@ -59,6 +62,8 @@ typedef NS_ENUM(NSUInteger, NEUIMuteType) {
 - (void)cancelMute;
 /// 上下麦 更新 观众的操作按钮
 - (void)updateAudienceOperatingButton:(BOOL)isOnSeat;
+
+- (void)configPickSongUnreadNumber:(NSInteger)number;
 @end
 
 NS_ASSUME_NONNULL_END

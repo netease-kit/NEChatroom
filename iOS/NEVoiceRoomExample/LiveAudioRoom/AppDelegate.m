@@ -3,12 +3,13 @@
 // found in the LICENSE file.
 
 #import "AppDelegate.h"
-// #import <NEVoiceRoomUIKit/NEVoiceRoomUIManager.h>
+//  #import <NEVoiceRoomUIKit/NEVoiceRoomUIManager.h>
 #import "AppDelegate+UIWindow.h"
 #import "AppDelegate+VoiceRoom.h"
 #import "AppKey.h"
 
 @interface AppDelegate ()
+
 
 @end
 
@@ -27,4 +28,6 @@
     supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window {
   return UIInterfaceOrientationMaskPortrait;
 }
+
+
 @end

@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 // 直播间标题
 @property(nonatomic, copy) NSString *title;
 
+// 音乐名称
+@property(nonatomic, copy) NSString *musicTitle;
+
 @end
 
 NS_ASSUME_NONNULL_END

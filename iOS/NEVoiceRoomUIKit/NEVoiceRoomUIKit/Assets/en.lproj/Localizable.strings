@@ -54,7 +54,7 @@
 "该麦位被主播\"解除语音屏蔽\"\n现在您可以在此进行语音互动了" = "The seat is \"unmuted\"\n You can speak now";
 "发送" = "Send";
 "公告" = "Announcement";
-"本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。\n感谢网易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。" = "The app is used for demo purpose only. Commercial use is not allowed. A live stream can last 10 minutes with 10 participants.\n Grateful for the backing track provided by NetEase MMORPG A Chinese Ghost Story Online";
+"本应用为示例产品，请勿商用。" = "The app is used for demo purpose only. Commercial use is not allowed.";
 "在线%@人" = "%@ people online";
 "您已被禁言" = "You are muted";
 "聊天室被禁言" = "The chat room is muted";
@@ -79,7 +79,7 @@
 "麦克风" = "Mic";
 "耳返" = "In-ear";
 "调音台" = "Mixer";
-"伴音" = "Mixing";
+"音效" = "Mixing";
 "结束直播" = "End";
 "插入耳机后可使用耳返功能" = "Plug in the earphones and you can use the in-ear monitor";
 "人声" = "Voice";

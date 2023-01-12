@@ -97,21 +97,23 @@
     cell.personDataCenterView.selectDataCenter = ^(long index) {
       __strong typeof(weakself) strongself = weakself;
       __strong typeof(cell) strongCell = cell;
-      [strongself showAlertView:^{
-        [[AuthorManager shareInstance]
-            logoutWithCompletion:^(YXUserInfo *_Nullable userinfo, NSError *_Nullable error) {
-              [[NEVoiceRoomUIManager sharedInstance]
-                  logoutWithCallback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-                    if (code == 0) {
-                      [[NSUserDefaults standardUserDefaults] synchronize];
+      if (strongself != nil) {
+        [strongself showAlertView:^{
+          [[AuthorManager shareInstance] logoutWithCompletion:^(YXUserInfo *_Nullable userinfo,
+                                                                NSError *_Nullable error) {
+            [[NEVoiceRoomUIManager sharedInstance]
+                logoutWithCallback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
+                  if (code == 0) {
+                    [[NSUserDefaults standardUserDefaults] synchronize];
 
-                      dispatch_async(dispatch_get_main_queue(), ^{
-                        [strongCell.personDataCenterView updateDataCenter:index];
-                      });
-                    }
-                  }];
-            }];
-      }];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                      [strongCell.personDataCenterView updateDataCenter:index];
+                    });
+                  }
+                }];
+          }];
+        }];
+      }
       /// 跳出弹窗
     };
     return cell;

@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+#import <NEOrderSong/NEOrderSong-Swift.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <SDWebImage/SDWebImage.h>
 #import "NEInnerSingleton.h"
@@ -36,6 +37,7 @@
           [self closeRoom];
           return;
         }
+        [[NEOrderSong getInstance] configRoomSetting:self.detail.liveModel.roomUuid];
         /// 内部使用
         NEInnerSingleton.singleton.roomInfo = info;
         // 默认操作
@@ -49,6 +51,21 @@
           self.roomHeaderView.title = info.liveModel.liveTopic;
           self.roomHeaderView.onlinePeople = NEVoiceRoomKit.getInstance.allMemberList.count;
         });
+        if (self.role == NEVoiceRoomRoleAudience) {
+          [NEVoiceRoomKit.getInstance
+              queryPlayingSongInfo:self.detail.liveModel.roomUuid
+                          callback:^(NSInteger code, NSString *_Nullable msg,
+                                     NEVoiceRoomPlayMusicInfo *_Nullable model) {
+                            if (code == NEVoiceRoomErrorCode.success) {
+                              if (model) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                  self.roomHeaderView.musicTitle = [NSString
+                                      stringWithFormat:@"%@-%@", model.songName, model.singer];
+                                });
+                              }
+                            }
+                          }];
+        }
       }];
 }
 - (void)unmuteAudio:(BOOL)showToast {
@@ -100,6 +117,7 @@
   if ([self.reachability currentReachabilityStatus] != NotReachable) {
   } else {
     [NEVoiceRoomToast showToast:NELocalizedString(@"网络断开")];
+    self.isInChatRoom = NO;
   }
 }
 - (void)checkMicAuthority {
@@ -157,4 +175,17 @@
     }
   }
 }
+- (NSString *)fetchLyricContentWithSongId:(NSString *)songId channel:(SongChannel)channel {
+  return [[NEOrderSong getInstance] getLyric:songId channel:channel];
+}
+- (NSString *)fetchPitchContentWithSongId:(NSString *)songId channel:(SongChannel)channel {
+  return [[NEOrderSong getInstance] getPitch:songId channel:channel];
+}
+- (NSString *)fetchOriginalFilePathWithSongId:(NSString *)songId channel:(SongChannel)channel {
+  return [[NEOrderSong getInstance] getSongURI:songId channel:channel songResType:TYPE_ORIGIN];
+}
+- (NSString *)fetchAccompanyFilePathWithSongId:(NSString *)songId channel:(SongChannel)channel {
+  return [[NEOrderSong getInstance] getSongURI:songId channel:channel songResType:TYPE_ACCOMP];
+}
+
 @end

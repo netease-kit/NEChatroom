@@ -7,6 +7,7 @@
 "昵称" = "Nick name";
 "about_logo" = "about_logo_en";
 "6-8人语聊房，玩家可自由发言，实现线上兴趣/话题式语聊互动场景" = "Voice chat room with 6-8 participants. Users can speak freely and talk about interesting topics.";
+"私密房两人听一首歌，操作同步，边听边聊，天涯若比邻" = "Listen together, talk together, stay together";
 "请求错误" = "Request error";
 "创建失败:参数异常" = "Failed to create a room: invalid parameters";
 "登录失败" = "Login failed";

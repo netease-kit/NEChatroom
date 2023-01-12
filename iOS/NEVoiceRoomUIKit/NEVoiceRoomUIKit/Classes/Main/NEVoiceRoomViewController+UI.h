@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)observeKeyboard;
 /// 创建alert弹框 需要的所有action
 - (NSMutableArray<NEVoiceRoomUIAlertAction *> *)setupAlertActions;
+
+- (void)sendChatroomNotifyMessage:(NSString *)content;
 @end
 
 NS_ASSUME_NONNULL_END

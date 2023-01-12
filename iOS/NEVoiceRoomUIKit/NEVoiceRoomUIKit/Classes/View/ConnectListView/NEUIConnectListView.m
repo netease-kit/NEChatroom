@@ -189,6 +189,7 @@ static CGFloat foldBtnHeight = 38;
   };
   cell.rejectBlock = ^(NEVoiceRoomSeatItem *_Nonnull seatItem) {
     __strong typeof(self) strongSelf = weakSelf;
+
     if (strongSelf) {
       if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector
                                                       (connectListView:onRejectWithSeatItem:)]) {
