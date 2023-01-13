@@ -11,13 +11,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.ScreenUtil;
@@ -26,7 +24,6 @@ import com.netease.yunxin.kit.voiceroomkit.ui.adapter.MemberListAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomUser;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
-
 import java.util.ArrayList;
 import java.util.List;
 

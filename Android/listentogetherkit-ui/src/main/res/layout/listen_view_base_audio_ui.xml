@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_base_audio_ui"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/listen_background_img"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dimen_8_dp"
+    android:paddingTop="@dimen/dimen_8_dp">
+
+    <TextView
+        android:id="@+id/tv_chat_room_name"
+        style="@style/ListenTextStyle_Color_828282_Size_14sp"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="陈肉丸今天吃饭没" />
+
+    <!--退出房间-->
+    <ImageView
+        android:id="@+id/iv_leave_room"
+        style="@style/ListenBase_Audio_UI_Switch"
+        android:layout_width="@dimen/dimen_24_dp"
+        android:layout_height="@dimen/dimen_24_dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/listen_seat_item_round_bg"
+        android:padding="@dimen/dimen_7_dp"
+        android:src="@drawable/listen_close_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--聊天室公告-->
+    <TextView
+        android:id="@+id/tv_chat_room_announcement"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_20_dp"
+        android:layout_below="@id/tv_chat_room_name"
+        android:layout_marginTop="@dimen/dimen_12_dp"
+        android:background="@drawable/listen_shape_corner_20_bg"
+        android:drawablePadding="@dimen/dimen_2_dp"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dimen_10_dp"
+        android:text="@string/listen_notice"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_12"
+        app:drawableStartCompat="@drawable/listen_icon_announcement"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_chat_room_name" />
+
+    <TextView
+        android:id="@+id/tv_chat_room_member_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_chat_room_announcement"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/listen_shape_corner_20_bg"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dimen_10_dp"
+        android:paddingVertical="@dimen/dimen_2_dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_chat_room_announcement"
+        tools:text="online 99" />
+
+    <!-- 主播区域-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cly_anchor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="384dp"
+        tools:background="@android:color/holo_green_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_chat_room_announcement">
+
+        <com.netease.yunxin.app.listentogether.widget.ListenTogetherSeatsLayout
+            android:id="@+id/seats_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="300dp"
+            android:layout_height="300dp" />
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="@+id/seats_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@drawable/listen_bg_shape_order_song"
+            android:id="@+id/tv_order_song"
+            android:text="@string/listen_song"
+            tools:visibility="invisible"
+            android:visibility="gone"
+            android:layout_width="128dp"
+            android:layout_height="44dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.netease.yunxin.app.listentogether.widget.SongOptionPanel
+        android:id="@+id/song_option_panel"
+        app:layout_constraintTop_toTopOf="@+id/cly_anchor_layout"
+        android:layout_marginTop="310dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/rcy_chat_message_list_group"
+        android:layout_width="280dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/cly_anchor_layout"
+        android:layout_marginTop="@dimen/dimen_7_dp"
+        android:layout_marginBottom="@dimen/dimen_16_dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/tv_input_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/song_option_panel">
+
+        <com.netease.yunxin.app.listentogether.widget.ChatRoomMsgRecyclerView
+            android:id="@+id/rcy_chat_message_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:overScrollMode="never" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_input_text"
+        android:layout_width="@dimen/dimen_140_dp"
+        android:layout_height="@dimen/dimen_36_dp"
+        android:layout_marginBottom="@dimen/dimen_8_dp"
+        android:background="@drawable/listen_shape_corner_18_bg"
+        android:drawablePadding="@dimen/dimen_2_dp"
+        android:gravity="center_vertical"
+        android:hint="@string/listen_chat_hint"
+        android:paddingLeft="@dimen/dimen_16_dp"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/listen_color_4cffffff"
+        app:drawableStartCompat="@drawable/listen_alpha_chat_room_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_room_more"
+        android:layout_width="@dimen/dimen_36_dp"
+        android:layout_height="@dimen/dimen_36_dp"
+        android:layout_marginBottom="@dimen/dimen_8_dp"
+        android:background="@drawable/listen_seat_item_round_bg"
+        android:padding="@dimen/dimen_8_dp"
+        android:src="@drawable/listen_icon_room_more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_mute_other_text"
+        android:layout_width="@dimen/dimen_36_dp"
+        android:layout_height="@dimen/dimen_36_dp"
+        android:layout_marginEnd="@dimen/dimen_10_dp"
+        android:layout_marginBottom="@dimen/dimen_8_dp"
+        android:background="@drawable/listen_seat_item_round_bg"
+        android:padding="@dimen/dimen_8_dp"
+        android:src="@drawable/listen_icon_room_mute_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_room_more" />
+
+
+    <ImageView
+        android:id="@+id/iv_local_audio_switch"
+        android:layout_width="@dimen/dimen_36_dp"
+        android:layout_height="@dimen/dimen_36_dp"
+        android:layout_marginEnd="@dimen/dimen_10_dp"
+        android:layout_marginBottom="@dimen/dimen_8_dp"
+        android:background="@drawable/listen_seat_item_round_bg"
+        android:padding="@dimen/dimen_8_dp"
+        android:src="@drawable/listen_selector_room_micro_phone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_mute_other_text" />
+
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="@dimen/dimen_10_dp"
+        android:layout_marginBottom="@dimen/dimen_8_dp"
+        android:background="@drawable/listen_dark_cycle_bg"
+        android:padding="5dp"
+        android:src="@drawable/listen_gift"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_local_audio_switch" />
+
+    <ImageView
+        android:id="@+id/iv_order_song"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="@dimen/dimen_10_dp"
+        android:layout_marginBottom="@dimen/dimen_8_dp"
+        android:src="@drawable/listen_order_song"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_gift" />
+
+    <EditText
+        android:id="@+id/edt_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_48_dp"
+        android:layout_marginHorizontal="-8dp"
+        android:background="@drawable/listen_input_text_bg"
+        android:hint="@string/listen_chat_hint"
+        android:imeOptions="actionSend"
+        android:paddingHorizontal="@dimen/dimen_20_dp"
+        android:paddingVertical="@dimen/dimen_8_dp"
+        android:singleLine="true"
+        android:textColor="@color/listen_color_ff222222"
+        android:textColorHint="@color/color_bfbfbf"
+        android:textSize="@dimen/text_size_14"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

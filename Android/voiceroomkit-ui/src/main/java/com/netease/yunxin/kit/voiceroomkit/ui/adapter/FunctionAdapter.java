@@ -8,6 +8,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.netease.yunxin.kit.common.image.ImageLoader;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import java.util.List;
 
@@ -47,9 +48,8 @@ public class FunctionAdapter extends CommonAdapter<FunctionAdapter.FunctionItem>
       tvName.setText(itemData.nameStr);
       return;
     }
-    ImageView ivBg = holder.getView(R.id.iv_bg);
-    //todo roundedCorner
-    //        ImageLoader.with(ivBg.getContext().getApplicationContext()).roundedCorner(itemData.iconResId, ScreenUtil.dip2px(context, 8), ivBg);
+    ImageView icon = holder.getView(R.id.iv_function_icon);
+    ImageLoader.with(icon.getContext().getApplicationContext()).load(itemData.iconResId).into(icon);
     TextView tvName = holder.getView(R.id.tv_function_name);
     tvName.setText(itemData.nameStr);
     TextView tvDesc = holder.getView(R.id.tv_function_desc);

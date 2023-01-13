@@ -16,10 +16,14 @@ public class AppConfig {
   private static final int ONLINE_CONFIG_ID = 569;
   private static final int OVERSEA_CONFIG_ID = 75;
 
+  private static final int LISTEN_TOGETHER_ONLINE_CONFIG_ID = 570;
+  private static final int LISTEN_TOGETHER_OVERSEA_CONFIG_ID = 76;
+
   private static final int PARENT_SCOPE = 5; //roomkit
   private static final int CHILD_SCOPE = 4; //voiceroom
 
   private static final String KEY_DATA_CENTER = "DATA_CENTER";
+
 
 
   @SuppressLint("StaticFieldLeak")
@@ -60,6 +64,14 @@ public class AppConfig {
       return OVERSEA_CONFIG_ID;
     }
     return ONLINE_CONFIG_ID;
+  }
+
+  /// 获取模版id
+  public static int getListenTogetherConfigId() {
+    if (getDataCenter() == DataCenter.Oversea) {
+      return LISTEN_TOGETHER_OVERSEA_CONFIG_ID;
+    }
+    return LISTEN_TOGETHER_ONLINE_CONFIG_ID;
   }
 
   public static DataCenter getDataCenter() {

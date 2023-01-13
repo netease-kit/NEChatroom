@@ -11,14 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.IconFontUtil;
 
 public class NoticeDialog extends BaseDialogFragment {
 
@@ -58,7 +55,6 @@ public class NoticeDialog extends BaseDialogFragment {
 
   private void initView() {
     close = contentView.findViewById(R.id.close);
-    IconFontUtil.getInstance().setFontText(close, IconFontUtil.CLOSE);
     close.setOnClickListener(v -> dismiss());
     getDialog()
         .setOnKeyListener(

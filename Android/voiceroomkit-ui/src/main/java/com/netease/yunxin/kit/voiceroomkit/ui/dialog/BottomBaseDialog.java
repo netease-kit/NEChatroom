@@ -13,10 +13,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 
 /** 底部弹窗基类，子类需要实现 顶部view，以及底部view 的渲染即可 */

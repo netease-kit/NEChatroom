@@ -23,71 +23,42 @@
         android:layout_marginHorizontal="@dimen/dp_20"
         app:layout_constraintTop_toBottomOf="@id/iv_back"
         android:background="@drawable/shape_create_room_top_bg"
-        android:layout_height="@dimen/dp_116"/>
-
-    <View
-        android:id="@+id/top_divide"
-        android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="@id/top_bg"
-        app:layout_constraintEnd_toEndOf="@id/top_bg"
-        app:layout_constraintTop_toTopOf="@id/top_bg"
-        android:layout_marginTop="@dimen/dp_48"
-        android:layout_marginHorizontal="@dimen/dp_12"
-        android:background="@color/color_33ffffff"
-        android:layout_height="0.5dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_divide"
-        android:layout_width="0dp"
-        app:layout_constraintGuide_percent="0.5"
-        android:orientation="vertical"
-        android:layout_height="0dp"/>
+        android:layout_height="120dp"/>
 
     <ImageView
         android:id="@+id/iv_icon_chat_room"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="@dimen/dp_16"
         android:layout_height="@dimen/dp_16"
         android:layout_marginEnd="@dimen/dp_4"
-        app:layout_constraintEnd_toStartOf="@id/tv_chat_room"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@id/top_bg"
+        android:layout_marginLeft="36dp"
         android:src="@drawable/icon_create_room_chat_room"
         app:layout_constraintBottom_toBottomOf="@id/tv_chat_room"
         app:layout_constraintTop_toTopOf="@id/tv_chat_room" />
 
     <TextView
         android:id="@+id/tv_chat_room"
-        app:layout_constraintBottom_toBottomOf="@id/top_divide"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toEndOf="@id/iv_icon_chat_room"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
         android:gravity="center_vertical"
         android:text="@string/app_voice_chat"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_16"
-        app:layout_constraintEnd_toStartOf="@id/gl_divide"
         app:layout_constraintTop_toTopOf="@id/top_bg" />
-
-    
-    <View
-        android:id="@+id/indicator_chat_room"
-        android:background="@color/color_337eff"
-        app:layout_constraintBottom_toTopOf="@id/top_divide"
-        app:layout_constraintStart_toStartOf="@id/iv_icon_chat_room"
-        app:layout_constraintEnd_toEndOf="@id/tv_chat_room"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_3"/>
 
 
     <ImageView
         android:id="@+id/iv_random"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="@dimen/dp_12"
         android:src="@drawable/icon_create_room_random_name"
         app:layout_constraintEnd_toEndOf="@id/top_bg"
-        app:layout_constraintTop_toBottomOf="@id/top_divide" />
+        app:layout_constraintTop_toBottomOf="@id/tv_chat_room" />
 
     <EditText
         android:id="@+id/et_room_name"
@@ -104,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="@id/top_bg"
         app:layout_constraintEnd_toStartOf="@id/iv_random"
         app:layout_constraintStart_toStartOf="@id/top_bg"
-        app:layout_constraintTop_toBottomOf="@id/top_divide" />
+        app:layout_constraintTop_toBottomOf="@id/tv_chat_room" />
 
     <TextView
         android:id="@+id/tv_create_room"

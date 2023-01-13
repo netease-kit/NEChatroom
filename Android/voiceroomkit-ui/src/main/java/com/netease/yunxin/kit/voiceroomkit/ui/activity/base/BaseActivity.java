@@ -10,11 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.AppStatusConstant;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.AppStatusManager;

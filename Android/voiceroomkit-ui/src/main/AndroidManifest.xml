@@ -4,12 +4,10 @@
     package="com.netease.yunxin.kit.voiceroomkit.ui">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Voiceroomkitsample"
         tools:targetApi="31">
 
         <activity android:name=".activity.AnchorActivity"
@@ -20,7 +18,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
-
+        <service
+            android:name=".service.KeepAliveService"
+            android:foregroundServiceType="mediaProjection"/>
     </application>
 
 </manifest>

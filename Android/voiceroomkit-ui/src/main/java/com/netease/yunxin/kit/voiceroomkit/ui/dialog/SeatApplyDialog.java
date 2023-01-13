@@ -15,13 +15,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.image.ImageLoader;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
@@ -31,7 +29,6 @@ import com.netease.yunxin.kit.voiceroomkit.ui.adapter.BaseAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VerticalItemDecoration;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

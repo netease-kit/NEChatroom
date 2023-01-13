@@ -26,6 +26,7 @@ import com.netease.yunxin.app.chatroom.databinding.FragmentUserCenterBinding;
 import com.netease.yunxin.app.chatroom.utils.AppUtils;
 import com.netease.yunxin.kit.common.image.ImageLoader;
 import com.netease.yunxin.kit.common.ui.dialog.LoadingDialog;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKit;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.LoginCallback;
 import com.netease.yunxin.kit.login.model.LoginEvent;
@@ -128,6 +129,7 @@ public final class UserCenterFragment extends BaseFragment {
                 .postDelayed(
                     () -> {
                       NEVoiceRoomKit.getInstance().logout(null);
+                      NEListenTogetherKit.getInstance().logout(null);
                       toggleLoading(false);
                       if (getActivity() != null) {
                         Intent intent =

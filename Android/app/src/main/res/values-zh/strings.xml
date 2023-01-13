@@ -12,7 +12,9 @@
     <string name="app_open_room">开启房间</string>
     <string name="app_app_name">网易云信语聊房</string>
     <string name="app_voiceroom">语聊房</string>
+    <string name="app_listen_together">一起听</string>
     <string name="app_voiceroom_desc_text">6-8人语聊房，玩家可自由发言，实现线上兴趣/话题式语聊互动场景</string>
+    <string name="app_listen_together_desc_text">私密房两人听一首歌，操作同步，边听边聊，天涯若比邻</string>
     <string name="app_free_trial">免费试用</string>
     <string name="app_data_center_switch_confirm_message">确定切换数据中心吗？应用需要重新启动和登录。</string>
     <string name="app_yes">是</string>
@@ -41,9 +43,7 @@
     <string name="app_data_center_mainland">中国</string>
     <string name="app_data_center_oversea">海外地区</string>
     <string name="app_room_list_empty">暂时没有房间\n请点击下方\"+\"号创建房间</string>
-
-
-
-
+    <string name="app_empty_roomname_tips">房间主题不能为空</string>
+    <string name="app_room_not_exist">房间不存在</string>
 
 </resources>

@@ -8,16 +8,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-
+import androidx.lifecycle.ViewModelProvider;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
+import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.CancelApplySeatDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomMoreDialog;
@@ -27,18 +26,15 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeatEvent;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
+import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.AudienceVoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
-
 import java.util.Arrays;
 import java.util.List;
-
 import kotlin.Unit;
 
 /** 观众页 */
 public class AudienceActivity extends VoiceRoomBaseActivity {
   private List<ChatRoomMoreDialog.MoreItem> moreItems;
-  private ImageView ivLeaveSeat;
-
   private ListItemDialog bottomDialog;
   private int networkErrorCount;
   private static final int ZERO_COUNT = 0;
@@ -56,8 +52,12 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
     netErrorView = findViewById(R.id.view_net_error);
     enterRoom();
     watchNetWork();
-    initDataObserver();
     isAnchor = false;
+  }
+
+  @Override
+  protected VoiceRoomViewModel getRoomViewModel() {
+    return new ViewModelProvider(this).get(AudienceVoiceRoomViewModel.class);
   }
 
   private void createMoreItems() {
@@ -77,84 +77,88 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
                 getString(R.string.voiceroom_mixer)));
   }
 
-  private void initDataObserver() {
-    roomViewModel
-        .getCurrentSeatEvent()
-        .observe(
-            this,
-            event -> {
-              ALog.d(TAG, "initDataObserver currentSeatEvent,event:" + event);
-              switch (event.getReason()) {
-                case VoiceRoomSeat.Reason.ANCHOR_INVITE:
-                case VoiceRoomSeat.Reason.ANCHOR_APPROVE_APPLY:
-                  onEnterSeat(event, false);
-                  break;
-                case VoiceRoomSeat.Reason.ANCHOR_DENY_APPLY:
-                  onSeatApplyDenied(false);
-                  break;
-                case VoiceRoomSeat.Reason.LEAVE:
-                  onLeaveSeat(event, true);
-                  break;
-                case VoiceRoomSeat.Reason.ANCHOR_KICK:
-                  onLeaveSeat(event, false);
-                  break;
+  @Override
+  protected void initDataObserver() {
+    super.initDataObserver();
+    roomViewModel.currentSeatEvent.observe(
+        this,
+        event -> {
+          ALog.d(TAG, "initDataObserver currentSeatEvent,event:" + event);
+          switch (event.getReason()) {
+            case VoiceRoomSeat.Reason.ANCHOR_INVITE:
+            case VoiceRoomSeat.Reason.ANCHOR_APPROVE_APPLY:
+              onEnterSeat(event, false);
+              break;
+            case VoiceRoomSeat.Reason.ANCHOR_DENY_APPLY:
+              onSeatApplyDenied(false);
+              break;
+            case VoiceRoomSeat.Reason.LEAVE:
+              onLeaveSeat(event, true);
+              break;
+            case VoiceRoomSeat.Reason.ANCHOR_KICK:
+              onLeaveSeat(event, false);
+              break;
+          }
+        });
+    roomViewModel.currentSeatState.observe(
+        this,
+        new Observer<Integer>() {
+          @Override
+          public void onChanged(Integer integer) {
+            //观众断网重连也会走这个逻辑
+            ALog.d(TAG, "initDataObserver currentSeatState,integer:" + integer);
+            if (integer != VoiceRoomViewModel.CURRENT_SEAT_STATE_APPLYING) {
+              canShowTip = false;
+              if (cancelApplySeatDialog != null) {
+                cancelApplySeatDialog.dismiss();
               }
-            });
-    roomViewModel
-        .getCurrentSeatState()
-        .observe(
-            this,
-            new Observer<Integer>() {
-              @Override
-              public void onChanged(Integer integer) {
-                //观众断网重连也会走这个逻辑
-                ALog.d(TAG, "initDataObserver currentSeatState,integer:" + integer);
-                if (integer != VoiceRoomViewModel.CURRENT_SEAT_STATE_APPLYING) {
-                  canShowTip = false;
-                  if (cancelApplySeatDialog != null) {
-                    cancelApplySeatDialog.dismiss();
-                  }
-                }
-                updateAudioSwitchVisible(roomViewModel.isCurrentUserOnSeat());
-              }
-            });
+            }
+            updateAudioSwitchVisible(roomViewModel.isCurrentUserOnSeat());
+          }
+        });
 
-    roomViewModel
-        .getHostLeaveSeatData()
-        .observe(
-            this,
-            new Observer<Boolean>() {
-              @Override
-              public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                  leaveRoom();
-                }
-              }
-            });
+    roomViewModel.hostLeaveSeatData.observe(
+        this,
+        new Observer<Boolean>() {
+          @Override
+          public void onChanged(Boolean aBoolean) {
+            if (aBoolean) {
+              leaveRoom();
+            }
+          }
+        });
+
+    roomViewModel.currentSongChange.observe(
+        this,
+        song -> {
+          tvBackgroundMusic.startPlay(song, false);
+        });
+
+    roomViewModel.songDeletedEvent.observe(
+        this,
+        song -> {
+          tvBackgroundMusic.deleteSong(song);
+        });
   }
 
   private void watchNetWork() {
-    roomViewModel
-        .getNetData()
-        .observe(
-            this,
-            state -> {
-              if (state == VoiceRoomViewModel.NET_AVAILABLE) { // 网可用
-                if (networkErrorCount == ZERO_COUNT) {
-                  return;
-                }
-                onNetAvailable();
-              } else { // 不可用
-                onNetLost();
-                networkErrorCount++;
-              }
-            });
+    roomViewModel.netData.observe(
+        this,
+        state -> {
+          if (state == NEVoiceRoomUIConstants.NET_AVAILABLE) { // 网可用
+            if (networkErrorCount == ZERO_COUNT) {
+              return;
+            }
+            onNetAvailable();
+          } else { // 不可用
+            onNetLost();
+            networkErrorCount++;
+          }
+        });
   }
 
   @Override
   protected void setupBaseView() {
-    ivLeaveSeat = findViewById(R.id.iv_leave_seat);
-    ivLeaveSeat.setOnClickListener(view -> promptLeaveSeat());
     more.setVisibility(View.GONE);
     updateAudioSwitchVisible(false);
   }
@@ -386,9 +390,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   }
 
   private void updateAudioSwitchVisible(boolean visible) {
-    ivSettingSwitch.setVisibility(visible ? View.VISIBLE : View.GONE);
     ivLocalAudioSwitch.setVisibility(visible ? View.VISIBLE : View.GONE);
-    ivLeaveSeat.setVisibility(visible ? View.VISIBLE : View.GONE);
     more.setVisibility(visible ? View.VISIBLE : View.GONE);
     moreItems.get(MORE_ITEM_MICRO_PHONE).setVisible(visible);
     moreItems.get(MORE_ITEM_EAR_BACK).setVisible(visible);

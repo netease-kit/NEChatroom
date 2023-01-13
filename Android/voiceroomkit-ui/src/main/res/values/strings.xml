@@ -1,4 +1,3 @@
-<!--todo 旭军 翻译 -->
 <resources>
 <!--******************************************************************-->
     <string name="voiceroom_mic">Microphone</string>
@@ -52,7 +51,7 @@
     <string name="voiceroom_select_member">Select Member</string>
     <string name="voiceroom_apply_seat_num">%s \t Request to speak(%d)</string>
     <string name="voiceroom_pick_up_has_blank">Hide</string>
-    <string name="voiceroom_notice_tips">The app is used for demo purpose only. Commercial use is not allowed. A live stream can last 10 minutes with 10 participants.\n Grateful for the backing track provided by NetEase MMORPG A Chinese Ghost Story Online</string>
+    <string name="voiceroom_notice_tips">The app is used for demo purpose only. Commercial use is not allowed.</string>
     <string name="voiceroom_notice">Announcement</string>
     <string name="voiceroom_no_members">No Members</string>
     <string name="voiceroom_loading_fail">load fail</string>
@@ -70,9 +69,6 @@
     <string name="voiceroom_net_disconnected">The device gets disconnected</string>
     <string name="voiceroom_host_close_room_success">Room was dismissed</string>
 
-
-
-
     <string name="voiceroom_end_live_title">Are you sure you want to end the stream?</string>
     <string name="voiceroom_end_live_tips">End the live stream</string>
     <string name="voiceroom_kickout_seat_sure">Remove</string>
@@ -87,6 +83,8 @@
 
     <string name="voiceroom_start_live_error">Failed to start the audio room</string>
     <string name="voiceroom_join_live_error">Failed to join the audio room</string>
+    <string name="voiceroom_setting">setting</string>
+    <string name="voiceroom_audio_effect">effect</string>
 
     <string name="voiceroom_glow_stick">Glow stick</string>
     <string name="voiceroom_arrange">Arrange</string>
@@ -99,4 +97,5 @@
     <string name="voiceroom_donate">donate</string>
     <string name="voiceroom_count">count</string>
     <string name="voiceroom_audio_banned">You are banned,unable to operate!</string>
+    <string name="app_content_description_default"> </string>
 </resources>

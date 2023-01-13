@@ -60,8 +60,7 @@
     <string name="voiceroom_already_seat">已上麦</string>
     <string name="voiceroom_down_seat">已下麦</string>
     <string name="voiceroom_pick_up_has_blank">收起</string>
-    <string name="voiceroom_notice_tips">本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。
-    感谢网易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。</string>
+    <string name="voiceroom_notice_tips">本应用为示例产品，请勿商用。</string>
     <string name="voiceroom_notice">公告</string>
     <string name="voiceroom_no_members">暂无群成员</string>
     <string name="voiceroom_loading_fail">加载失败</string>
@@ -79,14 +78,13 @@
     <string name="voiceroom_net_disconnected">网络断开</string>
     <string name="voiceroom_host_close_room_success">房间解散成功</string>
 
-
-
     <string name="voiceroom_end_live_title">确认结束直播？</string>
     <string name="voiceroom_end_live_tips">请确认是否结束直播</string>
 
     <string name="voiceroom_start_live_error">开启语聊房失败</string>
     <string name="voiceroom_join_live_error">加入语聊房失败</string>
-
+    <string name="voiceroom_setting">设置</string>
+    <string name="voiceroom_audio_effect">音效</string>
 
     <string name="voiceroom_glow_stick">荧光棒</string>
     <string name="voiceroom_arrange">安排</string>
@@ -99,4 +97,5 @@
     <string name="voiceroom_donate">赠送了</string>
     <string name="voiceroom_count">个</string>
     <string name="voiceroom_audio_banned">已屏蔽，不能操作!</string>
+    <string name="app_content_description_default"> </string>
 </resources>

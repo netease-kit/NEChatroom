@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+
+    <ImageView
+        android:id="@+id/iv_pause"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:background="@drawable/order_pause"
+        android:layout_marginLeft="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+    <ImageView
+        android:id="@+id/iv_switch_song"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/order_switch_song"
+        android:layout_marginLeft="72dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/seekbar"
+        android:id="@+id/iv_volume"
+        android:layout_width="16dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/order_volume"
+        android:layout_height="16dp" />
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/order_seekbar_thumb_drawable"
+        android:maxHeight="4dp"
+        android:progressDrawable="@drawable/order_seekbar_progress_drawable"
+        android:layout_marginRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="10dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

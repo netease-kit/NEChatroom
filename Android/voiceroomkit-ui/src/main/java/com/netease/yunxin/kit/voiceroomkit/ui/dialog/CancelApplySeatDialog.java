@@ -5,9 +5,7 @@
 package com.netease.yunxin.kit.voiceroomkit.ui.dialog;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.FragmentManager;
-
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
 

@@ -11,8 +11,10 @@
     <string name="app_random">Random</string>
     <string name="app_open_room">Open Room</string>
     <string name="app_app_name">Live Audio Room</string>
+    <string name="app_listen_together">Listen Together</string>
     <string name="app_voiceroom">Voice Chat Room</string>
     <string name="app_voiceroom_desc_text">Voice chat room with 6-8 participants. Users can speak freely and talk about interesting topics.</string>
+    <string name="app_listen_together_desc_text">Listen together, talk together, stay together.</string>
     <string name="app_free_trial">Free Trial</string>
     <string name="app_data_center_switch_confirm_message">Are you sure you want to switch the data center? The app is required to restart to take effect.</string>
     <string name="app_yes">Yes</string>
@@ -41,6 +43,7 @@
     <string name="app_data_center_mainland">China</string>
     <string name="app_data_center_oversea">Out of China</string>
     <string name="app_room_list_empty">No room\nClick ”+“ to create a room</string>
-
+    <string name="app_empty_roomname_tips">The room theme cannot be empty</string>
+    <string name="app_room_not_exist">Room does not exist</string>
 
 </resources>
