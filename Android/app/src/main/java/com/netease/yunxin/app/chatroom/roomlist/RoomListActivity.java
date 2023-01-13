@@ -19,6 +19,8 @@ import com.netease.yunxin.app.chatroom.databinding.ActivityRoomListBinding;
 import com.netease.yunxin.app.chatroom.roomlist.adapter.VoiceRoomListAdapter;
 import com.netease.yunxin.app.chatroom.view.FooterView;
 import com.netease.yunxin.app.chatroom.view.HeaderView;
+import com.netease.yunxin.app.listentogether.Constants;
+import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState;
@@ -39,6 +41,7 @@ public class RoomListActivity extends BaseActivity
   private int tempPageNum = 1;
   private VoiceRoomListAdapter adapter;
   private GridLayoutManager layoutManager;
+  public int liveType = NELiveType.LIVE_TYPE_VOICE;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +49,12 @@ public class RoomListActivity extends BaseActivity
     binding = ActivityRoomListBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     paddingStatusBarHeight(binding.getRoot());
+    liveType = getIntent().getIntExtra(Constants.INTENT_LIVE_TYPE, NELiveType.LIVE_TYPE_VOICE);
+    if (liveType == NELiveType.LIVE_TYPE_VOICE) {
+      binding.tvTitle.setText(getString(R.string.app_chat));
+    } else if (liveType == NELiveType.LIVE_TYPE_TOGETHER_LISTEN) {
+      binding.tvTitle.setText(getString(R.string.app_listen_together));
+    }
     setEvent();
     init();
   }
@@ -61,6 +70,7 @@ public class RoomListActivity extends BaseActivity
     binding.ivCreateRoom.setOnClickListener(
         v -> {
           Intent intent = new Intent(this, CreateRoomActivity.class);
+          intent.putExtra(Constants.INTENT_LIVE_TYPE, liveType);
           startActivity(intent);
         });
     binding.refreshLayout.setRefreshHeader(new HeaderView(this));
@@ -70,7 +80,7 @@ public class RoomListActivity extends BaseActivity
   }
 
   private void init() {
-    adapter = new VoiceRoomListAdapter(this);
+    adapter = new VoiceRoomListAdapter(this, liveType);
     layoutManager = new GridLayoutManager(this, SPAN_COUNT);
     layoutManager.setSpanSizeLookup(new MySpanSizeLookup());
     binding.rvRoomList.setAdapter(adapter);
@@ -90,6 +100,7 @@ public class RoomListActivity extends BaseActivity
     NEVoiceRoomKit.getInstance()
         .getVoiceRoomList(
             NEVoiceRoomLiveState.Live,
+            liveType,
             tempPageNum,
             PAGE_SIZE,
             new NEVoiceRoomCallback<NEVoiceRoomList>() {
@@ -120,6 +131,7 @@ public class RoomListActivity extends BaseActivity
     NEVoiceRoomKit.getInstance()
         .getVoiceRoomList(
             NEVoiceRoomLiveState.Live,
+            liveType,
             tempPageNum,
             PAGE_SIZE,
             new NEVoiceRoomCallback<NEVoiceRoomList>() {

@@ -4,6 +4,7 @@
 
 package com.netease.yunxin.app.chatroom.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class FooterView extends LinearLayout implements RefreshFooter {
     tvFooter = findViewById(R.id.tv_footer_text);
   }
 
+  @SuppressLint("RestrictedApi")
   @Override
   public boolean setNoMoreData(boolean noMoreData) {
     this.noMoreData = noMoreData;
@@ -68,28 +70,35 @@ public class FooterView extends LinearLayout implements RefreshFooter {
     return SpinnerStyle.Translate;
   }
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void setPrimaryColors(int... colors) {}
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void onInitialized(@NonNull RefreshKernel kernel, int height, int maxDragHeight) {}
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void onMoving(
       boolean isDragging, float percent, int offset, int height, int maxDragHeight) {}
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void onReleased(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {}
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void onStartAnimator(
       @NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {}
 
+  @SuppressLint("RestrictedApi")
   @Override
   public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
     return 0;
   }
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void onHorizontalDrag(float percentX, int offsetX, int offsetMax) {}
 
@@ -98,6 +107,7 @@ public class FooterView extends LinearLayout implements RefreshFooter {
     return false;
   }
 
+  @SuppressLint("RestrictedApi")
   @Override
   public void onStateChanged(
       @NonNull RefreshLayout refreshLayout,

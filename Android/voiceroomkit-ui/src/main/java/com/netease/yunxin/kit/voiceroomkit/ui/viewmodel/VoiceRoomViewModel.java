@@ -8,22 +8,28 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.common.network.NetRequestCallback;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
+import com.netease.yunxin.kit.ordersong.core.NEOrderSongListener;
+import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
+import com.netease.yunxin.kit.ordersong.core.model.OrderSong;
+import com.netease.yunxin.kit.ordersong.core.model.Song;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.model.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
+import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.chatroom.ChatRoomMsgCreator;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.SeatHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeatEvent;
+import com.netease.yunxin.kit.voiceroomkit.ui.service.VoiceRoomService;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.SeatUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.SingleLiveEvent;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
@@ -38,25 +44,28 @@ public class VoiceRoomViewModel extends ViewModel {
   public static final int CURRENT_SEAT_STATE_IDLE = 0;
   public static final int CURRENT_SEAT_STATE_APPLYING = 1;
   public static final int CURRENT_SEAT_STATE_ON_SEAT = 2;
-  public static final int NET_AVAILABLE = 0; // 网络 可用
-  public static final int NET_LOST = 1; // 网络不可用
 
-  MutableLiveData<String> toastData = new MutableLiveData<>(); // toast
-  MutableLiveData<CharSequence> chatRoomMsgData = new MutableLiveData<>(); // 聊天列表数据
-  MutableLiveData<Integer> memberCountData = new MutableLiveData<>(); // 房间人数
-  MutableLiveData<NEVoiceRoomEndReason> errorData = new MutableLiveData<>(); // 错误信息
-  MutableLiveData<Integer> currentSeatState = new MutableLiveData<>(CURRENT_SEAT_STATE_IDLE);
-  MutableLiveData<List<VoiceRoomSeat>> onSeatListData =
+  public MutableLiveData<String> toastData = new MutableLiveData<>(); // toast
+  public MutableLiveData<CharSequence> chatRoomMsgData = new MutableLiveData<>(); // 聊天列表数据
+  public MutableLiveData<Integer> memberCountData = new MutableLiveData<>(); // 房间人数
+  public MutableLiveData<NEVoiceRoomEndReason> errorData = new MutableLiveData<>(); // 错误信息
+  public MutableLiveData<Integer> currentSeatState = new MutableLiveData<>(CURRENT_SEAT_STATE_IDLE);
+  public MutableLiveData<List<VoiceRoomSeat>> onSeatListData =
       new MutableLiveData<>(VoiceRoomUtils.createSeats());
-  MutableLiveData<List<VoiceRoomSeat>> applySeatListData = new MutableLiveData<>(); // 申请麦位列表
-  MutableLiveData<VoiceRoomSeatEvent> currentSeatEvent = new SingleLiveEvent<>(); // 当前操作的麦位
-  MutableLiveData<Integer> netData = new MutableLiveData<>();
-  MutableLiveData<NEVoiceRoomGiftModel> rewardData = new MutableLiveData<>();
-  MutableLiveData<Boolean> hostLeaveSeatData = new MutableLiveData<>();
+  public MutableLiveData<List<VoiceRoomSeat>> applySeatListData = new MutableLiveData<>(); // 申请麦位列表
+  public MutableLiveData<VoiceRoomSeatEvent> currentSeatEvent = new SingleLiveEvent<>(); // 当前操作的麦位
+  public MutableLiveData<Integer> netData = new MutableLiveData<>();
+  public MutableLiveData<NEVoiceRoomGiftModel> rewardData = new MutableLiveData<>();
+  public MutableLiveData<Boolean> hostLeaveSeatData = new MutableLiveData<>();
+  public MutableLiveData<Song> currentSongChange = new MutableLiveData<>();
+  public MutableLiveData<Song> songDeletedEvent = new MutableLiveData<>();
   // mute状态（观众主动操作的）
   private boolean isMute = false;
+  protected String roomUuid;
+  protected Song currentSong;
   private final NEVoiceRoomListenerAdapter listener =
       new NEVoiceRoomListenerAdapter() {
+
         @Override
         public void onReceiveGift(@NonNull NEVoiceRoomGiftModel rewardMsg) {
           super.onReceiveGift(rewardMsg);
@@ -195,55 +204,51 @@ public class VoiceRoomViewModel extends ViewModel {
         }
       };
 
-  public MutableLiveData<String> getToastData() {
-    return toastData;
-  }
+  NEOrderSongListener orderSongListener =
+      new NEOrderSongListener() {
 
-  public MutableLiveData<Integer> getNetData() {
-    return netData;
-  }
+        @Override
+        public void onSongOrdered(Song song) {
+          handleSongOrdered(song);
+        }
 
-  public MutableLiveData<CharSequence> getChatRoomMsgData() {
-    return chatRoomMsgData;
-  }
+        @Override
+        public void onSongDeleted(Song song) {
+          handleSongDeleted(song);
+        }
 
-  public MutableLiveData<Integer> getMemberCountData() {
-    return memberCountData;
-  }
+        @Override
+        public void onOrderedSongListChanged() {}
 
-  public MutableLiveData<NEVoiceRoomEndReason> getErrorData() {
-    return errorData;
-  }
+        @Override
+        public void onSongSwitched(Song song) {
+          handleSongSwitchedEvent(song);
+        }
 
-  public MutableLiveData<Integer> getCurrentSeatState() {
-    return currentSeatState;
-  }
+        @Override
+        public void onSongStarted(Song song) {
+          currentSong = song;
+          currentSongChange.postValue(song);
+        }
 
-  public MutableLiveData<List<VoiceRoomSeat>> getOnSeatListData() {
-    return onSeatListData;
-  }
+        @Override
+        public void onSongPaused(Song song) {}
 
-  public MutableLiveData<List<VoiceRoomSeat>> getApplySeatListData() {
-    return applySeatListData;
-  }
+        @Override
+        public void onSongResumed(Song song) {}
+      };
 
-  public LiveData<VoiceRoomSeatEvent> getCurrentSeatEvent() {
-    return currentSeatEvent;
-  }
+  protected void handleSongOrdered(Song song) {}
 
-  public MutableLiveData<NEVoiceRoomGiftModel> getRewardData() {
-    return rewardData;
-  }
+  protected void handleSongDeleted(Song song) {}
 
-  public MutableLiveData<Boolean> getHostLeaveSeatData() {
-    return hostLeaveSeatData;
-  }
+  protected void handleSongSwitchedEvent(Song song) {}
 
   void updateRoomMemberCount() {
     memberCountData.postValue(NEVoiceRoomKit.getInstance().getAllMemberList().size());
   }
 
-  private NetworkUtils.NetworkStateListener networkStateListener =
+  private final NetworkUtils.NetworkStateListener networkStateListener =
       new NetworkUtils.NetworkStateListener() {
         private boolean isFirst = true;
 
@@ -255,28 +260,36 @@ public class VoiceRoomViewModel extends ViewModel {
             getSeatRequestList();
           }
           isFirst = false;
-          netData.postValue(NET_AVAILABLE);
+          netData.postValue(NEVoiceRoomUIConstants.NET_AVAILABLE);
         }
 
         @Override
         public void onLost(NetworkInfo networkInfo) {
           ALog.i(TAG, "onNetworkUnavailable");
           isFirst = false;
-          netData.postValue(NET_LOST);
+          netData.postValue(NEVoiceRoomUIConstants.NET_LOST);
         }
       };
 
-  public void initDataOnJoinRoom() {
-    NEVoiceRoomKit.getInstance().addVoiceRoomListener(listener);
+  public void initDataOnJoinRoom(String roomUuid) {
+    this.roomUuid = roomUuid;
+    initListeners();
     updateRoomMemberCount();
+    queryPlayingSongInfo(roomUuid);
+  }
+
+  private void initListeners() {
+    NEOrderSongService.INSTANCE.addListener(orderSongListener);
+    NEVoiceRoomKit.getInstance().addVoiceRoomListener(listener);
     NetworkUtils.registerNetworkStatusChangedListener(networkStateListener);
   }
 
   @Override
   protected void onCleared() {
-    super.onCleared();
+    NEOrderSongService.INSTANCE.removeListener(orderSongListener);
     NetworkUtils.unregisterNetworkStatusChangedListener(networkStateListener);
     NEVoiceRoomKit.getInstance().removeVoiceRoomListener(listener);
+    super.onCleared();
   }
 
   public void getSeatRequestList() {
@@ -326,12 +339,37 @@ public class VoiceRoomViewModel extends ViewModel {
             });
   }
 
+  public void queryPlayingSongInfo(String roomUuid) {
+    VoiceRoomService.getInstance()
+        .queryPlayingSongInfo(
+            new NetRequestCallback<OrderSong>() {
+
+              @Override
+              public void success(@Nullable OrderSong info) {
+                ALog.i(TAG, "queryPlayingSongInfo info = " + info);
+                if (info != null) {
+                  Song song = new Song();
+                  song.setOrderId(info.orderId);
+                  song.setSongId(info.songId);
+                  song.setSongName(info.songName);
+                  currentSongChange.postValue(song);
+                }
+              }
+
+              @Override
+              public void error(int code, @Nullable String msg) {
+                ALog.e(TAG, "queryPlayingSongInfo failed code = " + code + " msg = " + msg);
+              }
+            });
+  }
+
   private String getString(@StringRes int resId) {
     return NEVoiceRoomUI.getInstance().getApplication().getString(resId);
   }
 
   public boolean isCurrentUserOnSeat() {
-    return currentSeatState.getValue() == CURRENT_SEAT_STATE_ON_SEAT;
+    return (currentSeatState.getValue() != null
+        && currentSeatState.getValue() == CURRENT_SEAT_STATE_ON_SEAT);
   }
 
   public boolean isUserOnSeat(String account) {

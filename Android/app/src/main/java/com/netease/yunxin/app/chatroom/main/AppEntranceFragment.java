@@ -15,7 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.netease.yunxin.app.chatroom.R;
+import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.roomlist.RoomListActivity;
+import com.netease.yunxin.app.listentogether.Constants;
+import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.FunctionAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.fragment.BaseFragment;
 import java.util.ArrayList;
@@ -44,15 +47,26 @@ public class AppEntranceFragment extends BaseFragment {
     List<FunctionAdapter.FunctionItem> list = new ArrayList<>();
     list.add(
         new FunctionAdapter.FunctionItem(
-            R.drawable.icon_voice_room,
+            R.drawable.video_call_icon,
             getString(R.string.app_voiceroom),
             getString(R.string.app_voiceroom_desc_text),
-            new Runnable() {
-              @Override
-              public void run() {
-                startActivity(new Intent(getActivity(), RoomListActivity.class));
-              }
+            () -> {
+              Intent intent = new Intent(getActivity(), RoomListActivity.class);
+              intent.putExtra(Constants.INTENT_LIVE_TYPE, NELiveType.LIVE_TYPE_VOICE);
+              startActivity(intent);
             }));
+    if (!AppConfig.isOversea()) {
+      list.add(
+          new FunctionAdapter.FunctionItem(
+              R.drawable.icon_listen_together,
+              getString(R.string.app_listen_together),
+              getString(R.string.app_listen_together_desc_text),
+              () -> {
+                Intent intent = new Intent(getActivity(), RoomListActivity.class);
+                intent.putExtra(Constants.INTENT_LIVE_TYPE, NELiveType.LIVE_TYPE_TOGETHER_LISTEN);
+                startActivity(intent);
+              }));
+    }
     rvFunctionList.setAdapter(new FunctionAdapter(getContext(), list));
   }
 }

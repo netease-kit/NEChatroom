@@ -7,15 +7,15 @@ package com.netease.yunxin.kit.voiceroomkit.ui.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import androidx.lifecycle.ViewModelProvider;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
+import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomMoreDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
@@ -26,13 +26,13 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.SeatHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomUser;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.ClickUtils;
+import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.AnchorVoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.OnItemClickListener;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import kotlin.Unit;
 
 /** 主播页 */
@@ -43,21 +43,42 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   private TextView tvApplyHint;
 
   private SeatApplyDialog seatApplyDialog;
+  public static final String ENV_KEY = "isOverSea";
+  private boolean isOverSeaEnv = false;
 
   @Override
   protected int getContentViewID() {
-    return R.layout.activity_live;
+    return R.layout.activity_anchor;
   }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     netErrorView = findViewById(R.id.view_net_error);
+    handleOrderSongUI();
     createMoreItems();
     enterRoom();
     audioPlay.checkMusicFiles();
-    initDataObserver();
     watchNetWork();
+  }
+
+  private void handleOrderSongUI() {
+    isOverSeaEnv = getIntent().getBooleanExtra(AnchorActivity.ENV_KEY, false);
+    if (isOverSeaEnv) {
+      ivOrderSong.setVisibility(View.GONE);
+    } else {
+      ivOrderSong.setVisibility(View.VISIBLE);
+    }
+  }
+
+  @Override
+  protected void initViews() {
+    super.initViews();
+  }
+
+  @Override
+  protected VoiceRoomViewModel getRoomViewModel() {
+    return new ViewModelProvider(this).get(AnchorVoiceRoomViewModel.class);
   }
 
   private void createMoreItems() {
@@ -78,35 +99,39 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             new ChatRoomMoreDialog.MoreItem(
                 VoiceRoomBaseActivity.MORE_ITEM_AUDIO,
                 R.drawable.icon_room_more_audio,
-                getString(R.string.voiceroom_mixing)),
+                getString(R.string.voiceroom_audio_effect)),
             new ChatRoomMoreDialog.MoreItem(
                 VoiceRoomBaseActivity.MORE_ITEM_FINISH,
                 R.drawable.icon_room_more_finish,
                 getString(R.string.voiceroom_end)));
   }
 
-  private void initDataObserver() {
-    roomViewModel
-        .getApplySeatListData()
-        .observe(
-            this,
-            applySeats -> {
-              onApplySeats(applySeats);
-            });
+  @Override
+  protected void initDataObserver() {
+    super.initDataObserver();
+    roomViewModel.applySeatListData.observe(this, this::onApplySeats);
+    roomViewModel.currentSongChange.observe(
+        this,
+        song -> {
+          tvBackgroundMusic.startPlay(song, true);
+        });
+    roomViewModel.songDeletedEvent.observe(
+        this,
+        song -> {
+          tvBackgroundMusic.deleteSong(song);
+        });
   }
 
   private void watchNetWork() {
-    roomViewModel
-        .getNetData()
-        .observe(
-            this,
-            state -> {
-              if (state == VoiceRoomViewModel.NET_AVAILABLE) { // 网可用
-                onNetAvailable();
-              } else { // 不可用
-                onNetLost();
-              }
-            });
+    roomViewModel.netData.observe(
+        this,
+        state -> {
+          if (state == NEVoiceRoomUIConstants.NET_AVAILABLE) { // 网可用
+            onNetAvailable();
+          } else { // 不可用
+            onNetLost();
+          }
+        });
   }
 
   @Override
@@ -127,10 +152,12 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
           AnchorActivity.this, getString(R.string.voiceroom_applying_now));
       return;
     }
-    OnItemClickListener<String> onItemClickListener =
-        item -> {
-          onSeatAction(seat, item);
-        };
+
+    if (ClickUtils.isFastClick()) {
+      return;
+    }
+
+    OnItemClickListener<String> onItemClickListener = item -> onSeatAction(seat, item);
     List<String> items = new ArrayList<>();
     ListItemDialog itemDialog = new ListItemDialog(AnchorActivity.this);
     switch (seat.getStatus()) {
@@ -190,9 +217,11 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   @NonNull
   @Override
   protected List<ChatRoomMoreDialog.MoreItem> getMoreItems() {
-    moreItems
-        .get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE)
-        .setEnable(NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn());
+    if (NEVoiceRoomKit.getInstance().getLocalMember() != null) {
+      moreItems
+          .get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE)
+          .setEnable(NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn());
+    }
     moreItems
         .get(VoiceRoomBaseActivity.MORE_ITEM_EAR_BACK)
         .setEnable(NEVoiceRoomKit.getInstance().isEarbackEnable());
@@ -415,12 +444,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
 
   private void inviteSeat0(VoiceRoomSeat seat) {
     inviteIndex = seat.getSeatIndex();
-    new MemberSelectDialog(
-            this,
-            member -> {
-              inviteSeat(member);
-            })
-        .show();
+    new MemberSelectDialog(this, this::inviteSeat).show();
   }
 
   private void inviteSeat(@NonNull VoiceRoomUser member) {

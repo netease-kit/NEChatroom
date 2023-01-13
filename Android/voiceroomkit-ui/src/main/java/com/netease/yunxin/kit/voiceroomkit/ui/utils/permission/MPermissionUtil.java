@@ -8,6 +8,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.fragment.app.Fragment;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.permission.annotation.OnMPermissionDenied;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.permission.annotation.OnMPermissionGranted;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public final class MPermissionUtil {
 
+  @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.M)
   public static boolean isOverMarshmallow() {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
   }

@@ -8,12 +8,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import com.netease.yunxin.app.chatroom.Constants;
+import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.main.MainActivity;
 import com.netease.yunxin.app.chatroom.main.SplashActivity;
 import com.netease.yunxin.app.chatroom.main.WebViewActivity;
 import com.netease.yunxin.app.chatroom.user.AppAboutActivity;
 import com.netease.yunxin.app.chatroom.user.EditUserInfoActivity;
 import com.netease.yunxin.app.chatroom.user.UserInfoActivity;
+import com.netease.yunxin.app.listentogether.activity.ListenTogetherAnchorActivity;
+import com.netease.yunxin.app.listentogether.activity.ListenTogetherAudienceActivity;
+import com.netease.yunxin.app.listentogether.model.ListenTogetherRoomModel;
+import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomInfo;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
@@ -70,6 +75,7 @@ public class NavUtils {
     roomModel.setAvatar(AuthorManager.INSTANCE.getUserInfo().getAvatar());
     Intent intent = new Intent(context, AnchorActivity.class);
     intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, roomModel);
+    intent.putExtra(AnchorActivity.ENV_KEY, AppConfig.getConfigId() == 75);
     context.startActivity(intent);
   }
 
@@ -82,6 +88,38 @@ public class NavUtils {
     roomModel.setNick(AuthorManager.INSTANCE.getUserInfo().getNickname());
     roomModel.setAvatar(AuthorManager.INSTANCE.getUserInfo().getAvatar());
     Intent intent = new Intent(context, AudienceActivity.class);
+    intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, roomModel);
+    context.startActivity(intent);
+  }
+
+  public static void toListenTogetherRoomPage(Context context, NEListenTogetherRoomInfo roomInfo) {
+    ListenTogetherRoomModel roomModel = new ListenTogetherRoomModel();
+    roomModel.setLiveRecordId(roomInfo.getLiveModel().getLiveRecordId());
+    roomModel.setRoomUuid(roomInfo.getLiveModel().getRoomUuid());
+    roomModel.setRole(NEVoiceRoomUIConstants.ROLE_HOST);
+    roomModel.setRoomName(roomInfo.getLiveModel().getLiveTopic());
+    roomModel.setNick(AuthorManager.INSTANCE.getUserInfo().getNickname());
+    roomModel.setAvatar(AuthorManager.INSTANCE.getUserInfo().getAvatar());
+    roomModel.setAnchorUserUuid(roomInfo.getAnchor().getAccount());
+    roomModel.setAnchorNick(roomInfo.getAnchor().getNick());
+    roomModel.setAnchorAvatar(roomInfo.getAnchor().getAvatar());
+    Intent intent = new Intent(context, ListenTogetherAnchorActivity.class);
+    intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, roomModel);
+    context.startActivity(intent);
+  }
+
+  public static void toListenTogetherAudiencePage(Context context, NEVoiceRoomInfo roomInfo) {
+    ListenTogetherRoomModel roomModel = new ListenTogetherRoomModel();
+    roomModel.setLiveRecordId(roomInfo.getLiveModel().getLiveRecordId());
+    roomModel.setRoomUuid(roomInfo.getLiveModel().getRoomUuid());
+    roomModel.setRole(NEVoiceRoomUIConstants.ROLE_AUDIENCE);
+    roomModel.setRoomName(roomInfo.getLiveModel().getLiveTopic());
+    roomModel.setNick(AuthorManager.INSTANCE.getUserInfo().getNickname());
+    roomModel.setAvatar(AuthorManager.INSTANCE.getUserInfo().getAvatar());
+    roomModel.setAnchorUserUuid(roomInfo.getAnchor().getAccount());
+    roomModel.setAnchorNick(roomInfo.getAnchor().getNick());
+    roomModel.setAnchorAvatar(roomInfo.getAnchor().getAvatar());
+    Intent intent = new Intent(context, ListenTogetherAudienceActivity.class);
     intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, roomModel);
     context.startActivity(intent);
   }

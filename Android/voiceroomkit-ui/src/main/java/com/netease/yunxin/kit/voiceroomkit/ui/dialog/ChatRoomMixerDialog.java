@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
-
+import com.netease.yunxin.kit.common.utils.DeviceUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
@@ -59,6 +58,10 @@ public class ChatRoomMixerDialog extends BottomBaseDialog {
     earBackSwitch.setChecked(NEVoiceRoomKit.getInstance().isEarbackEnable());
     earBackSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
+          if (!DeviceUtils.hasEarBack(getContext())) {
+            buttonView.setChecked(false);
+            return;
+          }
           if (isChecked) {
             NEVoiceRoomKit.getInstance().enableEarback(earBack);
           } else {

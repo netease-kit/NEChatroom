@@ -10,6 +10,9 @@ import androidx.annotation.Nullable;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.utils.AppUtils;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherCallback;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKit;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKitConfig;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.AuthorConfig;
 import com.netease.yunxin.kit.login.model.EventType;
@@ -37,6 +40,7 @@ public class VoiceRoomApplication extends Application {
     initAuth();
     initVoiceRoomUI();
     initVoiceRoomKit(this, AppConfig.getAppKey());
+    initListenTogetherKit(this, AppConfig.getAppKey());
     IconFontUtil.getInstance().init(this);
   }
 
@@ -61,6 +65,7 @@ public class VoiceRoomApplication extends Application {
             if (loginEvent.getEventType() == EventType.TYPE_LOGOUT) {
               ALog.d(TAG, "loginEvent:" + loginEvent.getEventType());
               NEVoiceRoomKit.getInstance().logout(null);
+              NEListenTogetherKit.getInstance().logout(null);
             }
           }
         });
@@ -85,6 +90,29 @@ public class VoiceRoomApplication extends Application {
               @Override
               public void onFailure(int code, @Nullable String msg) {
                 ALog.i(TAG, "initVoiceRoomKit failed");
+              }
+            });
+  }
+
+  private void initListenTogetherKit(Context context, String appKey) {
+    ALog.i(TAG, "initListenTogetherKit");
+    Map<String, String> extras = new HashMap<>();
+    if (AppConfig.isOversea()) {
+      extras.put("serverUrl", "oversea");
+    }
+    NEListenTogetherKit.getInstance()
+        .initialize(
+            context,
+            new NEListenTogetherKitConfig(appKey, extras),
+            new NEListenTogetherCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.i(TAG, "initListenTogetherKit success");
+              }
+
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.i(TAG, "initListenTogetherKit failed");
               }
             });
   }

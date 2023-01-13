@@ -6,9 +6,7 @@ package com.netease.yunxin.kit.voiceroomkit.ui.dialog;
 
 import android.app.Activity;
 import android.view.View;
-
 import androidx.annotation.NonNull;
-
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 
 /** Created by luc on 2020/12/3. */

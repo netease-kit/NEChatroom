@@ -39,13 +39,18 @@ android {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("com.google.android.material:material:1.5.0")
+    implementation(project(":ordersong"))
     implementation(project(":voiceroomkit-ui"))
+    implementation(project(":listentogetherkit"))
+    implementation(project(":listentogetherkit-ui"))
     implementation("com.netease.yunxin.kit.common:common-image:1.1.6")
-    implementation("com.netease.yunxin.kit.common:common-ui:1.1.8")
+    implementation("com.netease.yunxin.kit.common:common-ui:1.1.13")
      implementation("com.netease.yunxin.kit.auth:auth-yunxin-login:1.0.4-rc01")
-    implementation("com.netease.yunxin.kit:alog:1.0.2")
+    implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation("com.blankj:utilcodex:1.30.6")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
     implementation("com.scwang.smart:refresh-layout-kernel:2.0.1")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.3")
+    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.5")
+    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.5.0")
+
 }

@@ -6,15 +6,24 @@ package com.netease.yunxin.app.chatroom.roomlist.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.databinding.ItemVoiceRoomListBinding;
 import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.common.image.ImageLoader;
+import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherCallback;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKit;
+import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomInfo;
+import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.ClickUtils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +31,14 @@ import java.util.List;
 public class VoiceRoomListAdapter
     extends RecyclerView.Adapter<VoiceRoomListAdapter.VoiceRoomHolder> {
 
-  private Context context;
-  private List<NEVoiceRoomInfo> roomInfoList;
+  private final Context context;
+  private final List<NEVoiceRoomInfo> roomInfoList;
+  private int liveType;
+  private static final int ROOM_MAX_AUDIENCE_COUNT = 1;
 
-  public VoiceRoomListAdapter(Context context) {
+  public VoiceRoomListAdapter(Context context, int liveType) {
     this.context = context;
+    this.liveType = liveType;
     roomInfoList = new ArrayList<>();
   }
 
@@ -50,7 +62,7 @@ public class VoiceRoomListAdapter
   public VoiceRoomHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     ItemVoiceRoomListBinding binding =
         ItemVoiceRoomListBinding.inflate(LayoutInflater.from(context), parent, false);
-    return new VoiceRoomHolder(binding, context);
+    return new VoiceRoomHolder(binding, context, liveType);
   }
 
   @Override
@@ -66,13 +78,15 @@ public class VoiceRoomListAdapter
 
   public static class VoiceRoomHolder extends RecyclerView.ViewHolder {
 
-    private ItemVoiceRoomListBinding binding;
-    private Context context;
+    private final ItemVoiceRoomListBinding binding;
+    private final Context context;
+    private int liveType;
 
-    VoiceRoomHolder(ItemVoiceRoomListBinding binding, Context context) {
+    VoiceRoomHolder(ItemVoiceRoomListBinding binding, Context context, int liveType) {
       super(binding.getRoot());
       this.binding = binding;
       this.context = context;
+      this.liveType = liveType;
     }
 
     public void setData(NEVoiceRoomInfo info) {
@@ -82,11 +96,57 @@ public class VoiceRoomListAdapter
           .roundedCornerCenterCrop(SizeUtils.dp2px(4))
           .into(binding.ivChatRoomBg);
       binding.tvChatRoomName.setText(info.getLiveModel().getLiveTopic());
-      binding.tvChatRoomMemberNum.setText(
-          getCurrentCount(
-              info.getLiveModel().getAudienceCount() + info.getLiveModel().getOnSeatCount()));
       binding.tvChatRoomAnchorName.setText(info.getAnchor().getNick());
-      binding.getRoot().setOnClickListener(v -> NavUtils.toVoiceRoomAudiencePage(context, info));
+      int audienceCount = 0;
+      if (info.getLiveModel().getAudienceCount() != null) {
+        audienceCount = info.getLiveModel().getAudienceCount();
+      }
+      if (liveType == NELiveType.LIVE_TYPE_TOGETHER_LISTEN) {
+        binding.ivType.setVisibility(View.VISIBLE);
+      } else {
+        binding.ivType.setVisibility(View.GONE);
+      }
+      binding.tvChatRoomMemberNum.setText(getCurrentCount(audienceCount + 1));
+      binding
+          .getRoot()
+          .setOnClickListener(
+              v -> {
+                if (ClickUtils.isFastClick()) {
+                  return;
+                }
+                if (NetworkUtils.isConnected()) {
+                  if (info.getLiveModel().getLiveType() == NELiveType.LIVE_TYPE_TOGETHER_LISTEN) {
+                    NEListenTogetherKit.getInstance()
+                        .getRoomInfo(
+                            info.getLiveModel().getLiveRecordId(),
+                            new NEListenTogetherCallback<NEListenTogetherRoomInfo>() {
+                              @Override
+                              public void onSuccess(
+                                  @Nullable NEListenTogetherRoomInfo neVoiceRoomInfo) {
+                                if (neVoiceRoomInfo.getLiveModel() != null
+                                    && neVoiceRoomInfo.getLiveModel().getAudienceCount()
+                                        >= ROOM_MAX_AUDIENCE_COUNT) {
+                                  ToastUtils.INSTANCE.showShortToast(
+                                      context, context.getString(R.string.listen_join_live_error));
+                                } else {
+                                  NavUtils.toListenTogetherAudiencePage(context, info);
+                                }
+                              }
+
+                              @Override
+                              public void onFailure(int code, @Nullable String msg) {
+                                ToastUtils.INSTANCE.showShortToast(
+                                    context, context.getString(R.string.app_room_not_exist));
+                              }
+                            });
+                  } else {
+                    NavUtils.toVoiceRoomAudiencePage(context, info);
+                  }
+                } else {
+                  ToastUtils.INSTANCE.showShortToast(
+                      context, context.getString(R.string.common_network_error));
+                }
+              });
     }
 
     private String getCurrentCount(int count) {

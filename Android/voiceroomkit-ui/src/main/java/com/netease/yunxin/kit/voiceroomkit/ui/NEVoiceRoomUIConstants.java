@@ -7,4 +7,6 @@ public class NEVoiceRoomUIConstants {
   public static final String INTENT_ROOM_MODEL = "intent_room_model";
   public static final String ROLE_HOST = "host";
   public static final String ROLE_AUDIENCE = "audience";
+  public static final int NET_AVAILABLE = 0; // 网络 可用
+  public static final int NET_LOST = 1; // 网络不可用
 }

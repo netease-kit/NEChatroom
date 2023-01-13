@@ -17,7 +17,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption;
-import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomAudioDialog;
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcAudioStreamType;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.CommonUtil;
 import java.io.File;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
   private static final String MUSIC3 = "music3.mp3";
   private static final String EFFECT1 = "effect1.wav";
   private static final String EFFECT2 = "effect2.wav";
-  private List<ChatRoomAudioDialog.MusicItem> audioMixingMusicInfos;
+  private List<MusicItem> audioMixingMusicInfos;
 
   public AudioPlayHelper(Context context) {
     this.context = context;
@@ -115,16 +115,16 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
    *
    * @param mediaUri 文件路径
    */
-  private ChatRoomAudioDialog.MusicItem getMusicInfo(String order, String mediaUri) {
+  private MusicItem getMusicInfo(String order, String mediaUri) {
     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
     mediaMetadataRetriever.setDataSource(mediaUri);
     String name = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
     String author =
         mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-    return new ChatRoomAudioDialog.MusicItem(order, name, author);
+    return new MusicItem(order, name, author);
   }
 
-  public List<ChatRoomAudioDialog.MusicItem> getAudioMixingMusicInfos() {
+  public List<MusicItem> getAudioMixingMusicInfos() {
     return audioMixingMusicInfos;
   }
 
@@ -190,7 +190,16 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
       String path = effectPaths[index];
       int effectId = effectIndexToEffectId(index);
       NEVoiceRoomCreateAudioEffectOption option =
-          new NEVoiceRoomCreateAudioEffectOption(path, 1, true, effectVolume, true, effectVolume);
+          new NEVoiceRoomCreateAudioEffectOption(
+              path,
+              1,
+              true,
+              effectVolume,
+              true,
+              effectVolume,
+              0,
+              100,
+              NEVoiceRoomRtcAudioStreamType.NERtcAudioStreamTypeMain);
       NEVoiceRoomKit.getInstance().stopEffect(effectId);
       NEVoiceRoomKit.getInstance().playEffect(effectId, option);
     }
@@ -325,5 +334,37 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
 
     /** 伴音播放完成 */
     void onAudioMixingPlayFinish();
+  }
+
+  public static class MusicItem {
+    private final String order;
+    private final String name;
+    private final String singer;
+
+    public MusicItem(String order, String name, String singer) {
+      this.order = order;
+      this.name = name;
+      this.singer = singer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      MusicItem musicItem = (MusicItem) o;
+
+      if (!order.equals(musicItem.order)) return false;
+      if (!name.equals(musicItem.name)) return false;
+      return singer.equals(musicItem.singer);
+    }
+
+    @Override
+    public int hashCode() {
+      int result = order.hashCode();
+      result = 31 * result + name.hashCode();
+      result = 31 * result + singer.hashCode();
+      return result;
+    }
   }
 }

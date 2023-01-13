@@ -5,8 +5,6 @@
 package com.netease.yunxin.app.chatroom;
 
 public class Constants {
-  public static final int TYPE_VIEW_TITLE = 0;
-  public static final int TYPE_VIEW_CONTENT = 1;
 
   public static final String INTENT_KEY_TITLE = "intent_key_title";
 

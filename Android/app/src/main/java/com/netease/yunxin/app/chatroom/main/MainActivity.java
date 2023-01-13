@@ -11,15 +11,18 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.app.chatroom.Constants;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.activity.BaseActivity;
+import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.databinding.ActivityMainBinding;
 import com.netease.yunxin.app.chatroom.main.pager.MainPagerAdapter;
 import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.copyrightedmedia.api.SongScene;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherCallback;
+import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKit;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.UserInfo;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
+import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.voiceroomkit.ui.statusbar.StatusBarConfig;
 import java.util.Objects;
 import kotlin.Unit;
@@ -115,15 +118,19 @@ public class MainActivity extends BaseActivity {
       ALog.d(TAG, "login but userInfo.getAccessToken() == null");
       return;
     }
-    NEVoiceRoomKit.getInstance()
+    NEListenTogetherKit.getInstance()
         .login(
             Objects.requireNonNull(userInfo.getAccountId()),
             Objects.requireNonNull(userInfo.getAccessToken()),
-            new NEVoiceRoomCallback<Unit>() {
+            new NEListenTogetherCallback<Unit>() {
 
               @Override
               public void onSuccess(Unit unit) {
                 ALog.d(TAG, "VoiceRoomKit login success");
+                String serverUrl = "";
+                NEOrderSongService.INSTANCE.initialize(
+                    MainActivity.this.getApplicationContext(), AppConfig.getAppKey(), serverUrl);
+                NEOrderSongService.INSTANCE.setSongScene(SongScene.TYPE_LISTENING_TO_MUSIC);
               }
 
               @Override
