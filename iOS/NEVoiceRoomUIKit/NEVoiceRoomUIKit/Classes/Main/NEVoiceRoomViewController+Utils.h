@@ -30,6 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)fetchPitchContentWithSongId:(NSString *)songId channel:(SongChannel)channel;
 - (NSString *)fetchOriginalFilePathWithSongId:(NSString *)songId channel:(SongChannel)channel;
 - (NSString *)fetchAccompanyFilePathWithSongId:(NSString *)songId channel:(SongChannel)channel;
+
+/// 更新礼物栏麦位信息
+- (void)updateGiftAnchorSeat:(NEVoiceRoomSeatItem *)anchorSeat;
+- (void)updateGiftOtherDatas:(NSArray<NEVoiceRoomSeatItem *> *)otherDatas;
+// 更新房间信息
+- (void)updateRoomInfo;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -214,7 +214,7 @@
 - (UIButton *)randomThemeButton {
   if (!_randomThemeButton) {
     _randomThemeButton = [[UIButton alloc] init];
-    [_randomThemeButton setBackgroundImage:[UIImage voiceRoom_imageNamed:@"createRoom_randomIcon"]
+    [_randomThemeButton setBackgroundImage:[UIImage nevoiceRoom_imageNamed:@"createRoom_randomIcon"]
                                   forState:UIControlStateNormal];
     [_randomThemeButton addTarget:self
                            action:@selector(createRandomRoomName)

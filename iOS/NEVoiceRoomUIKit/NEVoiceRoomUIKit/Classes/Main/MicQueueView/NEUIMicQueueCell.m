@@ -15,12 +15,14 @@
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
+    [self.contentView addSubview:self.lottieView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.connectBtn];
     [self.contentView addSubview:self.avatar];
     [self.contentView addSubview:self.smallIcon];
     [self.contentView addSubview:self.singIco];
     [self.contentView addSubview:self.loadingIco];
+    [self.contentView addSubview:self.giftLabal];
   }
   return self;
 }
@@ -33,6 +35,14 @@
 - (void)stopSoundAnimation {
   [_connectBtn stopCustomAnimation];
   _connectBtn.info = nil;
+}
+
+- (void)startSpeakAnimation {
+  [self.lottieView play];
+}
+
+- (void)stopSpeakAnimation {
+  [self.lottieView stop];
 }
 
 - (void)refresh:(NEVoiceRoomSeatItem *)micInfo {
@@ -61,13 +71,42 @@
     [self.smallIcon setImage:[NEVoiceRoomUI ne_imageName:@"mic_shield_ico"]];
   } else {
     if (anchorMember.isAudioOn) {
-      [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_open_ico"]];
+      [self.smallIcon setImage:[UIImage nevoiceRoom_imageNamed:@"mic_open_ico"]];
       self.smallIcon.hidden = NO;
     } else {
-      [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_close_ico"]];
+      [self.smallIcon setImage:[UIImage nevoiceRoom_imageNamed:@"mic_close_ico"]];
       self.smallIcon.hidden = NO;
     }
   }
+}
+
+- (void)updateGiftLabel:(NSString *)title {
+  if (!title || [title isEqualToString:@"0"]) {
+    // 1.初始化富文本对象
+    NSMutableAttributedString *attributedString =
+        [[NSMutableAttributedString alloc] initWithString:@""];
+    self.giftLabal.attributedText = attributedString;
+    return;
+  }
+  if (title.intValue > 99999) {
+    title = @"99999+";
+  }
+  title = [NSString stringWithFormat:@" %@", title];
+  UIFont *font = [UIFont systemFontOfSize:10];
+  // 1.初始化富文本对象
+  NSMutableAttributedString *attributedString =
+      [[NSMutableAttributedString alloc] initWithString:title];
+  // 2.字体属性
+  [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, title.length)];
+  // 3.初始化NSTextAttachment对象
+  NSTextAttachment *attchment = [[NSTextAttachment alloc] init];
+  attchment.image = [NEVoiceRoomUI ne_imageName:@"gift_icon"];                 // 设置图片
+  attchment.bounds = CGRectMake(0, round(font.capHeight - 10) / 2.0, 10, 10);  // 设置frame
+  // 4.创建带有图片的富文本
+  NSAttributedString *string =
+      [NSAttributedString attributedStringWithAttachment:(NSTextAttachment *)(attchment)];
+  [attributedString insertAttributedString:string atIndex:0];  // 插入到第几个下标
+  self.giftLabal.attributedText = attributedString;
 }
 
 /// 刷新观众麦位信息

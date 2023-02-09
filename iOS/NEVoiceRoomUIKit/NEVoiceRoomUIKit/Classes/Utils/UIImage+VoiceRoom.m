@@ -8,7 +8,7 @@
 
 @implementation UIImage (VoiceRoom)
 
-+ (UIImage *)voiceRoom_imageNamed:(NSString *)name {
++ (UIImage *)nevoiceRoom_imageNamed:(NSString *)name {
   return [NEVoiceRoomUI ne_imageName:name];
 
   NSString *path = [[NSBundle mainBundle]

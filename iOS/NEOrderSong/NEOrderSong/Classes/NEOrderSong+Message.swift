@@ -26,17 +26,17 @@ public extension NEOrderSong {
                            userUuid: userUuid,
                            commandId: commandId,
                            data: data) { code, msg, _ in
-        if code == 0 {
-          NEOrderSongLog.successLog(kitTag, desc: "Successfully send custom message.")
-        } else {
-          NEOrderSongLog.errorLog(
-            kitTag,
-            desc: "Failed to send custom message. Code: \(code). Msg: \(msg ?? "")"
-          )
+          if code == 0 {
+            NEOrderSongLog.successLog(kitTag, desc: "Successfully send custom message.")
+          } else {
+            NEOrderSongLog.errorLog(
+              kitTag,
+              desc: "Failed to send custom message. Code: \(code). Msg: \(msg ?? "")"
+            )
+          }
+          callback?(code, msg, nil)
         }
-        callback?(code, msg, nil)
-      }
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 处理RoomKit自定义消息

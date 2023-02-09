@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 从当前bundle加载图片
 /// @param name 图片名
-+ (UIImage *)voiceRoom_imageNamed:(NSString *)name;
++ (UIImage *)nevoiceRoom_imageNamed:(NSString *)name;
 
 @end
 

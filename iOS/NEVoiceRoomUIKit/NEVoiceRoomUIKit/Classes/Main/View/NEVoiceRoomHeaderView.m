@@ -23,6 +23,8 @@
 @property(nonatomic, strong) UIView *headerMusicView;
 @property(nonatomic, strong) UILabel *headerMusicLabel;
 @property(nonatomic, strong) UIImageView *headerMusicImageView;
+// 小窗按钮
+@property(nonatomic, strong) UIButton *smallButton;
 
 @end
 
@@ -35,6 +37,7 @@
   [self addSubview:self.closeRoomButton];
   [self addSubview:self.noticeButton];
   [self addSubview:self.headerMusicView];
+  [self addSubview:self.smallButton];
   [self.headerMusicView addSubview:self.headerMusicImageView];
   [self.headerMusicView addSubview:self.headerMusicLabel];
 
@@ -57,9 +60,14 @@
     make.size.mas_equalTo(CGSizeMake(54, 20));
   }];
 
+  [self.smallButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.size.mas_equalTo(CGSizeMake(24, 24));
+    make.right.equalTo(self.closeRoomButton.mas_left).offset(-10);
+    make.centerY.equalTo(self.closeRoomButton);
+  }];
   [self.headerMusicView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.roomNameLabel.mas_right).offset(20);
-    make.right.equalTo(self.closeRoomButton.mas_left).offset(-5);
+    make.right.equalTo(self.smallButton.mas_left).offset(-5);
     make.centerY.equalTo(self.roomNameLabel);
     make.height.equalTo(@20);
   }];
@@ -72,7 +80,7 @@
   [self.headerMusicLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.headerMusicImageView.mas_right).offset(5);
     make.centerY.equalTo(self.headerMusicImageView);
-    make.right.equalTo(self.closeRoomButton.mas_left).offset(-2);
+    make.right.equalTo(self.smallButton.mas_left).offset(-2);
   }];
 }
 
@@ -81,7 +89,11 @@
     [self.delegate headerExitAction];
   }
 }
-
+- (void)smallButtonClickAction {
+  if (_delegate && [_delegate respondsToSelector:@selector(smallWindowAction)]) {
+    [self.delegate smallWindowAction];
+  }
+}
 - (void)noticeButtonClickAction {
   NEUINoticePopView *noticePopView =
       [[NEUINoticePopView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
@@ -92,6 +104,7 @@
   [self.noticeButton cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(20, 20)];
   [self.onlinePersonLabel cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(20, 20)];
   [self.closeRoomButton cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(12, 12)];
+  [self.smallButton cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(12, 12)];
 }
 
 - (void)setTitle:(NSString *)title {
@@ -158,10 +171,22 @@
   return _noticeButton;
 }
 
+- (UIButton *)smallButton {
+  if (!_smallButton) {
+    _smallButton = [[UIButton alloc] init];
+    UIImage *image = [UIImage nevoiceRoom_imageNamed:@"small_icon"];
+    [_smallButton setImage:image forState:UIControlStateNormal];
+    [_smallButton addTarget:self
+                     action:@selector(smallButtonClickAction)
+           forControlEvents:UIControlEventTouchUpInside];
+    //        [_smallButton setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
+  }
+  return _smallButton;
+}
 - (UIButton *)closeRoomButton {
   if (!_closeRoomButton) {
     _closeRoomButton = [[UIButton alloc] init];
-    [_closeRoomButton setImage:[UIImage voiceRoom_imageNamed:@"closeroom_icon"]
+    [_closeRoomButton setImage:[UIImage nevoiceRoom_imageNamed:@"closeroom_icon"]
                       forState:UIControlStateNormal];
     [_closeRoomButton addTarget:self
                          action:@selector(closeRoomButtonClickAction)

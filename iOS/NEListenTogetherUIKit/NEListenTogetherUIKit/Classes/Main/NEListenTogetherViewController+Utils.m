@@ -44,6 +44,8 @@
           [self closeRoom];
           return;
         }
+        // 开启音量上报
+        [NEListenTogetherKit.getInstance enableAudioVolumeIndicationWithEnable:true interval:1000];
         /// 内部使用
         NEListenTogetherInnerSingleton.singleton.roomInfo = info;
         // 默认操作

@@ -14,6 +14,7 @@
 #import "NEListenTogetherPickSongView.h"
 #import "NEListenTogetherRoomListViewController.h"
 #import "NEListenTogetherSendGiftViewController.h"
+#import "NEListenTogetherStringMacro.h"
 #import "NEListenTogetherToast.h"
 #import "NEListenTogetherUI.h"
 #import "NEListenTogetherUIActionSheetNavigationController.h"
@@ -26,6 +27,7 @@
 #import "NEListenTogetherViewController+Utils.h"
 #import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
+
 @interface NEListenTogetherViewController () <NEListenTogetherHeaderDelegate,
                                               NEListenTogetherFooterFunctionAreaDelegate,
                                               NEUIMoreSettingDelegate,
@@ -227,6 +229,11 @@
              }];
 }
 #pragma mark------------------------ NEListenTogetherListener ------------------------
+- (void)onRtcAudioVolumeIndicationWithVolumes:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumes
+                                  totalVolume:(NSInteger)totalVolume {
+  [self.micQueueView updateWithVolumeInfos:volumes];
+}
+
 - (void)onMemberJoinRoom:(NSArray<NEListenTogetherMember *> *)members {
   [self.micQueueView togetherListen];
   NSMutableArray *messages = @[].mutableCopy;
@@ -332,7 +339,7 @@
     [[NEListenTogetherKit getInstance]
         nextSongWithOrderId:[NEListenTogetherPickSongEngine sharedInstance]
                                 .currrentSongModel.playMusicInfo.orderId
-                 attachment:@""
+                 attachment:PlayComplete
                    callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
 
                    }];
@@ -619,6 +626,8 @@
 - (void)onReceiveChorusMessage:(enum NEListenTogetherChorusActionType)actionType
                      songModel:(NEListenTogetherSongModel *)songModel {
   if (actionType == NEListenTogetherChorusActionTypeStartSong) {
+    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"正在播放歌曲《%@》",
+                                                               songModel.playMusicInfo.songName]];
     /// 开始唱歌
     self.playingStatus = PlayingStatus_playing;
     [self singSong:songModel];
@@ -631,7 +640,6 @@
       // 刷新数据
       [self.pickSongView refreshPickedSongView];
     }
-    //        }
 
   } else if (actionType == NEListenTogetherChorusActionTypePauseSong) {
     // 暂停
@@ -864,33 +872,61 @@
 }
 
 - (void)onNextSong:(NEListenTogetherOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString
-                                      stringWithFormat:@"%@ 已切歌", song.actionOperator.userName]];
   [NEListenTogetherUILog infoLog:ListenTogetherUILog
                             desc:[NSString stringWithFormat:@"收到切歌消息 --- %@", song.songId]];
   if (song.attachment.length > 0) {
-    // 选定歌曲切
-    NEListenTogetherOrderSongModel *nextSong =
-        [NEListenTogetherOrderSongModel yy_modelWithJSON:song.attachment];
-    [NEListenTogetherUILog
-        infoLog:ListenTogetherUILog
-           desc:[NSString stringWithFormat:@"选定歌曲切歌 --- %@", nextSong.songId]];
-    if (nextSong) {
-      if ([[NEListenTogetherKit getInstance] isSongPreloaded:nextSong.songId
-                                                     channel:(int)nextSong.oc_channel]) {
-        [self readySongModel:nextSong.orderId];
-      } else {
-        self.playingAction = PlayingAction_switchSong;
-        [[NEListenTogetherKit getInstance] preloadSong:nextSong.songId
-                                               channel:(int)nextSong.oc_channel
-                                               observe:self];
+    if ([song.attachment isEqualToString:PlayComplete]) {
+      {
+        NEListenTogetherOrderSongModel *nextSong = song.nextOrderSong;
+        [NEListenTogetherUILog
+            infoLog:ListenTogetherUILog
+               desc:[NSString stringWithFormat:@"自然播放结束歌曲切歌 --- %@", nextSong.songId]];
+        if (nextSong) {
+          if ([[NEListenTogetherKit getInstance] isSongPreloaded:nextSong.songId
+                                                         channel:(int)nextSong.oc_channel]) {
+            [self readySongModel:nextSong.orderId];
+          } else {
+            self.playingAction = PlayingAction_switchSong;
+            [[NEListenTogetherKit getInstance] preloadSong:nextSong.songId
+                                                   channel:(int)nextSong.oc_channel
+                                                   observe:self];
+          }
+        } else {
+          [NEListenTogetherUILog
+              infoLog:ListenTogetherUILog
+                 desc:[NSString
+                          stringWithFormat:@"自然播放结束切歌数据为空 --- %@", nextSong.songId]];
+        }
       }
     } else {
+      [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
+                                                                 song.actionOperator.userName]];
+      // 选定歌曲切
+      NEListenTogetherOrderSongModel *nextSong =
+          [NEListenTogetherOrderSongModel yy_modelWithJSON:song.attachment];
       [NEListenTogetherUILog
           infoLog:ListenTogetherUILog
-             desc:[NSString stringWithFormat:@"选定歌曲切歌数据为空 --- %@", nextSong.songId]];
+             desc:[NSString stringWithFormat:@"选定歌曲切歌 --- %@", nextSong.songId]];
+      if (nextSong) {
+        if ([[NEListenTogetherKit getInstance] isSongPreloaded:nextSong.songId
+                                                       channel:(int)nextSong.oc_channel]) {
+          [self readySongModel:nextSong.orderId];
+        } else {
+          self.playingAction = PlayingAction_switchSong;
+          [[NEListenTogetherKit getInstance] preloadSong:nextSong.songId
+                                                 channel:(int)nextSong.oc_channel
+                                                 observe:self];
+        }
+      } else {
+        [NEListenTogetherUILog
+            infoLog:ListenTogetherUILog
+               desc:[NSString stringWithFormat:@"选定歌曲切歌数据为空 --- %@", nextSong.songId]];
+      }
     }
+
   } else {
+    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
+                                                               song.actionOperator.userName]];
     NEListenTogetherOrderSongModel *nextSong = song.nextOrderSong;
     [NEListenTogetherUILog
         infoLog:ListenTogetherUILog

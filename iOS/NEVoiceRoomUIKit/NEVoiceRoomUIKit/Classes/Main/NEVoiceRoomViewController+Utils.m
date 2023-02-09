@@ -16,6 +16,16 @@
 #import "NSBundle+NELocalized.h"
 #import "UIView+NEUIToast.h"
 @implementation NEVoiceRoomViewController (Utils)
+
+- (void)updateRoomInfo {
+  [[NEVoiceRoomKit getInstance]
+      getRoomInfo:self.detail.liveModel.liveRecordId
+         callback:^(NSInteger code, NSString *_Nullable msg, NEVoiceRoomInfo *_Nullable info) {
+           if (code == 0) {
+             [self.micQueueView updateGiftDatas:[info.liveModel.seatUserReward mutableCopy]];
+           }
+         }];
+}
 - (void)joinRoom {
   NEJoinVoiceRoomParams *param = [NEJoinVoiceRoomParams new];
   param.nick = NEVoiceRoomUIManager.sharedInstance.nickname;
@@ -37,6 +47,7 @@
           [self closeRoom];
           return;
         }
+        [NEVoiceRoomKit.getInstance enableAudioVolumeIndicationWithEnable:true interval:1000];
         [[NEOrderSong getInstance] configRoomSetting:self.detail.liveModel.roomUuid];
         /// 内部使用
         NEInnerSingleton.singleton.roomInfo = info;
@@ -48,6 +59,7 @@
           //          [self.bgImageView
           //              sd_setImageWithURL:[NSURL URLWithString:info.liveModel.cover]
           //                placeholderImage:[NEVoiceRoomUI ne_imageName:@"chatRoom_bgImage_icon"]];
+          [self.micQueueView updateGiftDatas:[info.liveModel.seatUserReward mutableCopy]];
           self.roomHeaderView.title = info.liveModel.liveTopic;
           self.roomHeaderView.onlinePeople = NEVoiceRoomKit.getInstance.allMemberList.count;
         });
@@ -188,4 +200,10 @@
   return [[NEOrderSong getInstance] getSongURI:songId channel:channel songResType:TYPE_ACCOMP];
 }
 
+- (void)updateGiftAnchorSeat:(NEVoiceRoomSeatItem *)anchorSeat {
+  self.giftViewController.anchorMicInfo = anchorSeat;
+}
+- (void)updateGiftOtherDatas:(NSArray<NEVoiceRoomSeatItem *> *)otherDatas {
+  self.giftViewController.datas = otherDatas;
+}
 @end

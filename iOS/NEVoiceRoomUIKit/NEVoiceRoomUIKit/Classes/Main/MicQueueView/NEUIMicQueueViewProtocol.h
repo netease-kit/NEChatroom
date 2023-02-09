@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+#import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NEVoiceRoomSeatItem *anchorMicInfo;
 /// 麦位信息
 @property(nonatomic, strong) NSArray<NEVoiceRoomSeatItem *> *datas;
+/// 礼物信息
+@property(nonatomic, strong) NSMutableArray<NEVoiceRoomBatchSeatUserReward *> *giftDatas;
 
 /**
  更新麦位信息

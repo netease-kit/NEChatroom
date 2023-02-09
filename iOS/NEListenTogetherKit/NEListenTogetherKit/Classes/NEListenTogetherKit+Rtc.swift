@@ -472,4 +472,19 @@ public extension NEListenTogetherKit {
   func setPlayingPosition(position: UInt64) -> Int {
     audioPlayService?.setEffectPosition(position: position) ?? -1
   }
+
+  @discardableResult
+  /// 启用说话者音量提示
+  ///
+  /// 该方法允许 SDK 定期向 App 反馈本地发流用户和瞬时音量最高的远端用户（最多 3 位）的音量相关信息，
+  /// 即当前谁在说话以及说话者的音量。启用该方法后，只要房间内有发流用户，无论是否有人说话，
+  /// SDK 都会在加入房间后根据预设的时间间隔触发 onRemoteAudioVolumeIndication 回调
+  /// - Parameters:
+  ///   - enable: 是否启用说话者音量提示
+  ///   - interval: 指定音量提示的时间间隔。单位为毫秒。必须设置为 100 毫秒的整数倍值，建议设置为 200 毫秒以上
+  /// - Returns: 0: 代表成功 否则成功
+  func enableAudioVolumeIndication(enable: Bool,
+                                   interval: Int) -> Int {
+    roomContext?.rtcController.enableAudioVolumeIndication(enable: enable, interval: interval) ?? -1
+  }
 }

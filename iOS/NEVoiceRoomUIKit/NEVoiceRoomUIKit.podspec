@@ -43,6 +43,7 @@ Pod::Spec.new do |s|
   s.dependency 'NECopyrightedMedia'
   s.dependency 'NEAudioEffectKit'
   s.dependency 'NECoreKit'
+  s.dependency 'LottieSwift'
   
   s.resource_bundles = {
     'NEVoiceRoomUIKit' => ['NEVoiceRoomUIKit/Assets/**/*']

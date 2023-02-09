@@ -14,9 +14,11 @@
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMoreFunctionVC.h"
 #import "NEVoiceRoomChatView.h"
+#import "NEVoiceRoomFloatWindowSingleton.h"
+#import "NEVoiceRoomGiftEngine.h"
 #import "NEVoiceRoomPickSongEngine.h"
 #import "NEVoiceRoomPickSongView.h"
-#import "NEVoiceRoomSendGiftViewController.h"
+#import "NEVoiceRoomStringMacro.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
@@ -39,6 +41,7 @@
                                          NEOrderSongCopyrightedMediaListener>
 
 @property(nonatomic, strong) NEVoiceRoomPickSongView *pickSongView;
+@property(nonatomic, strong) NSArray *defaultGifts;
 @end
 
 @implementation NEVoiceRoomViewController
@@ -48,6 +51,7 @@
     self.role = role;
     self.context.role = role;
     self.audioManager = [[NEAudioEffectManager alloc] init];
+    self.defaultGifts = [NEVoiceRoomUIGiftModel defaultGifts];
   }
   return self;
 }
@@ -58,6 +62,7 @@
   [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel = nil;
   [[NEOrderSong getInstance] removeOrderSongListener:self];
   self.lastSelfItem = nil;
+  [[NEVoiceRoomGiftEngine getInstance] reInitData];
 }
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -79,25 +84,52 @@
 }
 
 - (void)closeRoom {
+  [self closeRoomWithViewPop:YES callback:nil];
+}
+- (void)closeRoomWithViewPop:(BOOL)changeView callback:(void (^)(void))callabck {
   if (self.role == NEVoiceRoomRoleHost) {  // 主播
     [NEVoiceRoomKit.getInstance
         endRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.presentedViewController) {
-              [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
+          if (changeView) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              if (self.presentedViewController) {
+                [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
+              }
+              [self backToListViewController];
+              if (callabck) {
+                callabck();
+              }
+              [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
+              [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+            });
+          } else {
+            if (callabck) {
+              callabck();
             }
-            [self backToListViewController];
-          });
+            [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+          }
         }];
   } else {  // 观众
     [NEVoiceRoomKit.getInstance
         leaveRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.presentedViewController) {
-              [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
+          if (changeView) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              if (self.presentedViewController) {
+                [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
+              }
+              [self.navigationController popViewControllerAnimated:YES];
+              if (callabck) {
+                callabck();
+              }
+              [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
+              [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+            });
+          } else {
+            if (callabck) {
+              callabck();
             }
-            [self.navigationController popViewControllerAnimated:YES];
-          });
+            [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+          }
         }];
   }
 }
@@ -226,6 +258,19 @@
   [self closeRoom];
 }
 
+- (void)smallWindowAction {
+  [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:self];
+  [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:NO];
+  [[NEVoiceRoomFloatWindowSingleton Ins] setNetImage:self.detail.anchor.icon title:@""];
+  {
+    if (self.role == NEVoiceRoomRoleHost) {  // 主播
+      [self backToListViewController];
+    } else {  // 观众
+      [self.navigationController popViewControllerAnimated:YES];
+    }
+  }
+}
+
 #pragma mark - NETSFunctionAreaDelegate
 // 点歌事件
 - (void)footerDidReceiveRequestSongAciton {
@@ -238,7 +283,8 @@
 
 - (void)footerDidReceiveGiftClickAciton {
   // 发送礼物
-  [NEVoiceRoomSendGiftViewController showWithTarget:self viewController:self];
+  self.giftViewController = [NEVoiceRoomSendGiftViewController showWithTarget:self
+                                                               viewController:self];
 }
 // 禁言事件
 - (void)footerDidReceiveNoSpeekingAciton {
@@ -282,25 +328,29 @@
 
 #pragma mark------------------------ NEVoiceRoomSendGiftViewtDelegate ------------------------
 
-- (void)didSendGift:(NEVoiceRoomUIGiftModel *)gift {
+- (void)didSendGift:(NEVoiceRoomUIGiftModel *)gift
+          giftCount:(int)giftCount
+          userUuids:(NSArray *)userUuids {
   if (![self checkNetwork]) {
     return;
   }
 
-  [self
-      dismissViewControllerAnimated:true
-                         completion:^{
-                           [[NEVoiceRoomKit getInstance]
-                               sendGift:gift.giftId
-                               callback:^(NSInteger code, NSString *_Nullable msg,
-                                          id _Nullable obj) {
-                                 if (code != 0) {
-                                   [NEVoiceRoomToast
-                                       showToast:[NSString stringWithFormat:@"发送礼物失败 %zd %@",
-                                                                            code, msg]];
-                                 }
-                               }];
-                         }];
+  [self dismissViewControllerAnimated:true
+                           completion:^{
+                             [[NEVoiceRoomKit getInstance]
+                                 sendBatchGift:gift.giftId
+                                     giftCount:giftCount
+                                     userUuids:userUuids
+                                      callback:^(NSInteger code, NSString *_Nullable msg,
+                                                 id _Nullable obj) {
+                                        if (code != 0) {
+                                          [NEVoiceRoomToast
+                                              showToast:[NSString
+                                                            stringWithFormat:@"发送礼物失败 %zd %@",
+                                                                             code, msg]];
+                                        }
+                                      }];
+                           }];
 }
 
 - (BOOL)checkNetwork {
@@ -402,6 +452,30 @@
   });
 }
 
+- (void)onReceiveBatchGiftWithGiftModel:(NEVoiceRoomBatchGiftModel *)giftModel {
+  // 收到批量礼物回调
+  //  展示礼物动画
+  NEVoiceRoomChatViewMessage *message = [[NEVoiceRoomChatViewMessage alloc] init];
+  message.type = NEVoiceRoomChatViewMessageTypeReward;
+  message.giftId = (int)giftModel.giftId;
+  message.giftFrom = giftModel.rewarderUserName;
+  message.giftCount = (int)giftModel.giftCount;
+  message.giftTo = giftModel.rewardeeUserName;
+  for (NEVoiceRoomUIGiftModel *model in self.defaultGifts) {
+    if (model.giftId == giftModel.giftId) {
+      message.giftName = model.display;
+      break;
+    }
+  }
+  [self.chatView addMessages:@[ message ]];
+  if (self.role != NEVoiceRoomRoleHost) {
+    // 房主不展示礼物
+    NSString *giftName = [NSString stringWithFormat:@"anim_gift_0%zd", giftModel.giftId];
+    [self playGiftWithName:giftName];
+  }
+
+  [self.micQueueView updateGiftDatas:[giftModel.seatUserReward mutableCopy]];
+}
 - (void)onRoomEnded:(enum NEVoiceRoomEndReason)reason {
   dispatch_async(dispatch_get_main_queue(), ^{
     if (reason != NEVoiceRoomEndReasonLeaveBySelf) {
@@ -412,11 +486,18 @@
       [self.navigationController popViewControllerAnimated:YES];
     }
   });
+  [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
+  [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
 }
 - (void)onRtcChannelError:(NSInteger)code {
   if (code == 30015) {
     [self closeRoom];
   }
+}
+
+- (void)onRtcAudioVolumeIndicationWithVolumes:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumes
+                                  totalVolume:(NSInteger)totalVolume {
+  [self.micQueueView updateWithVolumeInfos:volumes];
 }
 #pragma mark - gift animation
 
@@ -604,23 +685,41 @@
 }
 
 - (void)onNextSong:(NEOrderSongOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString
-                                      stringWithFormat:@"%@ 已切歌", song.actionOperator.userName]];
   if (song.attachment.length > 0) {
-    // 选定歌曲切
-    NEOrderSongOrderSongModel *nextSong =
-        [NEOrderSongOrderSongModel yy_modelWithJSON:song.attachment];
-    if (nextSong) {
-      if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
-                                             channel:(int)nextSong.oc_channel]) {
-        [self readySongModel:nextSong.orderId];
-      } else {
-        [[NEOrderSong getInstance] preloadSong:nextSong.songId
-                                       channel:(int)nextSong.oc_channel
-                                       observe:self];
+    if ([song.attachment isEqualToString:PlayComplete]) {
+      // 自然播放完成
+      NEOrderSongOrderSongModel *nextSong = song.nextOrderSong;
+      if (nextSong) {
+        if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
+                                               channel:(int)nextSong.oc_channel]) {
+          [self readySongModel:nextSong.orderId];
+        } else {
+          //        self.playingAction = PlayingAction_switchSong;
+          [[NEOrderSong getInstance] preloadSong:nextSong.songId
+                                         channel:(int)nextSong.oc_channel
+                                         observe:self];
+        }
+      }
+    } else {
+      [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
+                                                                 song.actionOperator.userName]];
+      // 选定歌曲切
+      NEOrderSongOrderSongModel *nextSong =
+          [NEOrderSongOrderSongModel yy_modelWithJSON:song.attachment];
+      if (nextSong) {
+        if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
+                                               channel:(int)nextSong.oc_channel]) {
+          [self readySongModel:nextSong.orderId];
+        } else {
+          [[NEOrderSong getInstance] preloadSong:nextSong.songId
+                                         channel:(int)nextSong.oc_channel
+                                         observe:self];
+        }
       }
     }
   } else {
+    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
+                                                               song.actionOperator.userName]];
     NEOrderSongOrderSongModel *nextSong = song.nextOrderSong;
     if (nextSong) {
       if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
@@ -666,7 +765,7 @@
     [[NEOrderSong getInstance]
         nextSongWithOrderId:[NEVoiceRoomPickSongEngine sharedInstance]
                                 .currrentSongModel.playMusicInfo.orderId
-                 attachment:@""
+                 attachment:PlayComplete
                    callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
 
                    }];
@@ -677,6 +776,8 @@
 - (void)onReceiveChorusMessage:(enum NEOrderSongChorusActionType)actionType
                      songModel:(NEOrderSongSongModel *)songModel {
   if (actionType == NEOrderSongChorusActionTypeStartSong) {
+    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"正在播放歌曲《%@》",
+                                                               songModel.playMusicInfo.songName]];
     /// 开始唱歌
     self.playingStatus = PlayingStatus_playing;
     [self singSong:songModel];

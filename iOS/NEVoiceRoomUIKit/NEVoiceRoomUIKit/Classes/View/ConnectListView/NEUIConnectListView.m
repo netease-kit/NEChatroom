@@ -31,6 +31,8 @@ static CGFloat foldBtnHeight = 38;
 @property(nonatomic, assign) BOOL listViewPushed;
 @property(nonatomic, assign) BOOL isShown;
 @property(nonatomic, strong) UIButton *foldBtn;
+@property(nonatomic, assign) CGRect smallRect;
+@property(nonatomic, assign) CGRect largeRect;
 @end
 
 @implementation NEUIConnectListView
@@ -53,6 +55,16 @@ static CGFloat foldBtnHeight = 38;
   // 先刷新宽高
   [self layoutIfNeeded];
   self.bottom = 0;
+  if (CGRectEqualToRect(self.largeRect, CGRectZero)) {
+    self.largeRect = self.frame;
+    self.smallRect = CGRectMake(80, self.frame.origin.y, self.largeRect.size.width - 160,
+                                self.frame.size.height);
+  }
+
+  self.frame = CGRectMake(self.smallRect.origin.x, self.frame.origin.y, self.smallRect.size.width,
+                          self.frame.size.height);
+  self.connectAlertView.centerX = self.frame.size.width / 2;
+
   self.listView.hidden = YES;
   self.titleLable.hidden = YES;
   self.foldBtn.hidden = YES;
@@ -70,6 +82,9 @@ static CGFloat foldBtnHeight = 38;
   self.titleLable.hidden = NO;
   self.foldBtn.hidden = NO;
   self.bottom = 0;
+  self.frame = CGRectMake(self.largeRect.origin.x, self.frame.origin.y, self.largeRect.size.width,
+                          self.frame.size.height);
+  self.connectAlertView.centerX = self.frame.size.width / 2;
   [self forceLayoutSubviews];
   [UIView animateWithDuration:0.25
       animations:^{
@@ -82,15 +97,24 @@ static CGFloat foldBtnHeight = 38;
 }
 
 - (void)dismissListView {
+  [self layoutIfNeeded];
   [UIView animateWithDuration:0.25
       animations:^{
-        self.bottom = [NEUICommon ne_statusBarHeight] + connectAlertViewHeight;
+        self.bottom = 0;
       }
       completion:^(BOOL finished) {
+        //      NSLog(@"Beforeframe --- %@",NSStringFromCGRect(self.frame));
+        self.frame = CGRectMake(self.smallRect.origin.x, self.frame.origin.y,
+                                self.smallRect.size.width, self.frame.size.height);
+        self.connectAlertView.centerX = self.frame.size.width / 2;
+        //      NSLog(@"updateframe --- %@",NSStringFromCGRect(self.frame));
         self.listView.hidden = YES;
         self.titleLable.hidden = YES;
         self.foldBtn.hidden = YES;
         self.listViewPushed = NO;
+        self.bottom = [NEUICommon ne_statusBarHeight] + connectAlertViewHeight;
+        [self layoutIfNeeded];
+        //      NSLog(@"frame --- %@",NSStringFromCGRect(self.frame));
         [self.connectAlertView refreshAlertView:self.listViewPushed];
       }];
 }
@@ -259,6 +283,7 @@ static CGFloat foldBtnHeight = 38;
 - (NEUIConnectAlertView *)connectAlertView {
   if (!_connectAlertView) {
     _connectAlertView = [[NEUIConnectAlertView alloc] init];
+    _connectAlertView.backgroundColor = [UIColor clearColor];
     __weak typeof(self) weakSelf = self;
     _connectAlertView.actionBlock = ^{
       __strong typeof(self) strongSelf = weakSelf;

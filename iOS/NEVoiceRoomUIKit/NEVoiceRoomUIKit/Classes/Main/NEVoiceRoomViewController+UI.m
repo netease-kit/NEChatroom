@@ -44,8 +44,7 @@
 
   [self.micQueueView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.top.equalTo(self.roomHeaderView.mas_bottom).offset(12);
-    make.left.equalTo(self.view).offset(30);
-    make.right.equalTo(self.view).offset(-30);
+    make.left.right.equalTo(self.view);
     make.height.mas_equalTo(height);
   }];
 

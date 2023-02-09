@@ -15,6 +15,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
+    [self.contentView addSubview:self.lottieView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.connectBtn];
     [self.contentView addSubview:self.avatar];
@@ -33,6 +34,14 @@
 - (void)stopSoundAnimation {
   [_connectBtn stopCustomAnimation];
   _connectBtn.info = nil;
+}
+
+- (void)startSpeakAnimation {
+  [self.lottieView play];
+}
+
+- (void)stopSpeakAnimation {
+  [self.lottieView stop];
 }
 
 - (void)refresh:(NEListenTogetherSeatItem *)micInfo {
@@ -87,6 +96,7 @@
       self.loadingIco.hidden = YES;
       [self.connectBtn setImage:[NEListenTogetherUI ne_imageName:@"mic_none_ico"]
                        forState:UIControlStateNormal];
+      [self.lottieView stop];
     } break;
     case NEListenTogetherSeatItemStatusWaiting: {  // 等待
       self.nameLabel.text = micInfo.userName ?: @"";

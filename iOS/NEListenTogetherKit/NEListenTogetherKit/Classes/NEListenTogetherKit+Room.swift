@@ -172,7 +172,7 @@ public extension NEListenTogetherKit {
       } else {
         join(params, callback: callback)
       }
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 离开房间

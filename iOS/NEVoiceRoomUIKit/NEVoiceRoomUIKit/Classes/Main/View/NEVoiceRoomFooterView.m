@@ -129,9 +129,10 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
     case NEVoiceRoomRoleHost: {
       BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
       if (isOutsea) {
-        self.buttonsArray = @[ self.menuButton, self.microphoneButton ];
+        self.buttonsArray = @[ self.menuButton, self.microphoneButton, self.giftButton ];
       } else {
-        self.buttonsArray = @[ self.menuButton, self.microphoneButton, self.musicButton ];
+        self.buttonsArray =
+            @[ self.menuButton, self.microphoneButton, self.giftButton, self.musicButton ];
       }
 
     } break;
@@ -151,8 +152,11 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
   if (self.role == NEVoiceRoomRoleHost) {
     BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
     self.buttonsArray =
-      isOnSeat ? (isOutsea ? @[ self.menuButton, self.microphoneButton,] :@[ self.menuButton, self.microphoneButton, self.musicButton ])
-                 : @[ self.giftButton ];
+        isOnSeat
+            ? (isOutsea
+                   ? @[ self.menuButton, self.microphoneButton, self.giftButton ]
+                   : @[ self.menuButton, self.microphoneButton, self.giftButton, self.musicButton ])
+            : @[ self.giftButton ];
   } else {
     self.buttonsArray = isOnSeat ? @[ self.menuButton, self.microphoneButton, self.giftButton ]
                                  : @[ self.giftButton ];
@@ -236,7 +240,7 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
 - (UIImageView *)searchImageView {
   if (!_searchImageView) {
     _searchImageView = [NEUIViewFactory createImageViewFrame:CGRectZero imageName:@""];
-    _searchImageView.image = [[UIImage voiceRoom_imageNamed:@"chatroom_titleIcon"]
+    _searchImageView.image = [[UIImage nevoiceRoom_imageNamed:@"chatroom_titleIcon"]
         ne_imageWithTintColor:HEXCOLOR(0xAAACB7)];
   }
   return _searchImageView;

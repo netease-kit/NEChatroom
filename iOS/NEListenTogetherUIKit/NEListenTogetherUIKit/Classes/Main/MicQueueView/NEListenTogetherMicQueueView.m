@@ -4,7 +4,6 @@
 
 #import "NEListenTogetherMicQueueView.h"
 #import <Masonry/Masonry.h>
-#import <NEListenTogetherUIKit/NEListenTogetherUIKit-Swift.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import "NEListenTogetherChatroomMicCell.h"
 #import "NEListenTogetherGlobalMacro.h"
@@ -13,6 +12,7 @@
 #import "NEListenTogetherUI.h"
 #import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIView+NEUIExtension.h"
+@import LottieSwift;
 
 @interface NEListenTogetherMicQueueView ()
 
@@ -75,11 +75,64 @@
   return self;
 }
 - (void)play {
-  [self.lottieView play];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.lottieView play];
+  });
 }
 - (void)stop {
-  [self.lottieView stop];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.lottieView stop];
+  });
 }
+
+- (void)updateWithVolumeInfos:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumeInfos {
+  if (volumeInfos.count == 1 &&
+      [volumeInfos[0].userUuid
+          isEqualToString:[NEListenTogetherKit getInstance].localMember.account]) {
+    // local的更新
+    NEListenTogetherMemberVolumeInfo *volume = volumeInfos[0];
+    if (volume.volume > 0) {
+      if ([volume.userUuid isEqualToString:_anchorMicInfo.user]) {
+        [_anchorCell startSpeakAnimation];
+      } else {
+        [_listenTogetherCell startSpeakAnimation];
+      }
+    } else {
+      if ([volume.userUuid isEqualToString:_anchorMicInfo.user]) {
+        [_anchorCell stopSpeakAnimation];
+      } else {
+        [_listenTogetherCell stopSpeakAnimation];
+      }
+    }
+  } else if (volumeInfos.count == 0) {
+    // 远端无人说话
+    if ([[NEListenTogetherKit getInstance].localMember.account
+            isEqualToString:_anchorMicInfo.user]) {
+      [_listenTogetherCell stopSpeakAnimation];
+    } else {
+      [_anchorCell stopSpeakAnimation];
+    }
+  } else {
+    // 远端有人说话
+    NEListenTogetherMemberVolumeInfo *volume = volumeInfos[0];
+    if (volume.volume > 0) {
+      if ([[NEListenTogetherKit getInstance].localMember.account
+              isEqualToString:_anchorMicInfo.user]) {
+        [_listenTogetherCell startSpeakAnimation];
+      } else {
+        [_anchorCell startSpeakAnimation];
+      }
+    } else {
+      if ([[NEListenTogetherKit getInstance].localMember.account
+              isEqualToString:_anchorMicInfo.user]) {
+        [_listenTogetherCell stopSpeakAnimation];
+      } else {
+        [_anchorCell stopSpeakAnimation];
+      }
+    }
+  }
+}
+
 - (void)reloadListenTogetherData {
   // 根据data 刷新数据
   [self.listenTogetherCell
@@ -257,8 +310,12 @@
 
 - (NELottieView *)lottieView {
   if (!_lottieView) {
+    NSString *path = [[NSBundle mainBundle]
+        pathForResource:@"Frameworks/NEListenTogetherUIKit.framework/NEListenTogetherUIKit"
+                 ofType:@"bundle"];
     _lottieView = [[NELottieView alloc] initWithFrame:CGRectMake(0, 0, 280, 280)
-                                               lottie:@"listen_bg_seat"];
+                                               lottie:@"listen_bg_seat"
+                                               bundle:[NSBundle bundleWithPath:path]];
   }
   return _lottieView;
 }

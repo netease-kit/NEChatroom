@@ -30,7 +30,7 @@ public extension NEListenTogetherKit {
         )
         callback?(error.code, error.localizedDescription, nil)
       }
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 是否插入耳机
@@ -68,7 +68,7 @@ public extension NEListenTogetherKit {
                                      )
                                      callback?(error.code, error.localizedDescription, nil)
                                    })
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 恢复演唱
@@ -92,7 +92,7 @@ public extension NEListenTogetherKit {
                                      )
                                      callback?(error.code, error.localizedDescription, nil)
                                    })
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 切歌

@@ -102,3 +102,9 @@
 "该麦位已\"解除语音屏蔽\"" = "The seat was\"unmuted\"";
 "加入直播间失败" = "Enter room fail";
 "随机" = "Random";
+"送给" = "Send to";
+"主持" = "Anchor";
+"赠送"= "Send";
+"聊天室" = "Chat room";
+"未选择送礼对象，无法送礼" = "No gift object selected, unable to send gifts";
+"是否退出当前房间进入其他房间" = "Exit the current room and enter other rooms";
