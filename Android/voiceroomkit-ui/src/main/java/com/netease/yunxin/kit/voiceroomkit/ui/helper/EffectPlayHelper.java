@@ -4,9 +4,9 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.helper;
 
-import static com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper.AudioMixingPlayState.STATE_PAUSED;
-import static com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper.AudioMixingPlayState.STATE_PLAYING;
-import static com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper.AudioMixingPlayState.STATE_STOPPED;
+import static com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper.AudioMixingPlayState.STATE_PAUSED;
+import static com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper.AudioMixingPlayState.STATE_PLAYING;
+import static com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper.AudioMixingPlayState.STATE_STOPPED;
 
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
+public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
 
   public static final String TAG = "AudioPlayHelper";
 
@@ -59,7 +59,7 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
   private static final String EFFECT2 = "effect2.wav";
   private List<MusicItem> audioMixingMusicInfos;
 
-  public AudioPlayHelper(Context context) {
+  public EffectPlayHelper(Context context) {
     this.context = context;
     NEVoiceRoomKit.getInstance().addVoiceRoomListener(this);
   }
@@ -205,10 +205,6 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
     }
   }
 
-  public void stopAllEffect() {
-    NEVoiceRoomKit.getInstance().stopAllEffect();
-  }
-
   // 播放伴音
   public boolean playAudioMixing(int index) {
     if (isAudioMixingIndexInvalid(index, audioMixingFilePaths)) {
@@ -299,7 +295,6 @@ public class AudioPlayHelper extends NEVoiceRoomListenerAdapter {
   }
 
   public void destroy() {
-    stopAllEffect();
     stopAudioMixing();
     NEVoiceRoomKit.getInstance().removeVoiceRoomListener(this);
   }

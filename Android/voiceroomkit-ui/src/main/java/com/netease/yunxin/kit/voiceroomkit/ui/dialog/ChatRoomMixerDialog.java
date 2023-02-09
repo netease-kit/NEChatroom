@@ -19,20 +19,20 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.netease.yunxin.kit.common.utils.DeviceUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
+import com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
 
 /** Created by luc on 1/28/21. */
 public class ChatRoomMixerDialog extends BottomBaseDialog {
 
-  private final AudioPlayHelper audioPlayHelper;
+  private final EffectPlayHelper effectPlayHelper;
   private int earBack = 100;
   private boolean isAnchor;
 
   public ChatRoomMixerDialog(
-      @NonNull Activity activity, AudioPlayHelper audioPlayHelper, boolean isAnchor) {
+      @NonNull Activity activity, EffectPlayHelper effectPlayHelper, boolean isAnchor) {
     super(activity);
-    this.audioPlayHelper = audioPlayHelper;
+    this.effectPlayHelper = effectPlayHelper;
     this.isAnchor = isAnchor;
   }
 
@@ -70,12 +70,12 @@ public class ChatRoomMixerDialog extends BottomBaseDialog {
         });
 
     SeekBar skRecordingVolume = bottomView.findViewById(R.id.recording_volume_control);
-    skRecordingVolume.setProgress(audioPlayHelper.getAudioCaptureVolume());
+    skRecordingVolume.setProgress(effectPlayHelper.getAudioCaptureVolume());
     skRecordingVolume.setOnSeekBarChangeListener(
         new VolumeSetup() {
           @Override
           protected void onVolume(int volume) {
-            audioPlayHelper.setAudioCaptureVolume(volume);
+            effectPlayHelper.setAudioCaptureVolume(volume);
           }
         });
     TextView tvMixer = bottomView.findViewById(R.id.tv_mixer);
@@ -83,12 +83,12 @@ public class ChatRoomMixerDialog extends BottomBaseDialog {
     if (isAnchor) {
       tvMixer.setVisibility(View.VISIBLE);
       sbMixer.setVisibility(View.VISIBLE);
-      sbMixer.setProgress(audioPlayHelper.getAudioMixingVolume());
+      sbMixer.setProgress(effectPlayHelper.getAudioMixingVolume());
       sbMixer.setOnSeekBarChangeListener(
           new VolumeSetup() {
             @Override
             protected void onVolume(int volume) {
-              audioPlayHelper.setAudioMixingVolume(volume);
+              effectPlayHelper.setAudioMixingVolume(volume);
             }
           });
     } else {

@@ -178,8 +178,7 @@ public class ListenTogetherViewModel extends ViewModel {
           if (song.getOperator() != null && song.getOperator().getUserName() != null) {
             chatRoomMsgData.setValue(
                 ChatRoomMsgCreator.createSongMessage(
-                    song.getOperator().getUserName(),
-                    Utils.getApp().getString(R.string.listen_song_start, song.getSongName())));
+                    "", Utils.getApp().getString(R.string.listen_song_start, song.getSongName())));
           }
         }
 

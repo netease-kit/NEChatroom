@@ -131,7 +131,7 @@ public class SongOptionPanel extends ConstraintLayout {
   private NEListenTogetherRoomListenerAdapter roomListener =
       new NEListenTogetherRoomListenerAdapter() {
         @Override
-        public void onAudioEffectTimestampUpdate(@NonNull String uuid, long timeStampMS) {
+        public void onAudioEffectTimestampUpdate(@NonNull long effecId, long timeStampMS) {
           if (currentSong == null) {
             return;
           }

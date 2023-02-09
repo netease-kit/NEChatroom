@@ -56,7 +56,12 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
   private final int index;
   private final int status;
   private final int reason;
+
   private final NEVoiceRoomMember member;
+
+  private int rewardTotal;
+
+  private boolean isSpeaking;
 
   public VoiceRoomSeat(int index) {
     this(index, Status.INIT, Reason.NONE, null);
@@ -67,6 +72,15 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
     this.status = status;
     this.reason = reason;
     this.member = member;
+  }
+
+  public VoiceRoomSeat(
+      int index, int status, int reason, NEVoiceRoomMember member, int rewardTotal) {
+    this.index = index;
+    this.status = status;
+    this.reason = reason;
+    this.member = member;
+    this.rewardTotal = rewardTotal;
   }
 
   public int getSeatIndex() {
@@ -90,6 +104,22 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
     return member != null ? member.getAccount() : null;
   }
 
+  public int getRewardTotal() {
+    return rewardTotal;
+  }
+
+  public void setRewardTotal(int rewardTotal) {
+    this.rewardTotal = rewardTotal;
+  }
+
+  public boolean isSpeaking() {
+    return isSpeaking;
+  }
+
+  public void setSpeaking(boolean isSpeaking) {
+    this.isSpeaking = isSpeaking;
+  }
+
   @Override
   public int describeContents() {
     return 0;
@@ -100,6 +130,7 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
     dest.writeInt(this.index);
     dest.writeInt(this.status);
     dest.writeInt(this.reason);
+    dest.writeInt(this.rewardTotal);
     dest.writeSerializable(member.getAccount());
   }
 
@@ -111,7 +142,8 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
               source.readInt(),
               source.readInt(),
               source.readInt(),
-              SeatUtils.getMember(source.readString()));
+              SeatUtils.getMember(source.readString()),
+              source.readInt());
         }
 
         @Override

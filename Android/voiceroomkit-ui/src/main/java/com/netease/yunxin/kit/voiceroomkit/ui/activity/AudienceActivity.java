@@ -7,6 +7,7 @@ package com.netease.yunxin.kit.voiceroomkit.ui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +54,8 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
     enterRoom();
     watchNetWork();
     isAnchor = false;
+    ivGift.setVisibility(View.VISIBLE);
+    ivOrderSong.setVisibility(View.GONE);
   }
 
   @Override
@@ -80,6 +83,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
   @Override
   protected void initDataObserver() {
     super.initDataObserver();
+    roomViewModel.applySeatListData.observe(this, this::onApplySeats);
     roomViewModel.currentSeatEvent.observe(
         this,
         event -> {
@@ -141,6 +145,22 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
         });
   }
 
+  private void onApplySeats(List<VoiceRoomSeat> voiceRoomSeats) {
+    if (isContainLocalAccount(voiceRoomSeats)) {
+      showApplySeatDialog();
+    }
+  }
+
+  private boolean isContainLocalAccount(List<VoiceRoomSeat> voiceRoomSeats) {
+    for (VoiceRoomSeat voiceRoomSeat : voiceRoomSeats) {
+      if (voiceRoomSeat != null
+          && TextUtils.equals(voiceRoomSeat.getAccount(), VoiceRoomUtils.getLocalAccount())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private void watchNetWork() {
     roomViewModel.netData.observe(
         this,
@@ -180,7 +200,7 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
         ToastUtils.INSTANCE.showShortToast(this, getString(R.string.voiceroom_seat_applied));
         break;
       case VoiceRoomSeat.Status.ON:
-        if (VoiceRoomUtils.isMySelf(seat.getAccount())) {
+        if (VoiceRoomUtils.isLocal(seat.getAccount())) {
           promptLeaveSeat();
         } else {
           ToastUtils.INSTANCE.showShortToast(
@@ -229,14 +249,14 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
 
               @Override
               public void onSuccess(@Nullable Unit unit) {
-                onApplySeatSuccess();
+                showApplySeatDialog();
               }
             });
   }
 
   private boolean canShowTip = false;
 
-  private void onApplySeatSuccess() {
+  private void showApplySeatDialog() {
 
     cancelApplySeatDialog = new CancelApplySeatDialog();
 

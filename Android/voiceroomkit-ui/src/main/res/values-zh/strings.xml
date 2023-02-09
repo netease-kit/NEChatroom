@@ -92,10 +92,17 @@
     <string name="voiceroom_rockets">火箭</string>
     <string name="voiceroom_send_gift">送礼物</string>
     <string name="voiceroom_send">发送</string>
+    <string name="voiceroom_send2">送给</string>
     <string name="voiceroom_coin">coins</string>
     <string name="voiceroom_reward_failed">打赏礼物失败</string>
     <string name="voiceroom_donate">赠送了</string>
     <string name="voiceroom_count">个</string>
     <string name="voiceroom_audio_banned">已屏蔽，不能操作!</string>
     <string name="app_content_description_default"> </string>
+    <string name="voiceroom_chatroom">聊天室</string>
+    <string name="voiceroom_is_closed">房间已关闭</string>
+    <string name="voiceroom_host">房主</string>
+    <string name="voiceroom_send_to">送给</string>
+    <string name="voiceroom_gift_send">赠送</string>
+    <string name="voiceroom_gift_send_memeber_empty">未选择送礼对象，无法送礼</string>
 </resources>

@@ -24,18 +24,31 @@
 
     <com.netease.yunxin.kit.voiceroomkit.ui.widget.BackgroundMusicPanel
         android:id="@+id/iv_background_music"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/iv_leave_room"
+        app:layout_constraintTop_toTopOf="@id/tv_chat_room_name"
+        app:layout_constraintBottom_toBottomOf="@id/tv_chat_room_name"
+        app:layout_constraintStart_toEndOf="@id/tv_chat_room_name"
+        app:layout_constraintEnd_toStartOf="@id/iv_small_window"
+        android:layout_marginStart="10dp"
         android:textSize="14sp"
-        android:textColor="@color/white"
+        android:textColor="@color/white_99"
         app:drawableLeftCompat="@drawable/voice_room_music"
         android:drawablePadding="4dp"
-        android:ellipsize="end"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:visibility="gone"/>
 
+    <ImageView
+        android:id="@+id/iv_small_window"
+        android:background="@drawable/voice_room_small_window"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_leave_room"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="" />
     <ImageView
         android:id="@+id/iv_leave_room"
         style="@style/Base_Audio_UI_Switch"
@@ -83,7 +96,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_chat_room_announcement" />
 
-    <!-- 主播区域-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cly_anchor_layout"
         android:layout_width="match_parent"
@@ -92,84 +104,95 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cly_anchor_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_avatar_lottie_view"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            app:lottie_rawRes="@raw/voiceroom_avatar_wave"/>
 
-            <View
-                android:id="@+id/frame"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/shape_dialog_utils_icon_circle_bg" />
+        <View
+            android:id="@+id/frame"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintEnd_toEndOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintStart_toStartOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintTop_toTopOf="@id/lav_avatar_lottie_view"
+            android:background="@drawable/shape_dialog_utils_icon_circle_bg" />
 
-            <ImageView
-                android:id="@+id/circle"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="16dp"
-                android:visibility="visible"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/point_empty"
-                android:contentDescription="@string/app_content_description_default"/>
+        <ImageView
+            android:id="@+id/circle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintEnd_toEndOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintStart_toStartOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintTop_toTopOf="@id/lav_avatar_lottie_view"
+            android:src="@drawable/point_empty"
+            android:contentDescription="@string/app_content_description_default"/>
 
-            <com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView
-                android:id="@+id/iv_liver_avatar"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="1dp"
-                app:layout_constraintBottom_toBottomOf="@id/circle"
-                app:layout_constraintEnd_toEndOf="@id/circle"
-                app:layout_constraintStart_toStartOf="@id/circle"
-                app:layout_constraintTop_toTopOf="@id/circle" />
+        <com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView
+            android:id="@+id/iv_liver_avatar"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            app:layout_constraintBottom_toBottomOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintEnd_toEndOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintStart_toStartOf="@id/lav_avatar_lottie_view"
+            app:layout_constraintTop_toTopOf="@id/lav_avatar_lottie_view" />
 
-            <ImageView
-                android:id="@+id/iv_liver_audio_close_hint"
-                android:layout_width="@dimen/dimen_16_dp"
-                android:layout_height="@dimen/dimen_16_dp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_liver_avatar"
-                app:layout_constraintEnd_toEndOf="@id/iv_liver_avatar"
-                android:src="@drawable/icon_seat_close_micro"
-                android:contentDescription="@string/app_content_description_default"
-                android:visibility="visible"
-                tools:visibility="visible" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <ImageView
+            android:id="@+id/iv_liver_audio_close_hint"
+            android:layout_width="@dimen/dimen_16_dp"
+            android:layout_height="@dimen/dimen_16_dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_liver_avatar"
+            app:layout_constraintEnd_toEndOf="@id/iv_liver_avatar"
+            android:src="@drawable/icon_seat_close_micro"
+            android:contentDescription="@string/app_content_description_default"
+            android:visibility="visible"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_liver_nick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/cly_anchor_avatar"
+            app:layout_constraintTop_toBottomOf="@id/iv_liver_avatar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/dimen_8_dp"
+            android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:gravity="center"
             android:textSize="@dimen/text_size_12"
             android:textColor="@color/white"
             android:singleLine="true"
-            tools:text="主播昵称" />
+            tools:text="" />
+
+        <TextView
+            android:id="@+id/tv_user_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_liver_nick"
+            android:layout_marginTop="4dp"
+            android:textSize="11sp"
+            android:textColor="@color/color_ffc86b"
+            app:drawableLeftCompat="@drawable/voiceroom_gift_coin"
+            android:drawablePadding="4dp"
+            android:visibility="invisible"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_seat"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_liver_nick"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_reward"
             android:layout_height="wrap_content"
             android:overScrollMode="never"
             android:layout_marginHorizontal="@dimen/dimen_12_dp" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
@@ -241,7 +264,7 @@
         android:layout_marginEnd="@dimen/dimen_10_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/dimen_8_dp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_local_audio_switch"
+        app:layout_constraintEnd_toStartOf="@+id/iv_order_song"
         android:background="@drawable/dark_cycle_bg"
         android:padding="5dp"
         android:src="@drawable/gift"
@@ -258,7 +281,7 @@
         app:layout_constraintEnd_toStartOf="@+id/iv_local_audio_switch"
         android:src="@drawable/listen_order_song"
         android:contentDescription="@string/app_content_description_default"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <EditText
         android:id="@+id/edt_input_text"

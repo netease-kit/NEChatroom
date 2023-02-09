@@ -822,6 +822,12 @@ public abstract class ListenTogetherBaseActivity extends BaseActivity
         .getOrderSongListChangeEvent()
         .observe(this, neOrderSongs -> showSongOptionPanel(!neOrderSongs.isEmpty()));
 
+    roomViewModel.anchorAvatarAnimation.observe(
+        this, show -> seatsLayout.showAnchorAvatarAnimal(show));
+
+    roomViewModel.audienceAvatarAnimation.observe(
+        this, show -> seatsLayout.showAudienceAvatarAnimal(show));
+
     NEListenTogetherKit.getInstance().addRoomListener(roomListener);
   }
 

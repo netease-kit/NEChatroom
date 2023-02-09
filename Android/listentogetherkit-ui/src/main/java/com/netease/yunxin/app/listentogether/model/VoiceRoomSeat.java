@@ -58,6 +58,8 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
   private final int reason;
   private final NEListenTogetherRoomMember member;
 
+  private boolean isSpeaking;
+
   public VoiceRoomSeat(int index) {
     this(index, Status.INIT, Reason.NONE, null);
   }
@@ -88,6 +90,14 @@ public class VoiceRoomSeat implements Serializable, Parcelable {
 
   public String getAccount() {
     return member != null ? member.getAccount() : null;
+  }
+
+  public boolean isSpeaking() {
+    return isSpeaking;
+  }
+
+  public void setSpeaking(boolean speaking) {
+    isSpeaking = speaking;
   }
 
   @Override

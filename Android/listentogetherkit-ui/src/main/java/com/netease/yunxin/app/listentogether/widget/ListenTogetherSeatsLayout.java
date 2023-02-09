@@ -7,9 +7,11 @@ package com.netease.yunxin.app.listentogether.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
 import com.netease.yunxin.kit.listentogether.databinding.ListenTogetherSeatsBinding;
 
@@ -49,6 +51,9 @@ public class ListenTogetherSeatsLayout extends ConstraintLayout {
   }
 
   public void setAudienceSeatInfo(SeatView.SeatInfo seatInfo) {
+    if (!seatInfo.isOnSeat) {
+      showAudienceAvatarAnimal(false);
+    }
     binding.seatAudience.setSeatInfo(seatInfo);
   }
 
@@ -62,6 +67,38 @@ public class ListenTogetherSeatsLayout extends ConstraintLayout {
     } else {
       binding.lottieView.cancelAnimation();
       binding.lottieView.setProgress(0);
+    }
+  }
+
+  public void showAnchorAvatarAnimal(boolean showAvatarAnimal) {
+    LottieAnimationView lavAnchorAvatar = binding.lavAnchorAvatarLottieView;
+    if (showAvatarAnimal) {
+      lavAnchorAvatar.setVisibility(View.VISIBLE);
+      if (lavAnchorAvatar.isAnimating()) {
+        return;
+      }
+      lavAnchorAvatar.setRepeatCount(LottieDrawable.INFINITE);
+      lavAnchorAvatar.playAnimation();
+    } else {
+      lavAnchorAvatar.setVisibility(View.INVISIBLE);
+      lavAnchorAvatar.cancelAnimation();
+      lavAnchorAvatar.setProgress(0);
+    }
+  }
+
+  public void showAudienceAvatarAnimal(boolean showAvatarAnimal) {
+    LottieAnimationView lavAnchorAvatar = binding.lavAudienceAvatarLottieView;
+    if (showAvatarAnimal) {
+      lavAnchorAvatar.setVisibility(View.VISIBLE);
+      if (lavAnchorAvatar.isAnimating()) {
+        return;
+      }
+      lavAnchorAvatar.setRepeatCount(LottieDrawable.INFINITE);
+      lavAnchorAvatar.playAnimation();
+    } else {
+      lavAnchorAvatar.setVisibility(View.INVISIBLE);
+      lavAnchorAvatar.cancelAnimation();
+      lavAnchorAvatar.setProgress(0);
     }
   }
 }

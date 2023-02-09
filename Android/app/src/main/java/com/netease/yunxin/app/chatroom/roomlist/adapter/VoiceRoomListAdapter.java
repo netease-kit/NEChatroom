@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.databinding.ItemVoiceRoomListBinding;
@@ -22,11 +23,15 @@ import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherCallback;
 import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKit;
 import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
+import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.ClickUtils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import kotlin.Unit;
 
 public class VoiceRoomListAdapter
     extends RecyclerView.Adapter<VoiceRoomListAdapter.VoiceRoomHolder> {
@@ -116,35 +121,109 @@ public class VoiceRoomListAdapter
                 }
                 if (NetworkUtils.isConnected()) {
                   if (info.getLiveModel().getLiveType() == NELiveType.LIVE_TYPE_TOGETHER_LISTEN) {
-                    NEListenTogetherKit.getInstance()
-                        .getRoomInfo(
-                            info.getLiveModel().getLiveRecordId(),
-                            new NEListenTogetherCallback<NEListenTogetherRoomInfo>() {
-                              @Override
-                              public void onSuccess(
-                                  @Nullable NEListenTogetherRoomInfo neVoiceRoomInfo) {
-                                if (neVoiceRoomInfo.getLiveModel() != null
-                                    && neVoiceRoomInfo.getLiveModel().getAudienceCount()
-                                        >= ROOM_MAX_AUDIENCE_COUNT) {
-                                  ToastUtils.INSTANCE.showShortToast(
-                                      context, context.getString(R.string.listen_join_live_error));
-                                } else {
-                                  NavUtils.toListenTogetherAudiencePage(context, info);
-                                }
-                              }
-
-                              @Override
-                              public void onFailure(int code, @Nullable String msg) {
-                                ToastUtils.INSTANCE.showShortToast(
-                                    context, context.getString(R.string.app_room_not_exist));
-                              }
-                            });
+                    handleJoinListenTogetherRoom(info);
                   } else {
-                    NavUtils.toVoiceRoomAudiencePage(context, info);
+                    handleJoinVoiceRoom(info);
                   }
                 } else {
                   ToastUtils.INSTANCE.showShortToast(
                       context, context.getString(R.string.common_network_error));
+                }
+              });
+    }
+
+    private void handleJoinVoiceRoom(NEVoiceRoomInfo info) {
+      if (FloatPlayManager.getInstance().isShowFloatView()) {
+        if (FloatPlayManager.getInstance().getVoiceRoomInfo() != null
+            && FloatPlayManager.getInstance()
+                .getVoiceRoomInfo()
+                .getRoomUuid()
+                .equals(info.getLiveModel().getRoomUuid())) {
+          FloatPlayManager.getInstance().stopFloatPlay();
+          NavUtils.toVoiceRoomAudiencePage(context, info, false);
+        } else {
+          AlertDialog.Builder builder = new AlertDialog.Builder(context);
+          builder.setTitle(context.getString(R.string.app_tip));
+          builder.setMessage(context.getString(R.string.app_click_roomlist_tips));
+          builder.setCancelable(true);
+          builder.setPositiveButton(
+              context.getString(R.string.app_sure),
+              (dialog, which) -> {
+                NEVoiceRoomKit.getInstance()
+                    .leaveRoom(
+                        new NEVoiceRoomCallback<Unit>() {
+                          @Override
+                          public void onSuccess(@Nullable Unit unit) {
+                            NavUtils.toVoiceRoomAudiencePage(context, info, true);
+                          }
+
+                          @Override
+                          public void onFailure(int code, @Nullable String msg) {}
+                        });
+                dialog.dismiss();
+              });
+          builder.setNegativeButton(
+              context.getString(R.string.app_cancel), (dialog, which) -> dialog.dismiss());
+          AlertDialog alertDialog = builder.create();
+          alertDialog.show();
+        }
+      } else {
+        NavUtils.toVoiceRoomAudiencePage(context, info, true);
+      }
+    }
+
+    private void handleJoinListenTogetherRoom(NEVoiceRoomInfo info) {
+      if (FloatPlayManager.getInstance().isShowFloatView()) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.app_tip));
+        builder.setMessage(context.getString(R.string.app_click_roomlist_tips));
+        builder.setCancelable(true);
+        builder.setPositiveButton(
+            context.getString(R.string.app_sure),
+            (dialog, which) -> {
+              NEVoiceRoomKit.getInstance()
+                  .leaveRoom(
+                      new NEVoiceRoomCallback<Unit>() {
+                        @Override
+                        public void onSuccess(@Nullable Unit unit) {
+                          joinListenTogetherRoom(info);
+                        }
+
+                        @Override
+                        public void onFailure(int code, @Nullable String msg) {}
+                      });
+              dialog.dismiss();
+            });
+        builder.setNegativeButton(
+            context.getString(R.string.app_cancel), (dialog, which) -> dialog.dismiss());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+      } else {
+        joinListenTogetherRoom(info);
+      }
+    }
+
+    private void joinListenTogetherRoom(NEVoiceRoomInfo info) {
+      NEListenTogetherKit.getInstance()
+          .getRoomInfo(
+              info.getLiveModel().getLiveRecordId(),
+              new NEListenTogetherCallback<NEListenTogetherRoomInfo>() {
+                @Override
+                public void onSuccess(@Nullable NEListenTogetherRoomInfo neVoiceRoomInfo) {
+                  if (neVoiceRoomInfo.getLiveModel() != null
+                      && neVoiceRoomInfo.getLiveModel().getAudienceCount()
+                          >= ROOM_MAX_AUDIENCE_COUNT) {
+                    ToastUtils.INSTANCE.showShortToast(
+                        context, context.getString(R.string.listen_join_live_error));
+                  } else {
+                    NavUtils.toListenTogetherAudiencePage(context, info);
+                  }
+                }
+
+                @Override
+                public void onFailure(int code, @Nullable String msg) {
+                  ToastUtils.INSTANCE.showShortToast(
+                      context, context.getString(R.string.app_room_not_exist));
                 }
               });
     }

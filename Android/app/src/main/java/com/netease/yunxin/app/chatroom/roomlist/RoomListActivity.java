@@ -20,6 +20,7 @@ import com.netease.yunxin.app.chatroom.roomlist.adapter.VoiceRoomListAdapter;
 import com.netease.yunxin.app.chatroom.view.FooterView;
 import com.netease.yunxin.app.chatroom.view.HeaderView;
 import com.netease.yunxin.app.listentogether.Constants;
+import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
@@ -107,7 +108,9 @@ public class RoomListActivity extends BaseActivity
               @Override
               public void onSuccess(@Nullable NEVoiceRoomList neVoiceRoomList) {
                 pageNum = tempPageNum;
-                if (neVoiceRoomList.getList() == null || neVoiceRoomList.getList().isEmpty()) {
+                if (neVoiceRoomList == null
+                    || neVoiceRoomList.getList() == null
+                    || neVoiceRoomList.getList().isEmpty()) {
                   binding.emptyView.setVisibility(View.VISIBLE);
                   binding.rvRoomList.setVisibility(View.GONE);
                 } else {
@@ -122,6 +125,8 @@ public class RoomListActivity extends BaseActivity
               public void onFailure(int code, @Nullable String msg) {
                 tempPageNum = pageNum;
                 binding.refreshLayout.finishRefresh(false);
+                ToastUtils.INSTANCE.showShortToast(
+                    RoomListActivity.this, getString(R.string.app_net_error));
               }
             });
   }
@@ -138,7 +143,9 @@ public class RoomListActivity extends BaseActivity
               @Override
               public void onSuccess(@Nullable NEVoiceRoomList neVoiceRoomList) {
                 pageNum = tempPageNum;
-                adapter.loadMore(neVoiceRoomList.getList());
+                if (neVoiceRoomList != null) {
+                  adapter.loadMore(neVoiceRoomList.getList());
+                }
                 binding.refreshLayout.finishLoadMore(true);
               }
 
@@ -160,7 +167,7 @@ public class RoomListActivity extends BaseActivity
     refresh();
   }
 
-  class MyItemDecoration extends RecyclerView.ItemDecoration {
+  static class MyItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(

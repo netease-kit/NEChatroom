@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.databinding.ActivityCreatRoomBinding;
 import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.app.listentogether.Constants;
+import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.listentogetherkit.api.NECreateListenTogetherRoomOptions;
@@ -32,6 +34,10 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.base.BaseActivity;
+import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatPlayManager;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
+import kotlin.Unit;
 
 public class CreateRoomActivity extends BaseActivity {
 
@@ -92,58 +98,121 @@ public class CreateRoomActivity extends BaseActivity {
                 CreateRoomActivity.this, getString(R.string.app_empty_roomname_tips));
             return;
           }
-          if (liveType == NELiveType.LIVE_TYPE_TOGETHER_LISTEN) {
-            NECreateListenTogetherRoomParams createVoiceRoomParams =
-                new NECreateListenTogetherRoomParams(
-                    binding.etRoomName.getText().toString(),
-                    getDefaultUserName(),
-                    LISTEN_TOGETHER_COUNT_SEAT,
-                    AppConfig.getListenTogetherConfigId(),
-                    cover,
-                    NELiveType.LIVE_TYPE_TOGETHER_LISTEN,
-                    null);
-            NEListenTogetherKit.getInstance()
-                .createRoom(
-                    createVoiceRoomParams,
-                    new NECreateListenTogetherRoomOptions(),
-                    new NEListenTogetherCallback<NEListenTogetherRoomInfo>() {
-                      @Override
-                      public void onSuccess(@Nullable NEListenTogetherRoomInfo roomInfo) {
-                        NavUtils.toListenTogetherRoomPage(CreateRoomActivity.this, roomInfo);
-                        finish();
-                      }
 
-                      @Override
-                      public void onFailure(int code, @Nullable String msg) {}
-                    });
+          if (FloatPlayManager.getInstance().isShowFloatView()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.app_tip));
+            builder.setMessage(getString(R.string.app_click_create_room_tips));
+            builder.setCancelable(true);
+            builder.setPositiveButton(
+                getString(R.string.app_sure),
+                (dialog, which) -> {
+                  if (VoiceRoomUtils.isLocalAnchor()) {
+                    NEVoiceRoomKit.getInstance()
+                        .endRoom(
+                            new NEVoiceRoomCallback<Unit>() {
+                              @Override
+                              public void onSuccess(@Nullable Unit unit) {
+                                ToastUtils.INSTANCE.showShortToast(
+                                    Utils.getApp(),
+                                    Utils.getApp()
+                                        .getString(
+                                            com.netease
+                                                .yunxin
+                                                .kit
+                                                .voiceroomkit
+                                                .ui
+                                                .R
+                                                .string
+                                                .voiceroom_host_close_room_success));
+                                createRoomInner();
+                              }
+
+                              @Override
+                              public void onFailure(int code, @Nullable String msg) {
+                                ALog.e(TAG, "endRoom failed code:" + code + ",msg:" + msg);
+                              }
+                            });
+                  } else {
+                    NEVoiceRoomKit.getInstance()
+                        .leaveRoom(
+                            new NEVoiceRoomCallback<Unit>() {
+                              @Override
+                              public void onSuccess(@Nullable Unit unit) {
+                                createRoomInner();
+                              }
+
+                              @Override
+                              public void onFailure(int code, @Nullable String msg) {
+                                ALog.e(TAG, "leaveRoom failed code:" + code + ",msg:" + msg);
+                              }
+                            });
+                  }
+                  FloatPlayManager.getInstance().stopFloatPlay();
+                  dialog.dismiss();
+                });
+            builder.setNegativeButton(
+                getString(R.string.app_cancel), (dialog, which) -> dialog.dismiss());
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
           } else {
-            NECreateVoiceRoomParams createVoiceRoomParams =
-                new NECreateVoiceRoomParams(
-                    binding.etRoomName.getText().toString(),
-                    getDefaultUserName(),
-                    COUNT_SEAT,
-                    AppConfig.getConfigId(),
-                    cover,
-                    NELiveType.LIVE_TYPE_VOICE,
-                    null);
-            NEVoiceRoomKit.getInstance()
-                .createRoom(
-                    createVoiceRoomParams,
-                    new NECreateVoiceRoomOptions(),
-                    new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
-                      @Override
-                      public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
-                        NavUtils.toVoiceRoomPage(CreateRoomActivity.this, roomInfo);
-                        finish();
-                      }
-
-                      @Override
-                      public void onFailure(int code, @Nullable String msg) {}
-                    });
+            createRoomInner();
           }
         });
 
     binding.ivRandom.setOnClickListener(v -> getRoomDefault());
+  }
+
+  private void createRoomInner() {
+    if (liveType == NELiveType.LIVE_TYPE_TOGETHER_LISTEN) {
+      NECreateListenTogetherRoomParams createVoiceRoomParams =
+          new NECreateListenTogetherRoomParams(
+              binding.etRoomName.getText().toString(),
+              getDefaultUserName(),
+              LISTEN_TOGETHER_COUNT_SEAT,
+              AppConfig.getListenTogetherConfigId(),
+              cover,
+              NELiveType.LIVE_TYPE_TOGETHER_LISTEN,
+              null);
+      NEListenTogetherKit.getInstance()
+          .createRoom(
+              createVoiceRoomParams,
+              new NECreateListenTogetherRoomOptions(),
+              new NEListenTogetherCallback<NEListenTogetherRoomInfo>() {
+                @Override
+                public void onSuccess(@Nullable NEListenTogetherRoomInfo roomInfo) {
+                  NavUtils.toListenTogetherRoomPage(CreateRoomActivity.this, roomInfo);
+                  finish();
+                }
+
+                @Override
+                public void onFailure(int code, @Nullable String msg) {}
+              });
+    } else {
+      NECreateVoiceRoomParams createVoiceRoomParams =
+          new NECreateVoiceRoomParams(
+              binding.etRoomName.getText().toString(),
+              getDefaultUserName(),
+              COUNT_SEAT,
+              AppConfig.getConfigId(),
+              cover,
+              NELiveType.LIVE_TYPE_VOICE,
+              null);
+      NEVoiceRoomKit.getInstance()
+          .createRoom(
+              createVoiceRoomParams,
+              new NECreateVoiceRoomOptions(),
+              new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
+                @Override
+                public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
+                  NavUtils.toVoiceRoomPage(CreateRoomActivity.this, roomInfo);
+                  finish();
+                }
+
+                @Override
+                public void onFailure(int code, @Nullable String msg) {}
+              });
+    }
   }
 
   private String getDefaultUserName() {

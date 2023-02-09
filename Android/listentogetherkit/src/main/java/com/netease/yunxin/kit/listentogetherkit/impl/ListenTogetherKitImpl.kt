@@ -789,4 +789,9 @@ internal class ListenTogetherKitImpl : NEListenTogetherKit, CoroutineRunner() {
         ListenTogetherLog.logApi("removeVoiceRoomListener: listener=$listener")
         myRoomService.removeListener(listener)
     }
+
+    override fun enableAudioVolumeIndication(enable: Boolean, interval: Int): Int {
+        ListenTogetherLog.logApi("enableAudioVolumeIndication: enable=$enable, interval=$interval")
+        return myRoomService.enableAudioVolumeIndication(enable, interval)
+    }
 }

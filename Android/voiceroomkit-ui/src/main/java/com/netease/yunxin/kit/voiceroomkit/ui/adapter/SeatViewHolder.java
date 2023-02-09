@@ -16,20 +16,25 @@ import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 public class SeatViewHolder extends RecyclerView.ViewHolder {
   HeadImageView ivAvatar;
   ImageView ivStatusHint;
-  ImageView iv_user_status;
+  ImageView ivUserStatus;
   TextView tvNick;
   ImageView circle;
   View avatarBg;
   LottieAnimationView applying;
+  LottieAnimationView lavAvatar;
+
+  TextView tvUserReward;
 
   SeatViewHolder(@NonNull View itemView) {
     super(itemView);
     ivAvatar = itemView.findViewById(R.id.iv_user_avatar);
     ivStatusHint = itemView.findViewById(R.id.iv_user_status_hint);
     tvNick = itemView.findViewById(R.id.tv_user_nick);
-    iv_user_status = itemView.findViewById(R.id.iv_user_stats);
+    ivUserStatus = itemView.findViewById(R.id.iv_user_stats);
     circle = itemView.findViewById(R.id.circle);
     avatarBg = itemView.findViewById(R.id.avatar_bg);
     applying = itemView.findViewById(R.id.lav_apply);
+    lavAvatar = itemView.findViewById(R.id.lav_avatar_lottie_view);
+    tvUserReward = itemView.findViewById(R.id.tv_user_reward);
   }
 }

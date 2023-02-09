@@ -6,6 +6,7 @@ package com.netease.yunxin.app.chatroom;
 
 import android.app.Application;
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.utils.AppUtils;
@@ -16,13 +17,16 @@ import com.netease.yunxin.kit.listentogetherkit.api.NEListenTogetherKitConfig;
 import com.netease.yunxin.kit.login.AuthorManager;
 import com.netease.yunxin.kit.login.model.AuthorConfig;
 import com.netease.yunxin.kit.login.model.EventType;
+import com.netease.yunxin.kit.login.model.LoginCallback;
 import com.netease.yunxin.kit.login.model.LoginEvent;
 import com.netease.yunxin.kit.login.model.LoginObserver;
 import com.netease.yunxin.kit.login.model.LoginType;
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthEvent;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKitConfig;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
+import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.IconFontUtil;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +68,9 @@ public class VoiceRoomApplication extends Application {
           public void onEvent(LoginEvent loginEvent) {
             if (loginEvent.getEventType() == EventType.TYPE_LOGOUT) {
               ALog.d(TAG, "loginEvent:" + loginEvent.getEventType());
+              if (FloatPlayManager.getInstance().isShowFloatView()) {
+                FloatPlayManager.getInstance().release();
+              }
               NEVoiceRoomKit.getInstance().logout(null);
               NEListenTogetherKit.getInstance().logout(null);
             }
@@ -90,6 +97,25 @@ public class VoiceRoomApplication extends Application {
               @Override
               public void onFailure(int code, @Nullable String msg) {
                 ALog.i(TAG, "initVoiceRoomKit failed");
+              }
+            });
+    NEVoiceRoomKit.getInstance()
+        .addAuthListener(
+            evt -> {
+              ALog.i(TAG, "onVoiceRoomAuthEvent evt = " + evt);
+              if (evt != NEVoiceRoomAuthEvent.LOGGED_IN) {
+                AuthorManager.INSTANCE.logout(
+                    new LoginCallback<Void>() {
+                      @Override
+                      public void onSuccess(@Nullable Void unused) {
+                        ALog.i(TAG, "logout success");
+                      }
+
+                      @Override
+                      public void onError(int code, @NonNull String msg) {
+                        ALog.i(TAG, "logout failed code = " + code + " msg = " + msg);
+                      }
+                    });
               }
             });
   }

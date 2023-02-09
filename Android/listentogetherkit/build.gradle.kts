@@ -30,7 +30,7 @@ dependencies {
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation("com.netease.yunxin.kit.common:common:1.1.12")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.7")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.11.0")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.11.1")
 
 }
 

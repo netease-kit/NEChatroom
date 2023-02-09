@@ -43,8 +43,6 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   private TextView tvApplyHint;
 
   private SeatApplyDialog seatApplyDialog;
-  public static final String ENV_KEY = "isOverSea";
-  private boolean isOverSeaEnv = false;
 
   @Override
   protected int getContentViewID() {
@@ -55,20 +53,10 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     netErrorView = findViewById(R.id.view_net_error);
-    handleOrderSongUI();
     createMoreItems();
     enterRoom();
     audioPlay.checkMusicFiles();
     watchNetWork();
-  }
-
-  private void handleOrderSongUI() {
-    isOverSeaEnv = getIntent().getBooleanExtra(AnchorActivity.ENV_KEY, false);
-    if (isOverSeaEnv) {
-      ivOrderSong.setVisibility(View.GONE);
-    } else {
-      ivOrderSong.setVisibility(View.VISIBLE);
-    }
   }
 
   @Override

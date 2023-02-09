@@ -13,6 +13,7 @@ public class VoiceRoomModel implements Serializable {
   private String nick;
   private String avatar;
   private String roomName;
+  private String anchorAvatar;
 
   public int getOnlineUserCount() {
     return onlineUserCount;
@@ -70,5 +71,13 @@ public class VoiceRoomModel implements Serializable {
 
   public void setRoomName(String roomName) {
     this.roomName = roomName;
+  }
+
+  public String getAnchorAvatar() {
+    return anchorAvatar;
+  }
+
+  public void setAnchorAvatar(String anchorAvatar) {
+    this.anchorAvatar = anchorAvatar;
   }
 }

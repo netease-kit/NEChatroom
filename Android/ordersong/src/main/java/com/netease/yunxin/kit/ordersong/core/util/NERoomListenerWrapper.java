@@ -82,9 +82,7 @@ public abstract class NERoomListenerWrapper implements NERoomListener {
   public void onRtcRecvSEIMsg(@NonNull String uuid, @NonNull String seiMsg) {}
 
   @Override
-  public void onAudioEffectTimestampUpdate(@NonNull String s, long l) {
-
-  }
+  public void onAudioEffectTimestampUpdate(@NonNull long effectId, long timeStampMS) {}
 
   @Override
   public void onMemberJoinChatroom(@NonNull List<? extends NERoomMember> members) {}
