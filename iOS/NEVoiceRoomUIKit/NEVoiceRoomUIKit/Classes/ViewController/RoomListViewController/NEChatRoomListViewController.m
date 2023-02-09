@@ -5,6 +5,7 @@
 #import "NEChatRoomListViewController.h"
 #import <MJRefresh/MJRefresh.h>
 #import <Masonry/Masonry.h>
+#import <NEUIKit/UIImage+NEUIExtension.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import "NEChatroomListViewModel.h"
@@ -13,6 +14,7 @@
 #import "NEUIEmptyListView.h"
 #import "NEUILiveListCell.h"
 #import "NEUIViewFactory.h"
+#import "NEVoiceRoomFloatWindowSingleton.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomViewController.h"
@@ -21,7 +23,9 @@
 #import "NTESGlobalMacro.h"
 #import "UIView+NEUIExtension.h"
 
-@interface NEChatRoomListViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface NEChatRoomListViewController () <UICollectionViewDelegate,
+                                            UICollectionViewDataSource,
+                                            UIAlertViewDelegate>
 @property(nonatomic, strong) UICollectionView *collectionView;
 @property(nonatomic, strong) UIButton *createLiveRoomButton;
 @property(nonatomic, strong) NEUIEmptyListView *emptyView;
@@ -31,6 +35,9 @@
 @property(nonatomic, assign) BOOL isEnterRoom;
 /// 在线人数
 @property(nonatomic, assign) NSInteger onlineCount;
+
+/// 选中Info 信息
+@property(nonatomic, strong) NEVoiceRoomInfo *roomInfoModel;
 @end
 
 @implementation NEChatRoomListViewController
@@ -45,6 +52,26 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  if (@available(iOS 13.0, *)) {
+    UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+
+    [appearance configureWithOpaqueBackground];
+
+    NSMutableDictionary *textAttribute = [NSMutableDictionary dictionary];
+    textAttribute[NSForegroundColorAttributeName] = [UIColor blackColor];  // 标题颜色
+    textAttribute[NSFontAttributeName] = [UIFont systemFontOfSize:16];     // 标题大小
+    [appearance setTitleTextAttributes:textAttribute];
+
+    // 去除底部黑线
+    [appearance setShadowImage:[UIImage ne_imageWithColor:UIColor.clearColor]];
+
+    UIColor *color = [UIColor whiteColor];
+    appearance.backgroundColor = color;
+
+    self.navigationController.navigationBar.standardAppearance = appearance;
+    self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
+  }
+
   // Do any additional setup after loading the view.
   self.title = [NSBundle ne_localizedStringForKey:@"语聊房"];
 
@@ -152,14 +179,51 @@
     didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self.roomListViewModel.datas count] > indexPath.row) {
     NEVoiceRoomInfo *roomInfoModel = self.roomListViewModel.datas[indexPath.row];
+    self.roomInfoModel = roomInfoModel;
     [self audienceEnterLiveRoomWithListInfo:roomInfoModel];
   }
 }
 
+// 监听点击事件 代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSString *btnTitle = [alertView buttonTitleAtIndex:buttonIndex];
+  if ([btnTitle isEqualToString:NELocalizedString(@"取消")]) {
+  } else if ([btnTitle isEqualToString:NELocalizedString(@"确认")]) {
+    [[NEVoiceRoomFloatWindowSingleton Ins]
+        clickCloseButton:[NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView ? NO : YES
+                callback:^{
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                    NEVoiceRoomViewController *vc =
+                        [[NEVoiceRoomViewController alloc] initWithRole:NEVoiceRoomRoleAudience
+                                                                 detail:self.roomInfoModel];
+                    [self.navigationController pushViewController:vc animated:YES];
+                  });
+                }];
+  }
+}
+
 - (void)audienceEnterLiveRoomWithListInfo:(NEVoiceRoomInfo *)info {
-  NEVoiceRoomViewController *vc =
-      [[NEVoiceRoomViewController alloc] initWithRole:NEVoiceRoomRoleAudience detail:info];
-  [self.navigationController pushViewController:vc animated:YES];
+  if ([NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView) {
+    if ([NEVoiceRoomFloatWindowSingleton Ins].getRoomUuid &&
+        [[NEVoiceRoomFloatWindowSingleton Ins].getRoomUuid
+            isEqualToString:info.liveModel.roomUuid]) {
+      [[NEVoiceRoomFloatWindowSingleton Ins] dragButtonClicked:nil];
+      return;
+    }
+    UIAlertView *alertView =
+        [[UIAlertView alloc] initWithTitle:NELocalizedString(@"提示")
+                                   message:NELocalizedString(@"是否退出当前房间进入其他房间")
+                                  delegate:self
+                         cancelButtonTitle:NELocalizedString(@"取消")
+                         otherButtonTitles:NELocalizedString(@"确认"), nil];  // 一般在if判断中加入
+    [alertView show];
+
+  } else {
+    NSLog(@"列表点击");
+    NEVoiceRoomViewController *vc =
+        [[NEVoiceRoomViewController alloc] initWithRole:NEVoiceRoomRoleAudience detail:info];
+    [self.navigationController pushViewController:vc animated:YES];
+  }
 }
 
 #pragma mark - lazy load

@@ -50,17 +50,17 @@ public extension NEListenTogetherKit {
                            userUuid: userUuid,
                            commandId: commandId,
                            data: data) { code, msg, _ in
-        if code == 0 {
-          NEListenTogetherLog.successLog(kitTag, desc: "Successfully send custom message.")
-        } else {
-          NEListenTogetherLog.errorLog(
-            kitTag,
-            desc: "Failed to send custom message. Code: \(code). Msg: \(msg ?? "")"
-          )
+          if code == 0 {
+            NEListenTogetherLog.successLog(kitTag, desc: "Successfully send custom message.")
+          } else {
+            NEListenTogetherLog.errorLog(
+              kitTag,
+              desc: "Failed to send custom message. Code: \(code). Msg: \(msg ?? "")"
+            )
+          }
+          callback?(code, msg, nil)
         }
-        callback?(code, msg, nil)
-      }
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 处理RoomKit自定义消息
@@ -350,6 +350,21 @@ extension NEListenTogetherKit: NERoomListener {
 
         if listener.responds(to: #selector(NEListenTogetherListener.onRtcChannelError(_:))) {
           listener.onRtcChannelError?(code)
+        }
+      }
+    }
+  }
+
+  public func onRtcAudioVolumeIndication(volumes: [NEMemberVolumeInfo],
+                                         totalVolume: Int) {
+    DispatchQueue.main.async {
+      for pointerListener in self.listeners.allObjects {
+        guard pointerListener is NEListenTogetherListener, let listener = pointerListener as? NEListenTogetherListener else { continue }
+        if listener.responds(to: #selector(NEListenTogetherListener.onRtcAudioVolumeIndication(volumes:totalVolume:))) {
+          let v: [NEListenTogetherMemberVolumeInfo] = volumes.map { info in
+            NEListenTogetherMemberVolumeInfo(info: info)
+          }
+          listener.onRtcAudioVolumeIndication?(volumes: v, totalVolume: totalVolume)
         }
       }
     }

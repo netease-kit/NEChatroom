@@ -16,6 +16,7 @@
 #import "NEVoiceRoomFooterView.h"
 #import "NEVoiceRoomHeaderView.h"
 #import "NEVoiceRoomReachability.h"
+#import "NEVoiceRoomSendGiftViewController.h"
 #import "NEVoiceRoomUIAlertView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -67,6 +68,9 @@ typedef enum : NSUInteger {
 
 @property(nonatomic, strong) NEAudioEffectManager *audioManager;
 
+// 礼物控制器
+@property(nonatomic, strong) NEVoiceRoomSendGiftViewController *giftViewController;
+
 /// 初始化
 /// @param role 角色
 /// @param detail 房间详情
@@ -74,6 +78,7 @@ typedef enum : NSUInteger {
 
 /// 离开或关闭房间
 - (void)closeRoom;
+- (void)closeRoomWithViewPop:(BOOL)changeView callback:(void (^)(void))callabck;
 @end
 
 NS_ASSUME_NONNULL_END

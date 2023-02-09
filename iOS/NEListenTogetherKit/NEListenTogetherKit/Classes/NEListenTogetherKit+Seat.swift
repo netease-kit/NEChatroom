@@ -103,7 +103,7 @@ public extension NEListenTogetherKit {
         }
         callback?(code, msg, nil)
       }
-      }, failure: callback)
+    }, failure: callback)
   }
 
   /// 申请上麦

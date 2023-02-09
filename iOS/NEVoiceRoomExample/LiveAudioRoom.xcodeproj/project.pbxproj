@@ -47,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10FC077E9AAE26D9EA6FDE7A /* Pods-LiveAudioRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.debug.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.debug.xcconfig"; sourceTree = "<group>"; };
 		53BFB52F28D6F96700F98B59 /* LiveAudioRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveAudioRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53BFB53228D6F96700F98B59 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		53BFB53328D6F96700F98B59 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -97,14 +98,13 @@
 		53CB3A0828E2DA6200C3F194 /* playing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = playing.json; sourceTree = "<group>"; };
 		5468F34E67967D7E45A126A8 /* Pods_LiveAudioRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveAudioRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E487B162946F54400337865 /* LiveAudioRoomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveAudioRoomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		90C59E55C8B8E773C3EE9BAA /* Pods-LiveAudioRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.release.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.release.xcconfig"; sourceTree = "<group>"; };
+		A42F55EA8072BE596416CF28 /* Pods-LiveAudioRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.release.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.release.xcconfig"; sourceTree = "<group>"; };
 		ED2C6DD428E3F10800440A32 /* NEPersonTableViewDataCenterCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NEPersonTableViewDataCenterCell.h; sourceTree = "<group>"; };
 		ED2C6DD528E3F10800440A32 /* NEPersonTableViewDataCenterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEPersonTableViewDataCenterCell.m; sourceTree = "<group>"; };
 		ED2C6DDA28E3F20600440A32 /* NEPersonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEPersonView.h; sourceTree = "<group>"; };
 		ED2C6DDB28E3F20600440A32 /* NEPersonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEPersonView.m; sourceTree = "<group>"; };
 		ED2C6DDD28E3F20F00440A32 /* NEPersonDataCenterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NEPersonDataCenterView.h; sourceTree = "<group>"; };
 		ED2C6DDE28E3F20F00440A32 /* NEPersonDataCenterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEPersonDataCenterView.m; sourceTree = "<group>"; };
-		FA64AEA0F4B715B1F47ADCA4 /* Pods-LiveAudioRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.debug.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +140,7 @@
 				53BFB53128D6F96700F98B59 /* LiveAudioRoom */,
 				53BFB53028D6F96700F98B59 /* Products */,
 				1E02BD73B716212F769A7C6A /* Frameworks */,
-				A5B27F55ED121368D1480B90 /* Pods */,
+				DFB8F511B6ADEFECB20A5626 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -287,12 +287,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		A5B27F55ED121368D1480B90 /* Pods */ = {
+		DFB8F511B6ADEFECB20A5626 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FA64AEA0F4B715B1F47ADCA4 /* Pods-LiveAudioRoom.debug.xcconfig */,
-				90C59E55C8B8E773C3EE9BAA /* Pods-LiveAudioRoom.release.xcconfig */,
+				10FC077E9AAE26D9EA6FDE7A /* Pods-LiveAudioRoom.debug.xcconfig */,
+				A42F55EA8072BE596416CF28 /* Pods-LiveAudioRoom.release.xcconfig */,
 			);
+			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -640,7 +641,7 @@
 		};
 		53BFB55F28D6F96900F98B59 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA64AEA0F4B715B1F47ADCA4 /* Pods-LiveAudioRoom.debug.xcconfig */;
+			baseConfigurationReference = 10FC077E9AAE26D9EA6FDE7A /* Pods-LiveAudioRoom.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -661,7 +662,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.0;
+				MARKETING_VERSION = 3.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -672,12 +673,12 @@
 		};
 		53BFB56028D6F96900F98B59 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90C59E55C8B8E773C3EE9BAA /* Pods-LiveAudioRoom.release.xcconfig */;
+			baseConfigurationReference = A42F55EA8072BE596416CF28 /* Pods-LiveAudioRoom.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 569GNZ5392;
 				ENABLE_BITCODE = NO;
@@ -693,10 +694,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.0;
+				MARKETING_VERSION = 3.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = enterpriseForWildCard;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -19,6 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 ///// 单行刷新
 ///// @param rowIndex 需要刷新的row
 //- (void)reloadCollectionRowWithIndex:(NSInteger)rowIndex;
+
+/// 更新礼物值，单独开方法 因为多线程
+- (void)updateGiftDatas:(NSMutableArray<NEVoiceRoomBatchSeatUserReward *> *)giftDatas;
+/// 更新礼物值，删除礼物 ，单独开方法，因为多线程
+- (void)updateGiftData:(NSString *)account;
+
+- (void)updateWithVolumeInfos:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumeInfos;
+
 @end
 
 NS_ASSUME_NONNULL_END

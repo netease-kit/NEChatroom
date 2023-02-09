@@ -32,6 +32,18 @@ public protocol NEListenTogetherListener: NSObjectProtocol {
   /// - Parameter code: 错误码
   @objc optional func onRtcChannelError(_ code: Int)
 
+  /// 提示房间内谁正在说话及说话这瞬时音量的回调，该回调默认为关闭状态
+  ///
+  /// 开启后 无论房间内是否有人说话，SDK 都会按设置的时间间隔触发该回调。
+  /// - 如果有 [NEListenTogetherMemberVolumeInfo.userUuid] 出现在上次返回的列表中，但不在本次返回的列表中，则默认该 userId 对应的远端用户没有说话。
+  /// - 如果 [NEListenTogetherMemberVolumeInfo.volume] 为 0，表示该用户没有说话。
+  /// - 如果列表为空，则表示此时远端没有人说话。
+  /// - Parameters:
+  ///   - volumes: 每个说话者的用户ID和音量信息列表
+  ///   - totalVolume: 混合后的总音量，取值范围为 0~100
+  @objc optional func onRtcAudioVolumeIndication(volumes: [NEListenTogetherMemberVolumeInfo],
+                                                 totalVolume: Int)
+
   /// 本端音频输出设备变更通知，如切换到扬声器、听筒、耳机等
   /// - Parameter device: 音频输出类型
   @objc optional func onAudioOutputDeviceChanged(_ device: NEListenTogetherAudioOutputDevice)

@@ -3,10 +3,11 @@
 // found in the LICENSE file.
 
 #import <Lottie/LOTAnimationView.h>
+#import <NEListenTogetherKit/NEListenTogetherKit-Swift.h>
 #import <UIKit/UIKit.h>
 #import "NEListenTogetherAnimationButton.h"
+@import LottieSwift;
 
-#import <NEListenTogetherKit/NEListenTogetherKit-Swift.h>
 #define NEChatRoomAnchor @"chatRoomAnchor"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -39,17 +40,26 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) UIImageView *singIco;
 /// 正在申请动画
 @property(nonatomic, strong) LOTAnimationView *loadingIco;
+/// 说话波纹动画
+@property(nonatomic, strong) NELottieView *lottieView;
 
 /**
  开始声音动画
  @param value   - 音量值
  */
-- (void)startSoundAnimationWithValue:(NSInteger)value;
+- (void)startSoundAnimationWithValue:(NSInteger)value
+    API_DEPRECATED("Use startSpeakAnimation instead.", ios(2.0, 16.0));
 
 /**
  停止声音动画
  */
-- (void)stopSoundAnimation;
+- (void)stopSoundAnimation API_DEPRECATED("Use stopSpeakAnimation instead.", ios(2.0, 16.0));
+
+/// 开始播放说话波纹动画
+- (void)startSpeakAnimation;
+
+/// 停止播放说话波纹动画
+- (void)stopSpeakAnimation;
 
 /**
  刷新麦位信息

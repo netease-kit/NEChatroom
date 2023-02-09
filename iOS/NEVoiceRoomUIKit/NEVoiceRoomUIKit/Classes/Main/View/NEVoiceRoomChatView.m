@@ -11,6 +11,8 @@
 
 /// 昵称
 @property(nonatomic, assign) NSRange nickRange;
+/// 其他昵称
+@property(nonatomic, assign) NSRange anotherNickRange;
 /// 文字区间
 @property(nonatomic, assign) NSRange textRange;
 
@@ -40,7 +42,7 @@
   }
 
   if (self.isAnchor) {
-    UIImage *authorIco = [UIImage voiceRoom_imageNamed:@"anthor_ico"];
+    UIImage *authorIco = [UIImage nevoiceRoom_imageNamed:@"anthor_ico"];
     [label appendImage:authorIco
                maxSize:CGSizeMake(32, 16)
                 margin:UIEdgeInsetsZero
@@ -50,7 +52,7 @@
   }
   [label appendAttributedText:self.formatMessage];
   if (self.giftIcon.length) {
-    UIImage *rewardIco = [UIImage voiceRoom_imageNamed:self.giftIcon];
+    UIImage *rewardIco = [UIImage nevoiceRoom_imageNamed:self.giftIcon];
     [label appendImage:rewardIco
                maxSize:CGSizeMake(20, 20)
                 margin:UIEdgeInsetsZero
@@ -62,8 +64,7 @@
   NSString *showMessage = [self showMessage];
   NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:showMessage];
   switch (_type) {
-    case NEVoiceRoomChatViewMessageTypeNormal:
-    case NEVoiceRoomChatViewMessageTypeReward: {
+    case NEVoiceRoomChatViewMessageTypeNormal: {
       [text setAttributes:@{
         NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:0.6],
         NSFontAttributeName : [UIFont systemFontOfSize:14]
@@ -71,6 +72,24 @@
                     range:_nickRange];
       [text setAttributes:@{
         NSForegroundColorAttributeName : [UIColor ne_colorWithHex:0xffffff],
+        NSFontAttributeName : [UIFont systemFontOfSize:14]
+      }
+                    range:_textRange];
+    } break;
+    case NEVoiceRoomChatViewMessageTypeReward: {
+      [text setAttributes:@{
+        NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:0.6],
+        NSFontAttributeName : [UIFont systemFontOfSize:14]
+      }
+                    range:_nickRange];
+
+      [text setAttributes:@{
+        NSForegroundColorAttributeName : [UIColor ne_colorWithHex:0x00AAFF],
+        NSFontAttributeName : [UIFont systemFontOfSize:14]
+      }
+                    range:_anotherNickRange];
+      [text setAttributes:@{
+        NSForegroundColorAttributeName : [UIColor ne_colorWithHex:0xFFD966],
         NSFontAttributeName : [UIFont systemFontOfSize:14]
       }
                     range:_textRange];
@@ -103,13 +122,25 @@
       break;
     }
     case NEVoiceRoomChatViewMessageTypeReward: {
-      NEVoiceRoomUIGiftModel *reward = [NEVoiceRoomUIGiftModel getRewardWithGiftId:self.giftId];
-      self.giftIcon = reward.icon;
-      NSString *msg = @"赠送礼物x1 ";
-      showMessage = [NSString stringWithFormat:@"%@: %@", self.giftFrom, msg];
-      _textRange = NSMakeRange(showMessage.length - msg.length, msg.length);
-      _nickRange = NSMakeRange(0, showMessage.length - msg.length);
-      break;
+      if (!self.giftTo || self.giftTo.length <= 0) {
+        NEVoiceRoomUIGiftModel *reward = [NEVoiceRoomUIGiftModel getRewardWithGiftId:self.giftId];
+        self.giftIcon = reward.icon;
+        NSString *msg = @"赠送礼物x1 ";
+        showMessage = [NSString stringWithFormat:@"%@: %@", self.giftFrom, msg];
+        _textRange = NSMakeRange(showMessage.length - msg.length, msg.length);
+        _nickRange = NSMakeRange(0, showMessage.length - msg.length);
+        break;
+      } else {
+        NEVoiceRoomUIGiftModel *reward = [NEVoiceRoomUIGiftModel getRewardWithGiftId:self.giftId];
+        self.giftIcon = reward.icon;
+        NSString *msg = [NSString stringWithFormat:@"%@x%d ", self.giftName, self.giftCount];
+        showMessage = [NSString stringWithFormat:@"%@ 送给 %@ %@", self.giftFrom, self.giftTo, msg];
+        _anotherNickRange = NSMakeRange(showMessage.length - msg.length - self.giftTo.length - 1,
+                                        self.giftTo.length);
+        _textRange = NSMakeRange(showMessage.length - msg.length, msg.length);
+        _nickRange = NSMakeRange(0, showMessage.length - msg.length - self.giftTo.length);
+        break;
+      }
     }
     case NEVoiceRoomChatViewMessageTypeNotication: {
       showMessage = [NSString stringWithFormat:@"%@", self.notication];

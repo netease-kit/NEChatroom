@@ -72,7 +72,7 @@
       [button setImage:[UIImage imageNamed:image inBundle:bundle compatibleWithTraitCollection:nil]
               forState:UIControlStateNormal];
     } else {
-      [button setImage:[UIImage voiceRoom_imageNamed:image] forState:UIControlStateNormal];
+      [button setImage:[UIImage nevoiceRoom_imageNamed:image] forState:UIControlStateNormal];
     }
   }
   if (bgImage.length) {
@@ -86,9 +86,9 @@
                                      compatibleWithTraitCollection:nil]
                         forState:UIControlStateHighlighted];
     } else {
-      [button setBackgroundImage:[UIImage voiceRoom_imageNamed:bgImage]
+      [button setBackgroundImage:[UIImage nevoiceRoom_imageNamed:bgImage]
                         forState:UIControlStateNormal];
-      [button setBackgroundImage:[UIImage voiceRoom_imageNamed:bgImage]
+      [button setBackgroundImage:[UIImage nevoiceRoom_imageNamed:bgImage]
                         forState:UIControlStateHighlighted];
     }
   }
@@ -100,7 +100,7 @@
                                      compatibleWithTraitCollection:nil]
                         forState:UIControlStateSelected];
     } else {
-      [button setBackgroundImage:[UIImage voiceRoom_imageNamed:selectBgImage]
+      [button setBackgroundImage:[UIImage nevoiceRoom_imageNamed:selectBgImage]
                         forState:UIControlStateSelected];
     }
   }
@@ -111,7 +111,7 @@
 + (UIImageView *)createImageViewFrame:(CGRect)frame imageName:(NSString *)imageName {
   UIImageView *imgView = [[UIImageView alloc] initWithFrame:frame];
   if (imageName.length > 0) {
-    imgView.image = [UIImage voiceRoom_imageNamed:imageName];
+    imgView.image = [UIImage nevoiceRoom_imageNamed:imageName];
   }
   return imgView;
 }

@@ -10,6 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 退出事件
 - (void)headerExitAction;
+/// 小窗事件
+- (void)smallWindowAction;
+
 ////点击公告
 //- (void)liveRoomHeaderClickNoticeAction;
 

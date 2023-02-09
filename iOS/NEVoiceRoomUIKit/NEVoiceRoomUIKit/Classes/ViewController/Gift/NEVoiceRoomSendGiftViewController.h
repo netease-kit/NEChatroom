@@ -3,20 +3,22 @@
 // found in the LICENSE file.
 
 #import <UIKit/UIKit.h>
+#import "NEUIMicQueueViewProtocol.h"
 #import "NEVoiceRoomUIGiftModel.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol NEVoiceRoomSendGiftViewtDelegate <NSObject>
 
-- (void)didSendGift:(NEVoiceRoomUIGiftModel *)gift;
+- (void)didSendGift:(NEVoiceRoomUIGiftModel *)gift
+          giftCount:(int)giftCount
+          userUuids:(NSArray *)userUuids;
 
 @end
 
-@interface NEVoiceRoomSendGiftViewController : UIViewController
+@interface NEVoiceRoomSendGiftViewController : UIViewController <NEUIMicQueueViewProtocol>
 
-+ (void)showWithTarget:(id<NEVoiceRoomSendGiftViewtDelegate>)target
-        viewController:(UIViewController *)viewController;
++ (NEVoiceRoomSendGiftViewController *)showWithTarget:(id<NEVoiceRoomSendGiftViewtDelegate>)target
+                                       viewController:(UIViewController *)viewController;
 
 @end
 

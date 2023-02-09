@@ -11,6 +11,7 @@
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIPlanChooseAlertView.h"
 #import "NEUIViewFactory.h"
+#import "NEVoiceRoomFloatWindowSingleton.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
@@ -24,7 +25,9 @@
 #import "UIView+Toast.h"
 #import "UIView+VoiceRoom.h"
 
-@interface NEOpenRoomViewController () <NEUICreateRoomDelegate, NTESPlanChooseDelegate>
+@interface NEOpenRoomViewController () <NEUICreateRoomDelegate,
+                                        NTESPlanChooseDelegate,
+                                        UIAlertViewDelegate>
 @property(nonatomic, strong) UIImageView *bgImageView;
 @property(nonatomic, strong) UIButton *backButton;
 @property(nonatomic, strong) NEUICreateRoomNameView *createRoomNameView;
@@ -52,12 +55,38 @@
   [self setupSubviews];
 }
 
+// 监听点击事件 代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSString *btnTitle = [alertView buttonTitleAtIndex:buttonIndex];
+  if ([btnTitle isEqualToString:NELocalizedString(@"取消")]) {
+  } else if ([btnTitle isEqualToString:NELocalizedString(@"确认")]) {
+    [[NEVoiceRoomFloatWindowSingleton Ins]
+        clickCloseButton:[NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView ? NO : YES
+                callback:^{
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                    [self openRoomAction];
+                  });
+                }];
+  }
+}
+
 - (void)bindViewModel {
   @weakify(self);
   [[self.openLiveButton rac_signalForControlEvents:UIControlEventTouchUpInside]
       subscribeNext:^(__kindof UIControl *_Nullable x) {
         @strongify(self);
-        [self openRoomAction];
+        if ([NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView) {
+          UIAlertView *alertView = [[UIAlertView alloc]
+                  initWithTitle:NELocalizedString(@"提示")
+                        message:NELocalizedString(@"是否退出当前房间，并创建新房间")
+                       delegate:self
+              cancelButtonTitle:NELocalizedString(@"取消")
+              otherButtonTitles:NELocalizedString(@"确认"), nil];  // 一般在if判断中加入
+          [alertView show];
+
+        } else {
+          [self openRoomAction];
+        }
       }];
 }
 
@@ -173,7 +202,7 @@
 
 #pragma mark - NEUICreateRoomDelegate
 - (void)createRoomResult {
-  self.bgImageView.image = [UIImage voiceRoom_imageNamed:@"homePage_chatRoomBgIcon"];
+  self.bgImageView.image = [UIImage nevoiceRoom_imageNamed:@"homePage_chatRoomBgIcon"];
   [self.openLiveButton setGradientBackgroundWithColors:@[ HEXCOLOR(0x6699FF), HEXCOLOR(0x30F2F2) ]
                                              locations:nil
                                             startPoint:CGPointMake(0, 0)

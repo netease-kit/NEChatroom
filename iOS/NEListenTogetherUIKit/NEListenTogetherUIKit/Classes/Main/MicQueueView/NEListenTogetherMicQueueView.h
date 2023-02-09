@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)togetherListen;
 - (void)showListenButton:(BOOL)show;
 - (void)showDownloadingProcess:(BOOL)isHost show:(BOOL)show;
+
+- (void)updateWithVolumeInfos:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumeInfos;
 @end
 
 NS_ASSUME_NONNULL_END

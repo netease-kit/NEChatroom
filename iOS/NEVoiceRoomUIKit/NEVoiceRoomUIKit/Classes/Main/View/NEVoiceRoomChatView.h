@@ -28,7 +28,10 @@ typedef NS_ENUM(NSInteger, NEVoiceRoomChatViewMessageType) {
 @property(nonatomic, assign) BOOL isAnchor;
 /// 礼物消息
 @property(nonatomic, assign) int giftId;
+@property(nonatomic, copy) NSString *giftName;
 @property(nonatomic, copy) NSString *giftFrom;
+@property(nonatomic, assign) int giftCount;
+@property(nonatomic, copy) NSString *giftTo;
 /// 通知消息
 @property(nonatomic, copy) NSString *notication;
 

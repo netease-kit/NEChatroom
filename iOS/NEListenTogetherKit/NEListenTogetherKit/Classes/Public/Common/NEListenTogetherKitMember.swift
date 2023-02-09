@@ -21,6 +21,20 @@ struct MemberPropertyConstants {
 }
 
 @objcMembers
+/// 用户音量信息
+public class NEListenTogetherMemberVolumeInfo: NSObject {
+  /// 成员ID
+  public var userUuid: String = ""
+  /// 音量大小 区间  **[0~100]**
+  public var volume: Int = 0
+
+  internal init(info: NEMemberVolumeInfo) {
+    userUuid = info.userUuid
+    volume = info.volume
+  }
+}
+
+@objcMembers
 /// Karaoke 成员模型
 public class NEListenTogetherMember: NSObject {
   /// 用户ID

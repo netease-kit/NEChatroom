@@ -98,6 +98,7 @@ extension NEOrderSong: NECopyrightedEventHandler, NESongPreloadProtocol {
           guard let success = success else {
             return
           }
+          NECopyrightedMedia.getInstance().setSongScene(TYPE_LISTENING_TO_MUSIC)
           success()
         }
       }

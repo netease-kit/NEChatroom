@@ -3,10 +3,10 @@
 // found in the LICENSE file.
 
 #import <Lottie/LOTAnimationView.h>
+#import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import <UIKit/UIKit.h>
 #import "NEUIAnimationButton.h"
-
-#import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
+@import LottieSwift;
 #define NEChatRoomAnchor @"chatRoomAnchor"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -39,17 +39,28 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) UIImageView *singIco;
 /// 正在申请动画
 @property(nonatomic, strong) LOTAnimationView *loadingIco;
+/// 礼物Lable
+@property(nonatomic, strong) UILabel *giftLabal;
+/// 说话波纹动画
+@property(nonatomic, strong) NELottieView *lottieView;
 
 /**
  开始声音动画
  @param value   - 音量值
  */
-- (void)startSoundAnimationWithValue:(NSInteger)value;
+- (void)startSoundAnimationWithValue:(NSInteger)value
+    API_DEPRECATED("Use startSpeakAnimation instead.", ios(2.0, 16.0));
 
 /**
  停止声音动画
  */
-- (void)stopSoundAnimation;
+- (void)stopSoundAnimation API_DEPRECATED("Use stopSpeakAnimation instead.", ios(2.0, 16.0));
+
+/// 开始播放说话波纹动画
+- (void)startSpeakAnimation;
+
+/// 停止播放说话波纹动画
+- (void)stopSpeakAnimation;
 
 /**
  刷新麦位信息
@@ -62,6 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onConnectBtnPressed;
 
+/// 更新礼物值
+/// @param title 礼物值
+- (void)updateGiftLabel:(NSString *)title;
 /**
  实例化cell
  @param collectionView      - 容器控件
