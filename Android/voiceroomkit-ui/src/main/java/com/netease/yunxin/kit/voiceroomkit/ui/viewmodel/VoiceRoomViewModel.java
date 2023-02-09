@@ -3,44 +3,53 @@
 // found in the LICENSE file.
 package com.netease.yunxin.kit.voiceroomkit.ui.viewmodel;
 
-import android.net.NetworkInfo;
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.network.NetRequestCallback;
-import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongListener;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.ordersong.core.model.OrderSong;
 import com.netease.yunxin.kit.ordersong.core.model.Song;
+import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions;
+import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole;
 import com.netease.yunxin.kit.voiceroomkit.api.model.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.chatroom.ChatRoomMsgCreator;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.SeatHelper;
+import com.netease.yunxin.kit.voiceroomkit.ui.model.MemberAudioBannedModel;
+import com.netease.yunxin.kit.voiceroomkit.ui.model.MemberAudioMuteChangedModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeatEvent;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.VoiceRoomService;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.NetUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.SeatUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.SingleLiveEvent;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import kotlin.*;
 import org.jetbrains.annotations.NotNull;
 
 public class VoiceRoomViewModel extends ViewModel {
   public static final String TAG = "VoiceRoomViewModel";
+
+  public static final int VOLUME_INDICATION_INTERVAL = 1000;
+
+  public static final int ANCHOR_SEAT_INDEX = 1;
   public static final int CURRENT_SEAT_STATE_IDLE = 0;
   public static final int CURRENT_SEAT_STATE_APPLYING = 1;
   public static final int CURRENT_SEAT_STATE_ON_SEAT = 2;
@@ -48,6 +57,8 @@ public class VoiceRoomViewModel extends ViewModel {
   public MutableLiveData<String> toastData = new MutableLiveData<>(); // toast
   public MutableLiveData<CharSequence> chatRoomMsgData = new MutableLiveData<>(); // 聊天列表数据
   public MutableLiveData<Integer> memberCountData = new MutableLiveData<>(); // 房间人数
+
+  public MutableLiveData<Integer> anchorReward = new MutableLiveData<>(); // 主播金币数量
   public MutableLiveData<NEVoiceRoomEndReason> errorData = new MutableLiveData<>(); // 错误信息
   public MutableLiveData<Integer> currentSeatState = new MutableLiveData<>(CURRENT_SEAT_STATE_IDLE);
   public MutableLiveData<List<VoiceRoomSeat>> onSeatListData =
@@ -56,13 +67,32 @@ public class VoiceRoomViewModel extends ViewModel {
   public MutableLiveData<VoiceRoomSeatEvent> currentSeatEvent = new SingleLiveEvent<>(); // 当前操作的麦位
   public MutableLiveData<Integer> netData = new MutableLiveData<>();
   public MutableLiveData<NEVoiceRoomGiftModel> rewardData = new MutableLiveData<>();
+
+  public MutableLiveData<NEVoiceRoomBatchGiftModel> bachRewardData = new MutableLiveData<>();
   public MutableLiveData<Boolean> hostLeaveSeatData = new MutableLiveData<>();
   public MutableLiveData<Song> currentSongChange = new MutableLiveData<>();
   public MutableLiveData<Song> songDeletedEvent = new MutableLiveData<>();
+
+  public MutableLiveData<List<? extends NEVoiceRoomMemberVolumeInfo>> rtcAudioVolumeIndicationData =
+      new MutableLiveData<>();
+
+  public MutableLiveData<MemberAudioBannedModel> memberAudioBannedData = new MutableLiveData<>();
+
+  public MutableLiveData<MemberAudioMuteChangedModel> memberAudioMuteChangedData =
+      new MutableLiveData<>();
+
+  public MutableLiveData<NEVoiceRoomMember> anchorMemberData = new MutableLiveData<>();
+
+  public MutableLiveData<NEVoiceRoomMember> localMemberData = new MutableLiveData<>();
   // mute状态（观众主动操作的）
   private boolean isMute = false;
   protected String roomUuid;
   protected Song currentSong;
+
+  private Long liveRecordId;
+  private NEVoiceRoomInfo roomInfo;
+
+  private List<VoiceRoomSeat> roomSeats;
   private final NEVoiceRoomListenerAdapter listener =
       new NEVoiceRoomListenerAdapter() {
 
@@ -70,6 +100,13 @@ public class VoiceRoomViewModel extends ViewModel {
         public void onReceiveGift(@NonNull NEVoiceRoomGiftModel rewardMsg) {
           super.onReceiveGift(rewardMsg);
           rewardData.postValue(rewardMsg);
+        }
+
+        @Override
+        public void onReceiveBatchGift(@NonNull NEVoiceRoomBatchGiftModel giftModel) {
+          ALog.i(TAG, "onReceiveBatchGift giftModel:" + giftModel);
+          bachRewardData.setValue(giftModel);
+          updateRoomInfoReward(giftModel.getSeatUserReward());
         }
 
         @Override
@@ -88,13 +125,15 @@ public class VoiceRoomViewModel extends ViewModel {
         public void onMemberAudioMuteChanged(
             @NotNull NEVoiceRoomMember member,
             boolean mute,
-            @org.jetbrains.annotations.Nullable NEVoiceRoomMember operateBy) {}
+            @org.jetbrains.annotations.Nullable NEVoiceRoomMember operateBy) {
+          memberAudioMuteChangedData.postValue(new MemberAudioMuteChangedModel(member, mute));
+        }
 
         @Override
         public void onMemberJoinRoom(@NonNull List<NEVoiceRoomMember> members) {
           for (NEVoiceRoomMember member : members) {
             ALog.d(TAG, "onMemberJoinRoom :${member.name}");
-            if (!VoiceRoomUtils.isMySelf(member.getAccount())) {
+            if (!VoiceRoomUtils.isLocal(member.getAccount())) {
               chatRoomMsgData.postValue(ChatRoomMsgCreator.createRoomEnter(member.getName()));
             }
           }
@@ -126,6 +165,7 @@ public class VoiceRoomViewModel extends ViewModel {
             @NotNull String account,
             @NotNull String operateBy,
             boolean isAutoAgree) {
+          updateAllInfo();
           if (TextUtils.equals(account, SeatUtils.getCurrentUuid())) {
             currentSeatEvent.postValue(
                 new VoiceRoomSeatEvent(
@@ -137,6 +177,7 @@ public class VoiceRoomViewModel extends ViewModel {
         @Override
         public void onSeatInvitationAccepted(
             int seatIndex, @NonNull String account, boolean isAutoAgree) {
+          updateAllInfo();
           if (TextUtils.equals(account, SeatUtils.getCurrentUuid())) {
             currentSeatEvent.postValue(
                 new VoiceRoomSeatEvent(account, seatIndex, VoiceRoomSeat.Reason.ANCHOR_INVITE));
@@ -174,8 +215,9 @@ public class VoiceRoomViewModel extends ViewModel {
         @Override
         public void onSeatListChanged(@NonNull List<NEVoiceRoomSeatItem> seatItems) {
           ALog.i(TAG, "onSeatListChanged seatItems =" + seatItems);
-          handleSeatItemListChanged(seatItems);
-          if (VoiceRoomUtils.isCurrentHost()) {
+          roomSeats = SeatUtils.transNESeatItem2VoiceRoomSeat(seatItems);
+          handleSeatItemListChanged();
+          if (VoiceRoomUtils.isLocalAnchor()) {
             getSeatRequestList();
           }
         }
@@ -202,7 +244,25 @@ public class VoiceRoomViewModel extends ViewModel {
             errorData.postValue(NEVoiceRoomEndReason.valueOf("END_OF_RTC"));
           }
         }
+
+        @Override
+        public void onRtcAudioVolumeIndication(
+            @NonNull List<? extends NEVoiceRoomMemberVolumeInfo> volumeInfos, int totalVolume) {
+          rtcAudioVolumeIndicationData.postValue(volumeInfos);
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void onMemberAudioBanned(@NonNull NEVoiceRoomMember member, boolean banned) {
+          memberAudioBannedData.postValue(new MemberAudioBannedModel(member, banned));
+        }
       };
+
+  private void updateRoomInfoReward(List<NEVoiceRoomBatchSeatUserReward> seatUserRewards) {
+    roomInfo.getLiveModel().setSeatUserReward(seatUserRewards);
+    updateAnchorRewardInfo();
+    updateSeatWithRewardInfo();
+  }
 
   NEOrderSongListener orderSongListener =
       new NEOrderSongListener() {
@@ -248,47 +308,59 @@ public class VoiceRoomViewModel extends ViewModel {
     memberCountData.postValue(NEVoiceRoomKit.getInstance().getAllMemberList().size());
   }
 
-  private final NetworkUtils.NetworkStateListener networkStateListener =
-      new NetworkUtils.NetworkStateListener() {
+  private final NetworkUtils.OnNetworkStatusChangedListener networkStateListener =
+      new NetworkUtils.OnNetworkStatusChangedListener() {
         private boolean isFirst = true;
 
         @Override
-        public void onAvailable(NetworkInfo networkInfo) {
-          if (!isFirst) {
-            ALog.i(TAG, "onNetworkAvailable");
-            getSeatInfo();
-            getSeatRequestList();
-          }
-          isFirst = false;
-          netData.postValue(NEVoiceRoomUIConstants.NET_AVAILABLE);
-        }
-
-        @Override
-        public void onLost(NetworkInfo networkInfo) {
+        public void onDisconnected() {
           ALog.i(TAG, "onNetworkUnavailable");
           isFirst = false;
           netData.postValue(NEVoiceRoomUIConstants.NET_LOST);
         }
+
+        @Override
+        public void onConnected(NetworkUtils.NetworkType networkType) {
+          if (!isFirst) {
+            ALog.i(TAG, "onNetworkAvailable");
+            updateAllInfo();
+          }
+          isFirst = false;
+          netData.postValue(NEVoiceRoomUIConstants.NET_AVAILABLE);
+        }
       };
 
-  public void initDataOnJoinRoom(String roomUuid) {
-    this.roomUuid = roomUuid;
+  public void initDataOnJoinRoom() {
     initListeners();
     updateRoomMemberCount();
-    queryPlayingSongInfo(roomUuid);
+    queryPlayingSongInfo();
+    getSeatRequestList();
+    NEVoiceRoomKit.getInstance().enableAudioVolumeIndication(true, VOLUME_INDICATION_INTERVAL);
+
+    if (VoiceRoomUtils.isLocalAnchor()) {
+      NEVoiceRoomKit.getInstance().submitSeatRequest(ANCHOR_SEAT_INDEX, true, null);
+    } else {
+      NEVoiceRoomMember hostMember = VoiceRoomUtils.getHost();
+      if (hostMember != null) {
+        anchorMemberData.postValue(hostMember);
+      }
+    }
+    localMemberData.postValue(VoiceRoomUtils.getLocalMember());
+    updateAllInfo();
   }
 
   private void initListeners() {
     NEOrderSongService.INSTANCE.addListener(orderSongListener);
     NEVoiceRoomKit.getInstance().addVoiceRoomListener(listener);
-    NetworkUtils.registerNetworkStatusChangedListener(networkStateListener);
+    NetUtils.registerStateListener(networkStateListener);
   }
 
   @Override
   protected void onCleared() {
     NEOrderSongService.INSTANCE.removeListener(orderSongListener);
-    NetworkUtils.unregisterNetworkStatusChangedListener(networkStateListener);
+    NetUtils.unregisterStateListener(networkStateListener);
     NEVoiceRoomKit.getInstance().removeVoiceRoomListener(listener);
+    NEVoiceRoomKit.getInstance().enableAudioVolumeIndication(false, VOLUME_INDICATION_INTERVAL);
     super.onCleared();
   }
 
@@ -311,10 +383,95 @@ public class VoiceRoomViewModel extends ViewModel {
                             requestItem.getIndex(),
                             VoiceRoomSeat.Status.APPLY,
                             VoiceRoomSeat.Reason.NONE,
-                            SeatUtils.getMember(requestItem.getUser())));
+                            SeatUtils.getMember(requestItem.getUser()),
+                            VoiceRoomUtils.getRewardFromRoomInfo(requestItem.getUser(), roomInfo)));
                   }
                   SeatHelper.getInstance().setApplySeatList(applySeatList);
                   applySeatListData.postValue(applySeatList);
+                }
+              }
+            });
+  }
+
+  public void init(long liveRecordId, String roomUuid) {
+    this.liveRecordId = liveRecordId;
+    this.roomUuid = roomUuid;
+  }
+
+  public void joinRoom(
+      String roomUuid,
+      String nick,
+      String avatar,
+      String role,
+      NEVoiceRoomCallback<NEVoiceRoomInfo> callback) {
+    NEJoinVoiceRoomParams params =
+        new NEJoinVoiceRoomParams(
+            roomUuid, nick, avatar, NEVoiceRoomRole.Companion.fromValue(role), liveRecordId, null);
+    NEJoinVoiceRoomOptions options = new NEJoinVoiceRoomOptions();
+    NEVoiceRoomKit.getInstance()
+        .joinRoom(
+            params,
+            options,
+            new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
+
+              @Override
+              public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
+                ALog.i(TAG, "joinRoom success");
+                VoiceRoomViewModel.this.roomInfo = roomInfo;
+                anchorReward.postValue(VoiceRoomUtils.getAnchorReward(roomInfo));
+                initDataOnJoinRoom();
+                if (callback != null) {
+                  callback.onSuccess(roomInfo);
+                }
+              }
+
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "joinRoom failed code = " + code + " msg = " + msg);
+                if (callback != null) {
+                  callback.onFailure(code, msg);
+                }
+              }
+            });
+  }
+
+  /** 更新场景：1、断网重连；2、上麦的时候（礼物值的信息需要在房间信息中获取） */
+  private void updateAllInfo() {
+    updateRoomInfo(
+        new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
+
+          @Override
+          public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
+            VoiceRoomViewModel.this.roomInfo = roomInfo;
+            updateAnchorRewardInfo();
+            getSeatInfo();
+            getSeatRequestList();
+          }
+
+          @Override
+          public void onFailure(int code, @Nullable String msg) {}
+        });
+  }
+
+  private void updateRoomInfo(NEVoiceRoomCallback<NEVoiceRoomInfo> callback) {
+    NEVoiceRoomKit.getInstance()
+        .getRoomInfo(
+            liveRecordId,
+            new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
+
+              @Override
+              public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
+                ALog.i(TAG, "getRoomInfo success");
+                if (callback != null) {
+                  callback.onSuccess(roomInfo);
+                }
+              }
+
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.i(TAG, "getRoomInfo error code = " + code + ", msg = " + msg);
+                if (callback != null) {
+                  callback.onFailure(code, msg);
                 }
               }
             });
@@ -328,7 +485,8 @@ public class VoiceRoomViewModel extends ViewModel {
               @Override
               public void onSuccess(@Nullable NEVoiceRoomSeatInfo seatInfo) {
                 if (seatInfo != null) {
-                  handleSeatItemListChanged(seatInfo.getSeatItems());
+                  roomSeats = SeatUtils.transNESeatItem2VoiceRoomSeat(seatInfo.getSeatItems());
+                  handleSeatItemListChanged();
                 }
               }
 
@@ -339,7 +497,7 @@ public class VoiceRoomViewModel extends ViewModel {
             });
   }
 
-  public void queryPlayingSongInfo(String roomUuid) {
+  public void queryPlayingSongInfo() {
     VoiceRoomService.getInstance()
         .queryPlayingSongInfo(
             new NetRequestCallback<OrderSong>() {
@@ -352,6 +510,7 @@ public class VoiceRoomViewModel extends ViewModel {
                   song.setOrderId(info.orderId);
                   song.setSongId(info.songId);
                   song.setSongName(info.songName);
+                  song.setChannel(info.channel);
                   currentSongChange.postValue(song);
                 }
               }
@@ -377,11 +536,9 @@ public class VoiceRoomViewModel extends ViewModel {
     return seat != null && seat.isOn();
   }
 
-  private void handleSeatItemListChanged(List<NEVoiceRoomSeatItem> seatItems) {
-    if (seatItems == null) seatItems = Collections.emptyList();
-    List<VoiceRoomSeat> seats = SeatUtils.transNESeatItem2VoiceRoomSeat(seatItems);
+  private void handleSeatItemListChanged() {
     String currentUuid = SeatUtils.getCurrentUuid();
-    VoiceRoomSeat myAfterSeat = findSeatByAccount(seats, currentUuid);
+    VoiceRoomSeat myAfterSeat = findSeatByAccount(roomSeats, currentUuid);
     if (myAfterSeat != null && myAfterSeat.isOn()) {
       currentSeatState.postValue(CURRENT_SEAT_STATE_ON_SEAT);
     } else if (myAfterSeat != null && myAfterSeat.getStatus() == VoiceRoomSeat.Status.APPLY) {
@@ -389,7 +546,18 @@ public class VoiceRoomViewModel extends ViewModel {
     } else {
       currentSeatState.postValue(CURRENT_SEAT_STATE_IDLE);
     }
-    onSeatListData.postValue(seats);
+    updateSeatWithRewardInfo();
+  }
+
+  private void updateAnchorRewardInfo() {
+    anchorReward.postValue(VoiceRoomUtils.getAnchorReward(roomInfo));
+  }
+
+  private void updateSeatWithRewardInfo() {
+    for (VoiceRoomSeat seat : roomSeats) {
+      seat.setRewardTotal(VoiceRoomUtils.getRewardFromRoomInfo(seat.getAccount(), roomInfo));
+    }
+    onSeatListData.postValue(roomSeats);
   }
 
   private VoiceRoomSeat findSeatByAccount(List<VoiceRoomSeat> seats, String account) {

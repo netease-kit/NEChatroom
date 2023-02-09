@@ -23,6 +23,7 @@ import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.MemberListAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomUser;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
+import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.AnchorVoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,12 @@ public class MemberSelectDialog extends BottomBaseDialog {
 
   private final OnMemberChosenListener listener;
   private MemberListAdapter adapter;
-  private VoiceRoomViewModel viewModel;
+  private final VoiceRoomViewModel viewModel;
 
   public MemberSelectDialog(@NonNull ComponentActivity activity, OnMemberChosenListener listener) {
     super(activity);
     this.listener = listener;
-    viewModel = new ViewModelProvider(activity).get(VoiceRoomViewModel.class);
+    viewModel = new ViewModelProvider(activity).get(AnchorVoiceRoomViewModel.class);
   }
 
   @Override
@@ -83,7 +84,7 @@ public class MemberSelectDialog extends BottomBaseDialog {
     List<VoiceRoomUser> users = new ArrayList<>();
     for (NEVoiceRoomMember member : members) {
       if (!viewModel.isUserOnSeat(member.getAccount())
-          && !VoiceRoomUtils.isMySelf(member.getAccount())) {
+          && !VoiceRoomUtils.isLocal(member.getAccount())) {
         users.add(new VoiceRoomUser(member));
       }
     }

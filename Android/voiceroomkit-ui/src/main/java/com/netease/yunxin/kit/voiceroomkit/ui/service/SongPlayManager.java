@@ -4,6 +4,7 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.service;
 
+import android.text.TextUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption;
@@ -15,6 +16,8 @@ public class SongPlayManager {
   private static final String TAG = "SongPlayManager";
   private boolean isPlaying = true;
 
+  private String playingFilePath;
+
   private static class Inner {
     private static final SongPlayManager sInstance = new SongPlayManager();
   }
@@ -25,6 +28,12 @@ public class SongPlayManager {
 
   public void start(String filePath, long position) {
     ALog.i(TAG, "start,filePath:" + filePath + ",position:" + position);
+
+    if (isPlaying && TextUtils.equals(playingFilePath, filePath)) {
+      ALog.i(TAG, "the song is playing filePath = " + filePath);
+      return;
+    }
+
     NEVoiceRoomCreateAudioEffectOption option =
         new NEVoiceRoomCreateAudioEffectOption(
             filePath,
@@ -38,6 +47,7 @@ public class SongPlayManager {
             NEVoiceRoomRtcAudioStreamType.NERtcAudioStreamTypeMain);
     NEVoiceRoomKit.getInstance().playEffect(EFFECT_ID, option);
     isPlaying = true;
+    playingFilePath = filePath;
   }
 
   public void pause() {
@@ -56,6 +66,7 @@ public class SongPlayManager {
     ALog.i(TAG, "stop");
     NEVoiceRoomKit.getInstance().stopEffect(EFFECT_ID);
     isPlaying = false;
+    playingFilePath = null;
   }
 
   public boolean isPlaying() {

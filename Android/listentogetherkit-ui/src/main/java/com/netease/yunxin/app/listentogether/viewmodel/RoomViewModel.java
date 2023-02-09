@@ -16,6 +16,7 @@ import com.netease.yunxin.kit.common.utils.*;
 import com.netease.yunxin.kit.listentogether.R;
 import com.netease.yunxin.kit.listentogetherkit.api.*;
 import com.netease.yunxin.kit.listentogetherkit.api.model.*;
+import com.netease.yunxin.kit.roomkit.api.model.NEMemberVolumeInfo;
 import java.util.*;
 import org.jetbrains.annotations.*;
 
@@ -28,9 +29,15 @@ public class RoomViewModel extends ViewModel {
   public static final int NET_AVAILABLE = 0; // 网络 可用
   public static final int NET_LOST = 1; // 网络不可用
   private static final int AUDIENCE_SEAT_INDEX = 2;
+
+  private List<VoiceRoomSeat> roomSeats = new ArrayList<>();
   MutableLiveData<CharSequence> chatRoomMsgData = new MutableLiveData<>(); // 聊天列表数据
   MutableLiveData<Integer> memberCountData = new MutableLiveData<>(); // 房间人数
   MutableLiveData<NEVoiceRoomEndReason> errorData = new MutableLiveData<>(); // 错误信息
+
+  public MutableLiveData<Boolean> anchorAvatarAnimation = new MutableLiveData<>();
+
+  public MutableLiveData<Boolean> audienceAvatarAnimation = new MutableLiveData<>();
   MutableLiveData<Integer> currentSeatState = new MutableLiveData<>(CURRENT_SEAT_STATE_IDLE);
   MutableLiveData<List<VoiceRoomSeat>> onSeatListData =
       new MutableLiveData<>(ListenTogetherUtils.createSeats());
@@ -122,6 +129,56 @@ public class RoomViewModel extends ViewModel {
             errorData.postValue(NEVoiceRoomEndReason.valueOf("END_OF_RTC"));
           }
         }
+
+        @Override
+        public void onRtcAudioVolumeIndication(
+            @NonNull List<NEMemberVolumeInfo> volumeInfos, int totalVolume) {
+          // 区分本地和远端成员，由于RoomKit中的onRtcAudioVolumeIndication回调把本地和远端成员的合并了，这里拆分处理
+          if (volumeInfos.size() == 1
+              && ListenTogetherUtils.isMySelf(volumeInfos.get(0).getUserUuid())) {
+            if (ListenTogetherUtils.isHost(volumeInfos.get(0).getUserUuid())) {
+              anchorAvatarAnimation.postValue(volumeInfos.get(0).getVolume() > 0);
+            } else {
+              for (VoiceRoomSeat roomSeat : roomSeats) {
+                if (!ListenTogetherUtils.isMySelf(roomSeat.getAccount())) {
+                  if (roomSeat.isSpeaking() && volumeInfos.get(0).getVolume() == 0) {
+                    roomSeat.setSpeaking(false);
+                    audienceAvatarAnimation.postValue(false);
+                  } else if (!roomSeat.isSpeaking() && volumeInfos.get(0).getVolume() > 0) {
+                    roomSeat.setSpeaking(true);
+                    audienceAvatarAnimation.postValue(true);
+                  }
+                }
+              }
+            }
+          } else {
+            Map<String, NEMemberVolumeInfo> memberVolumeInfoMap = new HashMap<>();
+            for (NEMemberVolumeInfo memberVolumeInfo : volumeInfos) {
+              memberVolumeInfoMap.put(memberVolumeInfo.getUserUuid(), memberVolumeInfo);
+              if (ListenTogetherUtils.isHost(memberVolumeInfo.getUserUuid())) {
+                anchorAvatarAnimation.postValue(memberVolumeInfo.getVolume() > 0);
+              }
+            }
+            for (VoiceRoomSeat roomSeat : roomSeats) {
+              if (!ListenTogetherUtils.isMySelf(roomSeat.getAccount())) {
+                if (memberVolumeInfoMap.containsKey(roomSeat.getAccount())
+                    && (Objects.requireNonNull(memberVolumeInfoMap.get(roomSeat.getAccount())))
+                            .getVolume()
+                        > 0) {
+                  if (!roomSeat.isSpeaking()) {
+                    roomSeat.setSpeaking(true);
+                    audienceAvatarAnimation.postValue(true);
+                  }
+                } else {
+                  if (roomSeat.isSpeaking()) {
+                    roomSeat.setSpeaking(false);
+                    audienceAvatarAnimation.postValue(false);
+                  }
+                }
+              }
+            }
+          }
+        }
       };
 
   public MutableLiveData<Integer> getNetData() {
@@ -182,6 +239,7 @@ public class RoomViewModel extends ViewModel {
     NEListenTogetherKit.getInstance().addRoomListener(listener);
     updateRoomMemberCount();
     NetworkUtils.registerNetworkStatusChangedListener(networkStateListener);
+    NEListenTogetherKit.getInstance().enableAudioVolumeIndication(true, 200);
   }
 
   @Override
@@ -189,6 +247,7 @@ public class RoomViewModel extends ViewModel {
     super.onCleared();
     NetworkUtils.unregisterNetworkStatusChangedListener(networkStateListener);
     NEListenTogetherKit.getInstance().removeRoomListener(listener);
+    NEListenTogetherKit.getInstance().enableAudioVolumeIndication(false, 200);
   }
 
   public void getSeatInfo() {
@@ -230,6 +289,7 @@ public class RoomViewModel extends ViewModel {
     } else {
       currentSeatState.postValue(CURRENT_SEAT_STATE_IDLE);
     }
+    roomSeats = seats;
     onSeatListData.postValue(seats);
   }
 

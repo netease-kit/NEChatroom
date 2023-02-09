@@ -50,7 +50,7 @@ dependencies {
     implementation("com.blankj:utilcodex:1.30.6")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
     implementation("com.scwang.smart:refresh-layout-kernel:2.0.1")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.5")
+    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.6")
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.5.0")
 
 }

@@ -15,15 +15,15 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
+import com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper;
 
 /** Created by luc on 1/28/21. */
 public class ChatRoomAudioDialog extends BottomBaseDialog {
-  private final AudioPlayHelper audioPlay;
+  private final EffectPlayHelper audioPlay;
 
-  public ChatRoomAudioDialog(@NonNull Activity activity, AudioPlayHelper audioPlayHelper) {
+  public ChatRoomAudioDialog(@NonNull Activity activity, EffectPlayHelper effectPlayHelper) {
     super(activity);
-    this.audioPlay = audioPlayHelper;
+    this.audioPlay = effectPlayHelper;
   }
 
   @Override

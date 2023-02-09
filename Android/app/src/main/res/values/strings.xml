@@ -45,5 +45,9 @@
     <string name="app_room_list_empty">No room\nClick ”+“ to create a room</string>
     <string name="app_empty_roomname_tips">The room theme cannot be empty</string>
     <string name="app_room_not_exist">Room does not exist</string>
-
+    <string name="app_sure">Sure</string>
+    <string name="app_cancel">Cancel</string>
+    <string name="app_click_roomlist_tips">Exit the current room and enter other rooms</string>
+    <string name="app_click_create_room_tips">Exit the current room and create a new room</string>
+    <string name="app_net_error">Network connection failed. Check your network connectivity.</string>
 </resources>

@@ -87,7 +87,7 @@ public class ListenTogetherService {
   private final NERoomListenerEx neRoomListener =
       new NERoomListenerEx() {
         @Override
-        public void onAudioEffectTimestampUpdate(@NonNull String uuid, long timeStampMS) {
+        public void onAudioEffectTimestampUpdate(@NonNull long effectId, long timeStampMS) {
           currentPlayingPosition = timeStampMS;
         }
       };

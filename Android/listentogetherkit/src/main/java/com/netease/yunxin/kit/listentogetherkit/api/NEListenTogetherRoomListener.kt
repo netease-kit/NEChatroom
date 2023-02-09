@@ -10,6 +10,7 @@ import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomCh
 import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomGiftModel
 import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomMember
 import com.netease.yunxin.kit.listentogetherkit.api.model.NEListenTogetherRoomSeatItem
+import com.netease.yunxin.kit.roomkit.api.model.NEMemberVolumeInfo
 
 /**
  *  房间事件监听
@@ -104,16 +105,23 @@ interface NEListenTogetherRoomListener {
 
     /**
      * 背景音乐播放回调
-     * @param uuid 用户id
+     * @param effectId 音效id
      * @param timeStampMS 当前播放时间戳
      */
-    fun onAudioEffectTimestampUpdate(uuid: String, timeStampMS: Long)
+    fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long)
 
     /**
      * 本地音效文件播放已结束回调。
      * @param effectId 指定音效的 ID。每个音效均有唯一的 ID
      */
     fun onAudioEffectFinished(effectId: Int)
+
+    /**
+     * 提示房间内谁正在说话及说话者瞬时音量的回调。该回调默认为关闭状态。
+     * @param volumes 成员音量
+     * @param totalVolume 总音量
+     */
+    fun onRtcAudioVolumeIndication(volumes: List<NEMemberVolumeInfo>, totalVolume: Int)
 }
 
 open class NEListenTogetherRoomListenerAdapter : NEListenTogetherRoomListener {
@@ -160,9 +168,12 @@ open class NEListenTogetherRoomListenerAdapter : NEListenTogetherRoomListener {
     override fun onReceiveGift(rewardMsg: NEListenTogetherRoomGiftModel) {
     }
 
-    override fun onAudioEffectTimestampUpdate(uuid: String, timeStampMS: Long) {
+    override fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long) {
     }
 
     override fun onAudioEffectFinished(effectId: Int) {
+    }
+
+    override fun onRtcAudioVolumeIndication(volumes: List<NEMemberVolumeInfo>, totalVolume: Int) {
     }
 }

@@ -218,4 +218,9 @@ public class BackgroundMusicPanel extends AppCompatTextView {
     this.roomUuid = roomUuid;
     NEVoiceRoomKit.getInstance().addVoiceRoomListener(roomListener);
   }
+
+  @Override
+  public boolean isFocused() {
+    return true;
+  }
 }

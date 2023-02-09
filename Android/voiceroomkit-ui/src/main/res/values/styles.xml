@@ -41,4 +41,17 @@
     <style name="CommonDialog" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="android:windowBackground">#00000000</item>
     </style>
+
+    <style name="FloatWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_float_window_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_float_window_exit</item>
+    </style>
+
+    <style name="GiftNumSelectDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">#00000000</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
 </resources>

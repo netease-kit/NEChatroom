@@ -11,6 +11,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItemStatus;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SeatUtils {
@@ -29,6 +30,7 @@ public class SeatUtils {
 
   public static List<VoiceRoomSeat> transNESeatItem2VoiceRoomSeat(
       List<NEVoiceRoomSeatItem> neSeatItemList) {
+    if (neSeatItemList == null) neSeatItemList = Collections.emptyList();
     List<VoiceRoomSeat> onSeatList = new ArrayList<>();
     for (NEVoiceRoomSeatItem item : neSeatItemList) {
       NEVoiceRoomMember user = getMember(item.getUser());

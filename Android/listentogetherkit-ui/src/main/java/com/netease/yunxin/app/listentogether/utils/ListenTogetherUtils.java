@@ -79,4 +79,11 @@ public class ListenTogetherUtils {
     }
     return NEListenTogetherKit.getInstance().getLocalMember().getName();
   }
+
+  public static String getCurrentAccount() {
+    if (NEListenTogetherKit.getInstance().getLocalMember() == null) {
+      return "";
+    }
+    return NEListenTogetherKit.getInstance().getLocalMember().getAccount();
+  }
 }

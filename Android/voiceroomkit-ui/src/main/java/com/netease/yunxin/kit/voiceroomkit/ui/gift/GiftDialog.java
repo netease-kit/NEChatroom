@@ -13,8 +13,10 @@ import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.*;
-import com.netease.yunxin.kit.voiceroomkit.impl.utils.*;
+import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.*;
+import com.netease.yunxin.kit.voiceroomkit.ui.activity.VoiceRoomBaseActivity;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.*;
@@ -22,6 +24,7 @@ import java.util.*;
 
 public class GiftDialog extends BottomBaseDialog {
   private GiftSendListener sendListener;
+  private Activity activity;
   private RecyclerView.ItemDecoration itemDecoration =
       new RecyclerView.ItemDecoration() {
 
@@ -32,7 +35,7 @@ public class GiftDialog extends BottomBaseDialog {
             @NonNull RecyclerView parent,
             @NonNull RecyclerView.State state) {
           if (parent.getChildAdapterPosition(view) == 0) {
-            outRect.set(ScreenUtil.dip2px(16f), 0, 0, 0);
+            outRect.set(SizeUtils.dp2px(16f), 0, 0, 0);
           } else {
             super.getItemOffsets(outRect, view, parent, state);
           }
@@ -41,6 +44,7 @@ public class GiftDialog extends BottomBaseDialog {
 
   public GiftDialog(@NonNull Activity activity) {
     super(activity);
+    this.activity = activity;
   }
 
   @Override
@@ -60,6 +64,9 @@ public class GiftDialog extends BottomBaseDialog {
   protected void renderBottomView(FrameLayout parent) {
     View bottomView =
         LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_bottom_gift, parent);
+    SelectMemberSendGiftView selectMemberSendGiftView =
+        bottomView.findViewById(R.id.select_member_view);
+    selectMemberSendGiftView.setActivityContext((VoiceRoomBaseActivity) activity);
     // 礼物列表初始化
     RecyclerView rvGiftList = bottomView.findViewById(R.id.rv_dialog_gift_list);
     rvGiftList.setLayoutManager(
@@ -70,12 +77,20 @@ public class GiftDialog extends BottomBaseDialog {
     rvGiftList.setAdapter(adapter);
 
     // 发送礼物
-    View sendGift = bottomView.findViewById(R.id.tv_dialog_send_gift);
-    sendGift.setOnClickListener(
-        v -> {
+    GiftSendButton sendButton = bottomView.findViewById(R.id.send_button);
+    sendButton.setSendCallback(
+        giftCount -> {
           if (sendListener != null) {
+            if (selectMemberSendGiftView.getSelectUserUuid().isEmpty()) {
+              ToastUtils.INSTANCE.showShortToast(
+                  getContext(), getContext().getString(R.string.voiceroom_gift_send_memeber_empty));
+              return;
+            }
             dismiss();
-            sendListener.onSendGift(adapter.getFocusedInfo().getGiftId());
+            sendListener.onSendGift(
+                adapter.getFocusedInfo().getGiftId(),
+                giftCount,
+                selectMemberSendGiftView.getSelectUserUuid());
           }
         });
   }
@@ -92,7 +107,7 @@ public class GiftDialog extends BottomBaseDialog {
 
   /** 礼物发送回调 */
   public interface GiftSendListener {
-    void onSendGift(int giftId);
+    void onSendGift(int giftId, int giftCount, List<String> userUuids);
   }
 
   /** 内部礼物列表 adapter */
@@ -150,7 +165,7 @@ public class GiftDialog extends BottomBaseDialog {
     }
 
     private String formatValue(long value) {
-      return "(" + value + Utils.getApp().getString(R.string.voiceroom_coin) + ")";
+      return value + "";
     }
   }
 }

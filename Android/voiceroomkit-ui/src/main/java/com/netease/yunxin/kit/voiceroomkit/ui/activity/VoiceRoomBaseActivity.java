@@ -34,6 +34,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
@@ -43,16 +45,13 @@ import com.netease.yunxin.kit.common.utils.PermissionUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.ordersong.ui.OrderSongDialog;
-import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions;
-import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListener;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo;
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.ScreenUtil;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
@@ -67,16 +66,19 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NoticeDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
+import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatPlayManager;
+import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatWindowPermissionManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GifAnimationView;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftCache;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftRender;
-import com.netease.yunxin.kit.voiceroomkit.ui.helper.AudioPlayHelper;
+import com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.KeepAliveService;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.ClickUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.InputUtils;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.StringUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.ViewUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
@@ -87,9 +89,12 @@ import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import kotlin.Unit;
-import org.jetbrains.annotations.NotNull;
 
 /** 主播与观众基础页，包含所有的通用UI元素 */
 public abstract class VoiceRoomBaseActivity extends BaseActivity
@@ -98,8 +103,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   public static final String TAG = "AudioRoom";
 
   private static final int KEY_BOARD_MIN_SIZE = SizeUtils.dp2px(80);
-
-  private static final int ANCHOR_SEAT_INDEX = 1;
 
   protected static final int MORE_ITEM_MICRO_PHONE = 0; // 更多菜单麦克风
 
@@ -116,9 +119,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   //主播基础信息
   protected HeadImageView ivAnchorAvatar;
 
+  protected LottieAnimationView lavAnchorAvatar;
+
   protected ImageView ivAnchorAudioCloseHint;
 
   protected TextView tvAnchorNick;
+
+  protected TextView tvAnchorReward;
 
   protected TextView tvRoomName;
 
@@ -155,7 +162,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   protected VoiceRoomViewModel roomViewModel;
 
-  protected AudioPlayHelper audioPlay;
+  protected EffectPlayHelper audioPlay;
 
   protected int earBack = 100;
 
@@ -169,9 +176,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   protected View netErrorView;
 
-  private GiftDialog giftDialog;
-
-  private ImageView ivGift;
+  protected ImageView ivGift;
 
   private GiftRender giftRender;
 
@@ -183,6 +188,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private View baseAudioView;
   private SimpleServiceConnection mServiceConnection;
+
+  private boolean isOverSeaEnv = false;
+  private boolean needJoinRoom = true;
+  public final HashSet<Integer> selectSeatSet = new HashSet<>();
 
   private final BaseAdapter.ItemClickListener<VoiceRoomSeat> itemClickListener =
       this::onSeatItemClick;
@@ -201,7 +210,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                   voiceRoomInfo.getRoomUuid(),
                   voiceRoomInfo.getNick(),
                   voiceRoomInfo.getAvatar(),
-                  voiceRoomInfo.getLiveRecordId(),
                   voiceRoomInfo.getRole());
             } else {
               ToastUtils.INSTANCE.showShortToast(
@@ -209,51 +217,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
               finish();
             }
           });
-
-  private final NEVoiceRoomListener voiceRoomListener =
-      new NEVoiceRoomListenerAdapter() {
-        @Override
-        public void onMemberAudioMuteChanged(
-            @NotNull NEVoiceRoomMember member,
-            boolean mute,
-            @org.jetbrains.annotations.Nullable NEVoiceRoomMember operateBy) {
-          if (VoiceRoomUtils.isMySelf(member.getAccount())) {
-            ivLocalAudioSwitch.setSelected(mute);
-            getMoreItems().get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE).setEnable(!mute);
-            if (chatRoomMoreDialog != null) {
-              chatRoomMoreDialog.updateData();
-            }
-          }
-          if (VoiceRoomUtils.isHost(member.getAccount())) {
-            ivAnchorAudioCloseHint.setImageResource(
-                mute ? R.drawable.icon_seat_close_micro : R.drawable.icon_seat_open_micro);
-          }
-          seatAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onMemberAudioBanned(@NonNull NEVoiceRoomMember member, boolean banned) {
-          if (VoiceRoomUtils.isMySelf(member.getAccount()) && roomViewModel.isCurrentUserOnSeat()) {
-            if (banned) {
-              roomViewModel.muteMyAudio(false);
-            } else if (!roomViewModel.isMute()) {
-              roomViewModel.unmuteMyAudio(false);
-            }
-            ChoiceDialog dialog =
-                new NotificationDialog(VoiceRoomBaseActivity.this)
-                    .setTitle(getString(R.string.voiceroom_notify))
-                    .setContent(
-                        getString(
-                            banned
-                                ? R.string.voiceroom_seat_muted
-                                : R.string.voiceroom_unmute_seat_tips))
-                    .setPositive(getString(R.string.voiceroom_get_it), v -> {});
-            dialog.setCancelable(false);
-            dialog.show();
-          }
-          seatAdapter.notifyDataSetChanged();
-        }
-      };
 
   protected ChatRoomMoreDialog.OnItemClickListener onMoreItemClickListener =
       (dialog, itemView, item) -> {
@@ -316,6 +279,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     }
     ImmersionBar.with(this).statusBarDarkFont(false).init();
     roomViewModel = getRoomViewModel();
+    initRoomViewModel();
     setContentView(getContentViewID());
     initViews();
     NEOrderSongService.INSTANCE.setRoomUuid(voiceRoomInfo.getRoomUuid());
@@ -324,15 +288,29 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     bindForegroundService();
   }
 
+  private void initRoomViewModel() {
+    roomViewModel.init(voiceRoomInfo.getLiveRecordId(), voiceRoomInfo.getRoomUuid());
+  }
+
   protected abstract VoiceRoomViewModel getRoomViewModel();
 
   private void initIntent() {
     voiceRoomInfo =
         (VoiceRoomModel) getIntent().getSerializableExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL);
+    needJoinRoom = getIntent().getBooleanExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, true);
+    isOverSeaEnv = getIntent().getBooleanExtra(NEVoiceRoomUIConstants.ENV_KEY, false);
     if (voiceRoomInfo == null) {
       ToastUtils.INSTANCE.showShortToast(
           VoiceRoomBaseActivity.this, getString(R.string.voiceroom_chat_message_tips));
       finish();
+    }
+  }
+
+  private void handleOrderSongUI() {
+    if (isOverSeaEnv) {
+      ivOrderSong.setVisibility(View.GONE);
+    } else {
+      ivOrderSong.setVisibility(View.VISIBLE);
     }
   }
 
@@ -344,6 +322,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     rootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
     String countStr = String.format(getString(R.string.voiceroom_people_online), "0");
     tvMemberCount.setText(countStr);
+    handleOrderSongUI();
   }
 
   @Override
@@ -354,9 +333,9 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     if (audioPlay != null) {
       audioPlay.destroy();
     }
-    NEVoiceRoomKit.getInstance().removeVoiceRoomListener(voiceRoomListener);
     giftRender.release();
     unbindForegroundService();
+    selectSeatSet.clear();
     super.onDestroy();
   }
 
@@ -399,8 +378,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         baseAudioView.getPaddingBottom());
     clyAnchorView = baseAudioView.findViewById(R.id.cly_anchor_layout);
     ivAnchorAvatar = baseAudioView.findViewById(R.id.iv_liver_avatar);
+    lavAnchorAvatar = baseAudioView.findViewById(R.id.lav_avatar_lottie_view);
     ivAnchorAudioCloseHint = baseAudioView.findViewById(R.id.iv_liver_audio_close_hint);
     tvAnchorNick = baseAudioView.findViewById(R.id.tv_liver_nick);
+    tvAnchorReward = baseAudioView.findViewById(R.id.tv_user_reward);
     tvRoomName = baseAudioView.findViewById(R.id.tv_chat_room_name);
     tvBackgroundMusic = baseAudioView.findViewById(R.id.iv_background_music);
     tvMemberCount = baseAudioView.findViewById(R.id.tv_chat_room_member_count);
@@ -447,6 +428,29 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         });
     ivLocalAudioSwitch.setOnClickListener(view -> toggleMuteLocalAudio());
     baseAudioView.findViewById(R.id.iv_leave_room).setOnClickListener(view -> doLeaveRoom());
+    baseAudioView
+        .findViewById(R.id.iv_small_window)
+        .setOnClickListener(
+            v -> {
+              if (FloatWindowPermissionManager.INSTANCE.isFloatWindowOpAllowed(
+                  VoiceRoomBaseActivity.this)) {
+                finish();
+                Intent intent = new Intent();
+                if (isAnchor) {
+                  intent.setClass(VoiceRoomBaseActivity.this, AnchorActivity.class);
+                  intent.putExtra(NEVoiceRoomUIConstants.ENV_KEY, isOverSeaEnv);
+                } else {
+                  intent.setClass(VoiceRoomBaseActivity.this, AudienceActivity.class);
+                }
+                intent.putExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, false);
+                intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, voiceRoomInfo);
+                FloatPlayManager.getInstance()
+                    .startFloatPlay(VoiceRoomBaseActivity.this, voiceRoomInfo, intent);
+              } else {
+                FloatWindowPermissionManager.INSTANCE.requestFloatWindowPermission(
+                    VoiceRoomBaseActivity.this);
+              }
+            });
     tvInput.setOnClickListener(v -> InputUtils.showSoftInput(VoiceRoomBaseActivity.this, edtInput));
     edtInput.setOnEditorActionListener(
         (v, actionId, event) -> {
@@ -482,14 +486,14 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             return;
           }
 
-          if (giftDialog == null) {
-            giftDialog = new GiftDialog(VoiceRoomBaseActivity.this);
-          }
+          GiftDialog giftDialog = new GiftDialog(VoiceRoomBaseActivity.this);
           giftDialog.show(
-              giftId ->
+              (giftId, giftCount, userUuids) ->
                   NEVoiceRoomKit.getInstance()
-                      .sendGift(
+                      .sendBatchGift(
                           giftId,
+                          giftCount,
+                          userUuids,
                           new NEVoiceRoomCallback<Unit>() {
                             @Override
                             public void onSuccess(@Nullable Unit unit) {}
@@ -508,7 +512,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   }
 
   private void initData() {
-    audioPlay = new AudioPlayHelper(this);
+    audioPlay = new EffectPlayHelper(VoiceRoomBaseActivity.this);
+    initDataObserver();
+    //默认选中第一个房主
+    selectSeatSet.add(0);
   }
 
   private void showSingingTable() {
@@ -585,64 +592,50 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           voiceRoomInfo.getRoomUuid(),
           voiceRoomInfo.getNick(),
           voiceRoomInfo.getAvatar(),
-          voiceRoomInfo.getLiveRecordId(),
           voiceRoomInfo.getRole());
     } else {
       requestPermissionLauncher.launch(RECORD_AUDIO_PERMISSION);
     }
   }
 
-  private void enterRoomInner(
-      String roomUuid, String nick, String avatar, long liveRecordId, String role) {
-    NEJoinVoiceRoomParams params =
-        new NEJoinVoiceRoomParams(
-            roomUuid, nick, avatar, NEVoiceRoomRole.Companion.fromValue(role), liveRecordId, null);
+  private void enterRoomInner(String roomUuid, String nick, String avatar, String role) {
+    tvBackgroundMusic.setRoomUuid(roomUuid);
     boolean isAnchor = NEVoiceRoomRole.HOST.getValue().equals(role);
-    ivGift.setVisibility(isAnchor ? View.GONE : View.VISIBLE);
     if (isAnchor) {
       updateAnchorUI(nick, avatar, true);
     }
-    NEJoinVoiceRoomOptions options = new NEJoinVoiceRoomOptions();
-    NEVoiceRoomKit.getInstance()
-        .joinRoom(
-            params,
-            options,
-            new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
+    if (!needJoinRoom) {
+      joinRoomSuccess = true;
+      roomViewModel.initDataOnJoinRoom();
+    } else {
+      roomViewModel.joinRoom(
+          roomUuid,
+          nick,
+          avatar,
+          role,
+          new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
 
-              @Override
-              public void onFailure(int code, @Nullable String msg) {
-                ALog.e(TAG, "joinRoom failed code = " + code + " msg = " + msg);
-                ToastUtils.INSTANCE.showShortToast(
-                    VoiceRoomBaseActivity.this,
-                    getString(
-                        isAnchor
-                            ? R.string.voiceroom_start_live_error
-                            : R.string.voiceroom_join_live_error));
-                finish();
-              }
+            @Override
+            public void onSuccess(@Nullable NEVoiceRoomInfo neVoiceRoomInfo) {
+              joinRoomSuccess = true;
+            }
 
-              @Override
-              public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
-                ALog.i(TAG, "joinRoom success");
-                joinRoomSuccess = true;
-                initViewAfterJoinRoom();
-              }
-            });
+            @Override
+            public void onFailure(int code, @Nullable String msg) {
+              ToastUtils.INSTANCE.showShortToast(
+                  VoiceRoomBaseActivity.this,
+                  getString(
+                      isAnchor
+                          ? R.string.voiceroom_start_live_error
+                          : R.string.voiceroom_join_live_error));
+              finish();
+            }
+          });
+    }
   }
 
-  private void initViewAfterJoinRoom() {
-    initDataObserver();
-    roomViewModel.initDataOnJoinRoom(voiceRoomInfo.getRoomUuid());
-    tvBackgroundMusic.setRoomUuid(voiceRoomInfo.getRoomUuid());
-    if (VoiceRoomUtils.isCurrentHost()) {
-      NEVoiceRoomKit.getInstance().submitSeatRequest(ANCHOR_SEAT_INDEX, true, null);
-    } else {
-      NEVoiceRoomMember hostMember = VoiceRoomUtils.getHost();
-      if (hostMember != null) {
-        updateAnchorUI(hostMember.getName(), hostMember.getAvatar(), hostMember.isAudioOn());
-      }
-      roomViewModel.getSeatInfo();
-    }
+  private void updateLocalUI(NEVoiceRoomMember localMember) {
+    ivLocalAudioSwitch.setSelected(!localMember.isAudioOn());
   }
 
   private void updateAnchorUI(String nick, String avatar, boolean isAudioOn) {
@@ -652,7 +645,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         isAudioOn ? R.drawable.icon_seat_open_micro : R.drawable.icon_seat_close_micro);
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   protected void initDataObserver() {
+    roomViewModel.anchorMemberData.observe(
+        this,
+        hostMember ->
+            updateAnchorUI(hostMember.getName(), hostMember.getAvatar(), hostMember.isAudioOn()));
+    roomViewModel.localMemberData.observe(this, this::updateLocalUI);
     roomViewModel.toastData.observe(
         this, s -> ToastUtils.INSTANCE.showShortToast(VoiceRoomBaseActivity.this, s));
     roomViewModel.memberCountData.observe(
@@ -666,7 +665,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         seatList -> {
           List<VoiceRoomSeat> audienceSeats = new ArrayList<>();
           for (VoiceRoomSeat model : seatList) {
-            if (model.getSeatIndex() != ANCHOR_SEAT_INDEX) {
+            if (model.getSeatIndex() != VoiceRoomViewModel.ANCHOR_SEAT_INDEX) {
               audienceSeats.add(model);
             }
             final NEVoiceRoomMember member = model.getMember();
@@ -684,7 +683,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         this,
         endReason -> {
           if (endReason == NEVoiceRoomEndReason.CLOSE_BY_MEMBER) {
-            if (!VoiceRoomUtils.isCurrentHost()) {
+            if (!VoiceRoomUtils.isLocalAnchor()) {
               ToastUtils.INSTANCE.showShortToast(
                   VoiceRoomBaseActivity.this, getString(R.string.voiceroom_host_close_room));
             }
@@ -694,6 +693,101 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           } else {
             finish();
           }
+        });
+
+    roomViewModel.rtcAudioVolumeIndicationData.observe(
+        this,
+        volumeInfos -> {
+          // 区分本地和远端成员，由于RoomKit中的onRtcAudioVolumeIndication回调把本地和远端成员的合并了，这里拆分处理
+          if (volumeInfos.size() == 1 && VoiceRoomUtils.isLocal(volumeInfos.get(0).getUserUuid())) {
+            if (VoiceRoomUtils.isHost(volumeInfos.get(0).getUserUuid())) {
+              showAvatarAnimal(volumeInfos.get(0).getVolume() > 0);
+            } else {
+              for (VoiceRoomSeat roomSeat : seatAdapter.getDataList()) {
+                if (VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
+                  if (roomSeat.isSpeaking() && volumeInfos.get(0).getVolume() == 0) {
+                    roomSeat.setSpeaking(false);
+                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
+                  } else if (!roomSeat.isSpeaking() && volumeInfos.get(0).getVolume() > 0) {
+                    roomSeat.setSpeaking(true);
+                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
+                  }
+                }
+              }
+            }
+          } else {
+            Map<String, NEVoiceRoomMemberVolumeInfo> memberVolumeInfoMap = new HashMap<>();
+            for (NEVoiceRoomMemberVolumeInfo memberVolumeInfo : volumeInfos) {
+              memberVolumeInfoMap.put(memberVolumeInfo.getUserUuid(), memberVolumeInfo);
+              if (VoiceRoomUtils.isHost(memberVolumeInfo.getUserUuid())) {
+                showAvatarAnimal(memberVolumeInfo.getVolume() > 0);
+              }
+            }
+            for (VoiceRoomSeat roomSeat : seatAdapter.getDataList()) {
+              if (!VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
+                if (memberVolumeInfoMap.containsKey(roomSeat.getAccount())
+                    && (Objects.requireNonNull(memberVolumeInfoMap.get(roomSeat.getAccount())))
+                            .getVolume()
+                        > 0) {
+                  if (!roomSeat.isSpeaking()) {
+                    roomSeat.setSpeaking(true);
+                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
+                  }
+                } else {
+                  if (roomSeat.isSpeaking()) {
+                    roomSeat.setSpeaking(false);
+                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
+                  }
+                }
+              }
+            }
+          }
+        });
+
+    roomViewModel.memberAudioBannedData.observe(
+        this,
+        memberAudioBannedModel -> {
+          if (VoiceRoomUtils.isLocal(memberAudioBannedModel.getMember().getAccount())
+              && roomViewModel.isCurrentUserOnSeat()) {
+            if (memberAudioBannedModel.isBanned()) {
+              roomViewModel.muteMyAudio(false);
+            } else if (!roomViewModel.isMute()) {
+              roomViewModel.unmuteMyAudio(false);
+            }
+            ChoiceDialog dialog =
+                new NotificationDialog(VoiceRoomBaseActivity.this)
+                    .setTitle(getString(R.string.voiceroom_notify))
+                    .setContent(
+                        getString(
+                            memberAudioBannedModel.isBanned()
+                                ? R.string.voiceroom_seat_muted
+                                : R.string.voiceroom_unmute_seat_tips))
+                    .setPositive(getString(R.string.voiceroom_get_it), v -> {});
+            dialog.setCancelable(false);
+            dialog.show();
+          }
+          seatAdapter.notifyDataSetChanged();
+        });
+
+    roomViewModel.memberAudioMuteChangedData.observe(
+        this,
+        memberAudioMuteChangedModel -> {
+          if (VoiceRoomUtils.isLocal(memberAudioMuteChangedModel.getMember().getAccount())) {
+            ivLocalAudioSwitch.setSelected(memberAudioMuteChangedModel.isMute());
+            getMoreItems()
+                .get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE)
+                .setEnable(!memberAudioMuteChangedModel.isMute());
+            if (chatRoomMoreDialog != null) {
+              chatRoomMoreDialog.updateData();
+            }
+          }
+          if (VoiceRoomUtils.isHost(memberAudioMuteChangedModel.getMember().getAccount())) {
+            ivAnchorAudioCloseHint.setImageResource(
+                memberAudioMuteChangedModel.isMute()
+                    ? R.drawable.icon_seat_close_micro
+                    : R.drawable.icon_seat_open_micro);
+          }
+          seatAdapter.notifyDataSetChanged();
         });
 
     roomViewModel.rewardData.observe(
@@ -708,15 +802,46 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                   reward.getSendNick(),
                   1,
                   GiftCache.getGift(reward.getGiftId()).getStaticIconResId()));
-          if (!VoiceRoomUtils.isCurrentHost()) {
+          if (!VoiceRoomUtils.isLocalAnchor()) {
             giftRender.addGift(GiftCache.getGift(reward.getGiftId()).getDynamicIconResId());
           }
         });
-    NEVoiceRoomKit.getInstance().addVoiceRoomListener(voiceRoomListener);
+
+    roomViewModel.bachRewardData.observe(
+        this,
+        batchReward -> {
+          if (voiceRoomInfo == null) {
+            return;
+          }
+
+          ALog.i(TAG, "bachRewardData observe giftModel:" + batchReward);
+          rcyChatMsgList.appendItem(
+              ChatRoomMsgCreator.createBatchGiftReward(
+                  VoiceRoomBaseActivity.this,
+                  batchReward.getRewarderUserName(),
+                  batchReward.getRewardeeUserName(),
+                  GiftCache.getGift(batchReward.getGiftId()).getName(),
+                  batchReward.getGiftCount(),
+                  GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId()));
+          if (!VoiceRoomUtils.isLocalAnchor()) {
+            giftRender.addGift(GiftCache.getGift(batchReward.getGiftId()).getDynamicIconResId());
+          }
+        });
+
+    roomViewModel.anchorReward.observe(
+        this,
+        reward -> {
+          if (reward > 0) {
+            tvAnchorReward.setVisibility(View.VISIBLE);
+            tvAnchorReward.setText(StringUtils.formatCoinCount(reward));
+          } else {
+            tvAnchorReward.setVisibility(View.INVISIBLE);
+          }
+        });
   }
 
   protected final void leaveRoom() {
-    if (VoiceRoomUtils.isCurrentHost()) {
+    if (VoiceRoomUtils.isLocalAnchor()) {
       NEVoiceRoomKit.getInstance()
           .endRoom(
               new NEVoiceRoomCallback<Unit>() {
@@ -726,7 +851,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                   ToastUtils.INSTANCE.showShortToast(
                       VoiceRoomBaseActivity.this,
                       getString(R.string.voiceroom_host_close_room_success));
-                  finish();
                 }
 
                 @Override
@@ -741,7 +865,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                 @Override
                 public void onSuccess(@Nullable Unit unit) {
                   ALog.i(TAG, "leaveRoom success");
-                  finish();
                 }
 
                 @Override
@@ -749,6 +872,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                   ALog.e(TAG, "leaveRoom onFailure");
                 }
               });
+    }
+    finish();
+    if (audioPlay != null) {
+      audioPlay.destroy();
     }
   }
 
@@ -802,8 +929,8 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                 rcyChatMsgList.appendItem(
                     ChatRoomMsgCreator.createText(
                         VoiceRoomBaseActivity.this,
-                        VoiceRoomUtils.isCurrentHost(),
-                        VoiceRoomUtils.getCurrentName(),
+                        VoiceRoomUtils.isLocalAnchor(),
+                        VoiceRoomUtils.getLocalName(),
                         content));
               }
 
@@ -860,7 +987,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     }
   }
 
-  private class SimpleServiceConnection implements ServiceConnection {
+  private static class SimpleServiceConnection implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder service) {
 
@@ -873,5 +1000,24 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     public void onServiceDisconnected(ComponentName componentName) {
       ALog.i(TAG, "onServiceDisconnected");
     }
+  }
+
+  private void showAvatarAnimal(boolean showAvatarAnimal) {
+    if (showAvatarAnimal) {
+      lavAnchorAvatar.setVisibility(View.VISIBLE);
+      if (lavAnchorAvatar.isAnimating()) {
+        return;
+      }
+      lavAnchorAvatar.setRepeatCount(LottieDrawable.INFINITE);
+      lavAnchorAvatar.playAnimation();
+    } else {
+      lavAnchorAvatar.setVisibility(View.INVISIBLE);
+      lavAnchorAvatar.cancelAnimation();
+      lavAnchorAvatar.setProgress(0);
+    }
+  }
+
+  public HashSet<Integer> getSelectedSeatSet() {
+    return selectSeatSet;
   }
 }

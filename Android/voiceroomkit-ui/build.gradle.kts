@@ -26,9 +26,10 @@ dependencies {
     implementation("com.netease.yunxin.kit.common:common-ui:1.1.13")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.7")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.6")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.5")
+    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.6")
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.5.0")
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation(project(":ordersong"))
+    implementation("com.blankj:utilcodex:1.30.6")
 
 }

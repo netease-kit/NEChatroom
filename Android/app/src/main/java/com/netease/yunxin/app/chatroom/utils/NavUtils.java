@@ -73,13 +73,15 @@ public class NavUtils {
     roomModel.setRoomName(roomInfo.getLiveModel().getLiveTopic());
     roomModel.setNick(AuthorManager.INSTANCE.getUserInfo().getNickname());
     roomModel.setAvatar(AuthorManager.INSTANCE.getUserInfo().getAvatar());
+    roomModel.setAnchorAvatar(roomInfo.getAnchor().getAvatar());
     Intent intent = new Intent(context, AnchorActivity.class);
     intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, roomModel);
-    intent.putExtra(AnchorActivity.ENV_KEY, AppConfig.getConfigId() == 75);
+    intent.putExtra(NEVoiceRoomUIConstants.ENV_KEY, AppConfig.getConfigId() == 75);
     context.startActivity(intent);
   }
 
-  public static void toVoiceRoomAudiencePage(Context context, NEVoiceRoomInfo roomInfo) {
+  public static void toVoiceRoomAudiencePage(
+      Context context, NEVoiceRoomInfo roomInfo, boolean needJoinRoom) {
     VoiceRoomModel roomModel = new VoiceRoomModel();
     roomModel.setLiveRecordId(roomInfo.getLiveModel().getLiveRecordId());
     roomModel.setRoomUuid(roomInfo.getLiveModel().getRoomUuid());
@@ -87,8 +89,10 @@ public class NavUtils {
     roomModel.setRoomName(roomInfo.getLiveModel().getLiveTopic());
     roomModel.setNick(AuthorManager.INSTANCE.getUserInfo().getNickname());
     roomModel.setAvatar(AuthorManager.INSTANCE.getUserInfo().getAvatar());
+    roomModel.setAnchorAvatar(roomInfo.getAnchor().getAvatar());
     Intent intent = new Intent(context, AudienceActivity.class);
     intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, roomModel);
+    intent.putExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, needJoinRoom);
     context.startActivity(intent);
   }
 

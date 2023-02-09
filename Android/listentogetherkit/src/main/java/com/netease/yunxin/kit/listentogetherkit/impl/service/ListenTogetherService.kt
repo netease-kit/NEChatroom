@@ -705,10 +705,9 @@ internal class ListenTogetherService {
                 }
             }
 
-
-            override fun onAudioEffectTimestampUpdate(uuid: String, timeStampMS: Long) {
+            override fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long) {
                 listeners.forEach {
-                    it.onAudioEffectTimestampUpdate(uuid, timeStampMS)
+                    it.onAudioEffectTimestampUpdate(effectId, timeStampMS)
                 }
             }
 
@@ -716,6 +715,9 @@ internal class ListenTogetherService {
                 volumes: List<NEMemberVolumeInfo>,
                 totalVolume: Int
             ) {
+                listeners.forEach {
+                    it.onRtcAudioVolumeIndication(volumes, totalVolume)
+                }
             }
 
             override fun onRtcAudioOutputDeviceChanged(device: NEAudioOutputDevice) {
@@ -922,6 +924,13 @@ internal class ListenTogetherService {
         }
         return currentRoomContext!!.rtcController.resumeEffect(effectId)
     }
+
+    fun enableAudioVolumeIndication(enable: Boolean, interval: Int): Int {
+        if (currentRoomContext == null) {
+            return NEVoiceRoomErrorCode.FAILURE
+        }
+        return currentRoomContext!!.rtcController.enableAudioVolumeIndication(enable, interval)
+    }
 }
 
 internal open class RoomListenerWrapper : NERoomListener {
@@ -1010,8 +1019,7 @@ internal open class RoomListenerWrapper : NERoomListener {
     override fun onAudioEffectFinished(effectId: Int) {
     }
 
-    override fun onAudioEffectTimestampUpdate(uuid: String, timeStampMS: Long) {
-
+    override fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long) {
     }
 
     override fun onAudioMixingStateChanged(reason: Int) {

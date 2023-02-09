@@ -4,6 +4,7 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.airbnb.lottie.LottieDrawable;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.StringUtils;
 import java.util.List;
 
 public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
@@ -28,6 +30,7 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
     return new SeatViewHolder(layoutInflater.inflate(R.layout.view_item_seat, parent, false));
   }
 
+  @SuppressLint("UseCompatLoadingForDrawables")
   @Override
   protected void onBindBaseViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
     VoiceRoomSeat seat = getItem(position);
@@ -54,29 +57,26 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
       }
     }
 
-    // 申请中动画
-    LottieAnimationView applying = viewHolder.applying;
-    if (status == VoiceRoomSeat.Status.APPLY) {
-      applying.setVisibility(View.VISIBLE);
-      applying.setRepeatCount(LottieDrawable.INFINITE);
-      applying.playAnimation();
-
-    } else {
-      applying.setVisibility(View.GONE);
-      applying.cancelAnimation();
+    // 波纹动画
+    showLottieAnimal(viewHolder.lavAvatar, false);
+    if (member != null) {
+      showLottieAnimal(viewHolder.lavAvatar, seat.isSpeaking());
     }
 
+    // 申请中动画
+    showLottieAnimal(viewHolder.applying, status == VoiceRoomSeat.Status.APPLY);
+
     if (status == VoiceRoomSeat.Status.ON) {
-      viewHolder.iv_user_status.setVisibility(View.GONE);
+      viewHolder.ivUserStatus.setVisibility(View.GONE);
     } else {
-      viewHolder.iv_user_status.setVisibility(View.VISIBLE);
+      viewHolder.ivUserStatus.setVisibility(View.VISIBLE);
       int image = R.drawable.seat_add_member;
       if (status == VoiceRoomSeat.Status.CLOSED) {
         image = R.drawable.close;
       } else if (status == VoiceRoomSeat.Status.APPLY) {
         image = 0;
       }
-      viewHolder.iv_user_status.setImageResource(image);
+      viewHolder.ivUserStatus.setImageResource(image);
     }
 
     // 头像和昵称
@@ -97,5 +97,27 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
     // 头像装饰
     viewHolder.circle.setVisibility(
         status == VoiceRoomSeat.Status.ON && member != null ? View.VISIBLE : View.INVISIBLE);
+
+    if (seat.getRewardTotal() > 0) {
+      viewHolder.tvUserReward.setVisibility(View.VISIBLE);
+      viewHolder.tvUserReward.setText(StringUtils.formatCoinCount(seat.getRewardTotal()));
+    } else {
+      viewHolder.tvUserReward.setVisibility(View.INVISIBLE);
+    }
+  }
+
+  private void showLottieAnimal(LottieAnimationView lottieAnimationView, boolean showAnimal) {
+    if (showAnimal) {
+      lottieAnimationView.setVisibility(View.VISIBLE);
+      if (lottieAnimationView.isAnimating()) {
+        return;
+      }
+      lottieAnimationView.setRepeatCount(LottieDrawable.INFINITE);
+      lottieAnimationView.playAnimation();
+    } else {
+      lottieAnimationView.setVisibility(View.INVISIBLE);
+      lottieAnimationView.cancelAnimation();
+      lottieAnimationView.setProgress(0);
+    }
   }
 }

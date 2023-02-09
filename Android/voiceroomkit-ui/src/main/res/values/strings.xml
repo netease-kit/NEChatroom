@@ -92,10 +92,17 @@
     <string name="voiceroom_rockets">Rockets</string>
     <string name="voiceroom_send_gift">Send gift</string>
     <string name="voiceroom_send">Send</string>
+    <string name="voiceroom_send2">Send</string>
     <string name="voiceroom_coin">coins</string>
     <string name="voiceroom_reward_failed">Reward failed</string>
     <string name="voiceroom_donate">donate</string>
     <string name="voiceroom_count">count</string>
     <string name="voiceroom_audio_banned">You are banned,unable to operate!</string>
     <string name="app_content_description_default"> </string>
+    <string name="voiceroom_chatroom">chatroom</string>
+    <string name="voiceroom_is_closed">Room closed</string>
+    <string name="voiceroom_host">host</string>
+    <string name="voiceroom_send_to">send to</string>
+    <string name="voiceroom_gift_send">send</string>
+    <string name="voiceroom_gift_send_memeber_empty">No gift object selected, unable to send gifts</string>
 </resources>
