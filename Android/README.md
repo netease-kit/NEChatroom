@@ -9,11 +9,11 @@ SeatAdapter.java            # 语聊房麦位适配器
 VoiceRoomViewModel.java     # 语聊房ViewModel
    
 listentogetherkit-ui 重点类：
- ListenTogetherAnchorActivity.java      # 一起听功能 主播页面
- ListenTogetherAudienceActivity.java    # 一起听功能 观众页面
- ListenTogetherService    #一起听业务服务
- NEListenTogetherListener    #一起听业务监听器
- ListenTogetherViewModel #一起听ViewModel
+ListenTogetherAnchorActivity.java      # 一起听功能 主播页面
+ListenTogetherAudienceActivity.java    # 一起听功能 观众页面
+ListenTogetherService    #一起听业务服务
+NEListenTogetherListener    #一起听业务监听器
+ListenTogetherViewModel #一起听ViewModel
 ```
 
 
