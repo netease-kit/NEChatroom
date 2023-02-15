@@ -1,22 +1,53 @@
-<resources>
-    <string name="app_name">网易云信语聊房</string>
-    <string name="room_chat">语聊</string>
-    <string name="room_ktv">KTV</string>
-    <string name="room_list_empty">暂时没有房间\n请点击下方\"+\"号创建房间</string>
-    <string name="notice">公告</string>
-    <string name="notice_tips">本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。
-    感谢网易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。</string>
-    <string name="function_desc">从单人直播到主播间PK、观众连麦多种玩法</string>
-    <string name="funciton_title">云信Live</string>
-    <string name="voice_chat">语音聊天室</string>
-    <string name="ktv">KTV</string>
-    <string name="network_broken">网络断开</string>
-    <string name="cancel">取消</string>
-    <string name="apply_micro">申请上麦(%d)</string>
-    <string name="apply_micro_has_arrow">申请上麦(%d)</string>
-    <string name="pick_up_has_blank">收起</string>
-    <string name="room_name_empty">房间名称不能为空</string>
-    <string name="crate_room_error">创建房间失败，返回信息为空</string>
-    <string name="params_error">参数错误</string>
-    <string name="applying_now">正在申请</string>
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_pull_to_refresh">Swipe to refresh</string>
+    <string name="app_release_to_refresh">Release to refresh</string>
+    <string name="app_refreshing">Updating...</string>
+    <string name="app_have_no_more">No more content</string>
+    <string name="app_load_more">Load more</string>
+    <string name="app_chat">Voice chat</string>
+    <string name="app_voice_chat">Voice chat room</string>
+    <string name="app_random">Random</string>
+    <string name="app_open_room">Open Room</string>
+    <string name="app_app_name">Live Audio Room</string>
+    <string name="app_listen_together">Listen Together</string>
+    <string name="app_voiceroom">Voice Chat Room</string>
+    <string name="app_voiceroom_desc_text">Voice chat room with 6-8 participants. Users can speak freely and talk about interesting topics.</string>
+    <string name="app_listen_together_desc_text">Listen together, talk together, stay together.</string>
+    <string name="app_free_trial">Free Trial</string>
+    <string name="app_data_center_switch_confirm_message">Are you sure you want to switch the data center? The app is required to restart to take effect.</string>
+    <string name="app_yes">Yes</string>
+    <string name="app_no">No</string>
+    <string name="app_people_online">%d people</string>
+    <string name="app_people_online_ten_thousand">s%w people</string>
+    <string name="app_about">About</string>
+    <string name="app_app_version">App version</string>
+    <string name="app_privacy_policy">Privacy Policy</string>
+    <string name="app_user_agreement">Terms of Service</string>
+    <string name="app_disclaimer">Disclaimer</string>
+    <string name="app_logout">Log out</string>
+    <string name="app_ok">Complete</string>
+    <string name="app_modify_nickname">Edit</string>
+    <string name="app_user_info_update_failed">Failed to update user profile</string>
+    <string name="app_user_info_update_success">User profile updated</string>
+    <string name="app_avatar">Avatar</string>
+    <string name="app_user_info">User Profile</string>
+    <string name="app_nickname">Nickname</string>
+    <string name="app_user_center">User Profile</string>
+    <string name="app_free_apply_trial">Request free trial</string>
+    <string name="app_tip">Tip</string>
+    <string name="app_application">Application</string>
+    <string name="app_problem_feedback">Feedback</string>
+    <string name="app_data_center">Data Center:</string>
+    <string name="app_data_center_mainland">China</string>
+    <string name="app_data_center_oversea">Out of China</string>
+    <string name="app_room_list_empty">No room\nClick ”+“ to create a room</string>
+    <string name="app_empty_roomname_tips">The room theme cannot be empty</string>
+    <string name="app_room_not_exist">Room does not exist</string>
+    <string name="app_sure">Sure</string>
+    <string name="app_cancel">Cancel</string>
+    <string name="app_click_roomlist_tips">Exit the current room and enter other rooms</string>
+    <string name="app_click_create_room_tips">Exit the current room and create a new room</string>
+    <string name="app_net_error">Network connection failed. Check your network connectivity.</string>
 </resources>

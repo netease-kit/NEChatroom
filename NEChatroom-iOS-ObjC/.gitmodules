@@ -1,4 +1,0 @@
-[submodule "tools"]
-	path = tools
-	url = ssh://git@g.hz.netease.com:22222/yunxin-app/tools.git
-	branch = jenkins/chat_room_ios

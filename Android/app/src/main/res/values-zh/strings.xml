@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_pull_to_refresh">下拉更新</string>
+    <string name="app_release_to_refresh">松开更新</string>
+    <string name="app_refreshing">更新中...</string>
+    <string name="app_have_no_more">没有更多了</string>
+    <string name="app_load_more">上拉加载更多</string>
+    <string name="app_chat">语聊</string>
+    <string name="app_voice_chat">语音聊天室</string>
+    <string name="app_random">随机</string>
+    <string name="app_open_room">开启房间</string>
+    <string name="app_app_name">网易云信语聊房</string>
+    <string name="app_voiceroom">语聊房</string>
+    <string name="app_listen_together">一起听</string>
+    <string name="app_voiceroom_desc_text">6-8人语聊房，玩家可自由发言，实现线上兴趣/话题式语聊互动场景</string>
+    <string name="app_listen_together_desc_text">私密房两人听一首歌，操作同步，边听边聊，天涯若比邻</string>
+    <string name="app_free_trial">免费试用</string>
+    <string name="app_data_center_switch_confirm_message">确定切换数据中心吗？应用需要重新启动和登录。</string>
+    <string name="app_yes">是</string>
+    <string name="app_no">否</string>
+    <string name="app_people_online">%d 人</string>
+    <string name="app_people_online_ten_thousand">%dw 人</string>
+    <string name="app_about">关于</string>
+    <string name="app_app_version">App版本</string>
+    <string name="app_privacy_policy">隐私政策</string>
+    <string name="app_user_agreement">用户协议</string>
+    <string name="app_disclaimer">免责声明</string>
+    <string name="app_logout">退出登录</string>
+    <string name="app_ok">完成</string>
+    <string name="app_modify_nickname">修改昵称</string>
+    <string name="app_user_info_update_failed">用户信息更新失败</string>
+    <string name="app_user_info_update_success">用户信息更新成功</string>
+    <string name="app_avatar">头像</string>
+    <string name="app_user_info">个人信息</string>
+    <string name="app_nickname">昵称</string>
+    <string name="app_user_center">个人中心</string>
+    <string name="app_free_apply_trial">免费申请试用</string>
+    <string name="app_tip">提示</string>
+    <string name="app_application">应用</string>
+    <string name="app_problem_feedback">问题反馈</string>
+    <string name="app_data_center">数据中心:</string>
+    <string name="app_data_center_mainland">中国</string>
+    <string name="app_data_center_oversea">海外地区</string>
+    <string name="app_room_list_empty">暂时没有房间\n请点击下方\"+\"号创建房间</string>
+    <string name="app_empty_roomname_tips">房间主题不能为空</string>
+    <string name="app_room_not_exist">房间不存在</string>
+    <string name="app_sure">确定</string>
+    <string name="app_cancel">取消</string>
+    <string name="app_click_roomlist_tips">是否退出当前房间进入其他房间</string>
+    <string name="app_click_create_room_tips">是否退出当前房间，并创建新房间</string>
+    <string name="app_net_error">网络连接失败，请检查你的网络连接！</string>
+
+</resources>

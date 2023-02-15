@@ -1,0 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
+CFBundleDisplayName = "云信语聊房";
+NSMicrophoneUsageDescription = "语聊房希望使用您的麦克风";
+NSCameraUsageDescription = "语聊房希望使用您的相机";

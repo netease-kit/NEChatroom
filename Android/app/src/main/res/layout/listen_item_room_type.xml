@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@android:color/holo_green_light"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv"
+        tools:background="@drawable/listen_selected"
+        android:layout_gravity="center_vertical"
+        android:layout_width="16dp"
+        android:layout_height="16dp" />
+
+    <TextView
+        android:layout_gravity="center_vertical"
+        android:id="@+id/tv"
+        tools:text="一起听一起"
+        android:paddingLeft="8dp"
+        android:paddingRight="40dp"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

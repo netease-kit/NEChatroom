@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv"
+    tools:text="520"
+    android:textSize="14sp"
+    android:gravity="center"
+    android:layout_width="96dp"
+    android:layout_height="28dp">
+
+</TextView>

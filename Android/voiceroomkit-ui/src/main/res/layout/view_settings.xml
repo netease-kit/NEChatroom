@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/settings_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    tools:visibility="visible"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/settings_action_container"
+        android:layout_width="match_parent"
+        android:layout_height="224dp"
+        android:layout_gravity="bottom"
+        android:background="@color/black">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/voiceroom_setting"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/voiceroom_earback"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/ear_back"
+            android:layout_width="51dp"
+            android:layout_height="31dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="81dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:checked="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="136dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/voiceroom_capture_volume"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="37dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/sound_loud" />
+
+            <SeekBar
+                android:id="@+id/recording_volume_control"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:max="100"
+                android:maxHeight="2dp"
+                android:paddingLeft="10dp"
+                android:progress="100"
+                android:progressDrawable="@drawable/background_music_control_seekbar_bg"
+                android:saveEnabled="true"
+                android:thumb="@drawable/shape_music_control_seekbar_thumb" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

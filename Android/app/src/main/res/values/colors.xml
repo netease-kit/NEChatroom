@@ -1,47 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="color_00000000">#00000000</color>
-    <color name="color_ffffff">#ffffff</color>
-    <color name="color_d9d9d9">#d9d9d9</color>
-    <color name="color_eedabb">#eedabb</color>
-
-    <color name="color_c7c7c7">#c7c7c7</color>
-    <color name="color_828282">#828282</color>
-    <color name="color_10_ffffff">#10ffffff</color>
-    <color name="color_525252">#525252</color>
-    <color name="color_292929">#292929</color>
-    <color name="color_1a1a23">#1a1a23</color>
-    <color name="color_000000">#000000</color>
-    <color name="color_e6000000">#e6000000</color>
-    <color name="color_e61D1D24">#e61D1D24</color>
-    <color name="color_1D1D24">#1D1D24</color>
-
-
-    <color name="color_0888ff">#0888ff</color>
-    <color name="color_37d4ff">#37d4ff</color>
-    <color name="color_2799ff">#2799ff</color>
-    <color name="color_8fb5e1">#8fb5e1</color>
-
-
-    <color name="color_ff4f4f">#ff4f4f</color>
-    <color name="color_FF3257">#FF3257</color>
-    <color name="color_FF6159">#FF6159</color>
-
-    <color name="color_77777">#777777</color>
-    <color name="color_e4e4e4">#e4e4e4</color>
-    <color name="color_3399ff">#3399ff</color>
-    <color name="color_222222">#222222</color>
-    <color name="color_999999">#999999</color>
-    <color name="color_E6E7EB">#E6E7EB</color>
-    <color name="color_FF9966">#FF9966</color>
-    <color name="color_FF66B2">#FF66B2</color>
-
-    <color name="color_50_000000">#80000000</color>
-    <color name="color_30_000000">#AA000000</color>
-    <color name="color_20_ffffff">#BAffffff</color>
     <color name="color_33ffffff">#33ffffff</color>
-    <color name="color_ktv_bg_audience">#4c221A33</color>
-    <color name="color_ktv_bg_singer">#cc221A33</color>
-
-
+    <color name="color_337eff">#337eff</color>
 </resources>

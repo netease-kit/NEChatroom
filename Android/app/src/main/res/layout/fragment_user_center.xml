@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:test="http://schemas.android.com/tools"
+    android:background="@drawable/shape_user_center_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="@string/app_user_center"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#19ffffff" />
+
+    <RelativeLayout
+        android:id="@+id/rl_user_group"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_marginTop="20dp"
+        android:background="#06ffffff"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#33ffffff" />
+
+        <ImageView
+            android:id="@+id/iv_user_portrait"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/account_circle" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/iv_user_portrait"
+            android:gravity="center_vertical"
+            test:text="User"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:drawableEndCompat="@drawable/icon_right_arrow_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#33ffffff" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#06ffffff"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#33ffffff" />
+
+        <TextView
+            android:id="@+id/tv_free_trail"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:text="@string/app_free_apply_trial"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/icon_right_arrow_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#33ffffff" />
+
+        <TextView
+            android:id="@+id/tv_app_about"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:text="@string/app_about"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/icon_right_arrow_light" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:background="#33ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_data_center"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+        />
+
+        <RadioGroup
+                android:id="@+id/data_centers"
+                android:orientation="horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+        <RadioButton
+                android:id="@+id/data_center_mainland"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:text="@string/app_data_center_mainland"/>
+        <RadioButton
+                android:id="@+id/data_center_oversea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:text="@string/app_data_center_oversea"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</LinearLayout>
