@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+  ~  Use of this source code is governed by a MIT license that can be found in the LICENSE file
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="4dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="16dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_item_border"
+        android:layout_width="72dp"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/iv_item_gift_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tv_item_gift_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_item_gift_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:textColor="#ff222222"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/tv_item_gift_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_item_gift_name"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ff666666"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 NetEase, Inc. All rights reserved. -->
+<!-- Use of this source code is governed by a MIT license that can be -->
+<!-- found in the LICENSE file. -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_32_dp"
+        android:layout_marginStart="@dimen/dimen_20_dp"
+        android:layout_marginTop="@dimen/dimen_13_dp"
+        android:layout_marginEnd="@dimen/dimen_20_dp"
+        android:autofillHints=""
+        android:background="@drawable/search_bg"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="@dimen/dimen_10_dp"
+        android:hint="@string/global_search_hint"
+        android:maxLines="1"
+        android:paddingStart="@dimen/dimen_7_dp"
+        android:paddingEnd="@dimen/dimen_7_dp"
+        android:textColor="@color/color_black"
+        android:textColorHint="@color/color_333333"
+        android:textSize="@dimen/text_size_16"
+        android:singleLine="true"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivClear"
+        android:padding="@dimen/dimen_5_dp"
+        android:layout_width="@dimen/dimen_26_dp"
+        android:layout_height="@dimen/dimen_26_dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/ic_clear"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/etSearch"
+        app:layout_constraintEnd_toEndOf="@id/etSearch"
+        app:layout_constraintTop_toTopOf="@id/etSearch"
+        tools:visibility="visible"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/dimen_58_dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/llyEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_marginTop="90dp"
+            android:layout_width="122dp"
+            android:layout_height="91dp"
+            android:src="@drawable/no_ordered_song" />
+
+        <TextView
+            android:id="@+id/tvAllState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_bfbfbf"
+            android:layout_marginTop="@dimen/dimen_16_dp"
+            android:textSize="@dimen/text_size_14"
+            android:text="没有歌哦" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
