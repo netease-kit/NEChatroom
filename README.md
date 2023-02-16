@@ -56,7 +56,7 @@
 
 # 联系我们
 
-- 如果想要了解该场景的更多信息，请参见[在线 K 歌场景方案文档](https://doc.yunxin.163.com/group-voice-room/docs/home-page?platform=android)
+- 如果想要了解该场景的更多信息，请参见[语聊房场景方案文档](https://doc.yunxin.163.com/group-voice-room/docs/home-page?platform=android)
 - 完整的API文档请参见[API参考](https://doc.yunxin.163.com/group-voice-room/api-refer)
 - 如果您遇到的问题，可以先查阅[知识库](https://faq.yunxin.163.com/kb/main/#/)
 - 如果需要售后技术支持，请[提交工单](https://app.yunxin.163.com/index#/issue/submit)  
