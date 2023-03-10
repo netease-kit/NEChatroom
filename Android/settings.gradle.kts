@@ -32,3 +32,4 @@ dependencyResolutionManagement {
 
 include(":app")
 include(":voiceroomkit-ui")
+include(":voiceroomkit")
