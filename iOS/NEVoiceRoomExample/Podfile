@@ -11,6 +11,7 @@ target 'LiveAudioRoom' do
   
   pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
   pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
+  pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
   pod 'NEOrderSong', :path => '../NEOrderSong/NEOrderSong.podspec'
   pod 'NEListenTogetherKit', :path => '../NEListenTogetherKit/NEListenTogetherKit.podspec'
   pod 'NEListenTogetherUIKit', :path => '../NEListenTogetherUIKit/NEListenTogetherUIKit.podspec'
@@ -18,7 +19,7 @@ target 'LiveAudioRoom' do
 
   pod 'NERoomKit','1.11.1'
   pod 'NECopyrightedMedia','1.5.0'
-  pod 'NEVoiceRoomKit','1.0.5'
+#  pod 'NEVoiceRoomKit','1.0.5'
 
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
