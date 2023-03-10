@@ -18,7 +18,10 @@ target 'LiveAudioRoom' do
 
   pod 'NERoomKit','1.11.1'
   pod 'NECopyrightedMedia','1.5.0'
+  #远端依赖
   pod 'NEVoiceRoomKit','1.0.5'
+  #本地依赖/源码调试
+# pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
 
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
