@@ -64,8 +64,10 @@ dependencies:
 
   connectivity_plus: ^2.3.0
   wakelock: ^0.6.1+2
-  netease_voiceroomkit:
-    path: voiceroomkit/voiceroomkit
+  netease_voiceroomkit: ^0.0.1-rc.0
+  # voiceroomkit源码依赖
+#  netease_voiceroomkit:
+#    path: voiceroomkit/voiceroomkit
   netease_roomkit: ^0.0.4-rc.0
   netease_auth: ^0.0.1-rc.0
   provider: ^6.0.0
