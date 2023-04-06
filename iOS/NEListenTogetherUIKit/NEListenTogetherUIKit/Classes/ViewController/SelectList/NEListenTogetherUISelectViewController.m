@@ -7,9 +7,9 @@
 #import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUIEmptyView.h"
 #import "NEListenTogetherUIUserInfoCell.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUISelectViewController ()
 

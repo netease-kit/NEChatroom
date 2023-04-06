@@ -39,7 +39,7 @@ public extension NEOrderSong {
     var isHead = false
     for desc in route.outputs {
       switch desc.portType {
-      case .headphones, .bluetoothA2DP, .usbAudio:
+      case .headphones, .bluetoothA2DP, .usbAudio, .bluetoothHFP:
         isHead = true
       default: break
       }
@@ -140,7 +140,7 @@ public extension NEOrderSong {
                  callback: NEOrderSongCallback<NEOrderSongOrderSongModel>? = nil) {
     NEOrderSongLog.apiLog(kitTag, desc: "Order Song")
     Judge.preCondition({
-      self.musicService!.orderSong(songInfo: songinfo) { data in
+      self.musicService?.orderSong(songInfo: songinfo) { data in
         NEOrderSongLog.successLog(kitTag, desc: "Successfully orderSong")
         callback?(NEOrderSongErrorCode.success, nil, data)
       } failure: { error in

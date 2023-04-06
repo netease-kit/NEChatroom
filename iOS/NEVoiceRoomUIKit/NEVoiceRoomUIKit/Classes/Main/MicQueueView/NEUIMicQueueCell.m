@@ -8,6 +8,7 @@
 #import "NEVoiceRoomUI.h"
 #import "NSArray+NEUIExtension.h"
 #import "NSBundle+NELocalized.h"
+#import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 
 @implementation NEUIMicQueueCell
@@ -68,7 +69,7 @@
 
   if (!anchorMember) return;
   if (anchorMember.isAudioBanned) {
-    [self.smallIcon setImage:[NEVoiceRoomUI ne_imageName:@"mic_shield_ico"]];
+    [self.smallIcon setImage:[NEVoiceRoomUI ne_voice_imageName:@"mic_shield_ico"]];
   } else {
     if (anchorMember.isAudioOn) {
       [self.smallIcon setImage:[UIImage nevoiceRoom_imageNamed:@"mic_open_ico"]];
@@ -96,11 +97,14 @@
   // 1.初始化富文本对象
   NSMutableAttributedString *attributedString =
       [[NSMutableAttributedString alloc] initWithString:title];
+  [attributedString addAttribute:NSForegroundColorAttributeName
+                           value:HEXCOLOR(0xFFC86B)
+                           range:NSMakeRange(0, title.length)];
   // 2.字体属性
   [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, title.length)];
   // 3.初始化NSTextAttachment对象
   NSTextAttachment *attchment = [[NSTextAttachment alloc] init];
-  attchment.image = [NEVoiceRoomUI ne_imageName:@"gift_icon"];                 // 设置图片
+  attchment.image = [NEVoiceRoomUI ne_voice_imageName:@"gift_icon"];           // 设置图片
   attchment.bounds = CGRectMake(0, round(font.capHeight - 10) / 2.0, 10, 10);  // 设置frame
   // 4.创建带有图片的富文本
   NSAttributedString *string =
@@ -124,7 +128,7 @@
       [self.connectBtn stopCustomAnimation];
       self.smallIcon.hidden = YES;
       self.loadingIco.hidden = YES;
-      [self.connectBtn setImage:[NEVoiceRoomUI ne_imageName:@"mic_none_ico"]
+      [self.connectBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"mic_none_ico"]
                        forState:UIControlStateNormal];
     } break;
     case NEVoiceRoomSeatItemStatusWaiting: {  // 等待
@@ -141,7 +145,7 @@
         self.nameLabel.text = micInfo.userName ?: @"";
         [self _setAvatarWithUrl:[NSURL URLWithString:micInfo.icon]];
         self.connectBtn.layer.borderWidth = 1;
-        [self.smallIcon setImage:[NEVoiceRoomUI ne_imageName:@"mic_shield_ico"]];
+        [self.smallIcon setImage:[NEVoiceRoomUI ne_voice_imageName:@"mic_shield_ico"]];
         self.smallIcon.hidden = NO;
         self.loadingIco.hidden = YES;
         [self.connectBtn stopCustomAnimation];
@@ -149,7 +153,7 @@
         self.nameLabel.text = micInfo.userName ?: @"";
         [self _setAvatarWithUrl:[NSURL URLWithString:micInfo.icon]];
         self.connectBtn.layer.borderWidth = 1;
-        [self.smallIcon setImage:[NEVoiceRoomUI ne_imageName:@"mic_open_ico"]];
+        [self.smallIcon setImage:[NEVoiceRoomUI ne_voice_imageName:@"mic_open_ico"]];
         self.smallIcon.hidden = NO;
         self.loadingIco.hidden = YES;
         [self.connectBtn stopCustomAnimation];
@@ -158,7 +162,7 @@
         self.nameLabel.text = micInfo.userName ?: @"";
         [self _setAvatarWithUrl:[NSURL URLWithString:micInfo.icon]];
         self.connectBtn.layer.borderWidth = 1;
-        [self.smallIcon setImage:[NEVoiceRoomUI ne_imageName:@"mic_close_ico"]];
+        [self.smallIcon setImage:[NEVoiceRoomUI ne_voice_imageName:@"mic_close_ico"]];
         self.smallIcon.hidden = NO;
         self.loadingIco.hidden = YES;
       }
@@ -166,7 +170,7 @@
     default: {  // 关闭
       self.nameLabel.text =
           [NSString stringWithFormat:NELocalizedString(@"麦位%zd"), micInfo.index - 1];
-      [self.connectBtn setImage:[NEVoiceRoomUI ne_imageName:@"icon_mic_closed_n"]
+      [self.connectBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_mic_closed_n"]
                        forState:UIControlStateNormal];
       [self _setAvatarWithUrl:nil];
       self.connectBtn.layer.borderWidth = 0;

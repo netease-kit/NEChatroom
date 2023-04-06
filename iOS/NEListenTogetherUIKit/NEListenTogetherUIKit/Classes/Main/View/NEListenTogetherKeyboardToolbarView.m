@@ -5,7 +5,7 @@
 #import "NEListenTogetherKeyboardToolbarView.h"
 #import <Masonry/Masonry.h>
 #import "NEListenTogetherGlobalMacro.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
+#import "NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherKeyboardToolbarView () <UITextFieldDelegate>
 @property(nonatomic, strong, readwrite) UITextField *textField;
@@ -55,6 +55,7 @@
     _textField = [[UITextField alloc] init];
     _textField.font = [UIFont systemFontOfSize:14];
     _textField.backgroundColor = HEXCOLOR(0xF0F0F2);
+    _textField.textColor = [UIColor blackColor];
     _textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 0)];
     _textField.leftViewMode = UITextFieldViewModeAlways;
     _textField.layer.cornerRadius = 16;

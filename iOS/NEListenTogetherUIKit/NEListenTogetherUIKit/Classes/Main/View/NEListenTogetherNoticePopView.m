@@ -6,8 +6,8 @@
 #import <Masonry/Masonry.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import "NEListenTogetherFontMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUIViewFactory.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherNoticePopView ()
 @property(nonatomic, strong) UIView *containerView;

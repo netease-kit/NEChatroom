@@ -28,9 +28,14 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/zhouxiaolu/NEUIKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'NEUIKit/Classes/**/*'
+  
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64',
+      'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
+    }
   
   s.subspec 'Base' do |ss| 
     ss.source_files = 'NEUIKit/Classes/Base/**/*'

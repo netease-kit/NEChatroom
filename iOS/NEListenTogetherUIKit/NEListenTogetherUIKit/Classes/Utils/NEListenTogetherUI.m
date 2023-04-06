@@ -5,7 +5,7 @@
 #import "NEListenTogetherUI.h"
 
 @implementation NEListenTogetherUI
-+ (UIImage *)ne_imageName:(NSString *)imageName {
++ (UIImage *)ne_listen_imageName:(NSString *)imageName {
   NSString *path = [[NSBundle bundleForClass:self.class].resourcePath
       stringByAppendingPathComponent:@"NEListenTogetherUIKit.bundle"];
   //     [[NSBundle bundleForClass:self.class] pathForResource:@"NEListenTogetherUIKit"
@@ -18,7 +18,7 @@
   }
   return [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
 }
-+ (NSBundle *_Nullable)ne_sourceBundle {
++ (NSBundle *_Nullable)ne_listen_sourceBundle {
   NSString *path = [[NSBundle bundleForClass:self.class].resourcePath
       stringByAppendingPathComponent:@"NEListenTogetherUIKit.bundle"];
   //     [[NSBundle bundleForClass:self.class] pathForResource:@"NEListenTogetherUIKit"

@@ -5,9 +5,9 @@
 #import "NEListenTogetherMicQueueCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NEListenTogetherInnerSingleton.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
 #import "NSArray+NEListenTogetherUIExtension.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
 
 @implementation NEListenTogetherMicQueueCell
@@ -68,7 +68,7 @@
 
   if (!anchorMember) return;
   if (anchorMember.isAudioBanned) {
-    [self.smallIcon setImage:[NEListenTogetherUI ne_imageName:@"mic_shield_ico"]];
+    [self.smallIcon setImage:[NEListenTogetherUI ne_listen_imageName:@"mic_shield_ico"]];
   } else {
     if (anchorMember.isAudioOn) {
       [self.smallIcon setImage:[UIImage voiceRoom_imageNamed:@"mic_open_ico"]];
@@ -94,7 +94,7 @@
       [self.connectBtn stopCustomAnimation];
       self.smallIcon.hidden = YES;
       self.loadingIco.hidden = YES;
-      [self.connectBtn setImage:[NEListenTogetherUI ne_imageName:@"mic_none_ico"]
+      [self.connectBtn setImage:[NEListenTogetherUI ne_listen_imageName:@"mic_none_ico"]
                        forState:UIControlStateNormal];
       [self.lottieView stop];
     } break;
@@ -112,7 +112,7 @@
         self.nameLabel.text = micInfo.userName ?: @"";
         [self _setAvatarWithUrl:[NSURL URLWithString:micInfo.icon]];
         self.connectBtn.layer.borderWidth = 1;
-        [self.smallIcon setImage:[NEListenTogetherUI ne_imageName:@"mic_shield_ico"]];
+        [self.smallIcon setImage:[NEListenTogetherUI ne_listen_imageName:@"mic_shield_ico"]];
         self.smallIcon.hidden = NO;
         self.loadingIco.hidden = YES;
         [self.connectBtn stopCustomAnimation];
@@ -120,7 +120,7 @@
         self.nameLabel.text = micInfo.userName ?: @"";
         [self _setAvatarWithUrl:[NSURL URLWithString:micInfo.icon]];
         self.connectBtn.layer.borderWidth = 1;
-        [self.smallIcon setImage:[NEListenTogetherUI ne_imageName:@"mic_open_ico"]];
+        [self.smallIcon setImage:[NEListenTogetherUI ne_listen_imageName:@"mic_open_ico"]];
         self.smallIcon.hidden = NO;
         self.loadingIco.hidden = YES;
         [self.connectBtn stopCustomAnimation];
@@ -129,7 +129,7 @@
         self.nameLabel.text = micInfo.userName ?: @"";
         [self _setAvatarWithUrl:[NSURL URLWithString:micInfo.icon]];
         self.connectBtn.layer.borderWidth = 1;
-        [self.smallIcon setImage:[NEListenTogetherUI ne_imageName:@"mic_close_ico"]];
+        [self.smallIcon setImage:[NEListenTogetherUI ne_listen_imageName:@"mic_close_ico"]];
         self.smallIcon.hidden = NO;
         self.loadingIco.hidden = YES;
       }
@@ -137,7 +137,7 @@
     default: {  // 关闭
       self.nameLabel.text =
           [NSString stringWithFormat:NELocalizedString(@"麦位%zd"), micInfo.index - 1];
-      [self.connectBtn setImage:[NEListenTogetherUI ne_imageName:@"icon_mic_closed_n"]
+      [self.connectBtn setImage:[NEListenTogetherUI ne_listen_imageName:@"icon_mic_closed_n"]
                        forState:UIControlStateNormal];
       [self _setAvatarWithUrl:nil];
       self.connectBtn.layer.borderWidth = 0;

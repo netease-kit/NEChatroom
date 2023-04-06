@@ -41,8 +41,13 @@ public protocol NEListenTogetherListener: NSObjectProtocol {
   /// - Parameters:
   ///   - volumes: 每个说话者的用户ID和音量信息列表
   ///   - totalVolume: 混合后的总音量，取值范围为 0~100
-  @objc optional func onRtcAudioVolumeIndication(volumes: [NEListenTogetherMemberVolumeInfo],
-                                                 totalVolume: Int)
+  @objc optional func onRtcRemoteAudioVolumeIndication(volumes: [NEListenTogetherMemberVolumeInfo],
+                                                       totalVolume: Int)
+
+  /// 本端瞬时音量回调及是否检测到人声
+  /// - Parameter volume: 音量
+  ///             enableVad : 是否检测到人声。
+  @objc optional func onRtcLocalAudioVolumeIndication(volume: Int, enableVad: Bool)
 
   /// 本端音频输出设备变更通知，如切换到扬声器、听筒、耳机等
   /// - Parameter device: 音频输出类型

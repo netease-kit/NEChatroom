@@ -8,6 +8,7 @@
 #import "NEUIMoreCell.h"
 #import "NEUIMoreItem.h"
 #import "NEUIMusicConsoleVC.h"
+#import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NSBundle+NELocalized.h"
 
@@ -39,6 +40,19 @@
   }
   return self;
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+
+  for (NEUIMoreItem *item in self.items) {
+    if (item.tag == 1) {
+      if (![[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+        item.on = false;
+      }
+    }
+  }
+}
+
 - (void)loadView {
   UIView *view = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
   view.backgroundColor = UIColor.whiteColor;
@@ -80,7 +94,43 @@
       break;
   }
   [self.collectionView reloadData];
+
+  [NSNotificationCenter.defaultCenter addObserver:self
+                                         selector:@selector(canUseEarback)
+                                             name:@"CanUseEarback"
+                                           object:nil];
+  [NSNotificationCenter.defaultCenter addObserver:self
+                                         selector:@selector(canNotUseEarback)
+                                             name:@"CanNotUseEarback"
+                                           object:nil];
 }
+
+- (void)dealloc {
+  [NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
+- (void)canUseEarback {
+  for (NEUIMoreItem *item in self.items) {
+    if (item.tag == 1) {
+      if ([[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+        item.on = true;
+      }
+    }
+  }
+  [self.collectionView reloadData];
+}
+
+- (void)canNotUseEarback {
+  for (NEUIMoreItem *item in self.items) {
+    if (item.tag == 1) {
+      if (![[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+        item.on = false;
+      }
+    }
+  }
+  [self.collectionView reloadData];
+}
+
 - (CGSize)preferredContentSize {
   CGFloat preferedHeight = 0;
   if (@available(iOS 11.0, *)) {
@@ -137,7 +187,9 @@
       break;
     }
     case 1: {  // 耳返
+      NSLog(@"耳机是否插入 --- %d", [[NEVoiceRoomKit getInstance] isHeadSetPlugging]);
       if (![[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+        [NEVoiceRoomToast showToast:NELocalizedString(@"插入耳机后可使用耳返功能")];
         return;
       }
       item.on = !item.on;
@@ -195,25 +247,26 @@
   if (!_allItems) {
     _allItems = @[
       [NEUIMoreItem itemWithTitle:NELocalizedString(@"麦克风")
-                          onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_mic_on"]
-                         offImage:[NEVoiceRoomUI ne_imageName:@"icon_more_mic_off"]
+                          onImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_mic_on"]
+                         offImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_mic_off"]
                               tag:0]
           .open(self.context.rtcConfig.micOn),
       [NEUIMoreItem itemWithTitle:NELocalizedString(@"耳返")
-                          onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_earback_on"]
-                         offImage:[NEVoiceRoomUI ne_imageName:@"icon_more_earback_off"]
+                          onImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_earback_on"]
+                         offImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_earback_off"]
                               tag:1]
           .open(self.context.rtcConfig.earbackOn),
       [NEUIMoreItem itemWithTitle:NELocalizedString(@"调音台")
-                          onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_music_console"]
+                          onImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_music_console"]
                          offImage:nil
                               tag:2],
-      [NEUIMoreItem itemWithTitle:NELocalizedString(@"音效")
-                          onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_accompaniment_sound"]
-                         offImage:nil
-                              tag:3],
+      [NEUIMoreItem
+          itemWithTitle:NELocalizedString(@"音效")
+                onImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_accompaniment_sound"]
+               offImage:nil
+                    tag:3],
       [NEUIMoreItem itemWithTitle:NELocalizedString(@"结束直播")
-                          onImage:[NEVoiceRoomUI ne_imageName:@"icon_more_close_live"]
+                          onImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_more_close_live"]
                          offImage:nil
                               tag:4]
     ];

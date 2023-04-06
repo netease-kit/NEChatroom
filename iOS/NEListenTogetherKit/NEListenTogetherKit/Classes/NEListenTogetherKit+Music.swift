@@ -39,7 +39,7 @@ public extension NEListenTogetherKit {
     var isHead = false
     for desc in route.outputs {
       switch desc.portType {
-      case .headphones, .bluetoothA2DP, .usbAudio:
+      case .headphones, .bluetoothA2DP, .usbAudio, .bluetoothHFP:
         isHead = true
       default: break
       }

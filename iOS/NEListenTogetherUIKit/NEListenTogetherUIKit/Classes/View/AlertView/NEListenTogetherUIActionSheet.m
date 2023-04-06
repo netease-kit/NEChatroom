@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #import "NEListenTogetherUIActionSheet.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
+#import "NEListenTogetherLocalized.h"
 
 @implementation NEUIActionSheetModel
 @end

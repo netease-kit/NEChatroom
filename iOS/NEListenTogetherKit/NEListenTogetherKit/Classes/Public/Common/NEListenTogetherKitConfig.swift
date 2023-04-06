@@ -12,4 +12,6 @@ public class NEListenTogetherKitConfig: NSObject {
   public var appKey: String = ""
   /// 预留字段
   public var extras: [String: String] = .init()
+  /// 推送证书
+  public var APNSCerName: String = ""
 }

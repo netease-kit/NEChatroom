@@ -122,7 +122,7 @@
 }
 
 - (void)ne_cornerRadii:(CGSize)cornerRadii addRectCorners:(UIRectCorner)rectCorner {
-  [self layoutIfNeeded];  //这句代码很重要，不能忘了
+  [self layoutIfNeeded];  // 这句代码很重要，不能忘了
 
   UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds
                                              byRoundingCorners:rectCorner

@@ -33,6 +33,7 @@ public extension NEListenTogetherKit {
   ///   - callback: 回调
   func login(_ account: String,
              token: String,
+             resumeLogin: Bool = false,
              callback: NEListenTogetherCallback<AnyObject>? = nil) {
     NEListenTogetherLog.apiLog(kitTag, desc: "Login. Account: \(account). Token: \(token)")
 
@@ -41,7 +42,14 @@ public extension NEListenTogetherKit {
       callback?(NEListenTogetherErrorCode.failed, "Failed to login. Uninitialized.", nil)
       return
     }
-
+    if resumeLogin {
+      NE.addHeader([
+        "user": account,
+        "token": token,
+      ])
+      callback?(NEListenTogetherErrorCode.success, nil, nil)
+      return
+    }
     NERoomKit.shared().authService.login(account: account,
                                          token: token) { code, str, _ in
       if code == 0 {
@@ -107,6 +115,7 @@ public extension NEListenTogetherKit {
 extension NEListenTogetherKit: NEAuthListener {
   public func onAuthEvent(evt: NEAuthEvent) {
     DispatchQueue.main.async {
+      self.reset()
       for pointerListener in self.authListeners.allObjects {
         guard pointerListener is NEListenTogetherAuthListener, let listener = pointerListener as? NEListenTogetherAuthListener else { continue }
 

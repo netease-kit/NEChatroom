@@ -32,7 +32,7 @@
   [self addSubview:self.imgView];
   [self addSubview:self.tipLabel];
   [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.size.mas_equalTo(CGSizeMake(100, 100));
+    make.size.mas_equalTo(CGSizeMake(165.5, 123));
     make.centerX.top.equalTo(self);
   }];
 
@@ -47,7 +47,8 @@
   if (_tintColor == tintColor) {
     return;
   }
-  self.imgView.image = [[NEVoiceRoomUI ne_imageName:@"empty_icon"] ne_imageWithTintColor:tintColor];
+  self.imgView.image =
+      [[NEVoiceRoomUI ne_voice_imageName:@"empty_ico"] ne_imageWithTintColor:tintColor];
   //    self.tipLabel.textColor = tintColor;
 }
 
@@ -56,7 +57,7 @@
 - (UIImageView *)imgView {
   if (!_imgView) {
     _imgView = [[UIImageView alloc] init];
-    _imgView.image = [NEVoiceRoomUI ne_imageName:@"empty_icon"];
+    _imgView.image = [NEVoiceRoomUI ne_voice_imageName:@"empty_ico"];
   }
   return _imgView;
 }
@@ -67,7 +68,7 @@
     _tipLabel.font = [UIFont systemFontOfSize:13];
     _tipLabel.textColor = HEXCOLOR(0x999999);
     _tipLabel.textAlignment = NSTextAlignmentCenter;
-    _tipLabel.text = NELocalizedString(@"暂时没有房间\n请点击下方”+“创建房间");
+    _tipLabel.text = NELocalizedString(@"暂时没有房间，请创建房间");
     _tipLabel.numberOfLines = 0;
   }
   return _tipLabel;

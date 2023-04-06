@@ -244,14 +244,14 @@ static int NEPageSize = 20;
     }
   }
 
-  if (progress > 0.5 && progress < 0.6) {
-    NSString *progressLogInfo =
-        [NSString stringWithFormat:@"下载中,songId:%@,\n progress:%.2f, \n songItem:%@, \n  "
-                                   @"currentOrderSongArray:%@ ,\n pickSongArray:%@",
-                                   songId, progress, songItem, self.currentOrderSongArray,
-                                   self.pickSongArray];
-    [NEVoiceRoomUILog successLog:voiceRoomUILog desc:progressLogInfo];
-  }
+  //  if (progress > 0.5 && progress < 0.6) {
+  //    NSString *progressLogInfo =
+  //        [NSString stringWithFormat:@"下载中,songId:%@,\n progress:%.2f, \n songItem:%@, \n  "
+  //                                   @"currentOrderSongArray:%@ ,\n pickSongArray:%@",
+  //                                   songId, progress, songItem, self.currentOrderSongArray,
+  //                                   self.pickSongArray];
+  //    [NEVoiceRoomUILog successLog:voiceRoomUILog desc:progressLogInfo];
+  //  }
 
   if (songItem) {
     unsigned long index = [self.pickSongArray indexOfObject:songItem];
@@ -395,13 +395,13 @@ static int NEPageSize = 20;
            if (code != 0) {
              NSString *message = nil;
              if (code == SONG_ERROR_SONG_POINTED) {
-               message = @"歌曲已点";
+               message = NELocalizedString(@"歌曲已点");
              } else if (code == SONG_ERROR_SONG_POINTED_USER_LIMIT) {
-               message = @"每个用户最多点2首歌";
+               message = NELocalizedString(@"已达到单人点歌数上限");
              } else if (code == SONG_ERROR_SONG_POINTED_ROOM_LIMIT) {
-               message = @"每个房间最多点10首歌";
+               message = NELocalizedString(@"已达到房间点歌数上限");
              } else {
-               message = @"点歌失败";
+               message = NELocalizedString(@"点歌失败");
              }
 
              // 此处添加数据回调

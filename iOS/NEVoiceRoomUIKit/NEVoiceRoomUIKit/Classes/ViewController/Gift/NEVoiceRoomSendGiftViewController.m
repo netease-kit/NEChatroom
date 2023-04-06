@@ -108,7 +108,7 @@
     // Fallback on earlier versions
   }
 
-  self.title = @"送礼物";
+  self.title = NELocalizedString(@"送礼物");
   self.view.backgroundColor = [UIColor whiteColor];
 
   //   导航栏下面画个分割线
@@ -204,7 +204,7 @@
     make.centerY.equalTo(self.bottomSendGiftIcon);
     make.left.equalTo(self.bottomSendGiftIcon).offset(20);
     make.width.equalTo(@35);
-    make.height.equalTo(@12);
+    make.top.bottom.equalTo(self.bottomSendGiftView);
   }];
 
   [self.bottomSendGiftView addSubview:self.bottomSendGiftButton];
@@ -276,9 +276,9 @@
     _bottomSendGiftIcon = [[UIButton alloc] init];
     _bottomSendGiftIcon.selected = NO;
     _bottomSendGiftIcon.backgroundColor = [UIColor clearColor];
-    [_bottomSendGiftIcon setImage:[NEVoiceRoomUI ne_imageName:@"send_top_icon"]
+    [_bottomSendGiftIcon setImage:[NEVoiceRoomUI ne_voice_imageName:@"send_top_icon"]
                          forState:UIControlStateNormal];
-    [_bottomSendGiftIcon setImage:[NEVoiceRoomUI ne_imageName:@"send_bottom_icon"]
+    [_bottomSendGiftIcon setImage:[NEVoiceRoomUI ne_voice_imageName:@"send_bottom_icon"]
                          forState:UIControlStateSelected];
     [_bottomSendGiftIcon addTarget:self
                             action:@selector(showGiftNumListView)
@@ -357,7 +357,7 @@
 - (UIImageView *)giftNumImageView {
   if (!_giftNumImageView) {
     _giftNumImageView =
-        [[UIImageView alloc] initWithImage:[NEVoiceRoomUI ne_imageName:@"gift_bottom_icon"]];
+        [[UIImageView alloc] initWithImage:[NEVoiceRoomUI ne_voice_imageName:@"gift_bottom_icon"]];
   }
   return _giftNumImageView;
 }
@@ -366,9 +366,8 @@
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = [NEVoiceRoomSendGiftCell size];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    //    layout.minimumInteritemSpacing = 8;
-    //    layout.minimumLineSpacing = 8;
-    layout.sectionInset = UIEdgeInsetsMake(0, 16, 0, 16);
+    layout.minimumInteritemSpacing = 5;
+    layout.minimumLineSpacing = 5;
 
     CGRect frame = CGRectZero;
     _collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
@@ -558,7 +557,7 @@
   NSLog(@"页面点击");
   self.bottomSendGiftIcon.selected = !self.bottomSendGiftIcon.selected;
   [self.btnPopover show:self.giftNumSuperView
-               fromView:self.bottomSendGiftView];  // in delegate window
+               fromView:self.bottomSendGiftNumberLabel];  // in delegate window
 }
 #pragma mark - Present Size
 

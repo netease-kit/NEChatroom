@@ -10,6 +10,7 @@
 #import <YYModel/YYModel.h>
 #import "NEListenTogetherChatView.h"
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPickSongEngine.h"
 #import "NEListenTogetherPickSongView.h"
 #import "NEListenTogetherRoomListViewController.h"
@@ -25,7 +26,6 @@
 #import "NEListenTogetherViewController+Seat.h"
 #import "NEListenTogetherViewController+UI.h"
 #import "NEListenTogetherViewController+Utils.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
 
 @interface NEListenTogetherViewController () <NEListenTogetherHeaderDelegate,
@@ -60,9 +60,20 @@
   [self destroyNetworkObserver];
   [[NEListenTogetherPickSongEngine sharedInstance] removeObserve:self];
   [NEListenTogetherPickSongEngine sharedInstance].currrentSongModel = nil;
+
+  if ([[NEListenTogetherUIManager sharedInstance].delegate
+          respondsToSelector:@selector(onListenTogetherLeaveRoom)]) {
+    [[NEListenTogetherUIManager sharedInstance].delegate onListenTogetherLeaveRoom];
+  }
 }
 - (void)viewDidLoad {
   [super viewDidLoad];
+
+  if ([[NEListenTogetherUIManager sharedInstance].delegate
+          respondsToSelector:@selector(onListenTogetherJoinRoom)]) {
+    [[NEListenTogetherUIManager sharedInstance].delegate onListenTogetherJoinRoom];
+  }
+
   self.playingStatus = PlayingStatus_default;
   self.playingAction = PlayingAction_default;
   // Do any additional setup after loading the view.
@@ -86,6 +97,7 @@
     [NEListenTogetherKit.getInstance
         endRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
           dispatch_async(dispatch_get_main_queue(), ^{
+            [NEListenTogetherToast showToast:NELocalizedString(@"房间解散成功")];
             if (self.presentedViewController) {
               [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
             }
@@ -211,6 +223,8 @@
 
 #pragma mark------------------------ NEUIKeyboardToolbarDelegate ------------------------
 - (void)didToolBarSendText:(NSString *)text {
+  NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  text = [text stringByTrimmingCharactersInSet:set];
   if (text.length <= 0) {
     [NEListenTogetherToast showToast:NELocalizedString(@"发送内容为空")];
     return;
@@ -229,9 +243,32 @@
              }];
 }
 #pragma mark------------------------ NEListenTogetherListener ------------------------
-- (void)onRtcAudioVolumeIndicationWithVolumes:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumes
-                                  totalVolume:(NSInteger)totalVolume {
-  [self.micQueueView updateWithVolumeInfos:volumes];
+
+- (void)onRtcLocalAudioVolumeIndicationWithVolume:(NSInteger)volume enableVad:(BOOL)enableVad {
+  [self.micQueueView updateWithLocalVolume:volume];
+}
+
+- (void)onRtcRemoteAudioVolumeIndicationWithVolumes:
+            (NSArray<NEListenTogetherMemberVolumeInfo *> *)volumes
+                                        totalVolume:(NSInteger)totalVolume {
+  [self.micQueueView updateWithRemoteVolumeInfos:volumes];
+}
+
+- (void)onAudioOutputDeviceChanged:(enum NEListenTogetherAudioOutputDevice)device {
+  if (device == NEListenTogetherAudioOutputDeviceWiredHeadset ||
+      device == NEListenTogetherAudioOutputDeviceBluetoothHeadset) {
+    self.context.rtcConfig.earbackOn = true;
+    [NSNotificationCenter.defaultCenter
+        postNotification:[[NSNotification alloc] initWithName:@"CanUseEarback"
+                                                       object:nil
+                                                     userInfo:nil]];
+  } else {
+    self.context.rtcConfig.earbackOn = false;
+    [NSNotificationCenter.defaultCenter
+        postNotification:[[NSNotification alloc] initWithName:@"CanNotUseEarback"
+                                                       object:nil
+                                                     userInfo:nil]];
+  }
 }
 
 - (void)onMemberJoinRoom:(NSArray<NEListenTogetherMember *> *)members {
@@ -347,13 +384,25 @@
 }
 
 - (void)onAudioEffectTimestampUpdate:(uint32_t)effectId timeStampMS:(uint64_t)timeStampMS {
-  self.time = (long)timeStampMS;
-  [self.lyricActionView updateLyric:self.time];
+  if (effectId == NEListenTogetherKit.OriginalEffectId) {
+    if (timeStampMS > self.time) {
+      [self.micQueueView play];
+    } else {
+      [self.micQueueView pause];
+    }
+    self.time = (long)timeStampMS;
+    [self.lyricActionView updateLyric:self.time];
+  }
 }
 
 - (void)onReceiveSongPosition:(enum NEListenTogetherCustomAction)actionType
                          data:(NSDictionary<NSString *, id> *)data {
   if (actionType == NEListenTogetherCustomActionGetPosition) {
+    NSString *songId =
+        [NEListenTogetherPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.songId;
+    if (!songId.length) {
+      return;
+    }
     // 获取进度
     NSDictionary *songDic = @{
       @"songId" : [NEListenTogetherPickSongEngine sharedInstance]
@@ -367,7 +416,10 @@
                                                     data:songDic.yy_modelToJSONString
                                                 callback:nil];
   } else if (actionType == NEListenTogetherCustomActionSendPosition) {
-    [[NEListenTogetherKit getInstance] setPlayingPositionWithPosition:[data[@"progress"] intValue]];
+    NSInteger progress = [data[@"progress"] intValue];
+    [[NEListenTogetherKit getInstance] setPlayingPositionWithPosition:progress];
+    self.time = progress;
+    [self.lyricActionView updateLyric:progress];
     if ([NEListenTogetherPickSongEngine sharedInstance]
             .currrentSongModel.playMusicInfo.oc_songStatus == 2) {
       // 暂停
@@ -468,7 +520,7 @@
   if (!_bgImageView) {
     _bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _bgImageView.image = [NEListenTogetherUI ne_imageName:@"chatRoom_bgImage_icon"];
+    _bgImageView.image = [NEListenTogetherUI ne_listen_imageName:@"chatRoom_bgImage_icon"];
   }
   return _bgImageView;
 }
@@ -561,11 +613,13 @@
     return;
   }
   self.pickSongView = nil;
+  CGSize size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds),
+                           CGRectGetHeight([UIScreen mainScreen].bounds) / 3 * 2);
   UIViewController *controller = [[UIViewController alloc] init];
-  controller.preferredContentSize = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), 500);
-  self.pickSongView = [[NEListenTogetherPickSongView alloc]
-      initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 500)
-             detail:self.detail];
+  controller.preferredContentSize = size;
+  self.pickSongView =
+      [[NEListenTogetherPickSongView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)
+                                                   detail:self.detail];
   [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
   [self.pickSongView setVolume:[NEListenTogetherKit getInstance].getEffectVolume * 1.0 / 100.00];
   self.pickSongView.delegate = self;
@@ -581,23 +635,24 @@
   [self presentViewController:nav animated:YES completion:nil];
 
   @weakify(nav) self.pickSongView.applyOnseat = ^{
-    @strongify(nav) @strongify(self) UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"仅麦上成员可点歌，先申请上麦"
-                                            message:nil
-                                     preferredStyle:UIAlertControllerStyleAlert];
+    @strongify(nav) @strongify(self) UIAlertController *alert = [UIAlertController
+        alertControllerWithTitle:NELocalizedString(@"仅麦上成员可点歌，先申请上麦")
+                         message:nil
+                  preferredStyle:UIAlertControllerStyleAlert];
     @weakify(self)
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消"
+        [alert addAction:[UIAlertAction actionWithTitle:NELocalizedString(@"取消")
                                                   style:UIAlertActionStyleCancel
                                                 handler:^(UIAlertAction *_Nonnull action) {
                                                   @strongify(self)[self.pickSongView cancelApply];
                                                 }]];
     [alert addAction:[UIAlertAction
-                         actionWithTitle:@"申请上麦"
+                         actionWithTitle:NELocalizedString(@"申请上麦")
                                    style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction *_Nonnull action) {
                                    if (![NEListenTogetherAuthorityHelper
                                            checkMicAuthority]) {  // 麦克风权限
-                                     [NEListenTogetherToast showToast:@"请先开启麦克风权限"];
+                                     [NEListenTogetherToast
+                                         showToast:NELocalizedString(@"请先开启麦克风权限")];
                                      return;
                                    }
                                    // 申请上麦
@@ -626,7 +681,8 @@
 - (void)onReceiveChorusMessage:(enum NEListenTogetherChorusActionType)actionType
                      songModel:(NEListenTogetherSongModel *)songModel {
   if (actionType == NEListenTogetherChorusActionTypeStartSong) {
-    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"正在播放歌曲《%@》",
+    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@《%@》",
+                                                               NELocalizedString(@"正在播放歌曲"),
                                                                songModel.playMusicInfo.songName]];
     /// 开始唱歌
     self.playingStatus = PlayingStatus_playing;
@@ -646,7 +702,7 @@
     self.playingStatus = PlayingStatus_pause;
     [[NEListenTogetherKit getInstance]
         pauseEffectWithEffectId:NEListenTogetherKit.OriginalEffectId];
-    [self.micQueueView stop];
+    [self.micQueueView pause];
     [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
     [self.lyricControlView setIsPlaying:(self.playingStatus == PlayingStatus_playing)];
   } else if (actionType == NEListenTogetherChorusActionTypeResumeSong) {
@@ -655,7 +711,7 @@
         resumeEffectWithEffectId:NEListenTogetherKit.OriginalEffectId];
     self.playingStatus = PlayingStatus_playing;
     [self refreshUI];
-    [self.micQueueView play];
+    //    [self.micQueueView play];
     [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
     [self.lyricControlView setIsPlaying:(self.playingStatus == PlayingStatus_playing)];
   }
@@ -776,7 +832,10 @@
                         callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                           if (code != 0) {
                             [NEListenTogetherToast
-                                showToast:[NSString stringWithFormat:@"歌曲开始播放失败：%@", msg]];
+                                showToast:[NSString stringWithFormat:@"%@：%@",
+                                                                     NELocalizedString(
+                                                                         @"歌曲开始播放失败"),
+                                                                     msg]];
                           }
                         }];
   });
@@ -789,9 +848,9 @@
 
 /// 点歌
 - (void)onSongOrdered:(NEListenTogetherOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 点了《%@》",
-                                                             song.actionOperator.userName,
-                                                             song.songName]];
+  [self sendChatroomNotifyMessage:[NSString
+                                      stringWithFormat:@"%@ %@《%@》", song.actionOperator.userName,
+                                                       NELocalizedString(@"点了"), song.songName]];
 
   [[NEListenTogetherKit getInstance]
       queryPlayingSongInfo:^(NSInteger code, NSString *_Nullable msg,
@@ -827,8 +886,9 @@
       }];
 }
 - (void)onSongDeleted:(NEListenTogetherOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 删除了歌曲《%@》",
+  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ %@《%@》",
                                                              song.actionOperator.userName,
+                                                             NELocalizedString(@"删除了歌曲"),
                                                              song.songName]];
   [NEListenTogetherUILog
       infoLog:ListenTogetherUILog
@@ -844,7 +904,7 @@
     /// 删除播放中的歌
     [[NEListenTogetherKit getInstance]
         pauseEffectWithEffectId:NEListenTogetherKit.OriginalEffectId];
-    [[NEListenTogetherKit getInstance] stopAllEffects];
+    [[NEListenTogetherKit getInstance] stopEffectWithEffectId:NEListenTogetherKit.OriginalEffectId];
     [NEListenTogetherPickSongEngine sharedInstance].currrentSongModel.playMusicInfo = nil;
     self.lyricActionView.hidden = YES;
     self.lyricControlView.hidden = YES;
@@ -866,9 +926,9 @@
 }
 
 - (void)onSongTopped:(NEListenTogetherOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 置顶《%@》",
-                                                             song.actionOperator.userName,
-                                                             song.songName]];
+  [self sendChatroomNotifyMessage:[NSString
+                                      stringWithFormat:@"%@ %@《%@》", song.actionOperator.userName,
+                                                       NELocalizedString(@"置顶"), song.songName]];
 }
 
 - (void)onNextSong:(NEListenTogetherOrderSongModel *)song {
@@ -899,8 +959,9 @@
         }
       }
     } else {
-      [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
-                                                                 song.actionOperator.userName]];
+      [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ %@",
+                                                                 song.actionOperator.userName,
+                                                                 NELocalizedString(@"已切歌")]];
       // 选定歌曲切
       NEListenTogetherOrderSongModel *nextSong =
           [NEListenTogetherOrderSongModel yy_modelWithJSON:song.attachment];
@@ -925,8 +986,9 @@
     }
 
   } else {
-    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
-                                                               song.actionOperator.userName]];
+    [self
+        sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ %@", song.actionOperator.userName,
+                                                             NELocalizedString(@"已切歌")]];
     NEListenTogetherOrderSongModel *nextSong = song.nextOrderSong;
     [NEListenTogetherUILog
         infoLog:ListenTogetherUILog
@@ -987,6 +1049,7 @@
 }
 
 - (void)onLyricSeek:(NSInteger)seek {
+  self.time = seek;
   [[NEListenTogetherKit getInstance] setPlayingPositionWithPosition:seek];
   NSString *userUuid;
   if (self.isAnchor) {
@@ -1052,16 +1115,17 @@
   // 默认设置一把采集音量
   [self.audioManager adjustRecordingSignalVolume:[self.audioManager getRecordingSignalVolume]];
 
-  int volume =
-      [self.audioManager getAudioEffectVolumeWithEffectId:[[NEListenTogetherKit getInstance]
-                                                              currentSongIdForAudioEffect]];
+  int volume = 100;
+  if (self.pickSongView) {
+    volume = self.pickSongView.getVolume * 100;
+  }
 
   if (originPath.length > 0) {
     NEListenTogetherCreateAudioEffectOption *option = [NEListenTogetherCreateAudioEffectOption new];
     option.startTimeStamp = 3000;
     option.path = originPath;
     option.playbackVolume = volume;
-    option.sendVolume = volume;
+    option.sendVolume = 0;
     option.sendEnabled = false;
     option.progressInterval = 100;
     option.sendWithAudioType = NEListenTogetherAudioStreamTypeMain;
@@ -1078,7 +1142,7 @@
 
     } else {
       dispatch_async(dispatch_get_main_queue(), ^{
-        [self.micQueueView play];
+        //        [self.micQueueView play];
         self.lyricControlView.hidden = NO;
         self.lyricControlView.isPlaying = YES;
         self.lyricActionView.hidden = NO;
@@ -1102,9 +1166,9 @@
   [[NEListenTogetherKit getInstance]
       requestPausePlayingSong:[NEListenTogetherPickSongEngine sharedInstance]
                                   .currrentSongModel.playMusicInfo.orderId
-                     callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-                       // 歌曲暂停
-                       [self.micQueueView stop];
+                     callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+                         // 歌曲暂停
+                         //                       [self.micQueueView stop];
                      }];
 }
 
@@ -1112,9 +1176,9 @@
   [[NEListenTogetherKit getInstance]
       requestResumePlayingSong:[NEListenTogetherPickSongEngine sharedInstance]
                                    .currrentSongModel.playMusicInfo.orderId
-                      callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-                        /// 继续播放
-                        [self.micQueueView play];
+                      callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
+                          /// 继续播放
+                          //                        [self.micQueueView play];
                       }];
 }
 

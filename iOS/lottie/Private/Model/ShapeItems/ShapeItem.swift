@@ -85,7 +85,7 @@ class ShapeItem: Codable, DictionaryInitializable {
 
   required init(dictionary: [String: Any]) throws {
     name = (try? dictionary.value(for: CodingKeys.name)) ?? "Layer"
-    type = ShapeType(rawValue: try dictionary.value(for: CodingKeys.type)) ?? .unknown
+    type = try ShapeType(rawValue: dictionary.value(for: CodingKeys.type)) ?? .unknown
     hidden = (try? dictionary.value(for: CodingKeys.hidden)) ?? false
   }
 

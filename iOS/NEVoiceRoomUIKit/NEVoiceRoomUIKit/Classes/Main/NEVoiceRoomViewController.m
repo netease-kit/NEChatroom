@@ -56,6 +56,10 @@
   return self;
 }
 - (void)dealloc {
+  if ([[NEVoiceRoomUIManager sharedInstance].delegate
+          respondsToSelector:@selector(onVoiceRoomLeaveRoom)]) {
+    [[NEVoiceRoomUIManager sharedInstance].delegate onVoiceRoomLeaveRoom];
+  }
   [NEVoiceRoomKit.getInstance removeVoiceRoomListener:self];
   [self destroyNetworkObserver];
   [[NEVoiceRoomPickSongEngine sharedInstance] removeObserve:self];
@@ -77,6 +81,11 @@
   [self checkMicAuthority];
   [[NEVoiceRoomPickSongEngine sharedInstance] addObserve:self];
 
+  if ([[NEVoiceRoomUIManager sharedInstance].delegate
+          respondsToSelector:@selector(onVoiceRoomJoinRoom)]) {
+    [[NEVoiceRoomUIManager sharedInstance].delegate onVoiceRoomJoinRoom];
+  }
+
   // 禁止返回
   id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
   UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:traget action:nil];
@@ -90,6 +99,7 @@
   if (self.role == NEVoiceRoomRoleHost) {  // 主播
     [NEVoiceRoomKit.getInstance
         endRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
+          [NEVoiceRoomToast showToast:NELocalizedString(@"房间解散成功")];
           if (changeView) {
             dispatch_async(dispatch_get_main_queue(), ^{
               if (self.presentedViewController) {
@@ -144,6 +154,8 @@
   }
   if (target) {
     [self.navigationController popToViewController:target animated:YES];
+  } else {
+    [self.navigationController popViewControllerAnimated:YES];
   }
 }
 
@@ -154,11 +166,13 @@
     return;
   }
   self.pickSongView = nil;
+  CGSize size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds),
+                           CGRectGetHeight([UIScreen mainScreen].bounds) / 3 * 2);
   UIViewController *controller = [[UIViewController alloc] init];
-  controller.preferredContentSize = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), 500);
-  self.pickSongView = [[NEVoiceRoomPickSongView alloc]
-      initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 500)
-             detail:self.detail];
+  controller.preferredContentSize = size;
+  self.pickSongView =
+      [[NEVoiceRoomPickSongView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)
+                                              detail:self.detail];
   [self.pickSongView setPlayingStatus:(self.playingStatus == PlayingStatus_playing)];
   [self.pickSongView setVolume:[NEVoiceRoomKit getInstance].getEffectVolume * 1.0 / 100.00];
   self.pickSongView.delegate = self;
@@ -237,7 +251,10 @@
   // 默认设置一把采集音量
   [self.audioManager adjustRecordingSignalVolume:[self.audioManager getRecordingSignalVolume]];
 
-  int volume = [self.audioManager getAudioEffectVolumeWithEffectId:NEVoiceRoomKit.OriginalEffectId];
+  int volume = 100;
+  if (self.pickSongView) {
+    volume = self.pickSongView.getVolume * 100;
+  }
 
   if (originPath.length > 0) {
     NEVoiceRoomCreateAudioEffectOption *option = [NEVoiceRoomCreateAudioEffectOption new];
@@ -346,7 +363,9 @@
                                         if (code != 0) {
                                           [NEVoiceRoomToast
                                               showToast:[NSString
-                                                            stringWithFormat:@"发送礼物失败 %zd %@",
+                                                            stringWithFormat:@"%@ %zd %@",
+                                                                             NELocalizedString(
+                                                                                 @"发送礼物失败"),
                                                                              code, msg]];
                                         }
                                       }];
@@ -356,7 +375,7 @@
 - (BOOL)checkNetwork {
   NEVoiceRoomNetworkStatus status = [self.reachability currentReachabilityStatus];
   if (status == NotReachable) {
-    [NEVoiceRoomToast showToast:@"网络连接断开，请稍后重试"];
+    [NEVoiceRoomToast showToast:NELocalizedString(@"网络连接断开，请稍后重试")];
     return false;
   }
   return true;
@@ -364,6 +383,8 @@
 
 #pragma mark------------------------ NEUIKeyboardToolbarDelegate ------------------------
 - (void)didToolBarSendText:(NSString *)text {
+  NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  text = [text stringByTrimmingCharactersInSet:set];
   if (text.length <= 0) {
     [NEVoiceRoomToast showToast:NELocalizedString(@"发送内容为空")];
     return;
@@ -382,6 +403,24 @@
              }];
 }
 #pragma mark------------------------ NEVoiceRoomListener ------------------------
+
+- (void)onAudioOutputDeviceChanged:(enum NEVoiceRoomAudioOutputDevice)device {
+  if (device == NEVoiceRoomAudioOutputDeviceWiredHeadset ||
+      device == NEVoiceRoomAudioOutputDeviceBluetoothHeadset) {
+    self.context.rtcConfig.earbackOn = true;
+    [NSNotificationCenter.defaultCenter
+        postNotification:[[NSNotification alloc] initWithName:@"CanUseEarback"
+                                                       object:nil
+                                                     userInfo:nil]];
+  } else {
+    self.context.rtcConfig.earbackOn = false;
+    [NSNotificationCenter.defaultCenter
+        postNotification:[[NSNotification alloc] initWithName:@"CanNotUseEarback"
+                                                       object:nil
+                                                     userInfo:nil]];
+  }
+}
+
 - (void)onMemberJoinRoom:(NSArray<NEVoiceRoomMember *> *)members {
   NSMutableArray *messages = @[].mutableCopy;
   for (NEVoiceRoomMember *member in members) {
@@ -495,9 +534,14 @@
   }
 }
 
-- (void)onRtcAudioVolumeIndicationWithVolumes:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumes
-                                  totalVolume:(NSInteger)totalVolume {
-  [self.micQueueView updateWithVolumeInfos:volumes];
+- (void)onRtcLocalAudioVolumeIndicationWithVolume:(NSInteger)volume enableVad:(BOOL)enableVad {
+  [self.micQueueView updateWithLocalVolume:volume];
+}
+
+- (void)onRtcRemoteAudioVolumeIndicationWithVolumes:
+            (NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumes
+                                        totalVolume:(NSInteger)totalVolume {
+  [self.micQueueView updateWithRemoteVolumeInfos:volumes];
 }
 #pragma mark - gift animation
 
@@ -568,7 +612,7 @@
   if (!_bgImageView) {
     _bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _bgImageView.image = [NEVoiceRoomUI ne_imageName:@"chatRoom_bgImage_icon"];
+    _bgImageView.image = [NEVoiceRoomUI ne_voice_imageName:@"chatRoom_bgImage_icon"];
   }
   return _bgImageView;
 }
@@ -645,13 +689,14 @@
 
 /// 点歌
 - (void)onSongOrdered:(NEOrderSongOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 点了《%@》",
-                                                             song.actionOperator.userName,
-                                                             song.songName]];
+  [self sendChatroomNotifyMessage:[NSString
+                                      stringWithFormat:@"%@ %@《%@》", song.actionOperator.userName,
+                                                       NELocalizedString(@"点了"), song.songName]];
 }
 - (void)onSongDeleted:(NEOrderSongOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 删除了歌曲《%@》",
+  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ %@《%@》",
                                                              song.actionOperator.userName,
+                                                             NELocalizedString(@"删除了歌曲"),
                                                              song.songName]];
   if ([song.songId isEqualToString:[NEVoiceRoomPickSongEngine sharedInstance]
                                        .currrentSongModel.playMusicInfo.songId]) {
@@ -670,7 +715,7 @@
                                            .currrentSongModel.playMusicInfo.songId] &&
           !song.nextOrderSong) {
         /// 删除播放中的歌，并且没有下一首歌。停止播放
-        [[NEVoiceRoomKit getInstance] stopAllEffects];
+        [[NEVoiceRoomKit getInstance] stopEffectWithEffectId:NEVoiceRoomKit.OriginalEffectId];
         [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel = nil;
         self.roomHeaderView.musicTitle = nil;
       }
@@ -679,9 +724,9 @@
 }
 
 - (void)onSongTopped:(NEOrderSongOrderSongModel *)song {
-  [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 置顶《%@》",
-                                                             song.actionOperator.userName,
-                                                             song.songName]];
+  [self sendChatroomNotifyMessage:[NSString
+                                      stringWithFormat:@"%@ %@《%@》", song.actionOperator.userName,
+                                                       NELocalizedString(@"置顶"), song.songName]];
 }
 
 - (void)onNextSong:(NEOrderSongOrderSongModel *)song {
@@ -701,8 +746,9 @@
         }
       }
     } else {
-      [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
-                                                                 song.actionOperator.userName]];
+      [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ %@",
+                                                                 song.actionOperator.userName,
+                                                                 NELocalizedString(@"已切歌")]];
       // 选定歌曲切
       NEOrderSongOrderSongModel *nextSong =
           [NEOrderSongOrderSongModel yy_modelWithJSON:song.attachment];
@@ -718,8 +764,9 @@
       }
     }
   } else {
-    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ 已切歌",
-                                                               song.actionOperator.userName]];
+    [self
+        sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@ %@", song.actionOperator.userName,
+                                                             NELocalizedString(@"已切歌")]];
     NEOrderSongOrderSongModel *nextSong = song.nextOrderSong;
     if (nextSong) {
       if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
@@ -776,7 +823,8 @@
 - (void)onReceiveChorusMessage:(enum NEOrderSongChorusActionType)actionType
                      songModel:(NEOrderSongSongModel *)songModel {
   if (actionType == NEOrderSongChorusActionTypeStartSong) {
-    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"正在播放歌曲《%@》",
+    [self sendChatroomNotifyMessage:[NSString stringWithFormat:@"%@《%@》",
+                                                               NELocalizedString(@"正在播放歌曲"),
                                                                songModel.playMusicInfo.songName]];
     /// 开始唱歌
     self.playingStatus = PlayingStatus_playing;

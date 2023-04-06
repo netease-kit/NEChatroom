@@ -3,13 +3,14 @@
 // found in the LICENSE file.
 
 #import "NEListenTogetherUIMoreFunctionVC.h"
+#import "NEListenTogetherLocalized.h"
+#import "NEListenTogetherToast.h"
 #import "NEListenTogetherUI.h"
 #import "NEListenTogetherUIActionSheetNavigationController.h"
 #import "NEListenTogetherUIBackgroundMusicVC.h"
 #import "NEListenTogetherUIMoreCell.h"
 #import "NEListenTogetherUIMoreItem.h"
 #import "NEListenTogetherUIMusicConsoleVC.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUIMoreFunctionVC () <UICollectionViewDataSource,
                                                 UICollectionViewDelegate,
@@ -39,6 +40,19 @@
   }
   return self;
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+
+  for (NEListenTogetherUIMoreItem *item in self.items) {
+    if (item.tag == 1) {
+      if (![[NEListenTogetherKit getInstance] isHeadSetPlugging]) {
+        item.on = false;
+      }
+    }
+  }
+}
+
 - (void)loadView {
   UIView *view = [[UIView alloc] initWithFrame:self.navigationController.view.bounds];
   view.backgroundColor = UIColor.whiteColor;
@@ -81,7 +95,43 @@
       break;
   }
   [self.collectionView reloadData];
+
+  [NSNotificationCenter.defaultCenter addObserver:self
+                                         selector:@selector(canUseEarback)
+                                             name:@"CanUseEarback"
+                                           object:nil];
+  [NSNotificationCenter.defaultCenter addObserver:self
+                                         selector:@selector(canNotUseEarback)
+                                             name:@"CanNotUseEarback"
+                                           object:nil];
 }
+
+- (void)dealloc {
+  [NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
+- (void)canUseEarback {
+  for (NEListenTogetherUIMoreItem *item in self.items) {
+    if (item.tag == 1) {
+      if ([[NEListenTogetherKit getInstance] isHeadSetPlugging]) {
+        item.on = true;
+      }
+    }
+  }
+  [self.collectionView reloadData];
+}
+
+- (void)canNotUseEarback {
+  for (NEListenTogetherUIMoreItem *item in self.items) {
+    if (item.tag == 1) {
+      if (![[NEListenTogetherKit getInstance] isHeadSetPlugging]) {
+        item.on = false;
+      }
+    }
+  }
+  [self.collectionView reloadData];
+}
+
 - (CGSize)preferredContentSize {
   CGFloat preferedHeight = 0;
   if (@available(iOS 11.0, *)) {
@@ -139,6 +189,7 @@
     }
     case 1: {  // 耳返
       if (![[NEListenTogetherKit getInstance] isHeadSetPlugging]) {
+        [NEListenTogetherToast showToast:NELocalizedString(@"插入耳机后可使用耳返功能")];
         return;
       }
       item.on = !item.on;
@@ -200,29 +251,29 @@
     _allItems = @[
       [NEListenTogetherUIMoreItem
           itemWithTitle:NELocalizedString(@"麦克风")
-                onImage:[NEListenTogetherUI ne_imageName:@"icon_more_mic_on"]
-               offImage:[NEListenTogetherUI ne_imageName:@"icon_more_mic_off"]
+                onImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_mic_on"]
+               offImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_mic_off"]
                     tag:0]
           .open(self.context.rtcConfig.micOn),
       [NEListenTogetherUIMoreItem
           itemWithTitle:NELocalizedString(@"耳返")
-                onImage:[NEListenTogetherUI ne_imageName:@"icon_more_earback_on"]
-               offImage:[NEListenTogetherUI ne_imageName:@"icon_more_earback_off"]
+                onImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_earback_on"]
+               offImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_earback_off"]
                     tag:1]
           .open(self.context.rtcConfig.earbackOn),
       [NEListenTogetherUIMoreItem
           itemWithTitle:NELocalizedString(@"调音台")
-                onImage:[NEListenTogetherUI ne_imageName:@"icon_more_music_console"]
+                onImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_music_console"]
                offImage:nil
                     tag:2],
       [NEListenTogetherUIMoreItem
           itemWithTitle:NELocalizedString(@"音效")
-                onImage:[NEListenTogetherUI ne_imageName:@"icon_more_accompaniment_sound"]
+                onImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_accompaniment_sound"]
                offImage:nil
                     tag:3],
       [NEListenTogetherUIMoreItem
           itemWithTitle:NELocalizedString(@"结束直播")
-                onImage:[NEListenTogetherUI ne_imageName:@"icon_more_close_live"]
+                onImage:[NEListenTogetherUI ne_listen_imageName:@"icon_more_close_live"]
                offImage:nil
                     tag:4]
     ];

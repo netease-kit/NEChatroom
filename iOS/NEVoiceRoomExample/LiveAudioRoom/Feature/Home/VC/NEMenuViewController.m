@@ -7,7 +7,6 @@
 #import <NEListenTogetherUIKit/NEListenTogetherRoomListViewController.h>
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import <NEVoiceRoomUIKit/NEChatRoomListViewController.h>
-#import <YXLogin/YXLogin.h>
 #import "AppKey.h"
 #import "NEMenuCell.h"
 #import "NEMenuHeader.h"
@@ -50,7 +49,7 @@
               block:^{
                   //        [[NENavigator shared] showLiveListVC];
               }];
-  BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+  BOOL isOutsea = isOverSea;
   if (isOutsea) {
     _datas = @[ @[ live ] ];
   } else {
@@ -108,7 +107,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (![AuthorManager shareInstance].isLogin) return;
   switch (indexPath.row) {
     case 0: {  // 语聊房
       NEChatRoomListViewController *vc = [[NEChatRoomListViewController alloc] init];

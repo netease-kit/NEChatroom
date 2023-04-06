@@ -12,9 +12,9 @@
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEListenTogetherFontMacro.h"
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
 #import "NEListenTogetherUIViewFactory.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
 #import "UIView+NEListenTogether.h"
 
@@ -174,12 +174,17 @@ static void *KVOContext = &KVOContext;
       }
     } break;
     case NEUIFunctionGift: {
+      [NSNotificationCenter.defaultCenter
+          postNotification:[NSNotification notificationWithName:@"listenTogetherGift" object:nil]];
       if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveGiftClickAciton)]) {
         [_delegate footerDidReceiveGiftClickAciton];
       }
     } break;
 
     case NEUIFunctionMusic: {
+      [NSNotificationCenter.defaultCenter
+          postNotification:[NSNotification notificationWithName:@"listenTogetherOrderSong"
+                                                         object:nil]];
       if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveMusicClickAciton)]) {
         [_delegate footerDidReceiveMusicClickAciton];
       }
@@ -262,7 +267,7 @@ static void *KVOContext = &KVOContext;
                                                 image:@"icon_mic_on_n"
                                                target:self
                                                action:@selector(footerButtonClickAction:)];
-    [_microphoneButton setImage:[NEListenTogetherUI ne_imageName:@"icon_mic_off_n"]
+    [_microphoneButton setImage:[NEListenTogetherUI ne_listen_imageName:@"icon_mic_off_n"]
                        forState:UIControlStateSelected];
     [_microphoneButton setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
     _microphoneButton.tag = NEUIFunctionAreaMicrophone;

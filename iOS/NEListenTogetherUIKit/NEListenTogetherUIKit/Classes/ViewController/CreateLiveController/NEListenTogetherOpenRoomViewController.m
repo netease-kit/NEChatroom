@@ -8,6 +8,7 @@
 #import <NEUIKit/NEUIBaseNavigationController.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherToast.h"
 #import "NEListenTogetherUI.h"
 #import "NEListenTogetherUICreateRoomNameView.h"
@@ -16,7 +17,6 @@
 #import "NEListenTogetherUIPlanChooseAlertView.h"
 #import "NEListenTogetherUIViewFactory.h"
 #import "NEListenTogetherViewController.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "NSObject+NEListenTogetherAdditions.h"
 #import "UIImage+ListenTogether.h"
 #import "UIImage+NEUIExtension.h"
@@ -58,7 +58,37 @@
   [[self.openLiveButton rac_signalForControlEvents:UIControlEventTouchUpInside]
       subscribeNext:^(__kindof UIControl *_Nullable x) {
         @strongify(self);
-        [self openRoomAction];
+
+        if ([NEListenTogetherUIManager.sharedInstance.delegate
+                respondsToSelector:@selector(inOtherRoom)] &&
+            [NEListenTogetherUIManager.sharedInstance.delegate inOtherRoom]) {
+          // 已经在其他房间中，比如语聊房
+          UIAlertController *alert = [UIAlertController
+              alertControllerWithTitle:NELocalizedString(@"提示")
+                               message:NELocalizedString(@"是否退出当前房间，并创建新房间")
+                        preferredStyle:UIAlertControllerStyleAlert];
+          [alert addAction:[UIAlertAction actionWithTitle:NELocalizedString(@"取消")
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:nil]];
+          [alert addAction:[UIAlertAction
+                               actionWithTitle:NELocalizedString(@"确认")
+                                         style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction *_Nonnull action) {
+                                         if ([NEListenTogetherUIManager.sharedInstance.delegate
+                                                 respondsToSelector:@selector
+                                                 (leaveOtherRoomWithCompletion:)]) {
+                                           [NEListenTogetherUIManager.sharedInstance.delegate
+                                               leaveOtherRoomWithCompletion:^{
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                   [self openRoomAction];
+                                                 });
+                                               }];
+                                         }
+                                       }]];
+          [self presentViewController:alert animated:true completion:nil];
+        } else {
+          [self openRoomAction];
+        }
       }];
 }
 
@@ -103,6 +133,8 @@
   if (self.clickOpenButton) {
     return;
   }
+  [NSNotificationCenter.defaultCenter
+      postNotification:[NSNotification notificationWithName:@"listenTogetherStartLive" object:nil]];
   self.clickOpenButton = YES;
   NSString *roomName = [self.createRoomNameView getRoomName];
   if ([NSObject isNullOrNilWithObject:roomName]) {
@@ -123,7 +155,11 @@
   params.liveType = NEListenTogetherLiveRoomTypeListen_together;
   params.seatCount = 2;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
+#ifdef DEBUG
+  params.configId = 79;
+#else
   params.configId = 570;
+#endif
   if ([[[NEListenTogetherUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
           isEqualToString:@"https://roomkit-sg.netease.im"]) {
     params.configId = 76;
@@ -218,7 +254,7 @@
     [_backButton addTarget:self
                     action:@selector(popToLastController)
           forControlEvents:UIControlEventTouchUpInside];
-    [_backButton setBackgroundImage:[NEListenTogetherUI ne_imageName:@"homePage_backIcon"]
+    [_backButton setBackgroundImage:[NEListenTogetherUI ne_listen_imageName:@"homePage_backIcon"]
                            forState:UIControlStateNormal];
   }
   return _backButton;

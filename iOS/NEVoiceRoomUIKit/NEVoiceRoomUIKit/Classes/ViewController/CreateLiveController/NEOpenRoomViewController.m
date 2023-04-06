@@ -130,6 +130,9 @@
   if (self.clickOpenButton) {
     return;
   }
+
+  [NSNotificationCenter.defaultCenter
+      postNotification:[NSNotification notificationWithName:@"chatroomStartLive" object:nil]];
   self.clickOpenButton = YES;
   NSString *roomName = [self.createRoomNameView getRoomName];
   if ([NSObject isNullOrNilWithObject:roomName]) {
@@ -148,7 +151,11 @@
   params.title = self.createRoomNameView.getRoomName;
   params.seatCount = 9;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
+#ifdef DEBUG
+  params.configId = 76;
+#else
   params.configId = 569;
+#endif
   if ([[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
           isEqualToString:@"https://roomkit-sg.netease.im"]) {
     params.configId = 75;
@@ -242,7 +249,7 @@
     [_backButton addTarget:self
                     action:@selector(popToLastController)
           forControlEvents:UIControlEventTouchUpInside];
-    [_backButton setBackgroundImage:[NEVoiceRoomUI ne_imageName:@"homePage_backIcon"]
+    [_backButton setBackgroundImage:[NEVoiceRoomUI ne_voice_imageName:@"homePage_backIcon"]
                            forState:UIControlStateNormal];
   }
   return _backButton;

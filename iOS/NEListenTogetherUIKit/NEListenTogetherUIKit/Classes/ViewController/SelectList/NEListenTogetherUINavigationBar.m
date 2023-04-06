@@ -6,8 +6,8 @@
 #import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUINavigationBar ()
 @property(nonatomic, strong) UILabel *titleLab;
@@ -103,7 +103,7 @@
     [_arrowButton addTarget:self
                      action:@selector(arrowBackAction:)
            forControlEvents:UIControlEventTouchUpInside];
-    [_arrowButton setImage:[NEListenTogetherUI ne_imageName:@"nav_back_icon"]
+    [_arrowButton setImage:[NEListenTogetherUI ne_listen_imageName:@"nav_back_icon"]
                   forState:UIControlStateNormal];
     [_arrowButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 32)];
   }

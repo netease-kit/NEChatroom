@@ -7,6 +7,7 @@
 #import <YYModel/YYModel.h>
 #import "NEListenTogetherInnerSingleton.h"
 #import "NEListenTogetherKit/NEListenTogetherKit-Swift.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPickSongEngine.h"
 #import "NEListenTogetherToast.h"
 #import "NEListenTogetherUI.h"
@@ -15,7 +16,6 @@
 #import "NEListenTogetherViewController+Seat.h"
 #import "NEListenTogetherViewController+Utils.h"
 #import "NSArray+NEListenTogetherUIExtension.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIView+NEListenTogetherUIToast.h"
 @implementation NEListenTogetherViewController (Utils)
 - (void)joinRoom {
@@ -39,7 +39,7 @@
         self.detail = info;
         if (code != 0) {
           dispatch_async(dispatch_get_main_queue(), ^{
-            [NEListenTogetherToast showToast:NELocalizedString(@"加入房间失败")];
+            [NEListenTogetherToast showToast:msg];
           });
           [self closeRoom];
           return;
@@ -56,7 +56,7 @@
           //          [self.bgImageView
           //              sd_setImageWithURL:[NSURL URLWithString:info.liveModel.cover]
           //                placeholderImage:[NEListenTogetherUI
-          //                ne_imageName:@"chatRoom_bgImage_icon"]];
+          //                ne_listen_imageName:@"chatRoom_bgImage_icon"]];
           self.roomHeaderView.title = info.liveModel.liveTopic;
           self.roomHeaderView.onlinePeople = NEListenTogetherKit.getInstance.allMemberList.count;
         });

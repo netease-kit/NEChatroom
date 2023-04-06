@@ -39,7 +39,7 @@
   if (!_imgView) {
     _imgView = [[UIImageView alloc] init];
     _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    _imgView.image = [NEVoiceRoomUI ne_imageName:@"empty_ico"];
+    _imgView.image = [NEVoiceRoomUI ne_voice_imageName:@"empty_ico"];
   }
   return _imgView;
 }

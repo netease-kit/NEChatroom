@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 #import "NEListenTogetherUIAlertView.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUIActionSheet.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUIAlertView ()
 

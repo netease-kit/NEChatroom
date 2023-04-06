@@ -79,7 +79,8 @@
   self.anchorName.text = model.anchor.userName;
   [self.coverView sd_setImageWithURL:[NSURL URLWithString:model.liveModel.cover]];
   self.audienceNum.text = [NSString
-      stringWithFormat:@"%@人", [NSString praiseStrFormat:model.liveModel.audienceCount + 1]];
+      stringWithFormat:@"%@人", [NSString praiseStrFormat:MAX(model.liveModel.audienceCount + 1,
+                                                              model.liveModel.onSeatCount)]];
   //    if (model.roomType == NELiveRoomTypeKtv && model.currentMusicName) {
   if (model.liveModel.liveType == NEListenTogetherLiveRoomTypeListen_together) {
     self.tagButton.hidden = NO;
@@ -169,7 +170,7 @@
 - (UIButton *)tagButton {
   if (!_tagButton) {
     _tagButton = [[UIButton alloc] init];
-    [_tagButton setImage:[NEListenTogetherUI ne_imageName:@"music_ico"]
+    [_tagButton setImage:[NEListenTogetherUI ne_listen_imageName:@"music_ico"]
                 forState:UIControlStateNormal];
     [_tagButton layoutButtonWithEdgeInsetsStyle:QSButtonEdgeInsetsStyleLeft imageTitleSpace:3];
     _tagButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;

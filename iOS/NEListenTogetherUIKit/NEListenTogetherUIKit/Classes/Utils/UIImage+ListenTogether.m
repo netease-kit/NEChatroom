@@ -9,7 +9,7 @@
 @implementation UIImage (ListenTogether)
 
 + (UIImage *)voiceRoom_imageNamed:(NSString *)name {
-  return [NEListenTogetherUI ne_imageName:name];
+  return [NEListenTogetherUI ne_listen_imageName:name];
 
   NSString *path = [[NSBundle mainBundle]
       pathForResource:@"Frameworks/NEListenTogetherUIKit.framework/NEListenTogetherUIKit"

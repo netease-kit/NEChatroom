@@ -6,10 +6,10 @@
 #import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
 #import "NEListenTogetherUIConnectAlertView.h"
 #import "NEListenTogetherUIConnectListCell.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 static CGFloat cellHeight = 48.0;
 static CGFloat connectAlertViewHeight = 38.0;
@@ -282,7 +282,7 @@ static CGFloat foldBtnHeight = 38;
             }];
     NSTextAttachment *attchment = [[NSTextAttachment alloc] init];
     attchment.bounds = CGRectMake(0, -2, 14, 14);
-    attchment.image = [NEListenTogetherUI ne_imageName:@"up_ico_14"];
+    attchment.image = [NEListenTogetherUI ne_listen_imageName:@"up_ico_14"];
     NSAttributedString *icoStr = [NSAttributedString attributedStringWithAttachment:attchment];
     [res appendAttributedString:icoStr];
 

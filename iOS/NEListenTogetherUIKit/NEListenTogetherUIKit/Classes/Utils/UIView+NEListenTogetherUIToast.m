@@ -5,8 +5,8 @@
 #import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIView+NEListenTogetherUIToast.h"
 
 static CGFloat kNEListenTogetherToastMinWitdh = 120.0;
@@ -85,12 +85,12 @@ static NSInteger KNEListenTogetherToastBarTag = 111;
       case NEUIToastStateSuccess:
         [self addSubview:self.imgView];
         [self addSubview:self.infoLab];
-        _imgView.image = [NEListenTogetherUI ne_imageName:@"state_success"];
+        _imgView.image = [NEListenTogetherUI ne_listen_imageName:@"state_success"];
         break;
       case NEUIToastStateFail:
         [self addSubview:self.imgView];
         [self addSubview:self.infoLab];
-        _imgView.image = [NEListenTogetherUI ne_imageName:@"state_fail"];
+        _imgView.image = [NEListenTogetherUI ne_listen_imageName:@"state_fail"];
         break;
       case NEUIToastCancel:
         [self addSubview:self.infoLab];

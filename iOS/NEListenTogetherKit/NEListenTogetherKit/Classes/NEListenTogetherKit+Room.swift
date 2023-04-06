@@ -62,6 +62,15 @@ public extension NEListenTogetherKit {
     }, failure: callback)
   }
 
+  /// 当前所在房间信息
+  func getCurrentRoomInfo() -> NEListenTogetherInfo? {
+    if let _ = roomContext,
+       let liveInfo = liveInfo {
+      return NEListenTogetherInfo(create: liveInfo)
+    }
+    return nil
+  }
+
   /// 获取创建房间的默认信息
   /// - Parameter callback: 回调
   func getCreateRoomDefaultInfo(_ callback: NEListenTogetherCallback<NECreateVoiceRoomDefaultInfo>? =
@@ -192,11 +201,7 @@ public extension NEListenTogetherKit {
             desc: "Failed to leave room. Code: \(code). Msg: \(msg ?? "")"
           )
         }
-        // 移除 房间监听、消息监听
-        self.roomContext?.removeRoomListener(listener: self)
-        // 移除麦位监听
-        self.roomContext?.seatController.removeSeatListener(self)
-        self.roomContext = nil
+        self.reset()
         // 销毁
         //          self.audioPlayService?.destroy()
         callback?(code, msg, nil)
@@ -232,12 +237,17 @@ public extension NEListenTogetherKit {
         )
         callback?(error.code, error.localizedDescription, nil)
       }
-      self.liveInfo = nil
-      // 移除 房间监听、消息监听
-      self.roomContext?.removeRoomListener(listener: self)
-      self.roomContext?.seatController.removeSeatListener(self)
-      self.roomContext = nil
+      self.reset()
     }, failure: callback)
+  }
+
+  internal func reset() {
+    liveInfo = nil
+    // 移除 房间监听、消息监听
+    roomContext?.removeRoomListener(listener: self)
+    roomContext?.seatController.removeSeatListener(self)
+    roomContext = nil
+    _audioPlayService?.destroy()
   }
 
   /// 获取实时Token

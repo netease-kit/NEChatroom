@@ -15,14 +15,13 @@ target 'LiveAudioRoom' do
   pod 'NEListenTogetherKit', :path => '../NEListenTogetherKit/NEListenTogetherKit.podspec'
   pod 'NEListenTogetherUIKit', :path => '../NEListenTogetherUIKit/NEListenTogetherUIKit.podspec'
   pod 'LottieSwift', :path => '../lottie/LottieSwift.podspec'
+  pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
 
-  pod 'NERoomKit','1.11.1'
+  pod 'NERoomKit','1.12.2'
   pod 'NECopyrightedMedia','1.5.0'
-  pod 'NEVoiceRoomKit','1.0.5'
 
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
-  pod 'YXLogin'
 end
 
 post_install do |installer|

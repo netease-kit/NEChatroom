@@ -10,7 +10,7 @@
 }
 + (UIFont *)ne_font:(CGFloat)fontSize weight:(NEUIFontWeight)weight {
   if (weight < NEUIFontWeightThin || weight > NEUIFontWeightLight) weight = NEUIFontWeightRegular;
-  NSString *fontName = @"PingFangSC-Regular";
+  NSString *fontName;
   switch (weight) {
     case NEUIFontWeightThin:
       fontName = @"PingFangSC-Thin";
@@ -27,6 +27,8 @@
     case NEUIFontWeightRegular:
       fontName = @"PingFangSC-Regular";
       break;
+    default:
+      fontName = @"PingFangSC-Regular";
   }
   UIFont *font = [UIFont fontWithName:fontName size:fontSize];
   return font ?: [UIFont systemFontOfSize:fontSize];

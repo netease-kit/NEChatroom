@@ -85,15 +85,15 @@ static char kNEUINavigationItemKey;
   self.interactivePopGestureRecognizer.delegate = self;
   [super setDelegate:self];
 }
-//支持旋转
+// 支持旋转
 - (BOOL)shouldAutorotate {
   return [self.topViewController shouldAutorotate];
 }
-//支持的方向
+// 支持的方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
   return [self.topViewController supportedInterfaceOrientations];
 }
-//默认的方向
+// 默认的方向
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
   return [self.topViewController preferredInterfaceOrientationForPresentation];
 }

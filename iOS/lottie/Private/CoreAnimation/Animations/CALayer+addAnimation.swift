@@ -46,9 +46,9 @@ extension CALayer {
     // by applying that value directly to the layer instead of creating
     // a relatively expensive `CAKeyframeAnimation`.
     if keyframes.count == 1 {
-      return singleKeyframeAnimation(
+      return try singleKeyframeAnimation(
         for: property,
-        keyframeValue: try keyframeValueMapping(keyframes[0].value),
+        keyframeValue: keyframeValueMapping(keyframes[0].value),
         writeDirectlyToPropertyIfPossible: true
       )
     }
@@ -312,7 +312,7 @@ extension CALayer {
 
     for (index, keyframe) in positionKeyframes.enumerated() {
       if index == positionKeyframes.indices.first {
-        path.move(to: try keyframeValueMapping(keyframe.value))
+        try path.move(to: keyframeValueMapping(keyframe.value))
       }
 
       if index != positionKeyframes.indices.last {
@@ -322,13 +322,13 @@ extension CALayer {
           let controlPoint1 = keyframe.spatialOutTangent?.pointValue,
           let controlPoint2 = nextKeyframe.spatialInTangent?.pointValue,
           !(controlPoint1 == .zero && controlPoint2 == .zero) {
-          path.addCurve(
-            to: try keyframeValueMapping(nextKeyframe.value),
-            control1: try keyframeValueMapping(keyframe.value) + controlPoint1,
-            control2: try keyframeValueMapping(nextKeyframe.value) + controlPoint2
+          try path.addCurve(
+            to: keyframeValueMapping(nextKeyframe.value),
+            control1: keyframeValueMapping(keyframe.value) + controlPoint1,
+            control2: keyframeValueMapping(nextKeyframe.value) + controlPoint2
           )
         } else {
-          path.addLine(to: try keyframeValueMapping(nextKeyframe.value))
+          try path.addLine(to: keyframeValueMapping(nextKeyframe.value))
         }
       }
     }

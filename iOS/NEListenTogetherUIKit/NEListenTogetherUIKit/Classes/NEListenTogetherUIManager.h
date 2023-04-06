@@ -31,6 +31,10 @@ typedef NS_ENUM(NSInteger, NEListenTogetherClientEvent) {
 @protocol NEListenTogetherUIDelegate <NSObject>
 
 - (void)onListenTogetherClientEvent:(NEListenTogetherClientEvent)event;
+- (void)onListenTogetherJoinRoom;
+- (void)onListenTogetherLeaveRoom;
+- (BOOL)inOtherRoom;
+- (void)leaveOtherRoomWithCompletion:(void (^__nullable)(void))completion;
 
 @end
 
@@ -52,6 +56,7 @@ typedef NS_ENUM(NSInteger, NEListenTogetherClientEvent) {
 - (void)loginWithAccount:(NSString *)account
                    token:(NSString *)token
                 nickname:(NSString *)nickname
+             resumeLogin:(BOOL)resumeLogin
                 callback:(void (^)(NSInteger, NSString *_Nullable, id _Nullable))callback;
 
 - (void)logoutWithCallback:(void (^)(NSInteger, NSString *_Nullable, id _Nullable))callback;

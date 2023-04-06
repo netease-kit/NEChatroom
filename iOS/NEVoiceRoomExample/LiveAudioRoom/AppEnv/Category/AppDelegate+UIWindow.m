@@ -5,7 +5,6 @@
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import "AppDelegate+UIWindow.h"
 #import "NEMenuViewController.h"
-#import "NEPersonVC.h"
 
 @implementation AppDelegate (UIWindow)
 - (void)vr_initWindow {
@@ -19,18 +18,10 @@
   appNav.tabBarItem.image = [UIImage imageNamed:@"application"];
   appNav.tabBarItem.selectedImage = [UIImage imageNamed:@"application_select"];
 
-  NEPersonVC *personVC = [[NEPersonVC alloc] init];
-  NEUIBackNavigationController *personNav =
-      [[NEUIBackNavigationController alloc] initWithRootViewController:personVC];
-  personNav.backImage = [UIImage imageNamed:@"menu_arrow_left"];
-  personNav.tabBarItem.title = NSLocalizedString(@"个人中心", nil);
-  personNav.tabBarItem.image = [UIImage imageNamed:@"mine"];
-  personNav.tabBarItem.selectedImage = [UIImage imageNamed:@"mine_select"];
-
   self.tab = [[UITabBarController alloc] init];
   self.tab.tabBar.tintColor = [UIColor whiteColor];
   self.tab.tabBar.barStyle = UIBarStyleBlack;
-  self.tab.viewControllers = @[ appNav, personNav ];
+  self.tab.viewControllers = @[ appNav ];
 
   self.window.rootViewController = self.tab;
   [self.window makeKeyAndVisible];

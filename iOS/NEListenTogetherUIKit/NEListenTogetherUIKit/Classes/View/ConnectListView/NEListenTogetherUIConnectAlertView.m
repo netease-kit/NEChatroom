@@ -4,8 +4,8 @@
 
 #import "NEListenTogetherUIConnectAlertView.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUIViewFactory.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIView+NEListenTogetherGradient.h"
 
 @interface NEListenTogetherUIConnectAlertView ()

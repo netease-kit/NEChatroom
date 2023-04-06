@@ -66,7 +66,7 @@
     cell.backColorLabel.hidden = YES;
     cell.info.textColor = HEXCOLOR(0x666666);
   }
-  cell.icon.image = [NEVoiceRoomUI ne_imageName:@"default_seat_icon"];
+  cell.icon.image = [NEVoiceRoomUI ne_voice_imageName:@"default_seat_icon"];
   if (indexPath.row == 0) {
     NSLog(@"主播头像 --- %@", anchorData.icon);
     [cell installWithModel:anchorData];
@@ -89,7 +89,7 @@
 - (void)installWithModel:(NEVoiceRoomSeatItem *)model {
   if (model.icon.length > 0) {
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.icon]
-                 placeholderImage:[NEVoiceRoomUI ne_imageName:@"default_seat_icon"]];
+                 placeholderImage:[NEVoiceRoomUI ne_voice_imageName:@"default_seat_icon"]];
   }
 }
 

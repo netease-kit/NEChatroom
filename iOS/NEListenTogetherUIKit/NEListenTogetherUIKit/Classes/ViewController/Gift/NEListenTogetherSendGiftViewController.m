@@ -5,6 +5,7 @@
 #import "NEListenTogetherSendGiftViewController.h"
 #import <Masonry/Masonry.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherSendGiftCell.h"
 #import "NEListenTogetherUIActionSheetNavigationController.h"
 
@@ -75,7 +76,7 @@
     // Fallback on earlier versions
   }
 
-  self.title = @"送礼物";
+  self.title = NELocalizedString(@"送礼物");
   [self.navigationController.navigationBar
       setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColor.whiteColor}];
 

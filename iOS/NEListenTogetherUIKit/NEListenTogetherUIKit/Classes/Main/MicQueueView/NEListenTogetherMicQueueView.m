@@ -8,9 +8,9 @@
 #import "NEListenTogetherChatroomMicCell.h"
 #import "NEListenTogetherGlobalMacro.h"
 #import "NEListenTogetherInnerSingleton.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPaddingLabel.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIView+NEUIExtension.h"
 @import LottieSwift;
 
@@ -79,32 +79,39 @@
     [self.lottieView play];
   });
 }
+
+- (void)pause {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.lottieView pause];
+  });
+}
 - (void)stop {
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.lottieView stop];
   });
 }
 
-- (void)updateWithVolumeInfos:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumeInfos {
-  if (volumeInfos.count == 1 &&
-      [volumeInfos[0].userUuid
-          isEqualToString:[NEListenTogetherKit getInstance].localMember.account]) {
-    // local的更新
-    NEListenTogetherMemberVolumeInfo *volume = volumeInfos[0];
-    if (volume.volume > 0) {
-      if ([volume.userUuid isEqualToString:_anchorMicInfo.user]) {
-        [_anchorCell startSpeakAnimation];
-      } else {
-        [_listenTogetherCell startSpeakAnimation];
-      }
+- (void)updateWithLocalVolume:(NSInteger)volume {
+  // local的更新
+  NEListenTogetherMember *localMember = [NEListenTogetherKit getInstance].localMember;
+  if (volume > 0 && localMember.isAudioOn) {
+    if ([localMember.account isEqualToString:_anchorMicInfo.user]) {
+      [_anchorCell startSpeakAnimation];
     } else {
-      if ([volume.userUuid isEqualToString:_anchorMicInfo.user]) {
-        [_anchorCell stopSpeakAnimation];
-      } else {
-        [_listenTogetherCell stopSpeakAnimation];
-      }
+      [_listenTogetherCell startSpeakAnimation];
     }
-  } else if (volumeInfos.count == 0) {
+  } else {
+    if ([[NEListenTogetherKit getInstance].localMember.account
+            isEqualToString:_anchorMicInfo.user]) {
+      [_anchorCell stopSpeakAnimation];
+    } else {
+      [_listenTogetherCell stopSpeakAnimation];
+    }
+  }
+}
+
+- (void)updateWithRemoteVolumeInfos:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumeInfos {
+  if (volumeInfos.count == 0) {
     // 远端无人说话
     if ([[NEListenTogetherKit getInstance].localMember.account
             isEqualToString:_anchorMicInfo.user]) {
@@ -115,12 +122,17 @@
   } else {
     // 远端有人说话
     NEListenTogetherMemberVolumeInfo *volume = volumeInfos[0];
-    if (volume.volume > 0) {
-      if ([[NEListenTogetherKit getInstance].localMember.account
-              isEqualToString:_anchorMicInfo.user]) {
-        [_listenTogetherCell startSpeakAnimation];
-      } else {
+    NEListenTogetherMember *member;
+    for (NEListenTogetherMember *m in [NEListenTogetherKit getInstance].allMemberList) {
+      if ([m.account isEqualToString:volume.userUuid]) {
+        member = m;
+      }
+    }
+    if (volume.volume > 0 && member.isAudioOn) {
+      if ([member.account isEqualToString:_anchorMicInfo.user]) {
         [_anchorCell startSpeakAnimation];
+      } else {
+        [_listenTogetherCell startSpeakAnimation];
       }
     } else {
       if ([[NEListenTogetherKit getInstance].localMember.account
@@ -283,7 +295,8 @@
 
 - (UIImageView *)waveBackImage {
   if (!_waveBackImage) {
-    _waveBackImage = [[UIImageView alloc] initWithImage:[NEListenTogetherUI ne_imageName:@"wave"]];
+    _waveBackImage =
+        [[UIImageView alloc] initWithImage:[NEListenTogetherUI ne_listen_imageName:@"wave"]];
     _waveBackImage.hidden = true;
     _waveBackImage.contentMode = UIViewContentModeScaleAspectFit;
   }
@@ -303,7 +316,7 @@
   if (!_backLineView) {
     _backLineView = [[UIImageView alloc] init];
     _backLineView.contentMode = UIViewContentModeScaleAspectFit;
-    _backLineView.image = [NEListenTogetherUI ne_imageName:@"backGroundImage"];
+    _backLineView.image = [NEListenTogetherUI ne_listen_imageName:@"backGroundImage"];
   }
   return _backLineView;
 }
@@ -372,7 +385,7 @@
   self.listenTogetherBackImage.hidden = true;
   self.anchorBackImage.hidden = false;
   self.waveBackImage.hidden = true;
-  self.anchorBackImage.image = [NEListenTogetherUI ne_imageName:@"single_listen"];
+  self.anchorBackImage.image = [NEListenTogetherUI ne_listen_imageName:@"single_listen"];
   [self.anchorBackImage mas_updateConstraints:^(MASConstraintMaker *make) {
     make.centerY.centerX.equalTo(self.anchorCell);
     make.width.height.equalTo(@70);
@@ -383,8 +396,9 @@
   self.listenTogetherBackImage.hidden = false;
   self.anchorBackImage.hidden = false;
   self.waveBackImage.hidden = false;
-  self.listenTogetherBackImage.image = [NEListenTogetherUI ne_imageName:@"together_listen_r"];
-  self.anchorBackImage.image = [NEListenTogetherUI ne_imageName:@"together_listen_l"];
+  self.listenTogetherBackImage.image =
+      [NEListenTogetherUI ne_listen_imageName:@"together_listen_r"];
+  self.anchorBackImage.image = [NEListenTogetherUI ne_listen_imageName:@"together_listen_l"];
   [self.anchorBackImage mas_updateConstraints:^(MASConstraintMaker *make) {
     make.centerY.equalTo(self.anchorCell);
     make.centerX.equalTo(self.anchorCell).offset(-3.5);

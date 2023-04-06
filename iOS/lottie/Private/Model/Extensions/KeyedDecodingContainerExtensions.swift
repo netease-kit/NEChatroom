@@ -39,7 +39,7 @@ extension KeyedDecodingContainer {
       let typeContainer = try container.nestedContainer(keyedBy: Discriminator.self)
       let family: U = try typeContainer.decode(U.self, forKey: U.discriminator)
       if let type = family.getType() as? T.Type {
-        list.append(try tmpContainer.decode(type))
+        try list.append(tmpContainer.decode(type))
       }
     }
     return list

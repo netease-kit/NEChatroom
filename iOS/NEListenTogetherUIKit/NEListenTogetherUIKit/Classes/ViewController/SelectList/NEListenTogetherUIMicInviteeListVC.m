@@ -4,8 +4,8 @@
 
 #import "NEListenTogetherUIMicInviteeListVC.h"
 #import <NEListenTogetherKit/NEListenTogetherKit-Swift.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherToast.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUIMicInviteeListVC ()
 

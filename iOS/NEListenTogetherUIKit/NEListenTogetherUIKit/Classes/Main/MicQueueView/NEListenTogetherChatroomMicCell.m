@@ -7,8 +7,8 @@
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
 @implementation NEListenTogetherChatroomMicCell
 
@@ -143,7 +143,8 @@
 
 - (LOTAnimationView *)loadingIco {
   if (!_loadingIco) {
-    NSBundle *bundle = [NEListenTogetherUI ne_sourceBundle];  //[NSBundle bundleWithPath:path];
+    NSBundle *bundle =
+        [NEListenTogetherUI ne_listen_sourceBundle];  //[NSBundle bundleWithPath:path];
     _loadingIco = [LOTAnimationView animationNamed:@"apply_on_mic.json" inBundle:bundle];
     _loadingIco.loopAnimation = YES;
     [_loadingIco play];

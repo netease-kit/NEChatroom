@@ -5,8 +5,8 @@
 #import "NEListenTogetherUIEmptyListView.h"
 #import <Masonry/Masonry.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
 #import "UIImage+NEUIExtension.h"
 
@@ -32,7 +32,7 @@
   [self addSubview:self.imgView];
   [self addSubview:self.tipLabel];
   [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.size.mas_equalTo(CGSizeMake(100, 100));
+    make.size.mas_equalTo(CGSizeMake(165.5, 123));
     make.centerX.top.equalTo(self);
   }];
 
@@ -48,7 +48,7 @@
     return;
   }
   self.imgView.image =
-      [[NEListenTogetherUI ne_imageName:@"empty_icon"] ne_imageWithTintColor:tintColor];
+      [[NEListenTogetherUI ne_listen_imageName:@"empty_ico"] ne_imageWithTintColor:tintColor];
   //    self.tipLabel.textColor = tintColor;
 }
 
@@ -57,7 +57,7 @@
 - (UIImageView *)imgView {
   if (!_imgView) {
     _imgView = [[UIImageView alloc] init];
-    _imgView.image = [NEListenTogetherUI ne_imageName:@"empty_icon"];
+    _imgView.image = [NEListenTogetherUI ne_listen_imageName:@"empty_ico"];
   }
   return _imgView;
 }
@@ -68,7 +68,7 @@
     _tipLabel.font = [UIFont systemFontOfSize:13];
     _tipLabel.textColor = HEXCOLOR(0x999999);
     _tipLabel.textAlignment = NSTextAlignmentCenter;
-    _tipLabel.text = NELocalizedString(@"暂时没有房间\n请点击下方”+“创建房间");
+    _tipLabel.text = NELocalizedString(@"暂时没有房间，请创建房间");
     _tipLabel.numberOfLines = 0;
   }
   return _tipLabel;

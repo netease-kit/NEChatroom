@@ -80,7 +80,7 @@
   cell.textLabel.font = [UIFont systemFontOfSize:16];
   cell.textLabel.textColor = HEXCOLOR(0x222222);
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  cell.imageView.image = [NEVoiceRoomUI ne_imageName:self.imageArray[indexPath.row]];
+  cell.imageView.image = [NEVoiceRoomUI ne_voice_imageName:self.imageArray[indexPath.row]];
 
   UIView *divideView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, 1)];
   divideView.backgroundColor = HEXCOLOR(0xF0F0F2);

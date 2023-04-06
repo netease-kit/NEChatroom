@@ -9,7 +9,7 @@
 @implementation UIImage (VoiceRoom)
 
 + (UIImage *)nevoiceRoom_imageNamed:(NSString *)name {
-  return [NEVoiceRoomUI ne_imageName:name];
+  return [NEVoiceRoomUI ne_voice_imageName:name];
 
   NSString *path = [[NSBundle mainBundle]
       pathForResource:@"Frameworks/NEVoiceRoomUIKit.framework/NEVoiceRoomUIKit"

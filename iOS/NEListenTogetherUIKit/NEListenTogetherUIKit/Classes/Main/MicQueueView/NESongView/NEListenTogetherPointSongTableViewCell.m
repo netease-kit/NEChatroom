@@ -5,6 +5,7 @@
 #import "NEListenTogetherPointSongTableViewCell.h"
 #import <Masonry/Masonry.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPickSongColorDefine.h"
 
 @interface NEListenTogetherPointSongTableViewCell ()
@@ -71,7 +72,7 @@
   }];
 
   self.pointButton = [[UIButton alloc] init];
-  [self.pointButton setTitle:@"点歌" forState:UIControlStateNormal];
+  [self.pointButton setTitle:NELocalizedString(@"点歌") forState:UIControlStateNormal];
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
   gradientLayer.frame = CGRectMake(0, 0, 48, 24);
   gradientLayer.startPoint = CGPointMake(0, 0);
@@ -99,7 +100,7 @@
   }];
 
   self.downloadingLabel = [[UILabel alloc] init];
-  self.downloadingLabel.text = @"下载中";
+  self.downloadingLabel.text = NELocalizedString(@"下载中");
   self.downloadingLabel.textColor = HEXCOLOR(0x333333);
   self.downloadingLabel.font = [UIFont systemFontOfSize:14];
   [self.contentView addSubview:self.downloadingLabel];

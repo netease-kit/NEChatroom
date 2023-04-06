@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #import "NEListenTogetherUIGiftModel.h"
+#import "NEListenTogetherLocalized.h"
 
 @implementation NEListenTogetherUIGiftModel
 
@@ -24,22 +25,22 @@
   NEListenTogetherUIGiftModel *gift1 =
       [[NEListenTogetherUIGiftModel alloc] initWithGiftId:1
                                                      icon:@"gift03_ico"
-                                                  display:@"荧光棒"
+                                                  display:NELocalizedString(@"荧光棒")
                                                     price:9];
   NEListenTogetherUIGiftModel *gift2 =
       [[NEListenTogetherUIGiftModel alloc] initWithGiftId:2
                                                      icon:@"gift04_ico"
-                                                  display:@"安排"
+                                                  display:NELocalizedString(@"安排")
                                                     price:99];
   NEListenTogetherUIGiftModel *gift3 =
       [[NEListenTogetherUIGiftModel alloc] initWithGiftId:3
                                                      icon:@"gift02_ico"
-                                                  display:@"跑车"
+                                                  display:NELocalizedString(@"跑车")
                                                     price:199];
   NEListenTogetherUIGiftModel *gift4 =
       [[NEListenTogetherUIGiftModel alloc] initWithGiftId:4
                                                      icon:@"gift01_ico"
-                                                  display:@"火箭"
+                                                  display:NELocalizedString(@"火箭")
                                                     price:999];
   return @[ gift1, gift2, gift3, gift4 ];
 }

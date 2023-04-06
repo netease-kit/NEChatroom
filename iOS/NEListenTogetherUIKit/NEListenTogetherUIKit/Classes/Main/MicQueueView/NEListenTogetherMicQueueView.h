@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)play;
 - (void)stop;
+- (void)pause;
 
 /// 单人时候的耳机图片显示
 - (void)singleListen;
@@ -29,7 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showListenButton:(BOOL)show;
 - (void)showDownloadingProcess:(BOOL)isHost show:(BOOL)show;
 
-- (void)updateWithVolumeInfos:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumeInfos;
+- (void)updateWithRemoteVolumeInfos:(NSArray<NEListenTogetherMemberVolumeInfo *> *)volumeInfos;
+
+- (void)updateWithLocalVolume:(NSInteger)volume;
+
 @end
 
 NS_ASSUME_NONNULL_END

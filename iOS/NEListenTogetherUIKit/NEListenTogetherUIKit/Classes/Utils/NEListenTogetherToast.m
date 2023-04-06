@@ -103,13 +103,7 @@
 }
 
 - (void)updateWithOrientation:(UIInterfaceOrientation)orientation {
-  BOOL isIos7 = [[UIDevice currentDevice].systemVersion floatValue] < 8.0;
-  BOOL isKeyboardWindow = [self.tv_window isKindOfClass:NSClassFromString(@"UITextEffectsWindow")];
-  if (isIos7 == YES && isKeyboardWindow == NO) {
-    [self updateTransformWithOrientation:orientation];
-  } else {
-    [self updateFrameWithOrientation:orientation];
-  }
+  [self updateFrameWithOrientation:orientation];
 }
 
 - (void)changeOrientationHandler:(NSNotification *)notification {
@@ -158,16 +152,6 @@
     alertWindow_.hidden = NO;
   });
   return [self viewForWindow:alertWindow_];
-}
-
-+ (instancetype)viewForKeyboardWindow {
-  for (UIWindow *window in [[UIApplication sharedApplication].windows reverseObjectEnumerator]) {
-    if ([window isKindOfClass:NSClassFromString(@"UITextEffectsWindow")] && window.hidden == NO &&
-        window.alpha > 0) {
-      return [self viewForWindow:window];
-    }
-  }
-  return nil;
 }
 
 + (instancetype)viewForWindow:(UIWindow *)window {

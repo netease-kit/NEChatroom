@@ -4,10 +4,10 @@
 
 #import "Masonry/Masonry.h"
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPickSongColorDefine.h"
 #import "NEListenTogetherSongEmptyView.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherSongEmptyView ()
 @property(nonatomic, strong) UIView *emptyImageView;
@@ -27,7 +27,7 @@
 
 - (void)initView {
   self.emptyImageView = [[UIImageView alloc]
-      initWithImage:[NEListenTogetherUI ne_imageName:@"listen_together_song_empty"]];
+      initWithImage:[NEListenTogetherUI ne_listen_imageName:@"listen_together_song_empty"]];
   [self addSubview:self.emptyImageView];
   [self.emptyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.centerX.equalTo(self.mas_centerX);

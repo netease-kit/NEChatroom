@@ -113,7 +113,7 @@
 }
 
 + (CGFloat)height {
-  return 120;
+  return 125;
 }
 
 #pragma mark - lazy load

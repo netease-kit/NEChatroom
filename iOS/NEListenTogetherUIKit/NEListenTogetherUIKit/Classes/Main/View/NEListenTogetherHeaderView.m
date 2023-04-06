@@ -6,10 +6,10 @@
 #import <Masonry/Masonry.h>
 #import "NEListenTogetherFontMacro.h"
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherNoticePopView.h"
 #import "NEListenTogetherUICreateRoomTitleButton.h"
 #import "NEListenTogetherUIViewFactory.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "NSString+NEListenTogetherString.h"
 #import "UIImage+ListenTogether.h"
 #import "UIView+NEListenTogether.h"
@@ -48,7 +48,9 @@
 
   [self.noticeButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.bottom.equalTo(self);
-    make.size.mas_equalTo(CGSizeMake(54, 20));
+    make.height.equalTo(@20);
+    make.width.mas_equalTo(
+        [NELocalizedString(@"公告") sizeWithFont:Font_Default(12) maxH:20].width + 30);
   }];
 }
 

@@ -332,6 +332,7 @@ extension NEListenTogetherKit: NERoomListener {
 
   public func onRoomEnded(reason: NERoomEndReason) {
     DispatchQueue.main.async {
+      self.reset()
       for pointListener in self.listeners.allObjects {
         guard pointListener is NEListenTogetherListener, let listener = pointListener as? NEListenTogetherListener else { continue }
 
@@ -355,16 +356,42 @@ extension NEListenTogetherKit: NERoomListener {
     }
   }
 
-  public func onRtcAudioVolumeIndication(volumes: [NEMemberVolumeInfo],
-                                         totalVolume: Int) {
+  /// 本端音频输出设备变更通知，如切换到扬声器、听筒、耳机等
+  public func onRtcAudioOutputDeviceChanged(device: NEAudioOutputDevice) {
     DispatchQueue.main.async {
       for pointerListener in self.listeners.allObjects {
         guard pointerListener is NEListenTogetherListener, let listener = pointerListener as? NEListenTogetherListener else { continue }
-        if listener.responds(to: #selector(NEListenTogetherListener.onRtcAudioVolumeIndication(volumes:totalVolume:))) {
+        if listener
+          .responds(to: #selector(NEListenTogetherListener.onAudioOutputDeviceChanged(_:))) {
+          listener
+            .onAudioOutputDeviceChanged?(NEListenTogetherAudioOutputDevice(rawValue: UInt(device
+                .rawValue)) ?? .speakerPhone)
+        }
+      }
+    }
+  }
+
+  public func onRtcRemoteAudioVolumeIndication(volumes: [NEMemberVolumeInfo],
+                                               totalVolume: Int) {
+    DispatchQueue.main.async {
+      for pointerListener in self.listeners.allObjects {
+        guard pointerListener is NEListenTogetherListener, let listener = pointerListener as? NEListenTogetherListener else { continue }
+        if listener.responds(to: #selector(NEListenTogetherListener.onRtcRemoteAudioVolumeIndication(volumes:totalVolume:))) {
           let v: [NEListenTogetherMemberVolumeInfo] = volumes.map { info in
             NEListenTogetherMemberVolumeInfo(info: info)
           }
-          listener.onRtcAudioVolumeIndication?(volumes: v, totalVolume: totalVolume)
+          listener.onRtcRemoteAudioVolumeIndication?(volumes: v, totalVolume: totalVolume)
+        }
+      }
+    }
+  }
+
+  public func onRtcLocalAudioVolumeIndication(volume: Int, enableVad: Bool) {
+    DispatchQueue.main.async {
+      for pointerListener in self.listeners.allObjects {
+        guard pointerListener is NEListenTogetherListener, let listener = pointerListener as? NEListenTogetherListener else { continue }
+        if listener.responds(to: #selector(NEListenTogetherListener.onRtcLocalAudioVolumeIndication(volume:enableVad:))) {
+          listener.onRtcLocalAudioVolumeIndication?(volume: volume, enableVad: enableVad)
         }
       }
     }

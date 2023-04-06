@@ -10,9 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 图片
 /// @param imageName 图片名称
-+ (UIImage *_Nullable)ne_imageName:(NSString *)imageName;
++ (UIImage *_Nullable)ne_voice_imageName:(NSString *)imageName;
 /// bundle
-+ (NSBundle *_Nullable)ne_sourceBundle;
++ (NSBundle *_Nullable)ne_voice_sourceBundle;
 
 /// 边距
 + (CGFloat)margin;

@@ -103,7 +103,7 @@
     [_arrowButton addTarget:self
                      action:@selector(arrowBackAction:)
            forControlEvents:UIControlEventTouchUpInside];
-    [_arrowButton setImage:[NEVoiceRoomUI ne_imageName:@"nav_back_icon"]
+    [_arrowButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"nav_back_icon"]
                   forState:UIControlStateNormal];
     [_arrowButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 32)];
   }

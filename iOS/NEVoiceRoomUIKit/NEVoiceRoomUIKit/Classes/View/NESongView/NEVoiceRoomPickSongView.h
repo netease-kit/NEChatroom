@@ -42,6 +42,7 @@ typedef void (^ApplyOnSeat)(void);
 
 /// 设置音量
 - (void)setVolume:(float)volume;
+- (float)getVolume;
 
 @end
 

@@ -4,12 +4,12 @@
 
 #import <YYModel/YYModel.h>
 #import "NEListenTogetherInnerSingleton.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPickSongEngine.h"
 #import "NEListenTogetherToast.h"
 #import "NEListenTogetherViewController+Seat.h"
 #import "NEListenTogetherViewController+Utils.h"
 #import "NSArray+NEListenTogetherUIExtension.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIView+NEListenTogetherUIToast.h"
 
 @implementation NEListenTogetherViewController (Seat)

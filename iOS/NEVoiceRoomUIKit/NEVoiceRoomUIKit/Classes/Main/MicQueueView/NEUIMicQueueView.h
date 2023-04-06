@@ -25,7 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 更新礼物值，删除礼物 ，单独开方法，因为多线程
 - (void)updateGiftData:(NSString *)account;
 
-- (void)updateWithVolumeInfos:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumeInfos;
+- (void)updateWithRemoteVolumeInfos:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumeInfos;
+
+- (void)updateWithLocalVolume:(NSInteger)volume;
+
+- (void)reloadData;
 
 @end
 

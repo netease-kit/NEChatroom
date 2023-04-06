@@ -5,8 +5,8 @@
 #import "NEListenTogetherUIConnectListCell.h"
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <SDWebImage/SDWebImage.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUIConnectListCell ()
 @property(nonatomic, strong) UIView *bottomLine;
@@ -122,7 +122,7 @@
     [acceptBtn addTarget:self
                   action:@selector(onAcceptBtnPressed)
         forControlEvents:UIControlEventTouchUpInside];
-    [acceptBtn setImage:[NEListenTogetherUI ne_imageName:@"icon_yes_n"]
+    [acceptBtn setImage:[NEListenTogetherUI ne_listen_imageName:@"icon_yes_n"]
                forState:UIControlStateNormal];
     _acceptBtn = acceptBtn;
   }
@@ -135,7 +135,7 @@
     [rejectBtn addTarget:self
                   action:@selector(onRejectBtnPressed)
         forControlEvents:UIControlEventTouchUpInside];
-    [rejectBtn setImage:[NEListenTogetherUI ne_imageName:@"icon_no_n"]
+    [rejectBtn setImage:[NEListenTogetherUI ne_listen_imageName:@"icon_no_n"]
                forState:UIControlStateNormal];
     _rejectBtn = rejectBtn;
   }

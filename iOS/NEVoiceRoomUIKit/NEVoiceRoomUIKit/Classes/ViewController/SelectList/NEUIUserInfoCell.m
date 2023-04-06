@@ -67,7 +67,7 @@
   if (member.avatar) {
     NSURL *url = [NSURL URLWithString:member.avatar];
     [_iconView sd_setImageWithURL:url
-                 placeholderImage:[NEVoiceRoomUI ne_imageName:@"default_user_icon"]];
+                 placeholderImage:[NEVoiceRoomUI ne_voice_imageName:@"default_user_icon"]];
   }
 }
 

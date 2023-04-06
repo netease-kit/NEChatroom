@@ -7,12 +7,12 @@
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <libextobjc/extobjc.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherToast.h"
 #import "NEListenTogetherUI.h"
 #import "NEListenTogetherUIDeviceSizeInfo.h"
 #import "NEListenTogetherUIMicInviteeListVC.h"
 #import "NEListenTogetherViewController+UI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "UIImage+ListenTogether.h"
 #import "UIView+NEListenTogetherUIToast.h"
 

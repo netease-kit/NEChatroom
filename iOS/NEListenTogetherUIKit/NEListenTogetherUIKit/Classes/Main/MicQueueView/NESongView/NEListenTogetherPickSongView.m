@@ -8,6 +8,7 @@
 #import <SDWebImage/SDWebImage.h>
 #import <libextobjc/extobjc.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherPickSongColorDefine.h"
 #import "NEListenTogetherPickSongEngine.h"
 #import "NEListenTogetherPointSongTableViewCell.h"
@@ -85,7 +86,7 @@
   @weakify(self)[[NEListenTogetherPickSongEngine sharedInstance]
       getKaraokeSongList:^(NSError *_Nullable error) {
         if (error) {
-          [NEListenTogetherToast showToast:@"获取歌曲列表失败"];
+          [NEListenTogetherToast showToast:NELocalizedString(@"获取歌曲列表失败")];
         } else {
           @strongify(self) @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
             @strongify(self)[self.pickSongsTableView reloadData];
@@ -96,12 +97,12 @@
   [[NEListenTogetherPickSongEngine sharedInstance]
       getKaraokeSongOrderedList:^(NSError *_Nullable error) {
         @strongify(self) @weakify(self) if (error) {
-          [NEListenTogetherToast showToast:@"获取已点列表失败"];
+          [NEListenTogetherToast showToast:NELocalizedString(@"获取已点列表失败")];
         }
         else {
           @strongify(self) @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
             @strongify(self)[self.pickedSongButton
-                setTitle:[NSString stringWithFormat:@"歌曲列表(%lu)",
+                setTitle:[NSString stringWithFormat:@"%@(%lu)", NELocalizedString(@"歌曲列表"),
                                                     [NEListenTogetherPickSongEngine sharedInstance]
                                                         .pickedSongArray.count]
                 forState:UIControlStateNormal];
@@ -154,7 +155,7 @@
     make.height.equalTo(@50);
   }];
   self.pickSongButton = [[UIButton alloc] init];
-  [self.pickSongButton setTitle:@"点歌" forState:UIControlStateNormal];
+  [self.pickSongButton setTitle:NELocalizedString(@"点歌") forState:UIControlStateNormal];
   [self.pickSongButton setTitleColor:HEXCOLOR(0x222222) forState:UIControlStateNormal];
   [self.pickSongButton addTarget:self
                           action:@selector(clickPickButton:)
@@ -168,7 +169,7 @@
 
   self.pickedSongButton = [[UIButton alloc] init];
   [self.pickedSongButton
-      setTitle:[NSString stringWithFormat:@"歌曲列表(%lu)",
+      setTitle:[NSString stringWithFormat:@"%@(%lu)", NELocalizedString(@"歌曲列表"),
                                           [NEListenTogetherPickSongEngine sharedInstance]
                                               .pickedSongArray.count]
       forState:UIControlStateNormal];
@@ -228,7 +229,7 @@
   }];
 
   self.searchImageView =
-      [[UIImageView alloc] initWithImage:[NEListenTogetherUI ne_imageName:@"icon_search"]];
+      [[UIImageView alloc] initWithImage:[NEListenTogetherUI ne_listen_imageName:@"icon_search"]];
   [self.searchSuperView addSubview:self.searchImageView];
   [self.searchImageView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.searchSuperView).offset(17);
@@ -239,7 +240,7 @@
   self.searchTextField = [[UITextField alloc] init];
   self.searchTextField.backgroundColor = [UIColor clearColor];
   NSAttributedString *attrString =
-      [[NSAttributedString alloc] initWithString:@"搜索"
+      [[NSAttributedString alloc] initWithString:NELocalizedString(@"搜索")
                                       attributes:@{
                                         NSForegroundColorAttributeName : HEXCOLOR(0x333333),
                                         NSFontAttributeName : [UIFont systemFontOfSize:16]
@@ -264,8 +265,9 @@
 
   self.searchClearButton = [[UIButton alloc] init];
   [self.searchSuperView addSubview:self.searchClearButton];
-  [self.searchClearButton setBackgroundImage:[NEListenTogetherUI ne_imageName:@"icon_search_cancel"]
-                                    forState:UIControlStateNormal];
+  [self.searchClearButton
+      setBackgroundImage:[NEListenTogetherUI ne_listen_imageName:@"icon_search_cancel"]
+                forState:UIControlStateNormal];
   self.searchClearButton.titleLabel.textAlignment = NSTextAlignmentCenter;
   self.searchClearButton.layer.masksToBounds = YES;
   self.searchClearButton.layer.cornerRadius = 8;
@@ -337,9 +339,9 @@
     @strongify(self);
     [self refreshList];
   }];
-  [mjHeader setTitle:@"下拉更新" forState:MJRefreshStateIdle];
-  [mjHeader setTitle:@"下拉更新" forState:MJRefreshStatePulling];
-  [mjHeader setTitle:@"更新中..." forState:MJRefreshStateRefreshing];
+  [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStateIdle];
+  [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStatePulling];
+  [mjHeader setTitle:NELocalizedString(@"更新中...") forState:MJRefreshStateRefreshing];
   mjHeader.lastUpdatedTimeLabel.hidden = YES;
   [mjHeader setTintColor:[UIColor whiteColor]];
   self.pickSongsTableView.mj_header = mjHeader;
@@ -347,7 +349,7 @@
   self.pickSongsTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
     @strongify(self);
     if ([NEListenTogetherPickSongEngine sharedInstance].noMore) {
-      [NEListenTogetherToast showToast:@"无更多内容"];
+      [NEListenTogetherToast showToast:NELocalizedString(@"无更多内容")];
       [self.pickSongsTableView.mj_footer endRefreshing];
     } else {
       [self loadMore];
@@ -382,7 +384,7 @@
         @strongify(self);
         [self.pickSongsTableView.mj_header endRefreshing];
         [self.pickSongsTableView.mj_footer endRefreshing];
-        [NEListenTogetherToast showToast:@"获取歌曲列表失败"];
+        [NEListenTogetherToast showToast:NELocalizedString(@"获取歌曲列表失败")];
         if ([self.pickSongsTableView.refreshControl isRefreshing]) {
           [self.pickSongsTableView.refreshControl endRefreshing];
         }
@@ -478,19 +480,21 @@
     if (item.songCover.length > 0) {
       [cell.songImageView sd_setImageWithURL:[NSURL URLWithString:item.songCover]];
     } else {
-      cell.songImageView.image = [NEListenTogetherUI ne_imageName:@"empty_song_cover"];
+      cell.songImageView.image = [NEListenTogetherUI ne_listen_imageName:@"empty_song_cover"];
     }
 
     cell.songLabel.text = item.songName;
     cell.progress = item.downloadProcess;
     NECopyrightedSinger *singer = item.singers.firstObject;
     if (singer) {
-      cell.anchorLabel.text = [NSString stringWithFormat:@"歌手:%@", singer.singerName];
+      cell.anchorLabel.text =
+          [NSString stringWithFormat:@"%@:%@", NELocalizedString(@"歌手"), singer.singerName];
     }
     if (item.channel == CLOUD_MUSIC) {
-      cell.resourceImageView.image = [NEListenTogetherUI ne_imageName:@"pointsong_clouldmusic"];
+      cell.resourceImageView.image =
+          [NEListenTogetherUI ne_listen_imageName:@"pointsong_clouldmusic"];
     } else if (item.channel == MIGU) {
-      cell.resourceImageView.image = [NEListenTogetherUI ne_imageName:@"pointsong_migu"];
+      cell.resourceImageView.image = [NEListenTogetherUI ne_listen_imageName:@"pointsong_migu"];
     } else {
       //            cell.resourceImageView.image = [UIImage imageNamed:@"pointsong_noresource"];
     }
@@ -540,7 +544,8 @@
     if ([[NEListenTogetherPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.songId
             isEqualToString:item.songId] &&
         [NEListenTogetherPickSongEngine sharedInstance]
-                .currrentSongModel.playMusicInfo.oc_channel == item.oc_channel) {
+                .currrentSongModel.playMusicInfo.oc_channel == item.oc_channel &&
+        item.oc_status == 1) {
       cell.playingImageView.hidden = NO;
       cell.songNumberLabel.hidden = YES;
       cell.statueLabel.hidden = NO;
@@ -548,21 +553,8 @@
       cell.playingImageView.hidden = YES;
       cell.songNumberLabel.hidden = NO;
       cell.statueLabel.hidden = YES;
-      if ([self.detail.anchor.userUuid
-              isEqualToString:[NEListenTogetherKit getInstance].localMember.account]) {
-        // 是主播
-
-        cell.cancelButton.hidden = NO;
-      } else {
-        // 是自己点的
-        if ([item.account isEqualToString:[NEListenTogetherKit getInstance].localMember.account]) {
-          cell.cancelButton.hidden = NO;
-        } else {
-          // 其他人的歌
-          cell.cancelButton.hidden = YES;
-        }
-      };
     }
+    cell.cancelButton.hidden = NO;
     cell.clickCancel = ^{
       // 点击取消
       [[NEListenTogetherKit getInstance]
@@ -570,7 +562,10 @@
                        callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                          if (code != 0) {
                            [NEListenTogetherToast
-                               showToast:[NSString stringWithFormat:@"删除歌曲失败 %@", msg]];
+                               showToast:[NSString
+                                             stringWithFormat:@"%@ %@",
+                                                              NELocalizedString(@"删除歌曲失败"),
+                                                              msg]];
                          }
                        }];
     };
@@ -580,7 +575,8 @@
     if (item.icon) {
       [cell.userIconImageView sd_setImageWithURL:[NSURL URLWithString:item.icon]];
     } else {
-      [cell.userIconImageView setImage:[NEListenTogetherUI ne_imageName:@"user_default_icon"]];
+      [cell.userIconImageView
+          setImage:[NEListenTogetherUI ne_listen_imageName:@"user_default_icon"]];
     }
 
     cell.userNickNameLabel.text = [NSString stringWithFormat:@"%@", item.userName];
@@ -589,7 +585,7 @@
     cell.songDurationLabel.text = [self formatSeconds:[item oc_songTime]];
     // 歌曲状态 -2 已唱 -1 删除 0:等待唱 1 唱歌中
     // 状态第一行直接显示正在演唱
-    cell.statueLabel.text = @"正在播放";
+    cell.statueLabel.text = NELocalizedString(@"正在播放");
     return cell;
   }
 }
@@ -622,11 +618,11 @@
       getKaraokeSongOrderedList:^(NSError *_Nullable error) {
         @strongify(self) @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
           @strongify(self) if (error) {
-            [NEListenTogetherToast showToast:@"获取已点列表失败"];
+            [NEListenTogetherToast showToast:NELocalizedString(@"获取已点列表失败")];
           }
           else {
             [self.pickedSongButton
-                setTitle:[NSString stringWithFormat:@"歌曲列表(%lu)",
+                setTitle:[NSString stringWithFormat:@"%@(%lu)", NELocalizedString(@"歌曲列表"),
                                                     [NEListenTogetherPickSongEngine sharedInstance]
                                                         .pickedSongArray.count]
                 forState:UIControlStateNormal];
@@ -736,7 +732,8 @@
                               [self.pickSongsTableView.refreshControl endRefreshing];
                             }
                             [self.pickSongsTableView reloadData];
-                            [NEListenTogetherToast showToast:@"没有找到合适的结果"];
+                            [NEListenTogetherToast
+                                showToast:NELocalizedString(@"没有找到合适的结果")];
                           } else {
                             [[NEListenTogetherPickSongEngine sharedInstance] updatePageNumber:YES];
                             [self.pickSongsTableView reloadData];
@@ -745,7 +742,8 @@
                             }
                             if ([[NEListenTogetherPickSongEngine sharedInstance] pickSongArray]
                                     .count <= 0) {
-                              [NEListenTogetherToast showToast:@"没有找到合适的结果"];
+                              [NEListenTogetherToast
+                                  showToast:NELocalizedString(@"没有找到合适的结果")];
                             }
                           }
                         });
@@ -771,7 +769,7 @@
 }
 
 - (void)onVoiceRoomSongTokenExpired {
-  [NEListenTogetherToast showToast:@"版权token过期，请稍后再试"];
+  [NEListenTogetherToast showToast:NELocalizedString(@"版权token过期，请稍后再试")];
 }
 
 - (void)setPlayingStatus:(BOOL)status {
@@ -781,6 +779,11 @@
 - (void)setVolume:(float)volume {
   [self.playControlView setVolume:volume];
 }
+
+- (float)getVolume {
+  return self.playControlView.volume;
+}
+
 #pragma mark---- Getter
 - (NEListenTogetherSongPlayControlView *)playControlView {
   if (!_playControlView) {

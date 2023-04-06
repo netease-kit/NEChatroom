@@ -8,6 +8,7 @@
 #import <NEListenTogetherKit/NEListenTogetherKit-Swift.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import "NEListenTogetherGlobalMacro.h"
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherOpenRoomViewController.h"
 #import "NEListenTogetherRoomListViewModel.h"
 #import "NEListenTogetherToast.h"
@@ -15,9 +16,9 @@
 #import "NEListenTogetherUIDeviceSizeInfo.h"
 #import "NEListenTogetherUIEmptyListView.h"
 #import "NEListenTogetherUILiveListCell.h"
+#import "NEListenTogetherUIManager.h"
 #import "NEListenTogetherUIViewFactory.h"
 #import "NEListenTogetherViewController.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 #import "NSString+NEListenTogetherString.h"
 #import "UIView+NEUIExtension.h"
 
@@ -47,7 +48,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  self.title = [NSBundle ne_localizedStringForKey:@"一起听"];
+  self.title = NELocalizedString(@"一起听");
 
   [self getNewData];
   [self bindViewModel];
@@ -88,9 +89,8 @@
 }
 - (void)setupSubviews {
   [self.view addSubview:self.collectionView];
-
   self.emptyView.centerX = self.collectionView.centerX;
-  self.emptyView.centerY = self.collectionView.centerY - 40;
+  self.emptyView.centerY = self.collectionView.centerY - 100;
   [self.collectionView addSubview:self.emptyView];
 
   [self.view addSubview:self.createLiveRoomButton];
@@ -102,10 +102,10 @@
   }];
 
   [self.createLiveRoomButton mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.size.mas_equalTo(CGSizeMake(90, 90));
-    make.right.equalTo(self.view).offset(-20);
-    make.bottom.equalTo(self.view).offset(
-        -[NEListenTogetherUIDeviceSizeInfo get_iPhoneTabBarHeight]);
+    make.height.equalTo(@44);
+    make.right.equalTo(self.view).offset(-17);
+    make.left.equalTo(self.view).offset(17);
+    make.bottom.equalTo(self.view).offset(-25);
   }];
 
   @weakify(self);
@@ -157,26 +157,60 @@
     didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self.roomListViewModel.datas count] > indexPath.row) {
     NEListenTogetherInfo *roomInfoModel = self.roomListViewModel.datas[indexPath.row];
-    [[NEListenTogetherKit getInstance]
-        getRoomInfo:roomInfoModel.liveModel.liveRecordId
-           callback:^(NSInteger code, NSString *_Nullable msg,
-                      NEListenTogetherInfo *_Nullable info) {
-             if (code == NEListenTogetherErrorCode.success) {
-               if (info.liveModel.audienceCount > 0) {
-                 [NEListenTogetherToast showToast:NELocalizedString(@"私密房内人数已满")];
-               } else {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                   [self audienceEnterLiveRoomWithListInfo:roomInfoModel];
-                 });
-               }
-             } else {
-               [NEListenTogetherToast showToast:NELocalizedString(@"请稍后再试")];
-             }
-           }];
+    if ([NEListenTogetherUIManager.sharedInstance.delegate
+            respondsToSelector:@selector(inOtherRoom)] &&
+        [NEListenTogetherUIManager.sharedInstance.delegate inOtherRoom]) {
+      // 已经在其他房间中，比如语聊房
+      UIAlertController *alert = [UIAlertController
+          alertControllerWithTitle:NELocalizedString(@"提示")
+                           message:NELocalizedString(@"是否退出当前房间进入其他房间")
+                    preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:NELocalizedString(@"取消")
+                                                style:UIAlertActionStyleCancel
+                                              handler:nil]];
+      [alert
+          addAction:[UIAlertAction actionWithTitle:NELocalizedString(@"确认")
+                                             style:UIAlertActionStyleDefault
+                                           handler:^(UIAlertAction *_Nonnull action) {
+                                             if ([NEListenTogetherUIManager.sharedInstance.delegate
+                                                     respondsToSelector:@selector
+                                                     (leaveOtherRoomWithCompletion:)]) {
+                                               [NEListenTogetherUIManager.sharedInstance.delegate
+                                                   leaveOtherRoomWithCompletion:^{
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                       [self joinRoom:roomInfoModel];
+                                                     });
+                                                   }];
+                                             }
+                                           }]];
+      [self presentViewController:alert animated:true completion:nil];
+    } else {
+      [self joinRoom:roomInfoModel];
+    }
   }
 }
 
+- (void)joinRoom:(NEListenTogetherInfo *)roomInfoModel {
+  [[NEListenTogetherKit getInstance]
+      getRoomInfo:roomInfoModel.liveModel.liveRecordId
+         callback:^(NSInteger code, NSString *_Nullable msg, NEListenTogetherInfo *_Nullable info) {
+           if (code == NEListenTogetherErrorCode.success) {
+             if (info.liveModel.audienceCount > 0) {
+               [NEListenTogetherToast showToast:NELocalizedString(@"私密房内人数已满")];
+             } else {
+               dispatch_async(dispatch_get_main_queue(), ^{
+                 [self audienceEnterLiveRoomWithListInfo:roomInfoModel];
+               });
+             }
+           } else {
+             [NEListenTogetherToast showToast:NELocalizedString(@"请稍后再试")];
+           }
+         }];
+}
+
 - (void)audienceEnterLiveRoomWithListInfo:(NEListenTogetherInfo *)info {
+  [NSNotificationCenter.defaultCenter
+      postNotification:[NSNotification notificationWithName:@"listenTogetherEnter" object:nil]];
   NEListenTogetherViewController *vc =
       [[NEListenTogetherViewController alloc] initWithRole:NEListenTogetherRoleAudience
                                                     detail:info];
@@ -210,14 +244,18 @@
 
 - (UIButton *)createLiveRoomButton {
   if (!_createLiveRoomButton) {
-    _createLiveRoomButton =
-        [NEListenTogetherUIViewFactory createBtnFrame:CGRectZero
-                                                title:@""
-                                              bgImage:NELocalizedString(@"start_live_icon")
-                                        selectBgImage:@""
-                                                image:@""
-                                               target:self
-                                               action:@selector(createChatRoomAction)];
+    _createLiveRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_createLiveRoomButton setTitle:NELocalizedString(@"开始直播") forState:UIControlStateNormal];
+    _createLiveRoomButton.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+    _createLiveRoomButton.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
+    [_createLiveRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_createLiveRoomButton setImage:[NEListenTogetherUI ne_listen_imageName:@"create_ico"]
+                           forState:UIControlStateNormal];
+    _createLiveRoomButton.backgroundColor = [UIColor colorWithRed:0.2 green:0.494 blue:1 alpha:1];
+    [_createLiveRoomButton addTarget:self
+                              action:@selector(createChatRoomAction)
+                    forControlEvents:UIControlEventTouchUpInside];
+    _createLiveRoomButton.layer.cornerRadius = 22;
   }
   return _createLiveRoomButton;
 }
@@ -225,7 +263,6 @@
 - (NEListenTogetherUIEmptyListView *)emptyView {
   if (!_emptyView) {
     _emptyView = [[NEListenTogetherUIEmptyListView alloc] initWithFrame:CGRectZero];
-    _emptyView.tintColor = HEXCOLOR(0xE6E7EB);
   }
   return _emptyView;
 }

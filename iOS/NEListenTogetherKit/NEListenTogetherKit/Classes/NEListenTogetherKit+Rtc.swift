@@ -21,14 +21,14 @@ public extension NEListenTogetherKit {
         callback?(NEListenTogetherErrorCode.failed, "Can't find LocalMember", nil)
         return
       }
-      self.roomContext!.updateMemberProperty(
+      self.roomContext?.updateMemberProperty(
         userUuid: local,
         key: MemberPropertyConstants.MuteAudio.key,
         value: MemberPropertyConstants.MuteAudio.off
       ) { code, msg, _ in
         var res = code
         if res == 0 {
-          res = Int(self.roomContext!.rtcController.setRecordDeviceMute(muted: true))
+          res = Int(self.roomContext?.rtcController.setRecordDeviceMute(muted: true) ?? -1)
           if res == 0 {
             NEListenTogetherLog.successLog(kitTag, desc: "Successfully mute my audio.")
           } else {
@@ -63,14 +63,14 @@ public extension NEListenTogetherKit {
         callback?(NEListenTogetherErrorCode.failed, "Can't find LocalMember", nil)
         return
       }
-      self.roomContext!.updateMemberProperty(
+      self.roomContext?.updateMemberProperty(
         userUuid: local,
         key: MemberPropertyConstants.MuteAudio.key,
         value: MemberPropertyConstants.MuteAudio.on
       ) { code, msg, _ in
         var res = code
         if res == 0 {
-          res = Int(self.roomContext!.rtcController.setRecordDeviceMute(muted: false))
+          res = Int(self.roomContext?.rtcController.setRecordDeviceMute(muted: false) ?? -1)
           if res == 0 {
             NEListenTogetherLog.successLog(kitTag, desc: "Successfully unmute my audio.")
           } else {
@@ -99,13 +99,13 @@ public extension NEListenTogetherKit {
   func enableEarBack(_ volume: UInt32) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Enable earback. Volume: \(volume)")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.enableEarback(volume: volume)
+      let code = self.roomContext?.rtcController.enableEarback(volume: volume)
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully enable earback.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to enable earback. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to enable earback. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -117,13 +117,13 @@ public extension NEListenTogetherKit {
   func disableEarBack() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Disable earback.")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.disableEarback()
+      let code = self.roomContext?.rtcController.disableEarback()
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully disable earback.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to disable earback. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to disable earback. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -136,7 +136,7 @@ public extension NEListenTogetherKit {
   func adjustRecordingSignalVolume(_ volume: UInt32) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Adjust recording signal volume. Volume: \(volume)")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.adjustRecordingSignalVolume(volume: volume)
+      let code = self.roomContext?.rtcController.adjustRecordingSignalVolume(volume: volume)
       if code == 0 {
         self.recordVolume = volume
         NEListenTogetherLog.successLog(
@@ -146,10 +146,10 @@ public extension NEListenTogetherKit {
       } else {
         NEListenTogetherLog.errorLog(
           kitTag,
-          desc: "Failed to adjust recording signal volume. Code: \(code)"
+          desc: "Failed to adjust recording signal volume. Code: \(String(describing: code))"
         )
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -161,7 +161,7 @@ public extension NEListenTogetherKit {
   func getRecordingSignalVolume() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Get recording signal volume.")
     return Judge.syncCondition {
-      return Int(self.recordVolume)
+      Int(self.recordVolume)
     }
   }
 
@@ -175,14 +175,14 @@ public extension NEListenTogetherKit {
   func startAudioMixing(_ option: NEListenTogetherCreateAudioMixingOption) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Start audio mixing.")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController
+      let code = self.roomContext?.rtcController
         .startAudioMixing(option: option.converToRoom())
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully start audio mixing.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to start audio mixing. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to start audio mixing. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -190,13 +190,13 @@ public extension NEListenTogetherKit {
   func stopAudioMixing() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Stop audio mixing.")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.stopAudioMixing()
+      let code = self.roomContext?.rtcController.stopAudioMixing()
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully stop audio mixing.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to stop audio mixing. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to stop audio mixing. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -206,13 +206,13 @@ public extension NEListenTogetherKit {
   func pauseAudioMixing() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Pause audio mixing.")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.pauseAudioMixing()
+      let code = self.roomContext?.rtcController.pauseAudioMixing()
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully pause audio mixing.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to pause audio mixing. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to pause audio mixing. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -224,16 +224,16 @@ public extension NEListenTogetherKit {
   func resumeAudioMixing() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Resume audio mixing.")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.resumeAudioMixing()
+      let code = self.roomContext?.rtcController.resumeAudioMixing()
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully resume audio mixing.")
       } else {
         NEListenTogetherLog.errorLog(
           kitTag,
-          desc: "Failed to resume audio mixing. Code: \(code)"
+          desc: "Failed to resume audio mixing. Code: \(String(describing: code))"
         )
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -246,8 +246,8 @@ public extension NEListenTogetherKit {
   func setAudioMixingVolume(_ volume: UInt32) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Set audio mixing volume. Volume: \(volume).")
     return Judge.syncCondition {
-      let sendCode = self.roomContext!.rtcController.setAudioMixingSendVolume(volume: volume)
-      let playCode = self.roomContext!.rtcController
+      let sendCode = self.roomContext?.rtcController.setAudioMixingSendVolume(volume: volume)
+      let playCode = self.roomContext?.rtcController
         .setAudioMixingPlaybackVolume(volume: volume)
       if sendCode == 0, playCode == 0 {
         self.mixingVolume = volume
@@ -268,7 +268,7 @@ public extension NEListenTogetherKit {
   func getAudioMixingVolume() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Get audio mixing volume.")
     return Judge.syncCondition {
-      return Int(self.mixingVolume)
+      Int(self.mixingVolume)
     }
   }
 
@@ -284,16 +284,16 @@ public extension NEListenTogetherKit {
   func playEffect(_ effectId: UInt32, option: NEListenTogetherCreateAudioEffectOption) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Play effect. EffectId: \(effectId).")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.playEffect(
+      let code = self.roomContext?.rtcController.playEffect(
         effectId: effectId,
         option: option.convertToRoom()
       )
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully play effect.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to play effect. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to play effect. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -304,13 +304,13 @@ public extension NEListenTogetherKit {
   func pauseEffect(effectId: UInt32) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Pause effect. EffectId:\(effectId)")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.pauseEffect(effectId: effectId)
+      let code = self.roomContext?.rtcController.pauseEffect(effectId: effectId)
       if code == 0 {
         NEListenTogetherLog.infoLog(kitTag, desc: "✅Successfully Pause effect.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "❌Failed to Pause effect. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "❌Failed to Pause effect. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -321,13 +321,13 @@ public extension NEListenTogetherKit {
   func resumeEffect(effectId: UInt32) -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Resume effect. EffectId:\(effectId)")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.resumeEffect(effectId: effectId)
+      let code = self.roomContext?.rtcController.resumeEffect(effectId: effectId)
       if code == 0 {
         NEListenTogetherLog.infoLog(kitTag, desc: "✅Successfully Resume effect.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "❌Failed to Resume effect. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "❌Failed to Resume effect. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
     }
   }
 
@@ -337,13 +337,30 @@ public extension NEListenTogetherKit {
   func stopAllEffects() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Stop all effects.")
     return Judge.syncCondition {
-      let code = self.roomContext!.rtcController.stopAllEffects()
+      let code = self.roomContext?.rtcController.stopAllEffects()
       if code == 0 {
         NEListenTogetherLog.successLog(kitTag, desc: "Successfully stop all effects.")
       } else {
-        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to stop all effects. Code: \(code)")
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to stop all effects. Code: \(String(describing: code))")
       }
-      return code
+      return code ?? -1
+    }
+  }
+
+  @discardableResult
+  /// 关闭音效
+  /// - Parameter effectId: 指定音效的 ID。每个音效均有唯一的 ID。
+  /// - Returns: 0: 代表成功 否则失败
+  func stopEffect(effectId: UInt32) -> Int {
+    NEListenTogetherLog.apiLog(kitTag, desc: "Stop all effects.")
+    return Judge.syncCondition {
+      let code = self.roomContext?.rtcController.stopEffect(effectId: effectId)
+      if code == 0 {
+        NEListenTogetherLog.successLog(kitTag, desc: "Successfully stop all effects.")
+      } else {
+        NEListenTogetherLog.errorLog(kitTag, desc: "Failed to stop all effects. Code: \(String(describing: code))")
+      }
+      return code ?? -1
     }
   }
 
@@ -359,11 +376,11 @@ public extension NEListenTogetherKit {
       desc: "Set effect volume. EffectId: \(effectId). Volume: \(volume)."
     )
     return Judge.syncCondition {
-      let sendCode = self.roomContext!.rtcController.setEffectSendVolume(
+      let sendCode = self.roomContext?.rtcController.setEffectSendVolume(
         effectId: effectId,
         volume: volume
       )
-      let playCode = self.roomContext!.rtcController.setEffectPlaybackVolume(
+      let playCode = self.roomContext?.rtcController.setEffectPlaybackVolume(
         effectId: effectId,
         volume: volume
       )
@@ -386,7 +403,7 @@ public extension NEListenTogetherKit {
   func getEffectVolume() -> Int {
     NEListenTogetherLog.apiLog(kitTag, desc: "Get effect volume.")
     return Judge.syncCondition {
-      return Int(self.effectVolume)
+      Int(self.effectVolume)
     }
   }
 
@@ -406,7 +423,7 @@ public extension NEListenTogetherKit {
         callback?(NEListenTogetherErrorCode.failed, "Can't find member", nil)
         return
       }
-      self.roomContext!.updateMemberProperty(
+      self.roomContext?.updateMemberProperty(
         userUuid: account,
         key: MemberPropertyConstants.CanOpenMic.key,
         value: MemberPropertyConstants.CanOpenMic.no
@@ -440,7 +457,7 @@ public extension NEListenTogetherKit {
         callback?(NEListenTogetherErrorCode.failed, "Can't find member", nil)
         return
       }
-      self.roomContext!.updateMemberProperty(
+      self.roomContext?.updateMemberProperty(
         userUuid: account,
         key: MemberPropertyConstants.CanOpenMic.key,
         value: MemberPropertyConstants.CanOpenMic.yes

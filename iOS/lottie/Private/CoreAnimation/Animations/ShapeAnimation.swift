@@ -139,14 +139,14 @@ extension Trim {
     let interpolatedStrokeEnd = strokeEnd.manuallyInterpolateKeyframes()
     let interpolatedStrokeOffset = offset.manuallyInterpolateKeyframes()
 
-    var adjustedStrokeStart = KeyframeGroup(
-      keyframes: try adjustKeyframesForTrimOffsets(
+    var adjustedStrokeStart = try KeyframeGroup(
+      keyframes: adjustKeyframesForTrimOffsets(
         strokeKeyframes: interpolatedStrokeStart,
         offsetKeyframes: interpolatedStrokeOffset
       ))
 
-    var adjustedStrokeEnd = KeyframeGroup(
-      keyframes: try adjustKeyframesForTrimOffsets(
+    var adjustedStrokeEnd = try KeyframeGroup(
+      keyframes: adjustKeyframesForTrimOffsets(
         strokeKeyframes: interpolatedStrokeEnd,
         offsetKeyframes: interpolatedStrokeOffset
       ))

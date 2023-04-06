@@ -147,7 +147,7 @@
 
 - (LOTAnimationView *)loadingIco {
   if (!_loadingIco) {
-    NSBundle *bundle = [NEVoiceRoomUI ne_sourceBundle];  //[NSBundle bundleWithPath:path];
+    NSBundle *bundle = [NEVoiceRoomUI ne_voice_sourceBundle];  //[NSBundle bundleWithPath:path];
     _loadingIco = [LOTAnimationView animationNamed:@"apply_on_mic.json" inBundle:bundle];
     _loadingIco.loopAnimation = YES;
     [_loadingIco play];

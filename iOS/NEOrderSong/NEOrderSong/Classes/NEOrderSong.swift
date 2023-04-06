@@ -45,6 +45,7 @@ public class NEOrderSong: NSObject {
     NE.config.isDebug = isDebug
     let options = NERoomKitOptions(appKey: config.appKey)
     options.extras = config.extras
+    options.APNSCerName = config.APNSCerName
     if overseaAndNotPrivte {
       let serverConfig = NEServerConfig()
       serverConfig.imServerConfig = NEIMServerConfig()

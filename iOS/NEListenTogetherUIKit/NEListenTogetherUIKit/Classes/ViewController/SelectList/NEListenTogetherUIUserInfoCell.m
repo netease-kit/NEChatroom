@@ -7,8 +7,8 @@
 #import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <SDWebImage/SDWebImage.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherUI.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 
 @interface NEListenTogetherUIUserInfoCell () {
   CGRect _preRect;
@@ -67,7 +67,7 @@
   if (member.avatar) {
     NSURL *url = [NSURL URLWithString:member.avatar];
     [_iconView sd_setImageWithURL:url
-                 placeholderImage:[NEListenTogetherUI ne_imageName:@"default_user_icon"]];
+                 placeholderImage:[NEListenTogetherUI ne_listen_imageName:@"default_user_icon"]];
   }
 }
 

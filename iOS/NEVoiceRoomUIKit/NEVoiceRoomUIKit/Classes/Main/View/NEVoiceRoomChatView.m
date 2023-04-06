@@ -5,6 +5,7 @@
 #import "NEVoiceRoomChatView.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import "NEVoiceRoomUIGiftModel.h"
+#import "NSBundle+NELocalized.h"
 #import "UIImage+VoiceRoom.h"
 
 @interface NEVoiceRoomChatViewMessage ()
@@ -134,7 +135,8 @@
         NEVoiceRoomUIGiftModel *reward = [NEVoiceRoomUIGiftModel getRewardWithGiftId:self.giftId];
         self.giftIcon = reward.icon;
         NSString *msg = [NSString stringWithFormat:@"%@x%d ", self.giftName, self.giftCount];
-        showMessage = [NSString stringWithFormat:@"%@ 送给 %@ %@", self.giftFrom, self.giftTo, msg];
+        showMessage = [NSString stringWithFormat:@"%@ %@ %@ %@", self.giftFrom,
+                                                 NELocalizedString(@"送给"), self.giftTo, msg];
         _anotherNickRange = NSMakeRange(showMessage.length - msg.length - self.giftTo.length - 1,
                                         self.giftTo.length);
         _textRange = NSMakeRange(showMessage.length - msg.length, msg.length);

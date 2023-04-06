@@ -4,8 +4,8 @@
 
 #import "NEListenTogetherAuthorityHelper.h"
 #import <AVFoundation/AVFoundation.h>
+#import "NEListenTogetherLocalized.h"
 #import "NEListenTogetherToast.h"
-#import "NSBundle+NEListenTogetherLocalized.h"
 @implementation NEListenTogetherAuthorityHelper
 + (BOOL)checkMicAuthority {
   BOOL isAvalible = NO;

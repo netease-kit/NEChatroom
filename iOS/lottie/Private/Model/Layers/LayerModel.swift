@@ -100,7 +100,7 @@ class LayerModel: Codable, DictionaryInitializable {
   required init(dictionary: [String: Any]) throws {
     name = (try? dictionary.value(for: CodingKeys.name)) ?? "Layer"
     index = try dictionary.value(for: CodingKeys.index) ?? .random(in: Int.min ... Int.max)
-    type = LayerType(rawValue: try dictionary.value(for: CodingKeys.type)) ?? .null
+    type = try LayerType(rawValue: dictionary.value(for: CodingKeys.type)) ?? .null
     if
       let coordinateSpaceRawValue = dictionary[CodingKeys.coordinateSpace.rawValue] as? Int,
       let coordinateSpace = CoordinateSpace(rawValue: coordinateSpaceRawValue) {
@@ -111,7 +111,7 @@ class LayerModel: Codable, DictionaryInitializable {
     inFrame = try dictionary.value(for: CodingKeys.inFrame)
     outFrame = try dictionary.value(for: CodingKeys.outFrame)
     startTime = try dictionary.value(for: CodingKeys.startTime)
-    transform = try Transform(dictionary: try dictionary.value(for: CodingKeys.transform))
+    transform = try Transform(dictionary: dictionary.value(for: CodingKeys.transform))
     parent = try? dictionary.value(for: CodingKeys.parent)
     if
       let blendModeRawValue = dictionary[CodingKeys.blendMode.rawValue] as? Int,

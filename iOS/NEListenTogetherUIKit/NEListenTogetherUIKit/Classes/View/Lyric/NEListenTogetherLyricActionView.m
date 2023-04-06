@@ -142,9 +142,9 @@
   if (!_slider) {
     _slider = [NEListenToghtherSlider new];
     [_slider addTarget:self
-                  action:@selector(sliderValurChanged:forEvent:)
+                  action:@selector(sliderValueChanged:forEvent:)
         forControlEvents:UIControlEventValueChanged];
-    [_slider setThumbImage:[NEListenTogetherUI ne_imageName:@"circle"]
+    [_slider setThumbImage:[NEListenTogetherUI ne_listen_imageName:@"circle"]
                   forState:UIControlStateNormal];
     _slider.minimumTrackTintColor = HEXCOLOR(0xFFFFFF);
     //        _slider.continuous = NO;
@@ -153,7 +153,7 @@
 }
 
 // 处理
-- (void)sliderValurChanged:(UISlider *)slider forEvent:(UIEvent *)event {
+- (void)sliderValueChanged:(UISlider *)slider forEvent:(UIEvent *)event {
   UITouch *touchEvent = event.allTouches.allObjects[0];
 
   switch (touchEvent.phase) {
@@ -178,7 +178,9 @@
 - (void)sliderClick:(UISlider *)slider {
   NSLog(@"===== %f", slider.value);
   if (self.lyricDuration) {
-    self.lyricView.seek(slider.value * self.lyricDuration);
+    NSInteger time = slider.value * self.lyricDuration;
+    self.lyricView.seek(time);
+    self.currentTimeLabel.text = [self formatSeconds:time];
   }
 }
 

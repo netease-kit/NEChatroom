@@ -27,7 +27,7 @@
 
 - (void)initView {
   self.emptyImageView = [[UIImageView alloc]
-      initWithImage:[NEVoiceRoomUI ne_imageName:@"listen_together_song_empty"]];
+      initWithImage:[NEVoiceRoomUI ne_voice_imageName:@"listen_together_song_empty"]];
   [self addSubview:self.emptyImageView];
   [self.emptyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.centerX.equalTo(self.mas_centerX);

@@ -37,9 +37,13 @@
 - (void)loginWithAccount:(NSString *)account
                    token:(NSString *)token
                 nickname:(NSString *)nickname
+             resumeLogin:(BOOL)resumeLogin
                 callback:(void (^)(NSInteger, NSString *_Nullable, id _Nullable))callback {
   self.nickname = nickname;
-  [NEListenTogetherKit.getInstance login:account token:token callback:callback];
+  [NEListenTogetherKit.getInstance login:account
+                                   token:token
+                             resumeLogin:resumeLogin
+                                callback:callback];
 }
 
 - (void)logoutWithCallback:(void (^)(NSInteger, NSString *_Nullable, id _Nullable))callback {
