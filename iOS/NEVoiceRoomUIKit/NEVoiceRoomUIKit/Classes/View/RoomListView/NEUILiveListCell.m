@@ -168,7 +168,8 @@
 - (UIButton *)tagButton {
   if (!_tagButton) {
     _tagButton = [[UIButton alloc] init];
-    [_tagButton setImage:[NEVoiceRoomUI ne_imageName:@"music_ico"] forState:UIControlStateNormal];
+    [_tagButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"music_ico"]
+                forState:UIControlStateNormal];
     [_tagButton setTitle:@"歌曲名" forState:UIControlStateNormal];
     _tagButton.titleLabel.font = Font_Default(12);
     [_tagButton layoutButtonWithEdgeInsetsStyle:QSButtonEdgeInsetsStyleLeft imageTitleSpace:3];

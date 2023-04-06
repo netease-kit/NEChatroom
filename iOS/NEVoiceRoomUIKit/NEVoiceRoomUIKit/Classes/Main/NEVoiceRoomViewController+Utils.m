@@ -58,7 +58,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
           //          [self.bgImageView
           //              sd_setImageWithURL:[NSURL URLWithString:info.liveModel.cover]
-          //                placeholderImage:[NEVoiceRoomUI ne_imageName:@"chatRoom_bgImage_icon"]];
+          //                placeholderImage:[NEVoiceRoomUI
+          //                ne_voice_imageName:@"chatRoom_bgImage_icon"]];
           [self.micQueueView updateGiftDatas:[info.liveModel.seatUserReward mutableCopy]];
           self.roomHeaderView.title = info.liveModel.liveTopic;
           self.roomHeaderView.onlinePeople = NEVoiceRoomKit.getInstance.allMemberList.count;

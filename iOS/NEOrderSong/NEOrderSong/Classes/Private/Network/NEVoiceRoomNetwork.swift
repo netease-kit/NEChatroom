@@ -36,7 +36,7 @@ internal class NEOrderSongNetwork {
   lazy var headers: [String: String] = { [unowned self] in
     var header = [
       "clientType": "ios",
-      "deviceId": self.config.deviceId,
+      "deviceId": config.deviceId,
     ]
     // 添加 appid
     if let appId = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String {

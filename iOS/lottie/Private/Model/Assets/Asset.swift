@@ -12,7 +12,7 @@ public class Asset: Codable, DictionaryInitializable {
     if let id = try? container.decode(String.self, forKey: .id) {
       self.id = id
     } else {
-      id = String(try container.decode(Int.self, forKey: .id))
+      id = try String(container.decode(Int.self, forKey: .id))
     }
   }
 

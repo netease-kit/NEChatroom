@@ -92,11 +92,11 @@
 - (void)chatRoomButtonClick {
   self.chatRoomButton.alpha = 1;
   self.ktvButton.alpha = 0.5;
-  [self.slideView mas_remakeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(self.divideView.mas_top);
-    make.centerX.equalTo(self.chatRoomButton);
-    make.size.mas_equalTo(CGSizeMake(20, 3));
-  }];
+  //  [self.slideView mas_remakeConstraints:^(MASConstraintMaker *make) {
+  //    make.bottom.equalTo(self.divideView.mas_top);
+  //    make.centerX.equalTo(self.chatRoomButton);
+  //    make.size.mas_equalTo(CGSizeMake(20, 3));
+  //  }];
   if (_delegate && [_delegate respondsToSelector:@selector(createRoomResult)]) {
     [_delegate createRoomResult];
   }
@@ -106,11 +106,11 @@
 - (void)ktvButtonClick {
   self.chatRoomButton.alpha = 0.5;
   self.ktvButton.alpha = 1;
-  [self.slideView mas_remakeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(self.divideView.mas_top);
-    make.centerX.equalTo(self.ktvButton);
-    make.size.mas_equalTo(CGSizeMake(20, 3));
-  }];
+  //  [self.slideView mas_remakeConstraints:^(MASConstraintMaker *make) {
+  //    make.bottom.equalTo(self.divideView.mas_top);
+  //    make.centerX.equalTo(self.ktvButton);
+  //    make.size.mas_equalTo(CGSizeMake(20, 3));
+  //  }];
   if (_delegate && [_delegate respondsToSelector:@selector(createRoomResult)]) {
     [_delegate createRoomResult];
   }
@@ -156,7 +156,7 @@
   if (!_chatRoomButton) {
     _chatRoomButton = [[UIButton alloc] init];
     [_chatRoomButton setTitle:NELocalizedString(@"语音聊天室") forState:UIControlStateNormal];
-    [_chatRoomButton setImage:[NEVoiceRoomUI ne_imageName:@"chatroom_titleIcon"]
+    [_chatRoomButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"chatroom_titleIcon"]
                      forState:UIControlStateNormal];
     _chatRoomButton.titleLabel.textColor = UIColor.whiteColor;
     _chatRoomButton.titleLabel.font = TextFont_16;
@@ -171,7 +171,7 @@
   if (!_ktvButton) {
     _ktvButton = [[UIButton alloc] init];
     [_ktvButton setTitle:@"KTV" forState:UIControlStateNormal];
-    [_ktvButton setImage:[NEVoiceRoomUI ne_imageName:@"ktv_titleIcon"]
+    [_ktvButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"ktv_titleIcon"]
                 forState:UIControlStateNormal];
     _ktvButton.titleLabel.textColor = UIColor.whiteColor;
     _ktvButton.titleLabel.font = TextFont_16;

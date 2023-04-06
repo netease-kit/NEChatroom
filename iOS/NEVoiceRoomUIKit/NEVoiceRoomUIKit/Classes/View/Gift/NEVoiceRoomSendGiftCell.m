@@ -79,7 +79,7 @@
                            range:NSMakeRange(0, price.length)];
   // 3.初始化NSTextAttachment对象
   NSTextAttachment *attchment = [[NSTextAttachment alloc] init];
-  attchment.image = [NEVoiceRoomUI ne_imageName:@"gift_icon"];                 // 设置图片
+  attchment.image = [NEVoiceRoomUI ne_voice_imageName:@"gift_icon"];           // 设置图片
   attchment.bounds = CGRectMake(0, round(font.capHeight - 10) / 2.0, 10, 10);  // 设置frame
   // 4.创建带有图片的富文本
   NSAttributedString *string =
@@ -128,7 +128,7 @@
 
 /// 计算直播列表页cell size
 + (CGSize)size {
-  return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 32) / 4.0, 136);
+  return CGSizeMake(([UIScreen mainScreen].bounds.size.width - 30) / 4.0, 136);
   //  return CGSizeMake(80, 136);
 }
 

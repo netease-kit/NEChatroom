@@ -2,108 +2,44 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-#import <NEListenTogetherUIKit/NEListenTogetherUIManager.h>
 #import <NEOrderSong/NEOrderSong-Swift.h>
 #import <NEVoiceRoomUIKit/NEVoiceRoomUIManager.h>
-#import <YXLogin/YXLogin.h>
 #import "AppDelegate+VoiceRoom.h"
 #import "AppKey.h"
-@interface AppDelegate (VoiceRoom) <NEVoiceRoomUIDelegate, NEListenTogetherUIDelegate>
+@interface AppDelegate (VoiceRoom) <NEVoiceRoomUIDelegate>
 
 @end
 
 @implementation AppDelegate (VoiceRoom)
 - (NSString *)getAppkey {
-  BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
-  if (isOutsea) {
-    return @"";
+  if (isOverSea) {
+    return APP_KEY_OVERSEA;
   } else {
-    return @"";
+    return APP_KEY_MAINLAND;
   }
 }
 - (void)vr_setupLoginSDK {
-  BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
-  YXConfig *config = [YXConfig new];
-  config.appKey = [self getAppkey];
-  config.supportInternationalize = YES;
-  config.isOnline = YES;
-  config.parentScope = [NSNumber numberWithInt:5];
-  config.scope = [NSNumber numberWithInt:4];
-  config.type = YXLoginPhone;
-  AuthorManager *LoginManager = [AuthorManager shareInstance];
-  [LoginManager initAuthorWithConfig:config];
-  /// 自动登录
-  if ([LoginManager canAutologin]) {
-    [LoginManager
-        autoLoginWithCompletion:^(YXUserInfo *_Nullable userinfo, NSError *_Nullable error) {
-          if (error) return;
-          NSLog(@"统一登录sdk登录成功");
-          [NEVoiceRoomUIManager.sharedInstance
-              loginWithAccount:userinfo.accountId
-                         token:userinfo.accessToken
-                      nickname:userinfo.nickname
-                      callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
-                        if (code != 0) {
-                          [LoginManager logoutWithCompletion:^(YXUserInfo *_Nullable userinfo,
-                                                               NSError *_Nullable error){
-
-                          }];
-                        } else {
-                          /// 登录后初始化点歌台的配置
-                          [[NEOrderSong getInstance] loginInitConfig:userinfo.accountId
-                                                               token:userinfo.accessToken
-                                                            callback:nil];
-                          /// 一起听 Manager 登录处理，不做真实登录
-                          [NEListenTogetherUIManager.sharedInstance
-                              loginWithAccount:userinfo.accountId
-                                         token:userinfo.accessToken
-                                      nickname:userinfo.nickname
-                                      callback:^(NSInteger code, NSString *_Nullable msg,
-                                                 id _Nullable obj){
-
-                                      }];
-                        }
-                      }];
-        }];
-  } else {
-    [LoginManager
-        startLoginWithCompletion:^(YXUserInfo *_Nullable userinfo, NSError *_Nullable error) {
-          if (error) return;
-          NSLog(@"统一登录sdk登录成功");
-          [NEVoiceRoomUIManager.sharedInstance
-              loginWithAccount:userinfo.accountId
-                         token:userinfo.accessToken
-                      nickname:userinfo.nickname
-                      callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
-                        if (code != 0) {
-                          [LoginManager logoutWithCompletion:^(YXUserInfo *_Nullable userinfo,
-                                                               NSError *_Nullable error){
-
-                          }];
-                        } else {
-                          /// 登录后初始化点歌台的配置
-                          [[NEOrderSong getInstance] loginInitConfig:userinfo.accountId
-                                                               token:userinfo.accessToken
-                                                            callback:nil];
-                          /// 一起听 Manager 登录处理，不做真实登录
-                          [NEListenTogetherUIManager.sharedInstance
-                              loginWithAccount:userinfo.accountId
-                                         token:userinfo.accessToken
-                                      nickname:userinfo.nickname
-                                      callback:^(NSInteger code, NSString *_Nullable msg,
-                                                 id _Nullable obj){
-
-                                      }];
-                        }
-                      }];
-        }];
-  }
+  [NEVoiceRoomUIManager.sharedInstance
+      loginWithAccount:accountId
+                 token:accessToken
+              nickname:@"nickname"
+              callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
+                if (code != 0) {
+                  NSLog(@"登录失败");
+                } else {
+                  NSLog(@"登录成功");
+                  /// 登录后初始化点歌台的配置
+                  [[NEOrderSong getInstance] loginInitConfig:accountId
+                                                       token:accessToken
+                                                    callback:nil];
+                }
+              }];
 }
 
 - (void)vr_setupVoiceRoom {
   NEVoiceRoomKitConfig *config = [[NEVoiceRoomKitConfig alloc] init];
   config.appKey = [self getAppkey];
-  BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+  BOOL isOutsea = isOverSea;
   if (isOutsea) {
     config.extras = @{@"serverUrl" : @"oversea"};
   }
@@ -117,18 +53,6 @@
                     });
                   }];
   [NEVoiceRoomUIManager sharedInstance].delegate = self;
-
-  NEListenTogetherKitConfig *listenTogetherConfig = [[NEListenTogetherKitConfig alloc] init];
-  listenTogetherConfig.appKey = [self getAppkey];
-  if (isOutsea) {
-    listenTogetherConfig.extras = @{@"serverUrl" : @"oversea"};
-  }
-  [[NEListenTogetherUIManager sharedInstance]
-      initializeWithConfig:listenTogetherConfig
-                  callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc){
-
-                  }];
-  [NEListenTogetherUIManager sharedInstance].delegate = self;
 
   /// 点歌台属配置初始化
   NEOrderSongConfig *orderSongConfig = [[NEOrderSongConfig alloc] init];
@@ -144,38 +68,7 @@
 }
 - (void)onVoiceRoomClientEvent:(NEVoiceRoomClientEvent)event {
   if (event == NEVoiceRoomClientEventKicOut) {
-    [[AuthorManager shareInstance]
-        logoutWithCompletion:^(YXUserInfo *_Nullable userinfo, NSError *_Nullable error) {
-          [[AuthorManager shareInstance]
-              startLoginWithCompletion:^(YXUserInfo *_Nullable userinfo, NSError *_Nullable error) {
-                [NEVoiceRoomUIManager.sharedInstance
-                    loginWithAccount:userinfo.accountId
-                               token:userinfo.accessToken
-                            nickname:userinfo.nickname
-                            callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
-                              if (code == 0) {
-                                /// 登录后初始化点歌台的配置
-                                [[NEOrderSong getInstance] loginInitConfig:userinfo.accountId
-                                                                     token:userinfo.accessToken
-                                                                  callback:nil];
-                                /// 一起听 Manager 登录处理，不做真实登录
-                                [NEListenTogetherUIManager.sharedInstance
-                                    loginWithAccount:userinfo.accountId
-                                               token:userinfo.accessToken
-                                            nickname:userinfo.nickname
-                                            callback:^(NSInteger code, NSString *_Nullable msg,
-                                                       id _Nullable obj){
-
-                                            }];
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                  [NSNotificationCenter.defaultCenter
-                                      postNotification:[NSNotification notificationWithName:@"Login"
-                                                                                     object:nil]];
-                                });
-                              }
-                            }];
-              }];
-        }];
+    NSLog(@"账号被异地登录了,请重新启动登录");
   }
 }
 @end

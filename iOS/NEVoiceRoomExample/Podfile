@@ -12,17 +12,19 @@ target 'LiveAudioRoom' do
   pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
   pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
   pod 'NEOrderSong', :path => '../NEOrderSong/NEOrderSong.podspec'
-  pod 'NEListenTogetherKit', :path => '../NEListenTogetherKit/NEListenTogetherKit.podspec'
-  pod 'NEListenTogetherUIKit', :path => '../NEListenTogetherUIKit/NEListenTogetherUIKit.podspec'
   pod 'LottieSwift', :path => '../lottie/LottieSwift.podspec'
+  pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
 
-  pod 'NERoomKit','1.11.1'
+  pod 'NERoomKit','1.12.2'
   pod 'NECopyrightedMedia','1.5.0'
-  pod 'NEVoiceRoomKit','1.0.5'
 
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
-  pod 'YXLogin'
+  pod 'NERtcSDK/Beauty', '4.6.43'
+  pod 'NERtcSDK/FaceDetect', '4.6.43'
+  pod 'NERtcSDK/Segment', '4.6.43'
+  pod 'NERtcSDK/RtcBasic', '4.6.43'
+  pod 'NIMSDK_LITE', '9.8.0'
 end
 
 post_install do |installer|

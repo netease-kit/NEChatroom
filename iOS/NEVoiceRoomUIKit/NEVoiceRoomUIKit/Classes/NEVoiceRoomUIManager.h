@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, NEVoiceRoomClientEvent) {
 @protocol NEVoiceRoomUIDelegate <NSObject>
 
 - (void)onVoiceRoomClientEvent:(NEVoiceRoomClientEvent)event;
+- (void)onVoiceRoomJoinRoom;
+- (void)onVoiceRoomLeaveRoom;
 
 @end
 

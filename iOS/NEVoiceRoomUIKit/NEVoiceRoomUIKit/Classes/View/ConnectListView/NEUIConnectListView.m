@@ -307,7 +307,7 @@ static CGFloat foldBtnHeight = 38;
             }];
     NSTextAttachment *attchment = [[NSTextAttachment alloc] init];
     attchment.bounds = CGRectMake(0, -2, 14, 14);
-    attchment.image = [NEVoiceRoomUI ne_imageName:@"up_ico_14"];
+    attchment.image = [NEVoiceRoomUI ne_voice_imageName:@"up_ico_14"];
     NSAttributedString *icoStr = [NSAttributedString attributedStringWithAttachment:attchment];
     [res appendAttributedString:icoStr];
 

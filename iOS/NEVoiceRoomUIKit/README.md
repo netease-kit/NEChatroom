@@ -1,29 +1,38 @@
 # NEVoiceRoomUIKit
 
-[![CI Status](https://img.shields.io/travis/gingerjin1993@gmail.com/NEVoiceRoomUIKit.svg?style=flat)](https://travis-ci.org/gingerjin1993@gmail.com/NEVoiceRoomUIKit)
-[![Version](https://img.shields.io/cocoapods/v/NEVoiceRoomUIKit.svg?style=flat)](https://cocoapods.org/pods/NEVoiceRoomUIKit)
-[![License](https://img.shields.io/cocoapods/l/NEVoiceRoomUIKit.svg?style=flat)](https://cocoapods.org/pods/NEVoiceRoomUIKit)
-[![Platform](https://img.shields.io/cocoapods/p/NEVoiceRoomUIKit.svg?style=flat)](https://cocoapods.org/pods/NEVoiceRoomUIKit)
+> 语聊房语聊UI模块。
 
-## Example
+## Change Log
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+[change log](CHANGELOG.md)
 
-## Requirements
+## 本地引用
 
-## Installation
+### 其他Kit引用
+如果是其他Kit引用NEVoiceRoomUIKit，就在对应Kit的podspec文件中添加依赖。
 
-NEVoiceRoomUIKit is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'NEVoiceRoomUIKit'
+```
+  s.dependency 'NEVoiceRoomUIKit'
 ```
 
-## Author
+由于podspec中无法通过路径来依赖本地的pod库，所以，需要在根目录的pod文件中找到对应的example工程来添加对该Kit的依赖。
 
-gingerjin1993@gmail.com, jinjie03@corp.netease.com
+```
+  pod 'NEVoiceRoomUIKit', :path => 'VoiceRoomKit/NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
+```
 
-## License
+## Pod引用
+- 打开 Podfile 文件，在对应的target中 添加pod依赖，具体内容如下
+    pod 'NEVoiceRoomUIKit'
+    
+## 编译
+- 在根目录执行pod install，运行NEKaraoke工程，确保本地工作正常。
 
-NEVoiceRoomUIKit is available under the MIT license. See the LICENSE file for more info.
+- 打开项目根目录，运行build_frame.sh 脚本，具体执行命令如下
+    sh build_frame.sh  --project Pods/Pods.xcodeproj  --targetName NEVoiceRoomUIKit --version x.x.x -z
+- 完成上一步，根目录下会生成build目录，对应的frameWork即指定的 target frameWork
+    
+    
+## 发布 目前开源，无发布版本
+
+

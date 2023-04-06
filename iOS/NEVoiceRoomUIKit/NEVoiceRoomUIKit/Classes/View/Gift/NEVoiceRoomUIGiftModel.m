@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomUIGiftModel.h"
+#import "NSBundle+NELocalized.h"
 
 @implementation NEVoiceRoomUIGiftModel
 
@@ -21,22 +22,26 @@
 }
 
 + (NSArray<NEVoiceRoomUIGiftModel *> *)defaultGifts {
-  NEVoiceRoomUIGiftModel *gift1 = [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:1
-                                                                            icon:@"gift03_ico"
-                                                                         display:@"荧光棒"
-                                                                           price:9];
-  NEVoiceRoomUIGiftModel *gift2 = [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:2
-                                                                            icon:@"gift04_ico"
-                                                                         display:@"安排"
-                                                                           price:99];
-  NEVoiceRoomUIGiftModel *gift3 = [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:3
-                                                                            icon:@"gift02_ico"
-                                                                         display:@"跑车"
-                                                                           price:199];
-  NEVoiceRoomUIGiftModel *gift4 = [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:4
-                                                                            icon:@"gift01_ico"
-                                                                         display:@"火箭"
-                                                                           price:999];
+  NEVoiceRoomUIGiftModel *gift1 =
+      [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:1
+                                                icon:@"gift03_ico"
+                                             display:NELocalizedString(@"荧光棒")
+                                               price:9];
+  NEVoiceRoomUIGiftModel *gift2 =
+      [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:2
+                                                icon:@"gift04_ico"
+                                             display:NELocalizedString(@"安排")
+                                               price:99];
+  NEVoiceRoomUIGiftModel *gift3 =
+      [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:3
+                                                icon:@"gift02_ico"
+                                             display:NELocalizedString(@"跑车")
+                                               price:199];
+  NEVoiceRoomUIGiftModel *gift4 =
+      [[NEVoiceRoomUIGiftModel alloc] initWithGiftId:4
+                                                icon:@"gift01_ico"
+                                             display:NELocalizedString(@"火箭")
+                                               price:999];
   return @[ gift1, gift2, gift3, gift4 ];
 }
 

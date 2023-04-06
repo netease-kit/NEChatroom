@@ -49,4 +49,9 @@ Pod::Spec.new do |s|
     'NEVoiceRoomUIKit' => ['NEVoiceRoomUIKit/Assets/**/*']
   }
   s.frameworks = 'UIKit'
+  
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64',
+      'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
+    }
 end

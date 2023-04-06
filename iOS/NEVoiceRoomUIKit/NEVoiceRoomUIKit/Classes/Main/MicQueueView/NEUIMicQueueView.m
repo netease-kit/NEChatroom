@@ -51,93 +51,108 @@
   return self;
 }
 
-- (void)updateWithVolumeInfos:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumeInfos {
-  //  self.volumeInfos = volumeInfos;
-  if (volumeInfos.count == 1 &&
-      [volumeInfos[0].userUuid isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
-    // 自己讲话，单独更新
-    if ([[NEVoiceRoomKit getInstance].localMember.account isEqualToString:_anchorMicInfo.user]) {
-      // 自己是主播
-      bool isAnchorSpeaking = volumeInfos[0].volume > 0;
-      if (isAnchorSpeaking) {
-        [_anchorCell startSpeakAnimation];
-      } else {
-        [_anchorCell stopSpeakAnimation];
-      }
+- (void)updateWithLocalVolume:(NSInteger)volume {
+  NEVoiceRoomMember *localMember = [NEVoiceRoomKit getInstance].localMember;
+  // 自己讲话，单独更新
+  if ([localMember.account isEqualToString:_anchorMicInfo.user]) {
+    // 自己是主播
+    bool isAnchorSpeaking = volume > 0;
+    if (isAnchorSpeaking && localMember.isAudioOn) {
+      [_anchorCell startSpeakAnimation];
     } else {
-      // 自己不是主播
-      for (int i = 0; i < self.datas.count; i++) {
+      [_anchorCell stopSpeakAnimation];
+    }
+  } else {
+    // 自己不是主播
+    for (int i = 0; i < self.datas.count; i++) {
+      NEVoiceRoomSeatItem *data = self.datas[i];
+      if ([data.user isEqualToString:localMember.account]) {
+        NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
+        if (volume > 0 && localMember.isAudioOn) {
+          [cell startSpeakAnimation];
+        } else {
+          [cell stopSpeakAnimation];
+        }
+      } else {
+        NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
+        [cell stopSpeakAnimation];
+      }
+    }
+  }
+}
+
+- (void)updateWithRemoteVolumeInfos:(NSArray<NEVoiceRoomMemberVolumeInfo *> *)volumeInfos {
+  // 其他人讲话
+  if ([[NEVoiceRoomKit getInstance].localMember.account isEqualToString:_anchorMicInfo.user]) {
+    // 自己是主播
+    for (int i = 0; i < self.datas.count; i++) {
+      bool isIn = false;
+      for (NEVoiceRoomMemberVolumeInfo *volume in volumeInfos) {
+        NEVoiceRoomMember *member;
+        for (NEVoiceRoomMember *m in [NEVoiceRoomKit getInstance].allMemberList) {
+          if ([m.account isEqualToString:volume.userUuid]) {
+            member = m;
+          }
+        }
         NEVoiceRoomSeatItem *data = self.datas[i];
-        if ([data.user isEqualToString:volumeInfos[0].userUuid]) {
+        if ([data.user isEqualToString:volume.userUuid]) {
+          isIn = true;
           NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
-          if (volumeInfos[0].volume > 0) {
+          if (volume.volume > 0 && member.isAudioOn) {
             [cell startSpeakAnimation];
           } else {
             [cell stopSpeakAnimation];
           }
-        } else {
-          NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
-          [cell stopSpeakAnimation];
         }
+      }
+      if (!isIn) {
+        NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
+        [cell stopSpeakAnimation];
       }
     }
   } else {
-    // 其他人讲话
-    if ([[NEVoiceRoomKit getInstance].localMember.account isEqualToString:_anchorMicInfo.user]) {
-      // 自己是主播
-      for (int i = 0; i < self.datas.count; i++) {
-        bool isIn = false;
-        for (NEVoiceRoomMemberVolumeInfo *volume in volumeInfos) {
-          NEVoiceRoomSeatItem *data = self.datas[i];
+    // 自己不是主播
+    bool isAnchorSpeaking = false;
+    NEVoiceRoomMember *anchorMember;
+    for (int i = 0; i < self.datas.count; i++) {
+      bool isIn = false;
+      for (NEVoiceRoomMemberVolumeInfo *volume in volumeInfos) {
+        if ([volume.userUuid isEqualToString:_anchorMicInfo.user] && volume.volume > 0) {
+          isAnchorSpeaking = true;
+        }
+        NEVoiceRoomMember *member;
+        for (NEVoiceRoomMember *m in [NEVoiceRoomKit getInstance].allMemberList) {
+          if ([m.account isEqualToString:volume.userUuid]) {
+            member = m;
+          }
+          if ([m.account isEqualToString:_anchorMicInfo.user]) {
+            anchorMember = m;
+          }
+        }
+        NEVoiceRoomSeatItem *data = self.datas[i];
+        if (![data.user isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
           if ([data.user isEqualToString:volume.userUuid]) {
             isIn = true;
             NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
-            if (volume.volume > 0) {
+            if (volume.volume > 0 && member.isAudioOn) {
               [cell startSpeakAnimation];
             } else {
               [cell stopSpeakAnimation];
             }
           }
-        }
-        if (!isIn) {
-          NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
-          [cell stopSpeakAnimation];
+        } else {
+          isIn = true;
         }
       }
+      if (!isIn) {
+        NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
+        [cell stopSpeakAnimation];
+      }
+    }
+    if (isAnchorSpeaking && anchorMember.isAudioOn) {
+      [_anchorCell startSpeakAnimation];
     } else {
-      // 自己不是主播
-      bool isAnchorSpeaking = false;
-      for (int i = 0; i < self.datas.count; i++) {
-        bool isIn = false;
-        for (NEVoiceRoomMemberVolumeInfo *volume in volumeInfos) {
-          if ([volume.userUuid isEqualToString:_anchorMicInfo.user] && volume.volume > 0) {
-            isAnchorSpeaking = true;
-          }
-          NEVoiceRoomSeatItem *data = self.datas[i];
-          if (![data.user isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
-            if ([data.user isEqualToString:volume.userUuid]) {
-              isIn = true;
-              NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
-              if (volume.volume > 0) {
-                [cell startSpeakAnimation];
-              } else {
-                [cell stopSpeakAnimation];
-              }
-            }
-          } else {
-            isIn = true;
-          }
-        }
-        if (!isIn) {
-          NEUIMicQueueCell *cell = [self cellWithMicOrder:i];
-          [cell stopSpeakAnimation];
-        }
-      }
-      if (isAnchorSpeaking) {
-        [_anchorCell startSpeakAnimation];
-      } else {
-        [_anchorCell stopSpeakAnimation];
-      }
+      [_anchorCell stopSpeakAnimation];
     }
   }
 }
@@ -149,16 +164,6 @@
                    [NEUIChatroomMicCell cellPaddingH];
   self.collectionView.frame = CGRectMake(
       0, self.anchorCell.bottom + [NEUIChatroomMicCell cellPaddingH], self.width, height);
-}
-
-- (void)updateCellWithMicInfo:(NEVoiceRoomSeatItem *)micInfo {
-  if (!micInfo) {
-    return;
-  }
-  ntes_main_async_safe(^{
-    NEUIMicQueueCell *cell = [self cellWithMicOrder:micInfo.index];
-    [cell refresh:micInfo];
-  });
 }
 
 - (CGFloat)calculateHeightWithWidth:(CGFloat)width {
@@ -181,6 +186,10 @@
 - (void)stopSoundAnimation:(NSInteger)micOrder {
   NEUIMicQueueCell *cell = [self cellWithMicOrder:micOrder];
   [cell stopSoundAnimation];
+}
+
+- (void)reloadData {
+  [self.collectionView reloadData];
 }
 
 #pragma mark - getter/setter

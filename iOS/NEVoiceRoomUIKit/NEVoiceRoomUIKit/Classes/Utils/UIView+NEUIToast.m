@@ -85,12 +85,12 @@ static NSInteger KNEVoiceRoomToastBarTag = 111;
       case NEUIToastStateSuccess:
         [self addSubview:self.imgView];
         [self addSubview:self.infoLab];
-        _imgView.image = [NEVoiceRoomUI ne_imageName:@"state_success"];
+        _imgView.image = [NEVoiceRoomUI ne_voice_imageName:@"state_success"];
         break;
       case NEUIToastStateFail:
         [self addSubview:self.imgView];
         [self addSubview:self.infoLab];
-        _imgView.image = [NEVoiceRoomUI ne_imageName:@"state_fail"];
+        _imgView.image = [NEVoiceRoomUI ne_voice_imageName:@"state_fail"];
         break;
       case NEUIToastCancel:
         [self addSubview:self.infoLab];

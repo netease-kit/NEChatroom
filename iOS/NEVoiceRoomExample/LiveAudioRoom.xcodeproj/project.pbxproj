@@ -19,21 +19,10 @@
 		53BFB59328D7075400F98B59 /* NEMenuHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB57828D7075400F98B59 /* NEMenuHeader.m */; };
 		53BFB59428D7075400F98B59 /* NEMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB57928D7075400F98B59 /* NEMenuCell.m */; };
 		53BFB59528D7075400F98B59 /* NENavCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB57A28D7075400F98B59 /* NENavCustomView.m */; };
-		53BFB59628D7075400F98B59 /* NEPersonVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58028D7075400F98B59 /* NEPersonVC.m */; };
-		53BFB59728D7075400F98B59 /* NEStatementVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53BFB58128D7075400F98B59 /* NEStatementVC.xib */; };
-		53BFB59828D7075400F98B59 /* NEStatementVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58328D7075400F98B59 /* NEStatementVC.m */; };
-		53BFB59928D7075400F98B59 /* NEAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58428D7075400F98B59 /* NEAboutViewController.m */; };
-		53BFB59A28D7075400F98B59 /* NEPersonInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58528D7075400F98B59 /* NEPersonInfoVC.m */; };
-		53BFB59B28D7075400F98B59 /* NENicknameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58828D7075400F98B59 /* NENicknameVC.m */; };
-		53BFB59C28D7075400F98B59 /* NEPersonTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58C28D7075400F98B59 /* NEPersonTextCell.m */; };
-		53BFB59D28D7075400F98B59 /* NEPersonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB58D28D7075400F98B59 /* NEPersonTableViewCell.m */; };
 		53BFB5C028D70F9200F98B59 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 53BFB5C228D70F9200F98B59 /* InfoPlist.strings */; };
 		53BFB5CA28D7105100F98B59 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 53BFB5CC28D7105100F98B59 /* Localizable.strings */; };
 		53CB3A0928E2DA6200C3F194 /* playing.json in Resources */ = {isa = PBXBuildFile; fileRef = 53CB3A0828E2DA6200C3F194 /* playing.json */; };
 		E7D49DBE6E172259FAA2CD34 /* Pods_LiveAudioRoom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5468F34E67967D7E45A126A8 /* Pods_LiveAudioRoom.framework */; };
-		ED2C6DD628E3F10800440A32 /* NEPersonTableViewDataCenterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ED2C6DD528E3F10800440A32 /* NEPersonTableViewDataCenterCell.m */; };
-		ED2C6DDC28E3F20600440A32 /* NEPersonView.m in Sources */ = {isa = PBXBuildFile; fileRef = ED2C6DDB28E3F20600440A32 /* NEPersonView.m */; };
-		ED2C6DDF28E3F20F00440A32 /* NEPersonDataCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = ED2C6DDE28E3F20F00440A32 /* NEPersonDataCenterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +36,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		10FC077E9AAE26D9EA6FDE7A /* Pods-LiveAudioRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.debug.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.debug.xcconfig"; sourceTree = "<group>"; };
 		53BFB52F28D6F96700F98B59 /* LiveAudioRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveAudioRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53BFB53228D6F96700F98B59 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		53BFB53328D6F96700F98B59 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -72,21 +60,6 @@
 		53BFB57B28D7075400F98B59 /* NEMenuHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEMenuHeader.h; sourceTree = "<group>"; };
 		53BFB57C28D7075400F98B59 /* NEMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEMenuCell.h; sourceTree = "<group>"; };
 		53BFB57D28D7075400F98B59 /* NENavCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NENavCustomView.h; sourceTree = "<group>"; };
-		53BFB58028D7075400F98B59 /* NEPersonVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEPersonVC.m; sourceTree = "<group>"; };
-		53BFB58128D7075400F98B59 /* NEStatementVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NEStatementVC.xib; sourceTree = "<group>"; };
-		53BFB58228D7075400F98B59 /* NENicknameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NENicknameVC.h; sourceTree = "<group>"; };
-		53BFB58328D7075400F98B59 /* NEStatementVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEStatementVC.m; sourceTree = "<group>"; };
-		53BFB58428D7075400F98B59 /* NEAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEAboutViewController.m; sourceTree = "<group>"; };
-		53BFB58528D7075400F98B59 /* NEPersonInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEPersonInfoVC.m; sourceTree = "<group>"; };
-		53BFB58628D7075400F98B59 /* NEPersonVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEPersonVC.h; sourceTree = "<group>"; };
-		53BFB58728D7075400F98B59 /* NEStatementVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEStatementVC.h; sourceTree = "<group>"; };
-		53BFB58828D7075400F98B59 /* NENicknameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NENicknameVC.m; sourceTree = "<group>"; };
-		53BFB58928D7075400F98B59 /* NEPersonInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEPersonInfoVC.h; sourceTree = "<group>"; };
-		53BFB58A28D7075400F98B59 /* NEAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEAboutViewController.h; sourceTree = "<group>"; };
-		53BFB58C28D7075400F98B59 /* NEPersonTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEPersonTextCell.m; sourceTree = "<group>"; };
-		53BFB58D28D7075400F98B59 /* NEPersonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEPersonTableViewCell.m; sourceTree = "<group>"; };
-		53BFB58F28D7075400F98B59 /* NEPersonTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEPersonTextCell.h; sourceTree = "<group>"; };
-		53BFB59128D7075400F98B59 /* NEPersonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEPersonTableViewCell.h; sourceTree = "<group>"; };
 		53BFB5BA28D70E4600F98B59 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		53BFB5BB28D70E4700F98B59 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		53BFB5C128D70F9200F98B59 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -98,13 +71,8 @@
 		53CB3A0828E2DA6200C3F194 /* playing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = playing.json; sourceTree = "<group>"; };
 		5468F34E67967D7E45A126A8 /* Pods_LiveAudioRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveAudioRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E487B162946F54400337865 /* LiveAudioRoomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveAudioRoomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A42F55EA8072BE596416CF28 /* Pods-LiveAudioRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.release.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.release.xcconfig"; sourceTree = "<group>"; };
-		ED2C6DD428E3F10800440A32 /* NEPersonTableViewDataCenterCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NEPersonTableViewDataCenterCell.h; sourceTree = "<group>"; };
-		ED2C6DD528E3F10800440A32 /* NEPersonTableViewDataCenterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEPersonTableViewDataCenterCell.m; sourceTree = "<group>"; };
-		ED2C6DDA28E3F20600440A32 /* NEPersonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEPersonView.h; sourceTree = "<group>"; };
-		ED2C6DDB28E3F20600440A32 /* NEPersonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEPersonView.m; sourceTree = "<group>"; };
-		ED2C6DDD28E3F20F00440A32 /* NEPersonDataCenterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NEPersonDataCenterView.h; sourceTree = "<group>"; };
-		ED2C6DDE28E3F20F00440A32 /* NEPersonDataCenterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEPersonDataCenterView.m; sourceTree = "<group>"; };
+		823E028A7FF1676A586900BE /* Pods-LiveAudioRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.release.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.release.xcconfig"; sourceTree = "<group>"; };
+		CE0349BBAD27D0C053F5D205 /* Pods-LiveAudioRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.debug.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +108,7 @@
 				53BFB53128D6F96700F98B59 /* LiveAudioRoom */,
 				53BFB53028D6F96700F98B59 /* Products */,
 				1E02BD73B716212F769A7C6A /* Frameworks */,
-				DFB8F511B6ADEFECB20A5626 /* Pods */,
+				D4B658710CDBDB93333FB80F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -207,7 +175,6 @@
 			isa = PBXGroup;
 			children = (
 				53BFB57328D7075400F98B59 /* Home */,
-				53BFB57E28D7075400F98B59 /* Center */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -243,55 +210,11 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		53BFB57E28D7075400F98B59 /* Center */ = {
+		D4B658710CDBDB93333FB80F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				53BFB57F28D7075400F98B59 /* VC */,
-				53BFB58B28D7075400F98B59 /* View */,
-			);
-			path = Center;
-			sourceTree = "<group>";
-		};
-		53BFB57F28D7075400F98B59 /* VC */ = {
-			isa = PBXGroup;
-			children = (
-				53BFB58228D7075400F98B59 /* NENicknameVC.h */,
-				53BFB58828D7075400F98B59 /* NENicknameVC.m */,
-				53BFB58728D7075400F98B59 /* NEStatementVC.h */,
-				53BFB58328D7075400F98B59 /* NEStatementVC.m */,
-				53BFB58128D7075400F98B59 /* NEStatementVC.xib */,
-				53BFB58928D7075400F98B59 /* NEPersonInfoVC.h */,
-				53BFB58528D7075400F98B59 /* NEPersonInfoVC.m */,
-				53BFB58628D7075400F98B59 /* NEPersonVC.h */,
-				53BFB58028D7075400F98B59 /* NEPersonVC.m */,
-				53BFB58A28D7075400F98B59 /* NEAboutViewController.h */,
-				53BFB58428D7075400F98B59 /* NEAboutViewController.m */,
-			);
-			path = VC;
-			sourceTree = "<group>";
-		};
-		53BFB58B28D7075400F98B59 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				53BFB59128D7075400F98B59 /* NEPersonTableViewCell.h */,
-				53BFB58D28D7075400F98B59 /* NEPersonTableViewCell.m */,
-				ED2C6DD428E3F10800440A32 /* NEPersonTableViewDataCenterCell.h */,
-				ED2C6DD528E3F10800440A32 /* NEPersonTableViewDataCenterCell.m */,
-				ED2C6DDA28E3F20600440A32 /* NEPersonView.h */,
-				ED2C6DDB28E3F20600440A32 /* NEPersonView.m */,
-				ED2C6DDD28E3F20F00440A32 /* NEPersonDataCenterView.h */,
-				ED2C6DDE28E3F20F00440A32 /* NEPersonDataCenterView.m */,
-				53BFB58F28D7075400F98B59 /* NEPersonTextCell.h */,
-				53BFB58C28D7075400F98B59 /* NEPersonTextCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		DFB8F511B6ADEFECB20A5626 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				10FC077E9AAE26D9EA6FDE7A /* Pods-LiveAudioRoom.debug.xcconfig */,
-				A42F55EA8072BE596416CF28 /* Pods-LiveAudioRoom.release.xcconfig */,
+				CE0349BBAD27D0C053F5D205 /* Pods-LiveAudioRoom.debug.xcconfig */,
+				823E028A7FF1676A586900BE /* Pods-LiveAudioRoom.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -385,7 +308,6 @@
 				53BFB53F28D6F96900F98B59 /* Assets.xcassets in Resources */,
 				53CB3A0928E2DA6200C3F194 /* playing.json in Resources */,
 				53BFB53D28D6F96700F98B59 /* Main.storyboard in Resources */,
-				53BFB59728D7075400F98B59 /* NEStatementVC.xib in Resources */,
 				53BFB5C028D70F9200F98B59 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,25 +368,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53BFB59628D7075400F98B59 /* NEPersonVC.m in Sources */,
-				53BFB59B28D7075400F98B59 /* NENicknameVC.m in Sources */,
 				53BFB57028D7074D00F98B59 /* AppDelegate+VoiceRoom.m in Sources */,
-				ED2C6DD628E3F10800440A32 /* NEPersonTableViewDataCenterCell.m in Sources */,
 				53BFB59528D7075400F98B59 /* NENavCustomView.m in Sources */,
-				53BFB59928D7075400F98B59 /* NEAboutViewController.m in Sources */,
-				ED2C6DDC28E3F20600440A32 /* NEPersonView.m in Sources */,
 				53BFB53A28D6F96700F98B59 /* ViewController.m in Sources */,
 				53BFB57128D7074D00F98B59 /* AppDelegate+UIWindow.m in Sources */,
 				53BFB59328D7075400F98B59 /* NEMenuHeader.m in Sources */,
 				53BFB53428D6F96700F98B59 /* AppDelegate.m in Sources */,
-				ED2C6DDF28E3F20F00440A32 /* NEPersonDataCenterView.m in Sources */,
 				53BFB59228D7075400F98B59 /* NEMenuViewController.m in Sources */,
-				53BFB59828D7075400F98B59 /* NEStatementVC.m in Sources */,
-				53BFB59A28D7075400F98B59 /* NEPersonInfoVC.m in Sources */,
-				53BFB59C28D7075400F98B59 /* NEPersonTextCell.m in Sources */,
 				53BFB54528D6F96900F98B59 /* main.m in Sources */,
 				53BFB59428D7075400F98B59 /* NEMenuCell.m in Sources */,
-				53BFB59D28D7075400F98B59 /* NEPersonTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,7 +553,7 @@
 		};
 		53BFB55F28D6F96900F98B59 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10FC077E9AAE26D9EA6FDE7A /* Pods-LiveAudioRoom.debug.xcconfig */;
+			baseConfigurationReference = CE0349BBAD27D0C053F5D205 /* Pods-LiveAudioRoom.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -657,12 +569,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.7.0;
+				MARKETING_VERSION = 3.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -673,14 +586,16 @@
 		};
 		53BFB56028D6F96900F98B59 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A42F55EA8072BE596416CF28 /* Pods-LiveAudioRoom.release.xcconfig */;
+			baseConfigurationReference = 823E028A7FF1676A586900BE /* Pods-LiveAudioRoom.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 569GNZ5392;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 569GNZ5392;
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LiveAudioRoom/Info.plist;
@@ -689,15 +604,17 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.7.0;
+				MARKETING_VERSION = 3.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.netease.yunxin.app.chatroom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = enterpriseForWildCard;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = enterpriseForWildCard;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

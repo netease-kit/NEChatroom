@@ -353,6 +353,7 @@
   [self getSeatInfo];
 }
 - (void)onMemberAudioBanned:(NEVoiceRoomMember *)member banned:(BOOL)banned {
+  [self.micQueueView reloadData];
   NSString *anchorTitle = banned ? NELocalizedString(@"该麦位语音已被屏蔽，无法发言")
                                  : NELocalizedString(@"该麦位已\"解除语音屏蔽\"");
   if ([self isAnchor]) {

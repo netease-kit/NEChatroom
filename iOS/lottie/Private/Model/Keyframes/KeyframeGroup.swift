@@ -196,8 +196,8 @@ extension Keyframe {
 extension KeyframeGroup {
   /// Maps the values of each individual keyframe in this group
   func map<NewValue>(_ transformation: (T) throws -> NewValue) rethrows -> KeyframeGroup<NewValue> {
-    KeyframeGroup<NewValue>(keyframes: ContiguousArray(try keyframes.map { keyframe in
-      keyframe.withValue(try transformation(keyframe.value))
+    try KeyframeGroup<NewValue>(keyframes: ContiguousArray(keyframes.map { keyframe in
+      try keyframe.withValue(transformation(keyframe.value))
     }))
   }
 }

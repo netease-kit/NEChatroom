@@ -12,6 +12,7 @@
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEUIViewFactory.h"
 #import "NEVoiceRoomUI.h"
+#import "NEVoiceRoomUIManager.h"
 #import "NSBundle+NELocalized.h"
 #import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
@@ -19,7 +20,7 @@
 #import "UIView+VoiceRoom.h"
 
 static void *KVOContext = &KVOContext;
-static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
+
 #define kBtnWidth 36
 @interface NEVoiceRoomFooterView () <UITextFieldDelegate>
 @property(nonatomic, strong) UIView *searchBarBgView;
@@ -127,7 +128,8 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
 - (void)selectSubviewsWithRole:(NEVoiceRoomRole)role {
   switch (role) {
     case NEVoiceRoomRoleHost: {
-      BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+      BOOL isOutsea = [[[NEVoiceRoomUIManager sharedInstance].config.extras
+          objectForKey:@"serverUrl"] isEqualToString:@"https://roomkit-sg.netease.im"];
       if (isOutsea) {
         self.buttonsArray = @[ self.menuButton, self.microphoneButton, self.giftButton ];
       } else {
@@ -150,7 +152,8 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
 - (void)updateAudienceOperatingButton:(BOOL)isOnSeat {
   [self.buttonsArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
   if (self.role == NEVoiceRoomRoleHost) {
-    BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
+    BOOL isOutsea = [[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
+        isEqualToString:@"https://roomkit-sg.netease.im"];
     self.buttonsArray =
         isOnSeat
             ? (isOutsea
@@ -185,11 +188,15 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
       }
     } break;
     case NEUIFunctionGift: {
+      [NSNotificationCenter.defaultCenter
+          postNotification:[NSNotification notificationWithName:@"chatroomGift" object:nil]];
       if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveGiftClickAciton)]) {
         [_delegate footerDidReceiveGiftClickAciton];
       }
     } break;
     case NEUIFunctionMusic: {
+      [NSNotificationCenter.defaultCenter
+          postNotification:[NSNotification notificationWithName:@"chatroomOrderSong" object:nil]];
       if (_delegate && [_delegate respondsToSelector:@selector(footerDidReceiveMusicClickAciton)]) {
         [_delegate footerDidReceiveMusicClickAciton];
       }
@@ -268,7 +275,7 @@ static NSString *isOutOfChinaDataCenter = @"isOutOfChinaDataCenter";
                                                   image:@"icon_mic_on_n"
                                                  target:self
                                                  action:@selector(footerButtonClickAction:)];
-    [_microphoneButton setImage:[NEVoiceRoomUI ne_imageName:@"icon_mic_off_n"]
+    [_microphoneButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_mic_off_n"]
                        forState:UIControlStateSelected];
     [_microphoneButton setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
     _microphoneButton.tag = NEUIFunctionAreaMicrophone;

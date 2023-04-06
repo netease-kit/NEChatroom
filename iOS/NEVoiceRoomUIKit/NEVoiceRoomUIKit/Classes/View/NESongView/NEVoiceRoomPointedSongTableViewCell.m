@@ -31,7 +31,7 @@
 }
 - (void)initView {
   self.playingImageView = [[UIImageView alloc] init];
-  self.playingImageView.image = [NEVoiceRoomUI ne_imageName:@"pointsong_playing"];
+  self.playingImageView.image = [NEVoiceRoomUI ne_voice_imageName:@"pointsong_playing"];
   [self.contentView addSubview:self.playingImageView];
   [self.playingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.height.equalTo(@22);
@@ -61,6 +61,31 @@
     make.centerY.equalTo(self.contentView);
   }];
 
+  self.cancelButton = [[UIButton alloc] init];
+  [self.cancelButton addTarget:self
+                        action:@selector(clickCanCelButton:)
+              forControlEvents:UIControlEventTouchUpInside];
+  [self.cancelButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"listenTogether_cancel"]
+                     forState:UIControlStateNormal];
+  [self.contentView addSubview:self.cancelButton];
+  [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.width.equalTo(@22);
+    make.height.equalTo(@22);
+    make.centerY.equalTo(self.contentView).offset(-5);
+    make.right.equalTo(self.contentView.mas_right).offset(-37);
+  }];
+
+  self.statueLabel = [[UILabel alloc] init];
+  self.statueLabel.font = [UIFont systemFontOfSize:12];
+  self.statueLabel.text = NELocalizedString(@"正在播放");
+  self.statueLabel.textColor = HEXCOLOR(0x337EFF);
+  [self.contentView addSubview:self.statueLabel];
+  [self.statueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.top.equalTo(self.cancelButton.mas_bottom).offset(2);
+    make.centerX.equalTo(self.cancelButton);
+    make.width.equalTo(@50);
+  }];
+
   self.songNameLabel = [[UILabel alloc] init];
   self.songNameLabel.font = [UIFont systemFontOfSize:16];
   self.songNameLabel.textColor = HEXCOLOR(0x222222);
@@ -68,7 +93,7 @@
   [self.songNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.songIconImageView.mas_right).offset(8);
     make.top.equalTo(self.songIconImageView.mas_top);
-    make.width.lessThanOrEqualTo(@152);
+    make.right.equalTo(self.statueLabel.mas_left);
   }];
 
   self.userIconImageView = [[UIImageView alloc] init];
@@ -88,7 +113,7 @@
   [self.userNickNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.userIconImageView.mas_right).offset(4);
     make.centerY.equalTo(self.userIconImageView);
-    make.width.lessThanOrEqualTo(@100);
+    make.width.lessThanOrEqualTo(@150);
   }];
 
   self.songDurationLabel = [[UILabel alloc] init];
@@ -98,46 +123,8 @@
   [self.songDurationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.equalTo(self.userNickNameLabel.mas_right).offset(12);
     make.centerY.equalTo(self.userNickNameLabel);
-  }];
-
-  self.cancelButton = [[UIButton alloc] init];
-  [self.cancelButton addTarget:self
-                        action:@selector(clickCanCelButton:)
-              forControlEvents:UIControlEventTouchUpInside];
-  [self.cancelButton setImage:[NEVoiceRoomUI ne_imageName:@"listenTogether_cancel"]
-                     forState:UIControlStateNormal];
-  [self.contentView addSubview:self.cancelButton];
-  [self.cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.width.equalTo(@22);
-    make.height.equalTo(@22);
-    make.centerY.equalTo(self.contentView);
-    make.right.equalTo(self.contentView.mas_right).offset(-37);
-  }];
-
-  //  self.topButton = [[UIButton alloc] init];
-  //  [self.topButton addTarget:self
-  //                     action:@selector(clickTopButton:)
-  //           forControlEvents:UIControlEventTouchUpInside];
-  //  [self.topButton setImage:[NEVoiceRoomUI ne_imageName:@"listenTogether_top"]
-  //                  forState:UIControlStateNormal];
-  //  self.topButton.titleLabel.font = [UIFont systemFontOfSize:14];
-  //  self.topButton.titleLabel.textColor = HEXCOLOR(0x333333);
-  //  [self.contentView addSubview:self.topButton];
-  //  [self.topButton mas_makeConstraints:^(MASConstraintMaker *make) {
-  //    make.width.equalTo(@15);
-  //    make.height.equalTo(@18);
-  //    make.centerY.equalTo(self.contentView);
-  //    make.right.equalTo(self.cancelButton.mas_left).offset(-20);
-  //  }];
-
-  self.statueLabel = [[UILabel alloc] init];
-  self.statueLabel.font = [UIFont systemFontOfSize:12];
-  self.statueLabel.text = @"正在播放";
-  self.statueLabel.textColor = HEXCOLOR(0x337EFF);
-  [self.contentView addSubview:self.statueLabel];
-  [self.statueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.right.equalTo(self.contentView.mas_right).offset(-24);
-    make.centerY.equalTo(self.userIconImageView).offset(8);
+    make.right.equalTo(self.statueLabel.mas_left);
+    make.width.greaterThanOrEqualTo(@50);
   }];
 }
 

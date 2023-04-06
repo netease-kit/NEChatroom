@@ -320,10 +320,10 @@ extension BezierPath: Codable {
     var decodedElements = [PathElement]()
 
     /// Create first point
-    let firstVertex = CurveVertex(
-      point: try vertexContainer.decode(CGPoint.self),
-      inTangentRelative: try inPointsContainer.decode(CGPoint.self),
-      outTangentRelative: try outPointsContainer.decode(CGPoint.self)
+    let firstVertex = try CurveVertex(
+      point: vertexContainer.decode(CGPoint.self),
+      inTangentRelative: inPointsContainer.decode(CGPoint.self),
+      outTangentRelative: outPointsContainer.decode(CGPoint.self)
     )
     var previousElement = PathElement(vertex: firstVertex)
     decodedElements.append(previousElement)
@@ -331,10 +331,10 @@ extension BezierPath: Codable {
     var totalLength: CGFloat = 0
     while !vertexContainer.isAtEnd {
       /// Get the next vertex data.
-      let vertex = CurveVertex(
-        point: try vertexContainer.decode(CGPoint.self),
-        inTangentRelative: try inPointsContainer.decode(CGPoint.self),
-        outTangentRelative: try outPointsContainer.decode(CGPoint.self)
+      let vertex = try CurveVertex(
+        point: vertexContainer.decode(CGPoint.self),
+        inTangentRelative: inPointsContainer.decode(CGPoint.self),
+        outTangentRelative: outPointsContainer.decode(CGPoint.self)
       )
       let pathElement = previousElement.pathElementTo(vertex)
       decodedElements.append(pathElement)
@@ -422,10 +422,10 @@ extension BezierPath: AnyInitializable {
     let firstVertexDictionary = vertexDictionaries.removeFirst()
     let firstInPointsDictionary = inPointsDictionaries.removeFirst()
     let firstOutPointsDictionary = outPointsDictionaries.removeFirst()
-    let firstVertex = CurveVertex(
-      point: try CGPoint(value: firstVertexDictionary),
-      inTangentRelative: try CGPoint(value: firstInPointsDictionary),
-      outTangentRelative: try CGPoint(value: firstOutPointsDictionary)
+    let firstVertex = try CurveVertex(
+      point: CGPoint(value: firstVertexDictionary),
+      inTangentRelative: CGPoint(value: firstInPointsDictionary),
+      outTangentRelative: CGPoint(value: firstOutPointsDictionary)
     )
     var previousElement = PathElement(vertex: firstVertex)
     decodedElements.append(previousElement)
@@ -435,10 +435,10 @@ extension BezierPath: AnyInitializable {
       let vertexDictionary = vertexDictionaries.removeFirst()
       let inPointsDictionary = inPointsDictionaries.removeFirst()
       let outPointsDictionary = outPointsDictionaries.removeFirst()
-      let vertex = CurveVertex(
-        point: try CGPoint(value: vertexDictionary),
-        inTangentRelative: try CGPoint(value: inPointsDictionary),
-        outTangentRelative: try CGPoint(value: outPointsDictionary)
+      let vertex = try CurveVertex(
+        point: CGPoint(value: vertexDictionary),
+        inTangentRelative: CGPoint(value: inPointsDictionary),
+        outTangentRelative: CGPoint(value: outPointsDictionary)
       )
       let pathElement = previousElement.pathElementTo(vertex)
       decodedElements.append(pathElement)

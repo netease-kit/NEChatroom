@@ -4,10 +4,8 @@
 
 #import "NEMenuViewController.h"
 #import <Masonry/Masonry.h>
-#import <NEListenTogetherUIKit/NEListenTogetherRoomListViewController.h>
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import <NEVoiceRoomUIKit/NEChatRoomListViewController.h>
-#import <YXLogin/YXLogin.h>
 #import "AppKey.h"
 #import "NEMenuCell.h"
 #import "NEMenuHeader.h"
@@ -43,19 +41,7 @@
               block:^{
                   //        [[NENavigator shared] showLiveListVC];
               }];
-  NEMenuCellModel *connectMic = [[NEMenuCellModel alloc]
-      initWithTitle:NSLocalizedString(@"一起听", nil)
-           subtitle:NSLocalizedString(@"私密房两人听一首歌，操作同步，边听边聊，天涯若比邻", nil)
-               icon:@"home_ktv_icon"
-              block:^{
-                  //        [[NENavigator shared] showLiveListVC];
-              }];
-  BOOL isOutsea = [[NSUserDefaults standardUserDefaults] boolForKey:isOutOfChinaDataCenter];
-  if (isOutsea) {
     _datas = @[ @[ live ] ];
-  } else {
-    _datas = @[ @[ live, connectMic ] ];
-  }
 }
 
 - (void)setupUI {
@@ -108,16 +94,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (![AuthorManager shareInstance].isLogin) return;
   switch (indexPath.row) {
     case 0: {  // 语聊房
       NEChatRoomListViewController *vc = [[NEChatRoomListViewController alloc] init];
       [self.navigationController pushViewController:vc animated:YES];
     } break;
     default: {  // 一起听
-      NEListenTogetherRoomListViewController *vc =
-          [[NEListenTogetherRoomListViewController alloc] init];
-      [self.navigationController pushViewController:vc animated:YES];
     } break;
   }
 }

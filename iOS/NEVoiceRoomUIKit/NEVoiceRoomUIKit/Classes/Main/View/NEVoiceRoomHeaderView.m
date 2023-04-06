@@ -57,7 +57,9 @@
 
   [self.noticeButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.bottom.equalTo(self);
-    make.size.mas_equalTo(CGSizeMake(54, 20));
+    make.height.mas_equalTo(CGSizeMake(54, 20));
+    make.width.mas_equalTo(
+        [NELocalizedString(@"公告") sizeWithFont:Font_Default(12) maxH:20].width + 30);
   }];
 
   [self.smallButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -214,7 +216,7 @@
 - (UIImageView *)headerMusicImageView {
   if (!_headerMusicImageView) {
     _headerMusicImageView = [[UIImageView alloc] init];
-    _headerMusicImageView.image = [NEVoiceRoomUI ne_imageName:@"header_music"];
+    _headerMusicImageView.image = [NEVoiceRoomUI ne_voice_imageName:@"header_music"];
   }
   return _headerMusicImageView;
 }

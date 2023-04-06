@@ -73,7 +73,7 @@
   }
 
   // Do any additional setup after loading the view.
-  self.title = [NSBundle ne_localizedStringForKey:@"语聊房"];
+  self.title = NELocalizedString(@"语聊房");
 
   [self getNewData];
   [self bindViewModel];
@@ -114,9 +114,8 @@
 }
 - (void)setupSubviews {
   [self.view addSubview:self.collectionView];
-
   self.emptyView.centerX = self.collectionView.centerX;
-  self.emptyView.centerY = self.collectionView.centerY - 40;
+  self.emptyView.centerY = self.collectionView.centerY - 100;
   [self.collectionView addSubview:self.emptyView];
 
   [self.view addSubview:self.createLiveRoomButton];
@@ -127,9 +126,10 @@
   }];
 
   [self.createLiveRoomButton mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.size.mas_equalTo(CGSizeMake(90, 90));
-    make.right.equalTo(self.view).offset(-20);
-    make.bottom.equalTo(self.view).offset(-[NEUIDeviceSizeInfo get_iPhoneTabBarHeight]);
+    make.height.equalTo(@44);
+    make.right.equalTo(self.view).offset(-17);
+    make.left.equalTo(self.view).offset(17);
+    make.bottom.equalTo(self.view).offset(-25);
   }];
 
   @weakify(self);
@@ -220,6 +220,8 @@
 
   } else {
     NSLog(@"列表点击");
+    [NSNotificationCenter.defaultCenter
+        postNotification:[NSNotification notificationWithName:@"chatroomEnter" object:nil]];
     NEVoiceRoomViewController *vc =
         [[NEVoiceRoomViewController alloc] initWithRole:NEVoiceRoomRoleAudience detail:info];
     [self.navigationController pushViewController:vc animated:YES];
@@ -253,13 +255,18 @@
 
 - (UIButton *)createLiveRoomButton {
   if (!_createLiveRoomButton) {
-    _createLiveRoomButton = [NEUIViewFactory createBtnFrame:CGRectZero
-                                                      title:@""
-                                                    bgImage:NELocalizedString(@"start_live_icon")
-                                              selectBgImage:@""
-                                                      image:@""
-                                                     target:self
-                                                     action:@selector(createChatRoomAction)];
+    _createLiveRoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_createLiveRoomButton setTitle:NELocalizedString(@"开始直播") forState:UIControlStateNormal];
+    _createLiveRoomButton.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+    _createLiveRoomButton.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
+    [_createLiveRoomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_createLiveRoomButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"create_ico"]
+                           forState:UIControlStateNormal];
+    _createLiveRoomButton.backgroundColor = [UIColor colorWithRed:0.2 green:0.494 blue:1 alpha:1];
+    [_createLiveRoomButton addTarget:self
+                              action:@selector(createChatRoomAction)
+                    forControlEvents:UIControlEventTouchUpInside];
+    _createLiveRoomButton.layer.cornerRadius = 22;
   }
   return _createLiveRoomButton;
 }
@@ -267,7 +274,6 @@
 - (NEUIEmptyListView *)emptyView {
   if (!_emptyView) {
     _emptyView = [[NEUIEmptyListView alloc] initWithFrame:CGRectZero];
-    _emptyView.tintColor = HEXCOLOR(0xE6E7EB);
   }
   return _emptyView;
 }

@@ -60,7 +60,8 @@
   // 1.floating button
   _button = [NEVoiceRoomDraggableButton buttonWithType:UIButtonTypeCustom];
   //    [self voiceRoom_setBackgroundImage:@"default_normal" forState:UIControlStateNormal];
-  [_button setImage:[NEVoiceRoomUI ne_imageName:@"default_normal"] forState:UIControlStateNormal];
+  [_button setImage:[NEVoiceRoomUI ne_voice_imageName:@"default_normal"]
+           forState:UIControlStateNormal];
   //    [self voiceRoom_setBackgroundImage:@"default_selected" forState:UIControlStateSelected];
   _button.imageView.contentMode = UIViewContentModeScaleAspectFill;
   _button.frame = CGRectMake(20, 48, 40, 40);
@@ -74,7 +75,7 @@
 
   /// 关闭按钮
   _closeButton = [[UIButton alloc] initWithFrame:CGRectMake(floatWindowWidth - 24, 0, 24, 24)];
-  [_closeButton setImage:[NEVoiceRoomUI ne_imageName:@"closeroom_icon"]
+  [_closeButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"closeroom_icon"]
                 forState:UIControlStateNormal];
   _closeButton.backgroundColor = UIColorFromRGBA(0x000000, 0.6);
   [_closeButton cutViewRounded:UIRectCornerAllCorners cornerRadii:CGSizeMake(12, 12)];

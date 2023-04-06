@@ -110,7 +110,36 @@
   self.recordVolumeSlider.value = self.context.rtcConfig.audioRecordVolume;
   self.audioMixingVolumeSlider.maximumValue = 100;
   self.audioMixingVolumeSlider.value = self.context.rtcConfig.audioMixingVolume;
+
+  [NSNotificationCenter.defaultCenter addObserver:self
+                                         selector:@selector(canUseEarback)
+                                             name:@"CanUseEarback"
+                                           object:nil];
+  [NSNotificationCenter.defaultCenter addObserver:self
+                                         selector:@selector(canNotUseEarback)
+                                             name:@"CanNotUseEarback"
+                                           object:nil];
 }
+
+- (void)canUseEarback {
+  self.earbackSwitch.enabled = true;
+  self.earbackSwitch.on = true;
+}
+
+- (void)canNotUseEarback {
+  self.earbackSwitch.enabled = false;
+  self.earbackSwitch.on = false;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+
+  self.earbackSwitch.enabled = [[NEVoiceRoomKit getInstance] isHeadSetPlugging];
+  if (![[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+    self.earbackSwitch.on = false;
+  }
+}
+
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
 
@@ -131,6 +160,8 @@
 - (void)dealloc {
   self.tableView.dataSource = nil;
   self.tableView.delegate = nil;
+
+  [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
 - (CGSize)preferredContentSize {

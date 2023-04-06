@@ -32,7 +32,7 @@ extension CAShapeLayer {
     throws {
     try addAnimation(
       for: .path,
-      keyframes: try star.combinedKeyframes().keyframes,
+      keyframes: star.combinedKeyframes().keyframes,
       value: { keyframe in
         BezierPath.star(
           position: keyframe.position.pointValue,
@@ -58,7 +58,7 @@ extension CAShapeLayer {
     throws {
     try addAnimation(
       for: .path,
-      keyframes: try star.combinedKeyframes().keyframes,
+      keyframes: star.combinedKeyframes().keyframes,
       value: { keyframe in
         BezierPath.polygon(
           position: keyframe.position.pointValue,

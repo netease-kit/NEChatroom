@@ -15,15 +15,15 @@
   // Do any additional setup after loading the view.
   self.view.backgroundColor = UIColor.whiteColor;
 }
-//支持的方向
+// 支持的方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
   return UIInterfaceOrientationMaskPortrait;
 }
-//默认的方向
+// 默认的方向
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
   return UIInterfaceOrientationPortrait;
 }
-//支持旋转
+// 支持旋转
 - (BOOL)shouldAutorotate {
   return YES;
 }

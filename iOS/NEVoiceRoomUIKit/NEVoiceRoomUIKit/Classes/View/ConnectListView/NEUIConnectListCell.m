@@ -121,7 +121,8 @@
     [acceptBtn addTarget:self
                   action:@selector(onAcceptBtnPressed)
         forControlEvents:UIControlEventTouchUpInside];
-    [acceptBtn setImage:[NEVoiceRoomUI ne_imageName:@"icon_yes_n"] forState:UIControlStateNormal];
+    [acceptBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_yes_n"]
+               forState:UIControlStateNormal];
     _acceptBtn = acceptBtn;
   }
   return _acceptBtn;
@@ -133,7 +134,8 @@
     [rejectBtn addTarget:self
                   action:@selector(onRejectBtnPressed)
         forControlEvents:UIControlEventTouchUpInside];
-    [rejectBtn setImage:[NEVoiceRoomUI ne_imageName:@"icon_no_n"] forState:UIControlStateNormal];
+    [rejectBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_no_n"]
+               forState:UIControlStateNormal];
     _rejectBtn = rejectBtn;
   }
   return _rejectBtn;

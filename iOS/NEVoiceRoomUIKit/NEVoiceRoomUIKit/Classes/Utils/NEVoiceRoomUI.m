@@ -5,7 +5,7 @@
 #import "NEVoiceRoomUI.h"
 
 @implementation NEVoiceRoomUI
-+ (UIImage *)ne_imageName:(NSString *)imageName {
++ (UIImage *)ne_voice_imageName:(NSString *)imageName {
   NSString *path = [[NSBundle bundleForClass:self.class].resourcePath
       stringByAppendingPathComponent:@"NEVoiceRoomUIKit.bundle"];
   //     [[NSBundle bundleForClass:self.class] pathForResource:@"NEVoiceRoomUIKit"
@@ -18,7 +18,7 @@
   }
   return [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
 }
-+ (NSBundle *_Nullable)ne_sourceBundle {
++ (NSBundle *_Nullable)ne_voice_sourceBundle {
   NSString *path = [[NSBundle bundleForClass:self.class].resourcePath
       stringByAppendingPathComponent:@"NEVoiceRoomUIKit.bundle"];
   //     [[NSBundle bundleForClass:self.class] pathForResource:@"NEVoiceRoomUIKit"

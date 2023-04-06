@@ -14,7 +14,7 @@ extension CAShapeLayer {
     throws {
     try addAnimation(
       for: .path,
-      keyframes: try rectangle.combinedKeyframes(roundedCorners: roundedCorners).keyframes,
+      keyframes: rectangle.combinedKeyframes(roundedCorners: roundedCorners).keyframes,
       value: { keyframe in
         BezierPath.rectangle(
           position: keyframe.position.pointValue,

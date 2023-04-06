@@ -29,10 +29,10 @@
 - (void)setIsPlaying:(BOOL)isPlaying {
   _isPlaying = isPlaying;
   if (isPlaying) {
-    [self.pauseBtn setImage:[NEVoiceRoomUI ne_imageName:@"pause_ico"]
+    [self.pauseBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"pause_ico"]
                    forState:UIControlStateNormal];
   } else {
-    [self.pauseBtn setImage:[NEVoiceRoomUI ne_imageName:@"resume_ico"]
+    [self.pauseBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"resume_ico"]
                    forState:UIControlStateNormal];
   }
 }
@@ -64,7 +64,7 @@
     make.width.mas_equalTo(120);
     make.height.mas_equalTo(4);
     make.centerY.mas_equalTo(self);
-    make.right.mas_equalTo(self.mas_right).mas_offset(-10);
+    make.right.mas_equalTo(self.mas_right).mas_offset(-30);
   }];
 
   [self.speakerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -78,9 +78,11 @@
   if (!_pauseBtn) {
     _pauseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     if (self.isPlaying) {
-      [_pauseBtn setImage:[NEVoiceRoomUI ne_imageName:@"pause_ico"] forState:UIControlStateNormal];
+      [_pauseBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"pause_ico"]
+                 forState:UIControlStateNormal];
     } else {
-      [_pauseBtn setImage:[NEVoiceRoomUI ne_imageName:@"resume_ico"] forState:UIControlStateNormal];
+      [_pauseBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"resume_ico"]
+                 forState:UIControlStateNormal];
     }
     [_pauseBtn addTarget:self
                   action:@selector(pauseOrResume)
@@ -92,7 +94,8 @@
 - (UIButton *)nextBtn {
   if (!_nextBtn) {
     _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_nextBtn setImage:[NEVoiceRoomUI ne_imageName:@"next_ico"] forState:UIControlStateNormal];
+    [_nextBtn setImage:[NEVoiceRoomUI ne_voice_imageName:@"next_ico"]
+              forState:UIControlStateNormal];
     [_nextBtn addTarget:self
                   action:@selector(nextSong)
         forControlEvents:UIControlEventTouchUpInside];
@@ -103,7 +106,7 @@
 - (UIImageView *)speakerImageView {
   if (!_speakerImageView) {
     _speakerImageView =
-        [[UIImageView alloc] initWithImage:[NEVoiceRoomUI ne_imageName:@"speaker_ico"]];
+        [[UIImageView alloc] initWithImage:[NEVoiceRoomUI ne_voice_imageName:@"speaker_ico"]];
   }
   return _speakerImageView;
 }
@@ -115,7 +118,7 @@
     [_volumeSlider addTarget:self
                       action:@selector(volumeChanged:)
             forControlEvents:UIControlEventValueChanged];
-    [_volumeSlider setThumbImage:[NEVoiceRoomUI ne_imageName:@"slider_thumb"]
+    [_volumeSlider setThumbImage:[NEVoiceRoomUI ne_voice_imageName:@"slider_thumb"]
                         forState:UIControlStateNormal];
   }
   return _volumeSlider;

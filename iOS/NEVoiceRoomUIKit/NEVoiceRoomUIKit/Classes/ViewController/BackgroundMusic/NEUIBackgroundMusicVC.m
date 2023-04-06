@@ -73,7 +73,7 @@ static void *KVOContext = &KVOContext;
   self.effect1Button.titleEdgeInsets = UIEdgeInsetsMake(0, 8, 0, 0);
   self.effect1Button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 8);
   self.effect1Button.titleLabel.font = [UIFont systemFontOfSize:14];
-  [self.effect1Button setImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_applaud"]
+  [self.effect1Button setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_applaud"]
                       forState:UIControlStateNormal];
   [self.effect1Button
       setBackgroundImage:[UIImage ne_imageWithColor:[UIColor colorWithRed:242 / 255.0
@@ -101,7 +101,7 @@ static void *KVOContext = &KVOContext;
   self.effect2Button.titleLabel.font = [UIFont systemFontOfSize:14];
   self.effect2Button.titleEdgeInsets = UIEdgeInsetsMake(0, 8, 0, 0);
   self.effect2Button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 8);
-  [self.effect2Button setImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_laugh"]
+  [self.effect2Button setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_laugh"]
                       forState:UIControlStateNormal];
   [self.effect2Button
       setBackgroundImage:[UIImage ne_imageWithColor:[UIColor colorWithRed:242 / 255.0
@@ -137,7 +137,7 @@ static void *KVOContext = &KVOContext;
                                                                               blue:245 / 255.0
                                                                              alpha:1.0]]
                          forState:UIControlStateNormal];
-  [pauseButton setImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_pause"]
+  [pauseButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_pause"]
                forState:UIControlStateNormal];
   [pauseButton addTarget:self
                   action:@selector(pauseAction:)
@@ -151,7 +151,7 @@ static void *KVOContext = &KVOContext;
   resumeButton.clipsToBounds = YES;
   resumeButton.layer.cornerRadius = 20;
   resumeButton.hidden = YES;
-  [resumeButton setImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_play"]
+  [resumeButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_play"]
                 forState:UIControlStateNormal];
   [resumeButton setBackgroundImage:[UIImage ne_imageWithColor:[UIColor colorWithRed:242 / 255.0
                                                                               green:243 / 255.0
@@ -169,7 +169,7 @@ static void *KVOContext = &KVOContext;
   switchNextButton.frame = CGRectOffset(pauseButton.frame, 40 + 12, 0);
   switchNextButton.clipsToBounds = YES;
   switchNextButton.layer.cornerRadius = 20;
-  [switchNextButton setImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_switch_next"]
+  [switchNextButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_switch_next"]
                     forState:UIControlStateNormal];
   [switchNextButton setBackgroundImage:[UIImage ne_imageWithColor:[UIColor colorWithRed:242 / 255.0
                                                                                   green:243 / 255.0
@@ -183,7 +183,7 @@ static void *KVOContext = &KVOContext;
 
   // 音量图标
   UIImageView *volumeImageView =
-      [[UIImageView alloc] initWithImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_volume"]];
+      [[UIImageView alloc] initWithImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_volume"]];
   volumeImageView.frame = CGRectMake(tableFoolterView.bounds.size.width / 2.0 + 8,
                                      tableFoolterView.bounds.size.height / 2.0 - 8, 16, 16);
   [tableFoolterView addSubview:volumeImageView];
@@ -197,7 +197,7 @@ static void *KVOContext = &KVOContext;
                                                  16)];
   volumeSlider.maximumValue = 100;
   volumeSlider.value = self.context.rtcConfig.effectVolume;
-  [volumeSlider setThumbImage:[NEVoiceRoomUI ne_imageName:@"icon_bgm_slider_thumb"]
+  [volumeSlider setThumbImage:[NEVoiceRoomUI ne_voice_imageName:@"icon_bgm_slider_thumb"]
                      forState:UIControlStateNormal];
   [volumeSlider addTarget:self
                    action:@selector(volumeDidChange:)
@@ -259,8 +259,9 @@ static void *KVOContext = &KVOContext;
     [NEVoiceRoomKit.getInstance stopAudioMixing];
     if (self.context.currentBgm) {
       NEVoiceRoomCreateAudioMixingOption *opt = [NEVoiceRoomCreateAudioMixingOption new];
-      opt.path = [[NEVoiceRoomUI ne_sourceBundle] pathForResource:self.context.currentBgm.fileName
-                                                           ofType:@"mp3"];
+      opt.path =
+          [[NEVoiceRoomUI ne_voice_sourceBundle] pathForResource:self.context.currentBgm.fileName
+                                                          ofType:@"mp3"];
       opt.sendVolume = self.context.rtcConfig.audioMixingVolume;
       opt.playbackVolume = self.context.rtcConfig.audioMixingVolume;
       opt.loopCount = 0;
@@ -319,15 +320,18 @@ static void *KVOContext = &KVOContext;
 }
 
 - (void)effectAction:(UIButton *)sender {
-  [NEVoiceRoomKit.getInstance stopAllEffects];
+  // 停止正在播放的音效
+  [[NEVoiceRoomKit getInstance] stopEffectWithEffectId:1];
+  [[NEVoiceRoomKit getInstance] stopEffectWithEffectId:2];
 
   uint32_t eid = (uint32_t)sender.tag;
   NSString *fileName = [NSString stringWithFormat:@"audio_effect_%ld", sender.tag];
   NEVoiceRoomCreateAudioEffectOption *opt = [NEVoiceRoomCreateAudioEffectOption new];
-  opt.path = [[NEVoiceRoomUI ne_sourceBundle] pathForResource:fileName ofType:@"wav"];
+  opt.path = [[NEVoiceRoomUI ne_voice_sourceBundle] pathForResource:fileName ofType:@"wav"];
   opt.sendVolume = self.context.rtcConfig.effectVolume;
   opt.playbackVolume = self.context.rtcConfig.effectVolume;
   opt.loopCount = 1;
+  opt.sendWithAudioType = NEVoiceRoomAudioStreamTypeMain;
   [NEVoiceRoomKit.getInstance playEffect:eid option:opt];
 }
 
@@ -373,7 +377,8 @@ static void *KVOContext = &KVOContext;
     for (NSString *name in self.backgroundMusicNames) {
       NEUIBackgroundMusicModel *music = [[NEUIBackgroundMusicModel alloc] init];
       music.fileName = name;
-      NSURL *fileURL = [[NEVoiceRoomUI ne_sourceBundle] URLForResource:name withExtension:@"mp3"];
+      NSURL *fileURL = [[NEVoiceRoomUI ne_voice_sourceBundle] URLForResource:name
+                                                               withExtension:@"mp3"];
       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:nil];
       AVMetadataItem *title = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata
                                                              withKey:AVMetadataCommonKeyTitle
