@@ -12,19 +12,11 @@
 
 @implementation AppDelegate (VoiceRoom)
 - (NSString *)getAppkey {
-#ifdef DEBUG
-  if (isOverSea) {
-    return APP_KEY_OVERSEA;
-  } else {
-    return @"90ba571cc31df96a086a00a54432cfcb";
-  }
-#else
   if (isOverSea) {
     return APP_KEY_OVERSEA;
   } else {
     return APP_KEY_MAINLAND;
   }
-#endif
 }
 - (void)vr_setupLoginSDK {
   [NEVoiceRoomUIManager.sharedInstance
@@ -47,9 +39,6 @@
 - (void)vr_setupVoiceRoom {
   NEVoiceRoomKitConfig *config = [[NEVoiceRoomKitConfig alloc] init];
   config.appKey = [self getAppkey];
-#ifdef DEBUG
-  config.extras = @{@"serverUrl" : @"test"};
-#endif
   BOOL isOutsea = isOverSea;
   if (isOutsea) {
     config.extras = @{@"serverUrl" : @"oversea"};
@@ -68,9 +57,6 @@
   /// 点歌台属配置初始化
   NEOrderSongConfig *orderSongConfig = [[NEOrderSongConfig alloc] init];
   orderSongConfig.appKey = [self getAppkey];
-#ifdef DEBUG
-  orderSongConfig.extras = @{@"serverUrl" : @"test"};
-#endif
   if (isOutsea) {
     orderSongConfig.extras = @{@"serverUrl" : @"oversea"};
   }

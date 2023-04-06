@@ -20,6 +20,11 @@ target 'LiveAudioRoom' do
 
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
+  pod 'NERtcSDK/Beauty', '4.6.43'
+  pod 'NERtcSDK/FaceDetect', '4.6.43'
+  pod 'NERtcSDK/Segment', '4.6.43'
+  pod 'NERtcSDK/RtcBasic', '4.6.43'
+  pod 'NIMSDK_LITE', '9.8.0'
 end
 
 post_install do |installer|
