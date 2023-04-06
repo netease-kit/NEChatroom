@@ -22,7 +22,7 @@
   [NEVoiceRoomUIManager.sharedInstance
       loginWithAccount:accountId
                  token:accessToken
-              nickname:@""
+              nickname:@"nickname"
               callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
                 if (code != 0) {
                   NSLog(@"登录失败");
