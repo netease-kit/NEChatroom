@@ -12,8 +12,6 @@ target 'LiveAudioRoom' do
   pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
   pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
   pod 'NEOrderSong', :path => '../NEOrderSong/NEOrderSong.podspec'
-  pod 'NEListenTogetherKit', :path => '../NEListenTogetherKit/NEListenTogetherKit.podspec'
-  pod 'NEListenTogetherUIKit', :path => '../NEListenTogetherUIKit/NEListenTogetherUIKit.podspec'
   pod 'LottieSwift', :path => '../lottie/LottieSwift.podspec'
   pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
 
