@@ -1,0 +1,31 @@
+<resources>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+
+    <style name="FloatWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_float_window_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_float_window_exit</item>
+    </style>
+
+    <declare-styleable name="TitleBar">
+        <attr name="titleBar_title" format="string" />
+        <attr name="titleBar_title_bg_color" format="color" />
+        <attr name="titleBar_back_icon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SettingItemView">
+        <attr name="setting_item_icon" format="reference" />
+        <attr name="setting_item_title" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="MineItemView">
+        <attr name="mine_item_title" format="string" />
+        <attr name="mine_item_icon" format="reference" />
+    </declare-styleable>
+
+</resources>
