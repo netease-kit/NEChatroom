@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 NetEase, Inc. All rights reserved.
+  ~ Use of this source code is governed by a MIT license that can be
+  ~ found in the LICENSE file.
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <!-- 滑动块的宽高 -->
+    <size
+        android:width="28dp"
+        android:height="28dp" />
+    <solid android:color="@android:color/white" />
+    <!-- 透明的描边-->
+    <stroke android:width="6dp"
+        android:color="@android:color/transparent"/>
+</shape>

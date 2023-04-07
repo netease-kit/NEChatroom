@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="room_list_empty">No rooms available. Please create a room</string>
+    <string name="voiceroom_have_no_more">No more content</string>
+    <string name="voiceroom_pull_to_refresh">Swipe to refresh</string>
+    <string name="voiceroom_release_to_refresh">Release to refresh</string>
+    <string name="voiceroom_refreshing">Updating...</string>
+    <string name="voiceroom_load_more">Load more</string>
+    <string name="voiceroom_start_live">Start</string>
+    <string name="voiceroom_random">Random</string>
+    <string name="voiceroom_chatroom">chatroom</string>
+    <string name="voiceroom_is_closed">Room closed</string>
+    <string name="voiceroom_host_close_room_success">Room was dismissed</string>
+    <string name="voiceroom_people_online2">%d people</string>
+    <string name="voiceroom_people_online_ten_thousand">s%w people</string>
+    <string name="voiceroom_net_error">Net error,try again</string>
+    <string name="voiceroom_tip">Tip</string>
+    <string name="voiceroom_click_roomlist_tips">Exit the current room and enter other rooms</string>
+    <string name="voiceroom_sure">OK</string>
+    <string name="voiceroom_cancel">Cancel</string>
+    <string name="voiceroom_room_not_exist">Room does not exist</string>
+    <string name="app_sure">OK</string>
+    <string name="app_cancel">Cancel</string>
+    <string name="app_pstn_item_text">PSTN</string>
+    <string name="app_pstn_setting_title">PSTN Connectivity Settings</string>
+    <string name="app_high_keep_alive_feature">PSTN Connectivity</string>
+    <string name="app_high_keep_alive_title_level1">PSTN Connectivity: </string>
+    <string name="app_high_keep_alive_content1">PSTN service provides three methods to promote connectivity.\nUse PSTN solely or in combination with other services.</string>
+    <string name="app_high_keep_alive_title_level2">Level 2</string>
+    <string name="app_high_keep_alive_content2">1. Keep app running in the background: \nIf Keep app running in the background is enabled, a notification will be shown on the notification bar for testing purposes.\nThe feature allows the app to run in the background for a long time (depending on different brands) \n\n\n2. Audio call: \nSIP calls are automatically switched to audio calls if failed.\nIf you start an audio call by clicking Auido Call and fails to get connected after 15 seconds, you are switched to SIP calling. The trigger condition can be customized.\n\n\n3. SMS notification:\nThe feature can notify the called parity of call requests. Users can open the app can handle the requests.\nIf an audio or video call is connecting for 30 seconds and fails, an SMS notification will be delivered.</string>
+    <string name="app_high_keep_alive_content3">The following articles also restrict and applies to the user of this website and is referenced herewith:</string>
+    <string name="app_tips">Tips</string>
+    <string name="app_dialog_protocol_tips_title">Terms of Service and Privacy Policy</string>
+    <string name="app_dialog_protocol_content_text">Thank you for using CommsEase Party. We value your personal information and privacy protection. To better protect your personal rights, make sure you read all the terms in the "Privacy Policy" and "Terms of Service" before using our products. Paricularly, 1. Our terms regarding the collection, storage, use, and protection of your personal information, as well as your user rights; 2. Our agreed limitations of liability and disclaimer clauses. If you have any questions about the previous terms, you can contact us through customer service. By clicking "Agree and Continue", you have read and agreed to all the terms of the previous agreements.</string>
+    <string name="app_dialog_protocol_agree">Agree</string>
+    <string name="app_dialog_protocol_disagree">Disagree</string>
+    <string name="app_notification_tips">The notification permission must be turned on before opening foreground services</string>
+    <string name="app_default_content_description">default_content_description</string>
+    <string name="app_privacy_policy">Privacy Policy</string>
+    <string name="app_user_agreement">Terms of Service</string>
+    <string name="app_data_center_switch_confirm_message">If you switch the service node, the app will restart and log in. Do you want to switch the service node?</string>
+    <string name="app_yes">Yes</string>
+    <string name="app_no">No</string>
+    <string name="app_network_situation">Network Status</string>
+    <string name="app_network_error">Net error,try again</string>
+    <string name="float_permission">Floating Window Permission</string>
+    <string name="has_open">Enabled</string>
+    <string name="has_close">Disabled</string>
+    <string name="float_permission_desc">By granting the floating window permission, you can also receive notifications for voice or video calls even when the app is running in the background or the screen is locked. \nTo ensure timely notification of incoming voice or video calls, please allow the following permissions: \n1. Allow background activity; 2. Show on lock screen; 3. Allow pop-up windows in the background.</string>
+</resources>

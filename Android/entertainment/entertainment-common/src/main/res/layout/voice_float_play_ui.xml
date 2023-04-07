@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="98dp"
+    android:layout_height="132dp"
+    tools:background="@android:color/holo_green_light">
+
+    <ImageView
+        android:background="@drawable/voice_close_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/iv_close"
+        android:layout_width="24dp"
+        android:layout_height="24dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/voice_float_black_bg"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/voice_avatar_bg"
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+            <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="38dp"
+                android:layout_gravity="center"
+                tools:background="@android:color/holo_blue_bright"
+                android:layout_height="38dp" />
+        </FrameLayout>
+
+
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:text="@string/voiceroom_chatroom"
+            android:paddingTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
