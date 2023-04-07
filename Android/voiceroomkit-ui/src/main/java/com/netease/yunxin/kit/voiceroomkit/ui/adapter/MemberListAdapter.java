@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.netease.yunxin.kit.entertainment.common.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.listener.OnItemClickListener;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomUser;
-import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import java.util.ArrayList;
 import java.util.List;
 

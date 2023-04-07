@@ -275,3 +275,12 @@ enum class NEVoiceRoomRole(val value: String) {
         }
     }
 }
+
+object NELiveType {
+    const val LIVE_TYPE_DEFAULT = 0
+    const val LIVE_TYPE_PK = 1 // PK直播
+    const val LIVE_TYPE_VOICE = 2 // 语聊房
+    const val LIVE_TYPE_KTV = 3 // KTV
+    const val LIVE_INTERACTION = 4 // 互动直播
+    const val LIVE_TYPE_TOGETHER_LISTEN = 5 // 一起听
+}

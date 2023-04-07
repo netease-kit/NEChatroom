@@ -3,111 +3,34 @@
 // found in the LICENSE file.
 package com.netease.yunxin.kit.voiceroomkit.ui.utils;
 
-import android.text.TextUtils;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchSeatUserReward;
+import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
-import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VoiceRoomUtils {
 
-  public static boolean isLocalAnchor() {
-    return NEVoiceRoomKit.getInstance().getLocalMember() != null
-        && TextUtils.equals(
-            NEVoiceRoomKit.getInstance().getLocalMember().getRole(),
-            NEVoiceRoomUIConstants.ROLE_HOST);
-  }
-
-  public static boolean isLocal(String uuid) {
-    return NEVoiceRoomKit.getInstance().getLocalMember() != null
-        && TextUtils.equals(NEVoiceRoomKit.getInstance().getLocalMember().getAccount(), uuid);
-  }
-
-  public static boolean isHost(String uuid) {
-    NEVoiceRoomMember member = getMember(uuid);
-    if (member == null) {
-      return false;
+  public static List<RoomModel> neVoiceRoomInfos2RoomInfos(List<NEVoiceRoomInfo> voiceRoomInfos) {
+    List<RoomModel> result = new ArrayList<>();
+    for (NEVoiceRoomInfo roomInfo : voiceRoomInfos) {
+      result.add(neVoiceRoomInfo2RoomInfo(roomInfo));
     }
-    return TextUtils.equals(member.getRole(), NEVoiceRoomUIConstants.ROLE_HOST);
+    return result;
   }
 
-  public static NEVoiceRoomMember getLocalMember() {
-    return NEVoiceRoomKit.getInstance().getLocalMember();
-  }
-
-  public static NEVoiceRoomMember getMember(String uuid) {
-    List<NEVoiceRoomMember> allMemberList = NEVoiceRoomKit.getInstance().getAllMemberList();
-    for (int i = 0; i < allMemberList.size(); i++) {
-      NEVoiceRoomMember member = allMemberList.get(i);
-      if (TextUtils.equals(member.getAccount(), uuid)) {
-        return member;
-      }
+  public static RoomModel neVoiceRoomInfo2RoomInfo(NEVoiceRoomInfo voiceRoomInfo) {
+    if (voiceRoomInfo == null) {
+      return null;
     }
-    return null;
-  }
-
-  public static NEVoiceRoomMember getHost() {
-    List<NEVoiceRoomMember> allMemberList = NEVoiceRoomKit.getInstance().getAllMemberList();
-    for (int i = 0; i < allMemberList.size(); i++) {
-      NEVoiceRoomMember member = allMemberList.get(i);
-      if (TextUtils.equals(member.getRole(), NEVoiceRoomUIConstants.ROLE_HOST)) {
-        return member;
-      }
-    }
-    return null;
-  }
-
-  public static boolean isMute(String uuid) {
-    NEVoiceRoomMember member = getMember(uuid);
-    if (member != null) {
-      return !member.isAudioOn();
-    }
-    return true;
-  }
-
-  public static List<VoiceRoomSeat> createSeats() {
-    int size = VoiceRoomSeat.SEAT_COUNT;
-    List<VoiceRoomSeat> seats = new ArrayList<>(size);
-    for (int i = 1; i < size; i++) {
-      seats.add(new VoiceRoomSeat(i + 1));
-    }
-    return seats;
-  }
-
-  public static String getLocalAccount() {
-    if (NEVoiceRoomKit.getInstance().getLocalMember() == null) {
-      return "";
-    }
-    return NEVoiceRoomKit.getInstance().getLocalMember().getAccount();
-  }
-
-  public static String getLocalName() {
-    if (NEVoiceRoomKit.getInstance().getLocalMember() == null) {
-      return "";
-    }
-    return NEVoiceRoomKit.getInstance().getLocalMember().getName();
-  }
-
-  public static int getRewardFromRoomInfo(String userUuid, NEVoiceRoomInfo roomInfo) {
-    if (!TextUtils.isEmpty(userUuid)
-        && roomInfo != null
-        && roomInfo.getLiveModel().getSeatUserReward() != null) {
-      List<NEVoiceRoomBatchSeatUserReward> seatUserRewards =
-          roomInfo.getLiveModel().getSeatUserReward();
-      for (NEVoiceRoomBatchSeatUserReward seatUserReward : seatUserRewards) {
-        if (seatUserReward != null && TextUtils.equals(userUuid, seatUserReward.getUserUuid())) {
-          return seatUserReward.getRewardTotal();
-        }
-      }
-    }
-    return 0;
-  }
-
-  public static int getAnchorReward(NEVoiceRoomInfo roomInfo) {
-    return getRewardFromRoomInfo(getHost().getAccount(), roomInfo);
+    RoomModel roomModel = new RoomModel();
+    roomModel.setRoomUuid(voiceRoomInfo.getLiveModel().getRoomUuid());
+    roomModel.setOnlineCount(voiceRoomInfo.getLiveModel().getAudienceCount() + 1);
+    roomModel.setCover(voiceRoomInfo.getLiveModel().getCover());
+    roomModel.setLiveRecordId(voiceRoomInfo.getLiveModel().getLiveRecordId());
+    roomModel.setLiveTopic(voiceRoomInfo.getLiveModel().getLiveTopic());
+    roomModel.setAnchorAvatar(voiceRoomInfo.getAnchor().getAvatar());
+    roomModel.setAnchorNick(voiceRoomInfo.getAnchor().getNick());
+    roomModel.setAnchorUserUuid(voiceRoomInfo.getAnchor().getAccount());
+    return roomModel;
   }
 }

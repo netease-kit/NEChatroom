@@ -25,10 +25,10 @@ dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
 
     // xkit
-    implementation("com.netease.yunxin.kit:alog:1.0.8")
-    implementation("com.netease.yunxin.kit.common:common:1.1.8")
-    implementation("com.netease.yunxin.kit.common:common-network:1.1.6")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.8.2")
+    implementation("com.netease.yunxin.kit:alog:1.0.9")
+    implementation("com.netease.yunxin.kit.common:common:1.1.15")
+    implementation("com.netease.yunxin.kit.common:common-network:1.1.8")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.12.1")
 
     implementation("com.google.code.gson:gson:2.9.0")
 }

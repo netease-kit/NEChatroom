@@ -214,10 +214,7 @@ public class OrderAdapter extends CommonMoreAdapter<OrderSongModel, OrderItemLay
         copyrightSong,
         new NECopyrightedMedia.Callback<Boolean>() {
           @Override
-          public void success(@Nullable Boolean info) {
-            ToastUtils.INSTANCE.showShortToast(
-                context, context.getString(R.string.order_song_success));
-          }
+          public void success(@Nullable Boolean info) {}
 
           @Override
           public void error(int code, @Nullable String msg) {

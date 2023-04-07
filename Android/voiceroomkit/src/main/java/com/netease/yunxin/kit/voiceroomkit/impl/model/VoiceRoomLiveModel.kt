@@ -20,5 +20,14 @@ data class VoiceRoomLiveModel(
     var rewardTotal: Long?, // 	打赏总额
     val audienceCount: Int?, // 	观众人数
     val onSeatCount: Int?, // 	上麦人数
-    var liveConfig: String? // 拉流配置
+    var liveConfig: String?, // 拉流配置
+    var seatUserReward: List<SeatUserReward>? // 麦上的打赏信息
 ) : Serializable
+
+data class SeatUserReward(
+    val userUuid: String,
+    val userName: String?,
+    val icon: String?,
+    val seatIndex: Int,
+    val rewardTotal: Int
+)

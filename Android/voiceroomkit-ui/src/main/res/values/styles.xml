@@ -8,13 +8,6 @@
         <item name="android:windowAnimationStyle">@style/BottomDialogAnimation</item>
     </style>
 
-    <declare-styleable name="CircleImageView">
-        <attr name="civ_border_width" format="dimension" />
-        <attr name="civ_border_color" format="color" />
-        <attr name="civ_border_overlay" format="boolean" />
-        <attr name="civ_fill_color" format="color" />
-    </declare-styleable>
-
     <style name="request_dialog_fragment">
         <item name="android:windowBackground">@color/color_00000000</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -42,13 +35,8 @@
         <item name="android:windowBackground">#00000000</item>
     </style>
 
-    <style name="FloatWindowAnimation">
-        <item name="android:windowEnterAnimation">@anim/anim_float_window_enter</item>
-        <item name="android:windowExitAnimation">@anim/anim_float_window_exit</item>
-    </style>
-
     <style name="GiftNumSelectDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="android:windowBackground">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsTranslucent">false</item>

@@ -13,15 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
+import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
+import com.netease.yunxin.kit.entertainment.common.utils.StringUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.StringUtils;
 import java.util.List;
 
-public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
+public class SeatAdapter extends BaseAdapter<RoomSeat> {
 
-  public SeatAdapter(List<VoiceRoomSeat> seats, Context context) {
+  public SeatAdapter(List<RoomSeat> seats, Context context) {
     super(seats, context);
   }
 
@@ -33,7 +33,7 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
   @SuppressLint("UseCompatLoadingForDrawables")
   @Override
   protected void onBindBaseViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-    VoiceRoomSeat seat = getItem(position);
+    RoomSeat seat = getItem(position);
     if (seat == null) {
       return;
     }
@@ -43,7 +43,7 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
 
     // 用户音频状态显示
     final ImageView ivStatusHint = viewHolder.ivStatusHint;
-    if (member == null || status == VoiceRoomSeat.Status.APPLY) {
+    if (member == null || status == RoomSeat.Status.APPLY) {
       ivStatusHint.setVisibility(View.GONE);
     } else {
       ivStatusHint.setVisibility(View.VISIBLE);
@@ -64,16 +64,16 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
     }
 
     // 申请中动画
-    showLottieAnimal(viewHolder.applying, status == VoiceRoomSeat.Status.APPLY);
+    showLottieAnimal(viewHolder.applying, status == RoomSeat.Status.APPLY);
 
-    if (status == VoiceRoomSeat.Status.ON) {
+    if (status == RoomSeat.Status.ON) {
       viewHolder.ivUserStatus.setVisibility(View.GONE);
     } else {
       viewHolder.ivUserStatus.setVisibility(View.VISIBLE);
       int image = R.drawable.seat_add_member;
-      if (status == VoiceRoomSeat.Status.CLOSED) {
+      if (status == RoomSeat.Status.CLOSED) {
         image = R.drawable.close;
-      } else if (status == VoiceRoomSeat.Status.APPLY) {
+      } else if (status == RoomSeat.Status.APPLY) {
         image = 0;
       }
       viewHolder.ivUserStatus.setImageResource(image);
@@ -96,7 +96,7 @@ public class SeatAdapter extends BaseAdapter<VoiceRoomSeat> {
 
     // 头像装饰
     viewHolder.circle.setVisibility(
-        status == VoiceRoomSeat.Status.ON && member != null ? View.VISIBLE : View.INVISIBLE);
+        status == RoomSeat.Status.ON && member != null ? View.VISIBLE : View.INVISIBLE);
 
     if (seat.getRewardTotal() > 0) {
       viewHolder.tvUserReward.setVisibility(View.VISIBLE);

@@ -19,6 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
+import com.netease.yunxin.kit.entertainment.common.utils.SeatUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.Utils;
+import com.netease.yunxin.kit.entertainment.common.utils.VoiceRoomUtils;
+import com.netease.yunxin.kit.entertainment.common.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
@@ -26,11 +31,6 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.VoiceRoomBaseActivity;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.SeatUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -40,7 +40,7 @@ import java.util.List;
 public class SelectMemberSendGiftView extends RecyclerView {
   private static final int ALL_COUNT = 9;
   private static final int ANCHOR_INDEX = 1;
-  private final ArrayList<VoiceRoomSeat> list = new ArrayList<>();
+  private final ArrayList<RoomSeat> list = new ArrayList<>();
   private MemberAdapter memberAdapter;
   private final NEVoiceRoomListenerAdapter listener =
       new NEVoiceRoomListenerAdapter() {
@@ -70,13 +70,10 @@ public class SelectMemberSendGiftView extends RecyclerView {
   private void init(Context context) {
     setLayoutManager(new GridLayoutManager(context, ALL_COUNT));
     list.add(
-        new VoiceRoomSeat(
-            ANCHOR_INDEX,
-            VoiceRoomSeat.Status.ON,
-            VoiceRoomSeat.Reason.NONE,
-            VoiceRoomUtils.getHost()));
+        new RoomSeat(
+            ANCHOR_INDEX, RoomSeat.Status.ON, RoomSeat.Reason.NONE, VoiceRoomUtils.getHost()));
     for (int i = 2; i <= ALL_COUNT; i++) {
-      list.add(new VoiceRoomSeat(i));
+      list.add(new RoomSeat(i));
     }
     memberAdapter = new MemberAdapter(list);
     setAdapter(memberAdapter);
@@ -110,11 +107,11 @@ public class SelectMemberSendGiftView extends RecyclerView {
 
   private void handleSeatItemListChanged(List<NEVoiceRoomSeatItem> seatItems) {
     if (seatItems == null) seatItems = Collections.emptyList();
-    List<VoiceRoomSeat> seats = SeatUtils.transNESeatItem2VoiceRoomSeat(seatItems);
+    List<RoomSeat> seats = SeatUtils.transNESeatItem2VoiceRoomSeat(seatItems);
     setData(seats);
   }
 
-  public void setData(List<VoiceRoomSeat> seatList) {
+  public void setData(List<RoomSeat> seatList) {
     memberAdapter.setData(seatList);
   }
 
@@ -123,10 +120,10 @@ public class SelectMemberSendGiftView extends RecyclerView {
   }
 
   public static class MemberAdapter extends Adapter<ViewHolder> {
-    private List<VoiceRoomSeat> list;
+    private List<RoomSeat> list;
     private VoiceRoomBaseActivity activity;
 
-    public MemberAdapter(List<VoiceRoomSeat> list) {
+    public MemberAdapter(List<RoomSeat> list) {
       this.list = list;
     }
 
@@ -150,9 +147,9 @@ public class SelectMemberSendGiftView extends RecyclerView {
       } else {
         memberViewHolder.tv.setText(position + "");
       }
-      VoiceRoomSeat voiceRoomSeat = list.get(position);
+      RoomSeat roomSeat = list.get(position);
       memberViewHolder.ivAvatar.setImageBitmap(null);
-      if (voiceRoomSeat != null && voiceRoomSeat.isOn() && voiceRoomSeat.getMember() != null) {
+      if (roomSeat != null && roomSeat.isOn() && roomSeat.getMember() != null) {
         memberViewHolder.ivAvatar.loadAvatar(list.get(position).getMember().getAvatar());
       } else {
         Bitmap bitmap =
@@ -166,9 +163,7 @@ public class SelectMemberSendGiftView extends RecyclerView {
             if (selectedSet.contains(position)) {
               selectedSet.remove(position);
             } else {
-              if (voiceRoomSeat != null
-                  && voiceRoomSeat.isOn()
-                  && voiceRoomSeat.getMember() != null) {
+              if (roomSeat != null && roomSeat.isOn() && roomSeat.getMember() != null) {
                 selectedSet.add(position);
               }
             }
@@ -189,7 +184,7 @@ public class SelectMemberSendGiftView extends RecyclerView {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<VoiceRoomSeat> seatList) {
+    public void setData(List<RoomSeat> seatList) {
       this.list = seatList;
       notifyDataSetChanged();
     }

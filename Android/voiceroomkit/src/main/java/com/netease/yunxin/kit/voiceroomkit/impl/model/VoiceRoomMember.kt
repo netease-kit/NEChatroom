@@ -31,6 +31,9 @@ internal class VoiceRoomMember(
 
     override val avatar: String?
         get() = roomMember.avatar
+    override fun toString(): String {
+        return "VoiceRoomMember(roomMember=$roomMember, account='$account', name='$name', role='$role', isAudioOn=$isAudioOn, isAudioBanned=$isAudioBanned, avatar=$avatar)"
+    }
 
     // override val isInRtcChannel: Boolean
     //     get() = roomMember.isInRtcChannel

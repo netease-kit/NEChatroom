@@ -64,7 +64,7 @@
     <string name="voiceroom_notice">公告</string>
     <string name="voiceroom_no_members">暂无群成员</string>
     <string name="voiceroom_loading_fail">加载失败</string>
-    <string name="voiceroom_net_error">网络错误，点击重试</string>
+    <string name="voiceroom_net_error">网络异常，请稍后重试</string>
     <string name="voiceroom_loading">加载中...</string>
     <string name="voiceroom_chat_hint">一起聊聊吧~</string>
     <string name="voiceroom_applause">鼓掌声</string>
@@ -105,4 +105,13 @@
     <string name="voiceroom_send_to">送给</string>
     <string name="voiceroom_gift_send">赠送</string>
     <string name="voiceroom_gift_send_memeber_empty">未选择送礼对象，无法送礼</string>
+    <string name="voiceroom_chat_room">语聊房</string>
+    <string name="voiceroom_empty_roomname_tips">房间主题不能为空</string>
+    <string name="voiceroom_tip">提示</string>
+    <string name="voiceroom_click_create_room_tips">是否退出当前房间，并创建新房间</string>
+    <string name="voiceroom_click_roomlist_tips">是否退出当前房间进入其他房间</string>
+    <string name="voiceroom_room_not_exist">房间不存在</string>
+    <string name="voiceroom_people_online2">%d 人</string>
+    <string name="voiceroom_people_online_ten_thousand">%dw 人</string>
+
 </resources>

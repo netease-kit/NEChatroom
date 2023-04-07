@@ -5,8 +5,8 @@
 package com.netease.yunxin.kit.voiceroomkit.ui.gift;
 
 import android.util.*;
+import com.netease.yunxin.kit.entertainment.common.utils.Utils;
 import com.netease.yunxin.kit.voiceroomkit.ui.*;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.*;
 import java.util.*;
 
 public class GiftCache {

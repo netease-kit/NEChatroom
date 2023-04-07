@@ -13,12 +13,27 @@
         android:supportsRtl="true"
         tools:targetApi="31">
 
-        <activity android:name=".activity.AnchorActivity"
+        <activity
+            android:name=".activity.VoiceRoomListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+
+        <activity android:name=".activity.VoiceRoomCreateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
-        <activity android:name=".activity.AudienceActivity"
+
+        <activity android:name=".activity.AnchorActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
+        <activity android:name=".activity.AudienceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
         <service

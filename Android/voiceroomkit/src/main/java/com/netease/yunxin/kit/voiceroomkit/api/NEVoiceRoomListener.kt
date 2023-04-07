@@ -6,8 +6,12 @@
 
 package com.netease.yunxin.kit.voiceroomkit.api
 
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeResult
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem
 
 /**
@@ -26,6 +30,18 @@ interface NEVoiceRoomListener {
      * @param members 成员列表
      */
     fun onMemberLeaveRoom(members: @JvmSuppressWildcards List<NEVoiceRoomMember>)
+
+    /**
+     * 成员进入聊天室回调
+     * @param members 成员列表
+     */
+    fun onMemberJoinChatroom(members: @JvmSuppressWildcards List<NEVoiceRoomMember>)
+
+    /**
+     * 成员离开聊天室回调
+     * @param members 成员列表
+     */
+    fun onMemberLeaveChatroom(members: @JvmSuppressWildcards List<NEVoiceRoomMember>)
 
     /**
      * 房间结束回调
@@ -144,6 +160,53 @@ interface NEVoiceRoomListener {
      * @param device 音频输出类型
      */
     fun onAudioOutputDeviceChanged(device: NEVoiceRoomAudioOutputDevice)
+
+    /**
+     * 收到礼物
+     * @param rewardMsg 礼物消息
+     */
+    fun onReceiveGift(rewardMsg: NEVoiceRoomGiftModel)
+
+    /**
+     * 收到批量礼物
+     * @param giftModel 礼物消息
+     */
+    fun onReceiveBatchGift(giftModel: NEVoiceRoomBatchGiftModel)
+
+    /**
+     * 背景音乐播放回调
+     * @param effectId 音效id
+     * @param timeStampMS 当前播放时间戳
+     */
+    fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long)
+
+    /**
+     * 提示房间内本地用户瞬时音量的回调。 该回调默认为关闭状态。
+     * 可以通过 [NEVoiceRoomKit.enableAudioVolumeIndication] 方法开启。
+     * 开启后，本地用户说话，SDK 会按该方法中设置的时间间隔触发该回调。
+     * @param volume 混音后的总音量，取值范围为 0~100。
+     * @param vadFlag 是否检测到人声。
+     */
+    fun onRtcLocalAudioVolumeIndication(volume: Int, vadFlag: Boolean)
+
+    /**
+     * 提示房间内谁正在说话及说话者瞬时音量的回调。该回调默认为关闭状态。
+     * 可以通过 [NEVoiceRoomKit.enableAudioVolumeIndication] 方法开启。
+     * 开启后，无论房间内是否有人说话，SDK 都会按设置的时间间隔触发该回调。
+     * - 如果有 [NEVoiceRoomMemberVolumeInfo.userUuid] 出现在上次返回的列表中，但不在本次返回的列表中，则默认该 userId 对应的远端用户没有说话。
+     * - 如果 [NEVoiceRoomMemberVolumeInfo.volume] 为 0，表示该用户没有说话。
+     * - 如果列表为空，则表示此时远端没有人说话。
+     * - 如果是本地用户的音量回调，则[volumes]中只会包含本端用户
+     * @param volumes 每个说话者的用户 ID 和音量信息的列表
+     * @param totalVolume 混音后的总音量，取值范围为 0~100。
+     */
+    fun onRtcRemoteAudioVolumeIndication(volumes: List<NEVoiceRoomMemberVolumeInfo>, totalVolume: Int)
+
+    /**
+     * 本地音效文件播放已结束回调。
+     * @param effectId 指定音效的 ID。每个音效均有唯一的 ID
+     */
+    fun onAudioEffectFinished(effectId: Int)
 }
 
 open class NEVoiceRoomListenerAdapter : NEVoiceRoomListener {
@@ -151,6 +214,12 @@ open class NEVoiceRoomListenerAdapter : NEVoiceRoomListener {
     }
 
     override fun onMemberLeaveRoom(members: @JvmSuppressWildcards List<NEVoiceRoomMember>) {
+    }
+
+    override fun onMemberJoinChatroom(members: @JvmSuppressWildcards List<NEVoiceRoomMember>) {
+    }
+
+    override fun onMemberLeaveChatroom(members: @JvmSuppressWildcards List<NEVoiceRoomMember>) {
     }
 
     override fun onRoomEnded(reason: NEVoiceRoomEndReason) {
@@ -206,4 +275,48 @@ open class NEVoiceRoomListenerAdapter : NEVoiceRoomListener {
 
     override fun onAudioOutputDeviceChanged(device: NEVoiceRoomAudioOutputDevice) {
     }
+
+    override fun onReceiveGift(rewardMsg: NEVoiceRoomGiftModel) {
+    }
+
+    override fun onReceiveBatchGift(giftModel: NEVoiceRoomBatchGiftModel) {
+    }
+    override fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long) {
+    }
+
+    override fun onRtcLocalAudioVolumeIndication(volume: Int, vadFlag: Boolean) {
+    }
+
+    override fun onRtcRemoteAudioVolumeIndication(
+        volumes: List<NEVoiceRoomMemberVolumeInfo>,
+        totalVolume: Int
+    ) {
+    }
+
+    override fun onAudioEffectFinished(effectId: Int) {
+    }
+}
+
+interface NEVoiceRoomPreviewListener {
+    /**
+     * 通话前网络上下行 last mile 质量状态回调。 该回调描述本地用户在加入房间前的 last mile 网络探测的结果，以打分形式描述上下行网络
+     * 质量的主观体验，您可以通过该回调预估本地用户在音视频通话中的网络体验。 在调用 startLastmileProbeTest 之后，SDK 会在约 5 秒内返回该回调。
+     * @param quality 网络上下行质量@see[NEVoiceRoomLastmileQuality]，基于上下行网络的丢包率和抖动计算，探测结果主要反映上行网络的状态。
+     * QUALITY_UNKNOWN(0)：质量未知
+     * QUALITY_EXCELLENT(1)：质量极好
+     * QUALITY_GOOD(2)：用户主观感觉和极好差不多，但码率可能略低于极好
+     * QUALITY_POOR(3)：用户主观感受有瑕疵但不影响沟通
+     * QUALITY_BAD(4)：勉强能沟通但不顺畅
+     * QUALITY_VBAD(5)：网络质量非常差，基本不能沟通
+     * QUALITY_DOWN(6)：完全无法沟通
+     */
+    fun onRtcLastmileQuality(quality: Int)
+
+    /**
+     * 通话前网络上下行 Last mile 质量探测报告回调。 该回调描述本地用户在加入房间前的 last mile 网络探测详细报告，报告中通过客观数据反馈上下行网络质量，
+     * 包括网络抖动、丢包率等数据。您可以通过该回调客观预测本地用户在音视频通话中的网络状态。 在调用 startLastmileProbeTest 之后，SDK 会在约 30 秒内返回该回调。
+     *
+     * @param result 上下行 Last mile 质量探测结果。
+     */
+    fun onRtcLastmileProbeResult(result: NEVoiceRoomRtcLastmileProbeResult)
 }

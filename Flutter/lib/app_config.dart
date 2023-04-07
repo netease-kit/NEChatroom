@@ -18,7 +18,7 @@ class AppConfig {
   AppConfig._internal();
 
   // 请填写您的appKey,如果您的APP是国内环境，请填写onlineAppKey，如果是海外环境，请填写overSeaAppKey
-  static const String onlineAppKey = "your mainland appKey";// 国内用户填写
+  static const String onlineAppKey = "51e61565dc21cfbc12d63140076d14fa";// 国内用户填写
 
   static const String overSeaAppKey = "your oversea appKey";// 海外用户填写
 

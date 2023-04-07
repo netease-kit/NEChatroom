@@ -42,7 +42,7 @@
             android:background="@drawable/point_empty"
             android:visibility="visible" />
 
-        <com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView
+        <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
             android:id="@+id/iv_user_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

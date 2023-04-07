@@ -10,7 +10,6 @@ import android.content.Context
 import com.netease.yunxin.kit.alog.ALog
 import com.netease.yunxin.kit.common.network.NetRequestCallback
 import com.netease.yunxin.kit.common.network.Request
-import com.netease.yunxin.kit.common.network.ServiceCreator
 import com.netease.yunxin.kit.copyrightedmedia.api.NECopyrightedMedia
 import com.netease.yunxin.kit.copyrightedmedia.api.SongScene
 import com.netease.yunxin.kit.ordersong.core.constant.OrderSongCmd
@@ -28,12 +27,12 @@ import com.netease.yunxin.kit.roomkit.api.NERoomChatMessage
 import com.netease.yunxin.kit.roomkit.api.NERoomKit
 import com.netease.yunxin.kit.roomkit.api.service.NERoomService
 import com.netease.yunxin.kit.roomkit.impl.model.RoomCustomMessages
+import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import kotlin.math.pow
 
 /**
  * 点歌台服务
@@ -133,24 +132,29 @@ object NEOrderSongService {
         coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     }
 
-    fun initialize(context: Context, appKey: String, serverUrl: String) {
+    fun initialize(context: Context, appKey: String, serverUrl: String, account: String) {
         NEOrderSongService.appKey = appKey
         TimerTaskUtil.init()
+        orderSongRepository.initialize(context, serverUrl)
         getSongDynamicTokenUntilSuccess(object :
-                NetRequestCallback<NEOrderSongDynamicToken> {
-                override fun success(info: NEOrderSongDynamicToken?) {
-                    copyrightedMedia.initialize(
-                        context,
-                        appKey,
-                        info!!.accessToken,
-                        ServiceCreator.user!!,
-                        mapOf("serverUrl" to serverUrl)
-                    )
-                }
+            NetRequestCallback<NEOrderSongDynamicToken> {
+            override fun success(info: NEOrderSongDynamicToken?) {
+                copyrightedMedia.initialize(
+                    context,
+                    appKey,
+                    info!!.accessToken,
+                    account,
+                    mapOf("serverUrl" to serverUrl)
+                )
+            }
 
-                override fun error(code: Int, msg: String?) {
-                }
-            })
+            override fun error(code: Int, msg: String?) {
+            }
+        })
+    }
+
+    fun addHeader(key: String, value: String) {
+        orderSongRepository.addHeader(key, value)
     }
 
     fun setSongScene(songScene: SongScene) {

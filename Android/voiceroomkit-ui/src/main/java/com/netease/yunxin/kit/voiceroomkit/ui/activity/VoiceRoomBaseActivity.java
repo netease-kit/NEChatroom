@@ -43,6 +43,20 @@ import com.netease.yunxin.kit.common.utils.DeviceUtils;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.common.utils.PermissionUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
+import com.netease.yunxin.kit.entertainment.common.RoomConstants;
+import com.netease.yunxin.kit.entertainment.common.activity.BaseActivity;
+import com.netease.yunxin.kit.entertainment.common.floatplay.FloatPlayManager;
+import com.netease.yunxin.kit.entertainment.common.floatplay.FloatWindowPermissionManager;
+import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
+import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
+import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.InputUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.ReportUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.StringUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.Utils;
+import com.netease.yunxin.kit.entertainment.common.utils.ViewUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.VoiceRoomUtils;
+import com.netease.yunxin.kit.entertainment.common.widget.HeadImageView;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.ordersong.ui.OrderSongDialog;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
@@ -55,7 +69,6 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.ScreenUtil;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.activity.base.BaseActivity;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.BaseAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.SeatAdapter;
 import com.netease.yunxin.kit.voiceroomkit.ui.chatroom.ChatRoomMsgCreator;
@@ -66,26 +79,15 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NoticeDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
-import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatPlayManager;
-import com.netease.yunxin.kit.voiceroomkit.ui.floatplay.FloatWindowPermissionManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GifAnimationView;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftCache;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftRender;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomModel;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.KeepAliveService;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.ClickUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.InputUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.StringUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.Utils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.ViewUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.BackgroundMusicPanel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.ChatRoomMsgRecyclerView;
-import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,6 +103,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     implements ViewTreeObserver.OnGlobalLayoutListener {
 
   public static final String TAG = "AudioRoom";
+  public static final String TAG_REPORT_PAGE = "page_chatroom_detail";
 
   private static final int KEY_BOARD_MIN_SIZE = SizeUtils.dp2px(80);
 
@@ -158,7 +161,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private boolean joinRoomSuccess = false;
 
-  protected VoiceRoomModel voiceRoomInfo;
+  protected RoomModel voiceRoomInfo;
 
   protected VoiceRoomViewModel roomViewModel;
 
@@ -193,13 +196,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private boolean needJoinRoom = true;
   public final HashSet<Integer> selectSeatSet = new HashSet<>();
 
-  private final BaseAdapter.ItemClickListener<VoiceRoomSeat> itemClickListener =
-      this::onSeatItemClick;
+  private final BaseAdapter.ItemClickListener<RoomSeat> itemClickListener = this::onSeatItemClick;
 
-  private final BaseAdapter.ItemLongClickListener<VoiceRoomSeat> itemLongClickListener =
+  private final BaseAdapter.ItemLongClickListener<RoomSeat> itemLongClickListener =
       this::onSeatItemLongClick;
 
   private static final String RECORD_AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO;
+  private boolean callLeaveRoom = false;
 
   private final ActivityResultLauncher<String> requestPermissionLauncher =
       registerForActivityResult(
@@ -295,8 +298,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   protected abstract VoiceRoomViewModel getRoomViewModel();
 
   private void initIntent() {
-    voiceRoomInfo =
-        (VoiceRoomModel) getIntent().getSerializableExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL);
+    voiceRoomInfo = (RoomModel) getIntent().getSerializableExtra(RoomConstants.INTENT_ROOM_MODEL);
     needJoinRoom = getIntent().getBooleanExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, true);
     isOverSeaEnv = getIntent().getBooleanExtra(NEVoiceRoomUIConstants.ENV_KEY, false);
     if (voiceRoomInfo == null) {
@@ -443,7 +445,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                   intent.setClass(VoiceRoomBaseActivity.this, AudienceActivity.class);
                 }
                 intent.putExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, false);
-                intent.putExtra(NEVoiceRoomUIConstants.INTENT_ROOM_MODEL, voiceRoomInfo);
+                intent.putExtra(RoomConstants.INTENT_ROOM_MODEL, voiceRoomInfo);
                 FloatPlayManager.getInstance()
                     .startFloatPlay(VoiceRoomBaseActivity.this, voiceRoomInfo, intent);
               } else {
@@ -479,6 +481,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         });
     ivGift.setOnClickListener(
         v -> {
+          ReportUtils.report(VoiceRoomBaseActivity.this, TAG_REPORT_PAGE, "chatroom_gift");
           Application application = Utils.getApp();
           if (application != null && !NetworkUtils.isConnected()) {
             ToastUtils.INSTANCE.showShortToast(
@@ -508,7 +511,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                             }
                           }));
         });
-    ivOrderSong.setOnClickListener(v -> showSingingTable());
+    ivOrderSong.setOnClickListener(
+        v -> {
+          ReportUtils.report(VoiceRoomBaseActivity.this, TAG_REPORT_PAGE, "chatroom_order_song");
+          showSingingTable();
+        });
   }
 
   private void initData() {
@@ -552,9 +559,9 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   protected abstract void setupBaseView();
 
-  protected abstract void onSeatItemClick(VoiceRoomSeat model, int position);
+  protected abstract void onSeatItemClick(RoomSeat model, int position);
 
-  protected abstract boolean onSeatItemLongClick(VoiceRoomSeat model, int position);
+  protected abstract boolean onSeatItemLongClick(RoomSeat model, int position);
 
   @NonNull
   protected List<ChatRoomMoreDialog.MoreItem> getMoreItems() {
@@ -622,12 +629,14 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
             @Override
             public void onFailure(int code, @Nullable String msg) {
-              ToastUtils.INSTANCE.showShortToast(
-                  VoiceRoomBaseActivity.this,
-                  getString(
-                      isAnchor
-                          ? R.string.voiceroom_start_live_error
-                          : R.string.voiceroom_join_live_error));
+              if (!callLeaveRoom) {
+                ToastUtils.INSTANCE.showShortToast(
+                    VoiceRoomBaseActivity.this,
+                    getString(
+                        isAnchor
+                            ? R.string.voiceroom_start_live_error
+                            : R.string.voiceroom_join_live_error));
+              }
               finish();
             }
           });
@@ -663,8 +672,8 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     roomViewModel.onSeatListData.observe(
         this,
         seatList -> {
-          List<VoiceRoomSeat> audienceSeats = new ArrayList<>();
-          for (VoiceRoomSeat model : seatList) {
+          List<RoomSeat> audienceSeats = new ArrayList<>();
+          for (RoomSeat model : seatList) {
             if (model.getSeatIndex() != VoiceRoomViewModel.ANCHOR_SEAT_INDEX) {
               audienceSeats.add(model);
             }
@@ -694,50 +703,52 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             finish();
           }
         });
-
-    roomViewModel.rtcAudioVolumeIndicationData.observe(
+    roomViewModel.rtcLocalAudioVolumeIndicationData.observe(
         this,
-        volumeInfos -> {
-          // 区分本地和远端成员，由于RoomKit中的onRtcAudioVolumeIndication回调把本地和远端成员的合并了，这里拆分处理
-          if (volumeInfos.size() == 1 && VoiceRoomUtils.isLocal(volumeInfos.get(0).getUserUuid())) {
-            if (VoiceRoomUtils.isHost(volumeInfos.get(0).getUserUuid())) {
-              showAvatarAnimal(volumeInfos.get(0).getVolume() > 0);
-            } else {
-              for (VoiceRoomSeat roomSeat : seatAdapter.getDataList()) {
-                if (VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
-                  if (roomSeat.isSpeaking() && volumeInfos.get(0).getVolume() == 0) {
-                    roomSeat.setSpeaking(false);
-                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
-                  } else if (!roomSeat.isSpeaking() && volumeInfos.get(0).getVolume() > 0) {
-                    roomSeat.setSpeaking(true);
-                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
-                  }
+        volume -> {
+          if (VoiceRoomUtils.isLocalAnchor()) {
+            showAvatarAnimal(volume > 0 && VoiceRoomUtils.getLocalMember().isAudioOn());
+          } else {
+            for (RoomSeat roomSeat : seatAdapter.getDataList()) {
+              if (VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
+                if (roomSeat.isSpeaking() && volume == 0) {
+                  roomSeat.setSpeaking(false);
+                  seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
+                } else if (!roomSeat.isSpeaking() && volume > 0) {
+                  roomSeat.setSpeaking(true);
+                  seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
                 }
               }
             }
-          } else {
-            Map<String, NEVoiceRoomMemberVolumeInfo> memberVolumeInfoMap = new HashMap<>();
-            for (NEVoiceRoomMemberVolumeInfo memberVolumeInfo : volumeInfos) {
-              memberVolumeInfoMap.put(memberVolumeInfo.getUserUuid(), memberVolumeInfo);
-              if (VoiceRoomUtils.isHost(memberVolumeInfo.getUserUuid())) {
-                showAvatarAnimal(memberVolumeInfo.getVolume() > 0);
-              }
+          }
+        });
+
+    roomViewModel.rtcRemoteAudioVolumeIndicationData.observe(
+        this,
+        volumes -> {
+          Map<String, NEVoiceRoomMemberVolumeInfo> memberVolumeInfoMap = new HashMap<>();
+          for (NEVoiceRoomMemberVolumeInfo memberVolumeInfo : volumes) {
+            memberVolumeInfoMap.put(memberVolumeInfo.getUserUuid(), memberVolumeInfo);
+            if (VoiceRoomUtils.isHost(memberVolumeInfo.getUserUuid())) {
+              showAvatarAnimal(
+                  memberVolumeInfo.getVolume() > 0
+                      && VoiceRoomUtils.getMember(memberVolumeInfo.getUserUuid()).isAudioOn());
             }
-            for (VoiceRoomSeat roomSeat : seatAdapter.getDataList()) {
-              if (!VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
-                if (memberVolumeInfoMap.containsKey(roomSeat.getAccount())
-                    && (Objects.requireNonNull(memberVolumeInfoMap.get(roomSeat.getAccount())))
-                            .getVolume()
-                        > 0) {
-                  if (!roomSeat.isSpeaking()) {
-                    roomSeat.setSpeaking(true);
-                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
-                  }
-                } else {
-                  if (roomSeat.isSpeaking()) {
-                    roomSeat.setSpeaking(false);
-                    seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
-                  }
+          }
+          for (RoomSeat roomSeat : seatAdapter.getDataList()) {
+            if (!VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
+              if (memberVolumeInfoMap.containsKey(roomSeat.getAccount())
+                  && (Objects.requireNonNull(memberVolumeInfoMap.get(roomSeat.getAccount())))
+                          .getVolume()
+                      > 0) {
+                if (!roomSeat.isSpeaking()) {
+                  roomSeat.setSpeaking(true);
+                  seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
+                }
+              } else {
+                if (roomSeat.isSpeaking()) {
+                  roomSeat.setSpeaking(false);
+                  seatAdapter.notifyItemChanged(seatAdapter.getDataList().indexOf(roomSeat));
                 }
               }
             }
@@ -841,6 +852,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   }
 
   protected final void leaveRoom() {
+    callLeaveRoom = true;
     if (VoiceRoomUtils.isLocalAnchor()) {
       NEVoiceRoomKit.getInstance()
           .endRoom(

@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
+import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
@@ -24,9 +26,7 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.MemberSelectDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.SeatApplyDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.SeatHelper;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomUser;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.ClickUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.AnchorVoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.OnItemClickListener;
@@ -134,8 +134,8 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   }
 
   @Override
-  protected void onSeatItemClick(VoiceRoomSeat seat, int position) {
-    if (seat.getStatus() == VoiceRoomSeat.Status.APPLY) {
+  protected void onSeatItemClick(RoomSeat seat, int position) {
+    if (seat.getStatus() == RoomSeat.Status.APPLY) {
       ToastUtils.INSTANCE.showShortToast(
           AnchorActivity.this, getString(R.string.voiceroom_applying_now));
       return;
@@ -150,12 +150,12 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     ListItemDialog itemDialog = new ListItemDialog(AnchorActivity.this);
     switch (seat.getStatus()) {
         // 抱观众上麦（点击麦位）
-      case VoiceRoomSeat.Status.INIT:
+      case RoomSeat.Status.INIT:
         items.add(getString(R.string.voiceroom_invite_seat));
         items.add(getString(R.string.voiceroom_close_seat));
         break;
         // 当前存在有效用户
-      case VoiceRoomSeat.Status.ON:
+      case RoomSeat.Status.ON:
         items.add(getString(R.string.voiceroom_kickout_seat));
         final NEVoiceRoomMember member = seat.getMember();
         if (member != null) {
@@ -167,7 +167,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
         items.add(getString(R.string.voiceroom_close_seat));
         break;
         // 当前麦位已经被关闭
-      case VoiceRoomSeat.Status.CLOSED:
+      case RoomSeat.Status.CLOSED:
         items.add(getString(R.string.voiceroom_open_seat));
         break;
     }
@@ -176,7 +176,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   }
 
   @Override
-  protected boolean onSeatItemLongClick(VoiceRoomSeat model, int position) {
+  protected boolean onSeatItemLongClick(RoomSeat model, int position) {
     return false;
   }
 
@@ -216,7 +216,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     return moreItems;
   }
 
-  private void onSeatAction(VoiceRoomSeat seat, String item) {
+  private void onSeatAction(RoomSeat seat, String item) {
     if (item.equals(getString(R.string.voiceroom_kickout_seat_sure))) {
       new ListItemDialog(AnchorActivity.this)
           .setOnItemClickListener(
@@ -246,7 +246,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     }
   }
 
-  private void showApplySeats(List<VoiceRoomSeat> seats) {
+  private void showApplySeats(List<RoomSeat> seats) {
     seatApplyDialog = new SeatApplyDialog();
     Bundle bundle = new Bundle();
     bundle.putParcelableArrayList(seatApplyDialog.getDialogTag(), new ArrayList<>(seats));
@@ -255,12 +255,12 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     seatApplyDialog.setRequestAction(
         new SeatApplyDialog.IRequestAction() {
           @Override
-          public void refuse(VoiceRoomSeat seat) {
+          public void refuse(RoomSeat seat) {
             denySeatApply(seat);
           }
 
           @Override
-          public void agree(VoiceRoomSeat seat) {
+          public void agree(RoomSeat seat) {
             approveSeatApply(seat);
           }
 
@@ -269,7 +269,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
         });
   }
 
-  public void onApplySeats(List<VoiceRoomSeat> seats) {
+  public void onApplySeats(List<RoomSeat> seats) {
     int size = seats.size();
     if (size > 0) {
       tvApplyHint.setVisibility(View.VISIBLE);
@@ -292,7 +292,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
   // Anchor call
   //
 
-  private void approveSeatApply(VoiceRoomSeat seat) {
+  private void approveSeatApply(RoomSeat seat) {
     final String text = getString(R.string.voiceroom_seat_request_success);
     NEVoiceRoomKit.getInstance()
         .approveSeatRequest(
@@ -310,7 +310,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             });
   }
 
-  private void denySeatApply(VoiceRoomSeat seat) {
+  private void denySeatApply(RoomSeat seat) {
     NEVoiceRoomMember member = seat.getMember();
     if (member == null) return;
     final String text =
@@ -331,7 +331,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             });
   }
 
-  public void openSeat(VoiceRoomSeat seat) {
+  public void openSeat(RoomSeat seat) {
     int position = seat.getSeatIndex() - 1;
     List<Integer> seatIndices = new ArrayList<>();
     seatIndices.add(seat.getSeatIndex());
@@ -357,7 +357,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             });
   }
 
-  private void closeSeat(VoiceRoomSeat seat) {
+  private void closeSeat(RoomSeat seat) {
     List<Integer> list = new ArrayList<>();
     list.add(seat.getSeatIndex());
     NEVoiceRoomKit.getInstance()
@@ -380,7 +380,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             });
   }
 
-  private void muteSeat(VoiceRoomSeat seat) {
+  private void muteSeat(RoomSeat seat) {
     String userId = seat.getAccount();
     if (userId == null) return;
 
@@ -404,7 +404,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             });
   }
 
-  private void unmuteSeat(VoiceRoomSeat seat) {
+  private void unmuteSeat(RoomSeat seat) {
     String userId = seat.getAccount();
     if (userId == null) return;
 
@@ -430,7 +430,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
 
   private int inviteIndex = -1;
 
-  private void inviteSeat0(VoiceRoomSeat seat) {
+  private void inviteSeat0(RoomSeat seat) {
     inviteIndex = seat.getSeatIndex();
     new MemberSelectDialog(this, this::inviteSeat).show();
   }
@@ -458,7 +458,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
             });
   }
 
-  private void kickSeat(@NonNull VoiceRoomSeat seat) {
+  private void kickSeat(@NonNull RoomSeat seat) {
     NEVoiceRoomMember member = seat.getMember();
     if (member == null) return;
     final String text =

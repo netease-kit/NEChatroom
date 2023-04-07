@@ -50,11 +50,13 @@ public class BackgroundMusicPanel extends AppCompatTextView {
         @Override
         public void onAudioEffectFinished(int effectId) {
           ALog.i(TAG, "onAudioEffectFinished,effectId:" + effectId);
-          NEVoiceRoomMember localMember = NEVoiceRoomKit.getInstance().getLocalMember();
-          if (localMember != null
-              && localMember.getRole().equals(NEVoiceRoomRole.HOST.getValue())) {
-            ALog.i(TAG, "Anchor switch song");
-            switchSong(null, true);
+          if (effectId == SongPlayManager.EFFECT_ID) {
+            NEVoiceRoomMember localMember = NEVoiceRoomKit.getInstance().getLocalMember();
+            if (localMember != null
+                && localMember.getRole().equals(NEVoiceRoomRole.HOST.getValue())) {
+              ALog.i(TAG, "Anchor switch song");
+              switchSong(null, true);
+            }
           }
         }
       };

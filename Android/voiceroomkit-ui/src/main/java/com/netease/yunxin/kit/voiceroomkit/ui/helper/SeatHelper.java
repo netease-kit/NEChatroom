@@ -4,7 +4,7 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.helper;
 
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
+import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
 import java.util.List;
 
 public class SeatHelper {
@@ -15,8 +15,8 @@ public class SeatHelper {
 
   private SeatHelper() {}
 
-  private List<VoiceRoomSeat> onSeatItems;
-  private List<VoiceRoomSeat> applySeatList;
+  private List<RoomSeat> onSeatItems;
+  private List<RoomSeat> applySeatList;
 
   public static SeatHelper getInstance() {
     if (null == mInstance) {
@@ -29,19 +29,19 @@ public class SeatHelper {
     return mInstance;
   }
 
-  public List<VoiceRoomSeat> getOnSeatItems() {
+  public List<RoomSeat> getOnSeatItems() {
     return onSeatItems;
   }
 
-  public void setOnSeatItems(List<VoiceRoomSeat> onSeatItems) {
+  public void setOnSeatItems(List<RoomSeat> onSeatItems) {
     this.onSeatItems = onSeatItems;
   }
 
-  public List<VoiceRoomSeat> getApplySeatList() {
+  public List<RoomSeat> getApplySeatList() {
     return applySeatList;
   }
 
-  public void setApplySeatList(List<VoiceRoomSeat> applySeatList) {
+  public void setApplySeatList(List<RoomSeat> applySeatList) {
     this.applySeatList = applySeatList;
   }
 }

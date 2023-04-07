@@ -137,7 +137,7 @@
             android:src="@drawable/point_empty"
             android:contentDescription="@string/app_content_description_default"/>
 
-        <com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView
+        <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
             android:id="@+id/iv_liver_avatar"
             android:layout_width="58dp"
             android:layout_height="58dp"
@@ -232,56 +232,52 @@
         android:textColorHint="@color/color_4cffffff"
         app:drawableStartCompat="@drawable/alpha_chat_room_icon" />
 
-    <ImageView
-        android:id="@+id/iv_room_more"
-        android:layout_width="@dimen/dimen_36_dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/dimen_8_dp"
-        android:padding="@dimen/dimen_8_dp"
-        android:src="@drawable/icon_room_more"
-        android:background="@drawable/seat_item_round_bg"
-        android:layout_height="@dimen/dimen_36_dp"
-        android:contentDescription="@string/app_content_description_default"/>
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/iv_local_audio_switch"
-        android:layout_marginEnd="@dimen/dimen_10_dp"
-        android:layout_width="@dimen/dimen_36_dp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_room_more"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/dimen_8_dp"
-        android:padding="@dimen/dimen_8_dp"
-        android:src="@drawable/selector_room_micro_phone"
-        android:background="@drawable/seat_item_round_bg"
-        android:layout_height="@dimen/dimen_36_dp"
-        android:contentDescription="@string/app_content_description_default"/>
+        <ImageView
+            android:id="@+id/iv_order_song"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="@dimen/dimen_10_dp"
+            android:src="@drawable/listen_order_song"
+            android:visibility="visible"
+            android:contentDescription="@string/app_content_description_default"/>
 
-    <ImageView
-        android:id="@+id/iv_gift"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="@dimen/dimen_10_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/dimen_8_dp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_order_song"
-        android:background="@drawable/dark_cycle_bg"
-        android:padding="5dp"
-        android:src="@drawable/gift"
-        android:visibility="visible"
-        android:contentDescription="@string/app_content_description_default" />
+        <ImageView
+            android:id="@+id/iv_gift"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="@dimen/dimen_10_dp"
+            android:src="@drawable/gift"
+            android:visibility="visible"
+            android:contentDescription="@string/app_content_description_default" />
 
-    <ImageView
-        android:id="@+id/iv_order_song"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="@dimen/dimen_10_dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/dimen_8_dp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_local_audio_switch"
-        android:src="@drawable/listen_order_song"
-        android:contentDescription="@string/app_content_description_default"
-        android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/iv_local_audio_switch"
+            android:layout_marginEnd="@dimen/dimen_10_dp"
+            android:layout_width="@dimen/dimen_36_dp"
+            android:padding="@dimen/dimen_8_dp"
+            android:src="@drawable/selector_room_micro_phone"
+            android:background="@drawable/seat_item_round_bg"
+            android:layout_height="@dimen/dimen_36_dp"
+            android:contentDescription="@string/app_content_description_default"/>
+
+        <ImageView
+            android:id="@+id/iv_room_more"
+            android:layout_width="@dimen/dimen_36_dp"
+            android:padding="@dimen/dimen_8_dp"
+            android:src="@drawable/icon_room_more"
+            android:background="@drawable/seat_item_round_bg"
+            android:layout_height="@dimen/dimen_36_dp"
+            android:contentDescription="@string/app_content_description_default"/>
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/edt_input_text"

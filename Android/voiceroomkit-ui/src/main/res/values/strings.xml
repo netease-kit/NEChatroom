@@ -57,7 +57,7 @@
     <string name="voiceroom_loading_fail">load fail</string>
     <string name="voiceroom_net_error">Net error,try again</string>
     <string name="voiceroom_loading">loading...</string>
-    <string name="voiceroom_chat_hint">Have a chat</string>
+    <string name="voiceroom_chat_hint">Send a message</string>
     <string name="voiceroom_applause">Applause</string>
     <string name="voiceroom_laughter">laughter</string>
     <string name="voiceroom_earback_tip">Plug in the earphones and you can use the in-ear monitor</string>
@@ -105,4 +105,13 @@
     <string name="voiceroom_send_to">send to</string>
     <string name="voiceroom_gift_send">send</string>
     <string name="voiceroom_gift_send_memeber_empty">No gift object selected, unable to send gifts</string>
+    <string name="voiceroom_chat_room">Voice chat room</string>
+    <string name="voiceroom_empty_roomname_tips">The room theme cannot be empty</string>
+    <string name="voiceroom_tip">Tip</string>
+    <string name="voiceroom_click_create_room_tips">Exit the current room and create a new room</string>
+    <string name="voiceroom_click_roomlist_tips">Exit the current room and enter other rooms</string>
+    <string name="voiceroom_room_not_exist">Room does not exist</string>
+    <string name="voiceroom_people_online2">%d people</string>
+    <string name="voiceroom_people_online_ten_thousand">s%w people</string>
+
 </resources>

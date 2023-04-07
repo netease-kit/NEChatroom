@@ -60,8 +60,16 @@ public class KeepAliveService extends Service {
         () -> {
           Intent notificationIntent =
               new Intent(getApplicationContext(), getApplicationContext().getClass());
-          PendingIntent pendingIntent =
-              PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+          PendingIntent pendingIntent;
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent =
+                PendingIntent.getActivity(
+                    getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+          } else {
+            pendingIntent =
+                PendingIntent.getActivity(
+                    getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+          }
 
           Notification.Builder builder =
               new Notification.Builder(getApplicationContext())

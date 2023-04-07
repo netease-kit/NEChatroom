@@ -12,8 +12,10 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceCreateRoomDefaultInf
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomLanguage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeConfig
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatRequestItem
 import com.netease.yunxin.kit.voiceroomkit.impl.VoiceRoomKitImpl
@@ -136,7 +138,7 @@ interface NEVoiceRoomKit {
      * @param callback 回调
      *
      */
-    fun getVoiceRoomList(
+    fun getRoomList(
         liveState: NEVoiceRoomLiveState,
         pageNum: Int,
         pageSize: Int,
@@ -187,6 +189,19 @@ interface NEVoiceRoomKit {
     fun leaveRoom(callback: NEVoiceRoomCallback<Unit>? = null)
 
     /**
+     * 获取房间信息
+     * @param liveRecordId 直播Id
+     * @param callback 回调
+     */
+    fun getRoomInfo(liveRecordId: Long, callback: NEVoiceRoomCallback<NEVoiceRoomInfo>)
+
+    /**
+     * 获取当前房间信息
+     * @return 当前房间信息
+     */
+    fun getCurrentRoomInfo(): NEVoiceRoomInfo?
+
+    /**
      * 结束房间 房主权限
      * <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
      * @param callback 回调
@@ -219,7 +234,11 @@ interface NEVoiceRoomKit {
      * @param callback 回调。
      * <br>相关回调：邀请上麦后，观众同意后（组件默认自动接收邀请），房间内所有成员会触发[NEVoiceRoomListener.onSeatInvitationAccepted]回调和[NEVoiceRoomListener.onSeatListChanged]回调
      */
-    fun sendSeatInvitation(seatIndex: Int, account: String, callback: NEVoiceRoomCallback<Unit>? = null)
+    fun sendSeatInvitation(
+        seatIndex: Int,
+        account: String,
+        callback: NEVoiceRoomCallback<Unit>? = null
+    )
 
     /**
      * 成员申请指定位置为[seatIndex]的麦位，位置从**1**开始。
@@ -230,7 +249,11 @@ interface NEVoiceRoomKit {
      * @param callback 回调。
      * <br>相关回调：申请上麦后，房间内所有成员会触发[NEVoiceRoomListener.onSeatRequestSubmitted]回调和[NEVoiceRoomListener.onSeatListChanged]回调
      */
-    fun submitSeatRequest(seatIndex: Int, exclusive: Boolean, callback: NEVoiceRoomCallback<Unit>? = null)
+    fun submitSeatRequest(
+        seatIndex: Int,
+        exclusive: Boolean,
+        callback: NEVoiceRoomCallback<Unit>? = null
+    )
 
     /***
      * 取消申请上麦
@@ -461,14 +484,116 @@ interface NEVoiceRoomKit {
      * @return 0：方法调用成功。其他：方法调用失败
      */
     fun stopEffect(effectId: Int): Int
+
+    /**
+     * 发送礼物
+     * @param giftId 礼物id
+     * @param callback 发送礼物的回调
+     * <br>相关回调：发送礼物成功后，房间内所有人会收到[NEVoiceRoomListener.onReceiveGift]回调
+     */
+    fun sendGift(giftId: Int, callback: NEVoiceRoomCallback<Unit>? = null)
+
+    /**
+     * 指定播放位置
+     * <br>使用前提：该方法仅在调用[login]方法登录成功且上麦成功调用有效
+     * @param effectId 音效文件id
+     * @param position 播放位置
+     * @return 0：方法调用成功。其他：方法调用失败
+     */
+    fun setPlayingPosition(effectId: Int, position: Long): Int
+
+    /**
+     * 暂停播放音效文件
+     * @param effectId 音效文件id
+     */
+    fun pauseEffect(effectId: Int): Int
+
+    /**
+     * 继续播放音效文件
+     * @param effectId 音效文件id
+     */
+    fun resumeEffect(effectId: Int): Int
+
+    /**
+     * 启用说话者音量提示。
+     * 该方法允许 SDK 定期向 App 反馈本地发流用户和瞬时音量最高的远端用户（最多 3 位）的音量相关信息，
+     * 即当前谁在说话以及说话者的音量。启用该方法后，只要房间内有发流用户，无论是否有人说话，
+     * SDK 都会在加入房间后根据预设的时间间隔触发 [NEVoiceRoomListener.onRtcRemoteAudioVolumeIndication] 回调
+     * @param enable 是否启用说话者音量提示。
+     * @param interval 指定音量提示的时间间隔。单位为毫秒。必须设置为 100 毫秒的整数倍值，建议设置为 200 毫秒以上。
+     */
+    fun enableAudioVolumeIndication(enable: Boolean, interval: Int): Int
+
+    /**
+     * 批量发送礼物
+     * @param giftId 礼物Id
+     * @param giftCount 礼物数量
+     * @param userUuids 发送礼物的对象
+     * @param callback 回调
+     * <br>相关回调：发送礼物成功后，房间内所有人会收到[NEVoiceRoomListener.onReceiveBatchGift]回调
+     */
+    fun sendBatchGift(giftId: Int, giftCount: Int, userUuids: List<String>, callback: NEVoiceRoomCallback<Unit>?)
+
+    /**
+     * 开始网络质量探测。
+     * @param config 	Last mile 网络探测配置
+     * 开始通话前网络质量探测。 启用该方法后，SDK 会通过回调方式反馈上下行网络的质量状态与质量探测报告，包括带宽、丢包率、网络抖动和往返时延等数据。
+     * 一般用于通话前的网络质量探测场景，用户加入房间之前可以通过该方法预估音视频通话中本地用户的主观体验和客观网络状态。 相关回调如下：
+     * onLastmileQuality：网络质量状态回调，以打分形式描述上下行网络质量的主观体验。该回调视网络情况在约 5 秒内返回。
+     * onLastmileProbeResult：网络质量探测报告回调，报告中通过客观数据反馈上下行网络质量。该回调视网络情况在约 30 秒内返回。
+     * @return 0：方法调用成功。其他：方法调用失败
+     */
+    fun startLastmileProbeTest(config: NEVoiceRoomRtcLastmileProbeConfig): Int
+
+    /**
+     * 停止网络质量探测。
+     * @return 0：方法调用成功。其他：方法调用失败
+     */
+    fun stopLastmileProbeTest(): Int
+
+    /**
+     * 添加房间预览监听
+     * @param listener 监听器
+     */
+    fun addPreviewListener(listener: NEVoiceRoomPreviewListener)
+
+    /**
+     * 移除房间预览监听
+     * @param listener 监听器
+     */
+    fun removePreviewListener(listener: NEVoiceRoomPreviewListener)
+
+    /**
+     * 上传日志
+     * @return Int
+     */
+    fun uploadLog(): Int
+
+    /**
+     * 切换语言，组件不会缓存该设置。
+     * @param language 目标语言
+     */
+    fun switchLanguage(language: NEVoiceRoomLanguage): Int
+}
+
+interface VoiceRoomInterceptor {
+    fun onInComeInterceptor(): Boolean
 }
 
 /**
  * NEVoiceRoomKit配置
  * @property appKey NEVoiceRoom 服务的key
+ * @property reuseIM 是否开启IM复用
  * @property extras 额外参数
  */
-data class NEVoiceRoomKitConfig(val appKey: String, val extras: Map<String, Any?> = mapOf())
+data class NEVoiceRoomKitConfig(val appKey: String, val reuseIM: Boolean = false, val extras: Map<String, Any?> = mapOf()) {
+    constructor(appKey: String) :
+        this(appKey, false, mapOf())
+    constructor(appKey: String, reuseIM: Boolean) :
+        this(appKey, reuseIM, mapOf())
+    constructor(appKey: String, extras: Map<String, Any?>) :
+        this(appKey, false, extras)
+}
 
 /**
  * 创建房间参数
@@ -478,6 +603,7 @@ data class NEVoiceRoomKitConfig(val appKey: String, val extras: Map<String, Any?
  * @property seatCount 麦位个数，默认8个,取值范围为1~20
  * @property configId 模版id
  * @property cover 封面，https链接
+ * @property liveType 直播类型,参考[NELiveType]
  * @property extraData 扩展字段
  */
 data class NECreateVoiceRoomParams(
@@ -486,6 +612,7 @@ data class NECreateVoiceRoomParams(
     val seatCount: Int = 8,
     val configId: Int = 0,
     val cover: String?,
+    val liveType: Int = 2,
     val extraData: String? = null
 ) {
     override fun toString(): String {

@@ -6,6 +6,7 @@
 
 package com.netease.yunxin.kit.voiceroomkit.impl.service
 
+import android.content.Context
 import com.netease.yunxin.kit.common.network.NetRequestCallback
 import com.netease.yunxin.kit.common.network.Request
 import com.netease.yunxin.kit.roomkit.api.NEErrorCode
@@ -33,6 +34,14 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
 
     init {
         voiceRoomScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    }
+
+    override fun initialize(context: Context) {
+        voiceRoomRepository.initialize(context)
+    }
+
+    override fun addHeader(key: String, value: String) {
+        voiceRoomRepository.addHeader(key, value)
     }
 
     override fun getVoiceRoomList(
@@ -132,6 +141,46 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
         voiceRoomScope?.launch {
             Request.request(
                 { voiceRoomRepository.getDefaultLiveInfo() },
+                success = {
+                    callback.success(it)
+                },
+                error = { code: Int, msg: String ->
+                    reportHttpErrorEvent(HttpErrorReporter.ErrorEvent(code, msg, ""))
+                    callback.error(code, msg)
+                }
+            )
+        }
+    }
+
+    override fun reward(
+        liveRecodeId: Long,
+        giftId: Int,
+        callback: NetRequestCallback<Unit>
+    ) {
+        voiceRoomScope?.launch {
+            Request.request(
+                { voiceRoomRepository.reward(liveRecodeId, giftId) },
+                success = {
+                    callback.success(it)
+                },
+                error = { code: Int, msg: String ->
+                    reportHttpErrorEvent(HttpErrorReporter.ErrorEvent(code, msg, ""))
+                    callback.error(code, msg)
+                }
+            )
+        }
+    }
+
+    override fun batchReward(
+        liveRecodeId: Long,
+        giftId: Int,
+        giftCount: Int,
+        userUuids: List<String>,
+        callback: NetRequestCallback<Unit>
+    ) {
+        voiceRoomScope?.launch {
+            Request.request(
+                { voiceRoomRepository.batchReward(liveRecodeId, giftId, giftCount, userUuids) },
                 success = {
                     callback.success(it)
                 },
