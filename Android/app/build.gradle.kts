@@ -41,8 +41,7 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     implementation(project(":ordersong"))
     implementation(project(":voiceroomkit-ui"))
-    implementation(project(":listentogetherkit"))
-    implementation(project(":listentogetherkit-ui"))
+    implementation(project(":entertainment:entertainment-common"))
     implementation("com.netease.yunxin.kit.common:common-image:1.1.6")
     implementation("com.netease.yunxin.kit.common:common-ui:1.1.13")
      implementation("com.netease.yunxin.kit.auth:auth-yunxin-login:1.0.4-rc01")
@@ -50,7 +49,7 @@ dependencies {
     implementation("com.blankj:utilcodex:1.30.6")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
     implementation("com.scwang.smart:refresh-layout-kernel:2.0.1")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.0.6")
-    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.5.0")
+    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.1.0")
+    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.6.0")
 
 }

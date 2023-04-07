@@ -10,7 +10,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="30dp"
         android:layout_height="30dp">
-        <com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView
+        <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
             android:layout_gravity="center"
             android:id="@+id/iv_avatar"
             android:layout_width="28dp"

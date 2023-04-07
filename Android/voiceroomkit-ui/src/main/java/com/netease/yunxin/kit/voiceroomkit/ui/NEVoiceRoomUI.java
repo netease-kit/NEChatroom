@@ -7,7 +7,7 @@ package com.netease.yunxin.kit.voiceroomkit.ui;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import com.netease.yunxin.kit.voiceroomkit.ui.activity.AppStatusManager;
+import com.netease.yunxin.kit.entertainment.common.AppStatusManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.BaseActivityManager;
 
 public class NEVoiceRoomUI {

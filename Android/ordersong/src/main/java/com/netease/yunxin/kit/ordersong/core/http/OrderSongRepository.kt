@@ -5,6 +5,7 @@
  */
 package com.netease.yunxin.kit.ordersong.core.http
 
+import android.content.Context
 import android.text.TextUtils
 import com.netease.yunxin.kit.common.network.Response
 import com.netease.yunxin.kit.common.network.ServiceCreator
@@ -12,6 +13,9 @@ import com.netease.yunxin.kit.ordersong.core.NEOrderSongService
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSong
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSongDynamicToken
 import com.netease.yunxin.kit.ordersong.core.model.OrderSong
+import com.netease.yunxin.kit.ordersong.ui.BuildConfig
+import com.netease.yunxin.kit.roomkit.api.NERoomKit
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -20,9 +24,30 @@ class OrderSongRepository {
         const val PLAY = 1
         const val PAUSE = 2
     }
-    private val orderSongApi by lazy { ServiceCreator.create(OrderSongApi::class.java) }
 
-    suspend fun getSongToken(appKey: String): Response<NEOrderSongDynamicToken> = withContext(Dispatchers.IO) {
+    private val serviceCreator: ServiceCreator = ServiceCreator()
+
+    private lateinit var orderSongApi: OrderSongApi
+
+    fun initialize(context: Context, baseUrl: String) {
+        serviceCreator.init(
+            context,
+            baseUrl,
+            if (BuildConfig.DEBUG) ServiceCreator.LOG_LEVEL_BODY else ServiceCreator.LOG_LEVEL_BASIC,
+            NERoomKit.getInstance().deviceId
+        )
+        val localLanguage = Locale.getDefault().language
+        serviceCreator.addHeader(ServiceCreator.ACCEPT_LANGUAGE_KEY, localLanguage)
+        orderSongApi = serviceCreator.create(OrderSongApi::class.java)
+    }
+
+    fun addHeader(key: String, value: String) {
+        serviceCreator.addHeader(key, value)
+    }
+
+    suspend fun getSongToken(appKey: String): Response<NEOrderSongDynamicToken> = withContext(
+        Dispatchers.IO
+    ) {
         orderSongApi.getMusicToken(appKey)
     }
 

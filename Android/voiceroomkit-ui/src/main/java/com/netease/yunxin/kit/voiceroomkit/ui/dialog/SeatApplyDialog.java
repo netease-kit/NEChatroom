@@ -23,11 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.image.ImageLoader;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
+import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
+import com.netease.yunxin.kit.entertainment.common.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.BaseAdapter;
-import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeat;
-import com.netease.yunxin.kit.voiceroomkit.ui.widget.HeadImageView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VerticalItemDecoration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,13 +47,13 @@ public class SeatApplyDialog extends BaseDialogFragment {
 
   TextView tvDismiss;
 
-  private final List<VoiceRoomSeat> seats = new ArrayList<>();
+  private final List<RoomSeat> seats = new ArrayList<>();
 
   public interface IRequestAction {
 
-    void refuse(VoiceRoomSeat seat);
+    void refuse(RoomSeat seat);
 
-    void agree(VoiceRoomSeat seat);
+    void agree(RoomSeat seat);
 
     void dismiss();
   }
@@ -72,7 +72,7 @@ public class SeatApplyDialog extends BaseDialogFragment {
       LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
     Bundle bundle = getArguments();
     if (bundle != null) {
-      ArrayList<VoiceRoomSeat> seats = getArguments().getParcelableArrayList(getDialogTag());
+      ArrayList<RoomSeat> seats = getArguments().getParcelableArrayList(getDialogTag());
       if (seats != null) {
         this.seats.addAll(seats);
       }
@@ -153,12 +153,12 @@ public class SeatApplyDialog extends BaseDialogFragment {
         new SeatApplyAdapter.IApplyAction() {
 
           @Override
-          public void refuse(VoiceRoomSeat seat) {
+          public void refuse(RoomSeat seat) {
             requestAction.refuse(seat);
           }
 
           @Override
-          public void agree(VoiceRoomSeat seat) {
+          public void agree(RoomSeat seat) {
             requestAction.agree(seat);
           }
         });
@@ -169,7 +169,7 @@ public class SeatApplyDialog extends BaseDialogFragment {
     this.requestAction = requestAction;
   }
 
-  public void update(Collection<VoiceRoomSeat> seats) {
+  public void update(Collection<RoomSeat> seats) {
     this.seats.clear();
     this.seats.addAll(seats);
     if (isVisible()) {
@@ -188,17 +188,17 @@ public class SeatApplyDialog extends BaseDialogFragment {
     requestAction.dismiss();
   }
 
-  public static class SeatApplyAdapter extends BaseAdapter<VoiceRoomSeat> {
+  public static class SeatApplyAdapter extends BaseAdapter<RoomSeat> {
     public interface IApplyAction {
-      void refuse(VoiceRoomSeat seat);
+      void refuse(RoomSeat seat);
 
-      void agree(VoiceRoomSeat seat);
+      void agree(RoomSeat seat);
     }
 
     IApplyAction applyAction;
-    ArrayList<VoiceRoomSeat> seats;
+    ArrayList<RoomSeat> seats;
 
-    public SeatApplyAdapter(ArrayList<VoiceRoomSeat> seats, Context context) {
+    public SeatApplyAdapter(ArrayList<RoomSeat> seats, Context context) {
       super(seats, context);
       this.seats = seats;
     }
@@ -210,7 +210,7 @@ public class SeatApplyDialog extends BaseDialogFragment {
 
     @Override
     protected void onBindBaseViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-      VoiceRoomSeat seat = getItem(position);
+      RoomSeat seat = getItem(position);
       if (seat == null) {
         return;
       }

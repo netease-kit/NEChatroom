@@ -19,31 +19,31 @@ interface VoiceRoomApi {
     /**
      * 获取语聊房房间列表
      */
-    @POST("/scene/apps/{appKey}/ent/live/v1/list")
+    @POST("scene/apps/{appKey}/ent/live/v1/list")
     suspend fun getVoiceRoomList(
         @Path("appKey") appKey: String,
         @Body body: Map<String, @JvmSuppressWildcards Any?>
     ): Response<VoiceRoomList>
 
     /**
-     * 创建卡拉ok 房间
+     * 创建语聊房 房间
      */
-    @POST("/scene/apps/{appKey}/ent/live/v1/createLive")
+    @POST("scene/apps/{appKey}/ent/live/v1/createLive")
     suspend fun startVoiceRoom(
         @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any?>
     ): Response<VoiceRoomInfo>
 
     /**
-     * 结束 ktv 房间
+     * 结束 语聊房 房间
      */
-    @POST("/scene/apps/{appKey}/ent/live/v1/destroyLive")
+    @POST("scene/apps/{appKey}/ent/live/v1/destroyLive")
     suspend fun stopVoiceRoom(
         @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any>
     ): Response<Unit>
 
-    @POST("/scene/apps/{appKey}/ent/live/v1/info")
+    @POST("scene/apps/{appKey}/ent/live/v1/info")
     suspend fun getRoomInfo(
         @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any>
@@ -53,4 +53,22 @@ interface VoiceRoomApi {
     suspend fun getDefaultLiveInfo(
         @Path("appKey") appKey: String
     ): Response<VoiceRoomDefaultConfig>
+
+    /**
+     * 观众打赏
+     */
+    @POST("scene/apps/{appKey}/ent/live/v1/reward")
+    suspend fun reward(
+        @Path("appKey") appKey: String,
+        @Body params: Map<String, @JvmSuppressWildcards Any>
+    ): Response<Unit>
+
+    /**
+     * 批量打赏
+     */
+    @POST("scene/apps/{appKey}/ent/live/v1/batch/reward")
+    suspend fun batchReward(
+        @Path("appKey") appKey: String,
+        @Body params: Map<String, @JvmSuppressWildcards Any>
+    ): Response<Unit>
 }

@@ -6,10 +6,10 @@ package com.netease.yunxin.kit.voiceroomkit.ui.chatroom;
 
 import android.content.Context;
 import android.graphics.Color;
+import com.netease.yunxin.kit.entertainment.common.utils.Utils;
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.*;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.*;
 import java.util.Objects;
 
 public class ChatRoomMsgCreator {

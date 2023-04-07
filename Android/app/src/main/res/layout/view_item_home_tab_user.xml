@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="75dp"
+    android:layout_width="100dp"
     android:layout_height="54dp"
     android:gravity="center"
-    android:layout_marginStart="15dp"
     android:orientation="vertical">
 
     <ImageView
@@ -18,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="@string/app_user_center"
-        android:textColor="#ffecedef"
-        android:textSize="10dp" />
+        android:textColor="@drawable/selector_home_text_color"
+        android:textSize="11sp"
+        android:lines="1"/>
 </LinearLayout>

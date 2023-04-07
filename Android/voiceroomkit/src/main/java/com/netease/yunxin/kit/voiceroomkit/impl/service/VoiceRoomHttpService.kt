@@ -6,6 +6,7 @@
 
 package com.netease.yunxin.kit.voiceroomkit.impl.service
 
+import android.content.Context
 import com.netease.yunxin.kit.common.network.NetRequestCallback
 import com.netease.yunxin.kit.voiceroomkit.impl.model.StartVoiceRoomParam
 import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomDefaultConfig
@@ -38,13 +39,17 @@ interface HttpErrorReporter {
  */
 interface VoiceRoomHttpService : HttpErrorReporter {
 
+    fun initialize(context: Context)
+
+    fun addHeader(key: String, value: String)
+
     fun getVoiceRoomList(
         type: Int,
         live: Int,
         pageNum: Int,
         pageSize: Int,
         callback:
-            NetRequestCallback<VoiceRoomList>
+        NetRequestCallback<VoiceRoomList>
     )
 
     /**
@@ -64,4 +69,18 @@ interface VoiceRoomHttpService : HttpErrorReporter {
     fun stopVoiceRoom(liveRecodeId: Long, callback: NetRequestCallback<Unit>)
 
     fun getDefaultLiveInfo(callback: NetRequestCallback<VoiceRoomDefaultConfig>)
+
+    fun reward(
+        liveRecodeId: Long,
+        giftId: Int,
+        callback: NetRequestCallback<Unit>
+    )
+
+    fun batchReward(
+        liveRecodeId: Long,
+        giftId: Int,
+        giftCount: Int,
+        userUuids: List<String>,
+        callback: NetRequestCallback<Unit>
+    )
 }

@@ -12,6 +12,9 @@ package com.netease.yunxin.kit.voiceroomkit.api.model
  * @property sendVolume 发送音量
  * @property playbackEnabled 是否本地播放
  * @property playbackVolume 本地播放音量
+ * @property startTimestamp 音效文件的开始播放时间，单位毫秒
+ * @property progressInterval 播放进度回调间隔，单位ms，取值范围为 100~10000, 默认1000ms
+ * @property sendWithAudioType 伴音跟随音频主流还是辅流，默认跟随主流
  *
  */
 data class NEVoiceRoomCreateAudioEffectOption(
@@ -20,5 +23,8 @@ data class NEVoiceRoomCreateAudioEffectOption(
     val sendEnabled: Boolean,
     val sendVolume: Int,
     val playbackEnabled: Boolean,
-    val playbackVolume: Int
+    val playbackVolume: Int,
+    val startTimestamp: Long,
+    val progressInterval: Long,
+    val sendWithAudioType: NEVoiceRoomRtcAudioStreamType
 )

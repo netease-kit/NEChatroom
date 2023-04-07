@@ -10,12 +10,16 @@ import com.netease.yunxin.kit.roomkit.api.service.NESeatInfo
 import com.netease.yunxin.kit.roomkit.api.service.NESeatItem
 import com.netease.yunxin.kit.roomkit.api.service.NESeatRequestItem
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomAnchor
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchSeatUserReward
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomLiveModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatRequestItem
+import com.netease.yunxin.kit.voiceroomkit.impl.model.SeatUserReward
+import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomInfo
 import com.netease.yunxin.kit.voiceroomkit.impl.model.response.Operator
 import com.netease.yunxin.kit.voiceroomkit.impl.model.response.VoiceRoomList
@@ -24,14 +28,30 @@ internal object VoiceRoomUtils {
 
     fun voiceRoomInfo2NEVoiceRoomInfo(voiceRoomInfo: VoiceRoomInfo): NEVoiceRoomInfo {
         return NEVoiceRoomInfo(
-            NEVoiceRoomAnchor(voiceRoomInfo.anchor.userUuid, voiceRoomInfo.anchor.userName, voiceRoomInfo.anchor.icon),
+            NEVoiceRoomAnchor(
+                voiceRoomInfo.anchor.userUuid,
+                voiceRoomInfo.anchor.userName,
+                voiceRoomInfo.anchor.icon
+            ),
             NEVoiceRoomLiveModel(
                 voiceRoomInfo.liveModel.appId, voiceRoomInfo.liveModel.roomUuid, voiceRoomInfo.liveModel.liveRecordId, voiceRoomInfo.liveModel.userUuid,
                 voiceRoomInfo.liveModel.liveType, voiceRoomInfo.liveModel.live, voiceRoomInfo.liveModel.liveTopic, voiceRoomInfo.liveModel.cover, voiceRoomInfo.liveModel.rewardTotal,
-                voiceRoomInfo.liveModel.audienceCount, voiceRoomInfo.liveModel.onSeatCount, voiceRoomInfo.liveModel.liveConfig
+                voiceRoomInfo.liveModel.audienceCount, voiceRoomInfo.liveModel.onSeatCount, voiceRoomInfo.liveModel.liveConfig,
+                voiceRoomInfo.liveModel.seatUserReward?.map { seatUserReward2NESeatUserReward(it) }
             )
         )
     }
+
+    private fun seatUserReward2NESeatUserReward(seatUserReward: SeatUserReward): NEVoiceRoomBatchSeatUserReward {
+        return NEVoiceRoomBatchSeatUserReward(
+            seatUserReward.userUuid,
+            seatUserReward.userName,
+            seatUserReward.icon,
+            seatUserReward.seatIndex,
+            seatUserReward.rewardTotal
+        )
+    }
+
     fun voiceRoomList2NEVoiceRoomList(voiceRoomList: VoiceRoomList): NEVoiceRoomList {
         return NEVoiceRoomList(
             voiceRoomList.pageNum,
@@ -47,7 +67,15 @@ internal object VoiceRoomUtils {
     }
 
     fun voiceRoomSeatItem2NEVoiceRoomSeatItem(seatItem: NESeatItem): NEVoiceRoomSeatItem {
-        return NEVoiceRoomSeatItem(seatItem.index, seatItem.status, seatItem.user, seatItem.userName, seatItem.icon, seatItem.onSeatType, seatItem.updated)
+        return NEVoiceRoomSeatItem(
+            seatItem.index,
+            seatItem.status,
+            seatItem.user,
+            seatItem.userName,
+            seatItem.icon,
+            seatItem.onSeatType,
+            seatItem.updated
+        )
     }
 
     fun voiceRoomSeatInfo2NEVoiceRoomSeatInfo(seatInfo: NESeatInfo): NEVoiceRoomSeatInfo {
@@ -66,6 +94,14 @@ internal object VoiceRoomUtils {
             seatRequestItem.user,
             seatRequestItem.userName,
             seatRequestItem.icon
+        )
+    }
+
+    fun voiceRoomGiftModel2NEVoiceRoomGiftModel(karaokeGiftModel: VoiceRoomGiftModel): NEVoiceRoomGiftModel {
+        return NEVoiceRoomGiftModel(
+            karaokeGiftModel.rewarderUserUuid,
+            karaokeGiftModel.rewarderUserName,
+            karaokeGiftModel.giftId
         )
     }
 }

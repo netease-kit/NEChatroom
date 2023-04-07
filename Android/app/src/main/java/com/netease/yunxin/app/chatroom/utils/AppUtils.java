@@ -4,6 +4,8 @@
 
 package com.netease.yunxin.app.chatroom.utils;
 
+import com.netease.yunxin.app.chatroom.config.AppConfig;
+
 import java.util.Locale;
 
 public class AppUtils {
@@ -11,5 +13,13 @@ public class AppUtils {
   // 当前系统是否是中文简体
   public static boolean isMainLand() {
     return Locale.getDefault().getLanguage().equals(new Locale("zh").getLanguage());
+  }
+
+  public static String getUserName() {
+    return AppConfig.ACCOUNT;
+  }
+
+  public static String getAvatar() {
+    return "";
   }
 }

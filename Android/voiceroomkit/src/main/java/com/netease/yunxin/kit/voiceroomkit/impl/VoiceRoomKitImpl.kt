@@ -8,41 +8,60 @@ package com.netease.yunxin.kit.voiceroomkit.impl
 
 import android.content.Context
 import android.text.TextUtils
-import com.netease.yunxin.kit.common.network.ContextRegistry
 import com.netease.yunxin.kit.common.network.NetRequestCallback
-import com.netease.yunxin.kit.common.network.ServiceCreator
 import com.netease.yunxin.kit.roomkit.api.NECallback2
 import com.netease.yunxin.kit.roomkit.api.NEErrorCode
+import com.netease.yunxin.kit.roomkit.api.NEPreviewRoomContext
+import com.netease.yunxin.kit.roomkit.api.NEPreviewRoomListener
 import com.netease.yunxin.kit.roomkit.api.NERoomKit
 import com.netease.yunxin.kit.roomkit.api.NERoomKitOptions
+import com.netease.yunxin.kit.roomkit.api.NERoomLanguage
 import com.netease.yunxin.kit.roomkit.api.model.NEIMServerConfig
+import com.netease.yunxin.kit.roomkit.api.model.NERoomKitServerConfig
+import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcLastmileProbeConfig
+import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcLastmileProbeResult
 import com.netease.yunxin.kit.roomkit.api.model.NEServerConfig
 import com.netease.yunxin.kit.roomkit.api.service.NEAuthEvent
 import com.netease.yunxin.kit.roomkit.api.service.NEAuthListener
 import com.netease.yunxin.kit.roomkit.api.service.NEAuthService
+import com.netease.yunxin.kit.roomkit.api.service.NEPreviewRoomOptions
+import com.netease.yunxin.kit.roomkit.api.service.NEPreviewRoomParams
 import com.netease.yunxin.kit.roomkit.api.service.NESeatInfo
 import com.netease.yunxin.kit.roomkit.api.service.NESeatRequestItem
 import com.netease.yunxin.kit.roomkit.impl.repository.ServerConfig
 import com.netease.yunxin.kit.roomkit.impl.utils.CoroutineRunner
-import com.netease.yunxin.kit.voiceroomkit.BuildConfig
 import com.netease.yunxin.kit.voiceroomkit.api.NECreateVoiceRoomOptions
 import com.netease.yunxin.kit.voiceroomkit.api.NECreateVoiceRoomParams
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams
+import com.netease.yunxin.kit.voiceroomkit.api.NELiveType
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAudioOutputDevice
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthEvent
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthListener
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomErrorCode
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKitConfig
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListener
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomPreviewListener
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceCreateRoomDefaultInfo
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchGiftModel
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomLanguage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeConfig
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeOneWayResult
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeResult
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatRequestItem
 import com.netease.yunxin.kit.voiceroomkit.impl.model.StartVoiceRoomParam
 import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomDefaultConfig
@@ -58,14 +77,16 @@ import com.netease.yunxin.kit.voiceroomkit.impl.utils.VoiceRoomUtils
 import java.util.Locale
 
 internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
-    private val roomMode = 2 // 房间类型（1：互动直播 2：语聊房 3：Karaoke）
     private val voiceRoomHttpService: VoiceRoomHttpService by lazy { VoiceRoomHttpServiceImpl }
-    private var voiceRoomInfo: VoiceRoomInfo? = null
+    private var createVoiceRoomInfo: VoiceRoomInfo? = null
+    private var joinedVoiceRoomInfo: VoiceRoomInfo? = null
     private val myRoomService = VoiceRoomService()
     private val authListeners: ArrayList<NEVoiceRoomAuthListener> by lazy { ArrayList() }
     private lateinit var context: Context
     private var hasLogin: Boolean = false
-
+    private var previewRoomContext: NEPreviewRoomContext? = null
+    private val previewRoomListeners = ArrayList<NEVoiceRoomPreviewListener>()
+    private val listeners = ArrayList<NEVoiceRoomListener>()
     companion object {
         private const val tag = "NEVoiceRoomKit"
         private const val ACCEPT_LANGUAGE_KEY = "Accept-Language"
@@ -82,6 +103,8 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         private const val NOS_UPLOADER = "https://nosup-hz1.127.net"
         private const val NOS_DOWNLOADER = "{bucket}-nosdn.netease.im/{object}"
         private const val NOS_UPLOADER_HOST = "nosup-hz1.127.net"
+        private const val LANGUAGE_EN = "en"
+        private const val LANGUAGE_ZH = "zh"
     }
 
     override val localMember: NEVoiceRoomMember?
@@ -106,14 +129,13 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         VoiceRoomLog.logApi("initialize")
         this.context = context
         this.config = config
-        ContextRegistry.context = context
         ScreenUtil.init(context)
         var realServerUrl = ""
         var isOversea = false
         val realExtras = HashMap<String, String>()
         if (config.extras[SERVER_URL_KEY] != null) {
             val serverUrl: String = config.extras[SERVER_URL_KEY] as String
-            VoiceRoomLog.d(tag, "serverUrl:$serverUrl")
+            VoiceRoomLog.i(tag, "serverUrl:$serverUrl")
             if (!TextUtils.isEmpty(serverUrl)) {
                 when {
                     TEST_URL_VALUE == serverUrl -> {
@@ -133,21 +155,13 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         val serverConfig =
             ServerConfig.selectServer(config.appKey, realServerUrl)
         VoiceRoomRepository.serverConfig = serverConfig
-        val localLanguage = Locale.getDefault().language
-        val collectHeaders: Map<String, String> = mapOf(ACCEPT_LANGUAGE_KEY to localLanguage)
-        ServiceCreator.collectHeaders = collectHeaders
-        ServiceCreator.init(
-            context,
-            serverConfig.serverUrl,
-            if (BuildConfig.DEBUG) ServiceCreator.LOG_LEVEL_BODY else ServiceCreator.LOG_LEVEL_BASIC
-        )
-
         NERoomKit.getInstance()
             .initialize(
                 context,
                 options = NERoomKitOptions(
                     appKey = config.appKey,
                     extras = realExtras,
+                    reuseIM = config.reuseIM,
                     serverConfig = if (isOversea) {
                         NEServerConfig().apply {
                             imServerConfig = NEIMServerConfig().apply {
@@ -159,6 +173,9 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                                 nosUploaderHost = NOS_UPLOADER_HOST
                                 httpsEnabled = true
                             }
+                            roomKitServerConfig = NERoomKitServerConfig().apply {
+                                roomServer = realServerUrl
+                            }
                         }
                     } else {
                         null
@@ -166,6 +183,57 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 )
             ) { code, message, _ ->
                 if (code == NEErrorCode.SUCCESS) {
+                    voiceRoomHttpService.initialize(context)
+                    NERoomKit.getInstance().roomService.previewRoom(
+                        NEPreviewRoomParams(),
+                        NEPreviewRoomOptions(),
+                        object : NECallback2<NEPreviewRoomContext>() {
+                            override fun onSuccess(data: NEPreviewRoomContext?) {
+                                super.onSuccess(data)
+                                previewRoomContext = data
+                                previewRoomContext?.addPreviewRoomListener(object :
+                                    NEPreviewRoomListener {
+                                    override fun onRtcVirtualBackgroundSourceEnabled(
+                                        enabled: Boolean,
+                                        reason: Int
+                                    ) {
+                                    }
+
+                                    override fun onRtcLastmileQuality(quality: Int) {
+                                        for (previewRoomListener in previewRoomListeners) {
+                                            previewRoomListener.onRtcLastmileQuality(quality)
+                                        }
+                                    }
+
+                                    override fun onRtcLastmileProbeResult(result: NERoomRtcLastmileProbeResult) {
+                                        for (previewRoomListener in previewRoomListeners) {
+                                            previewRoomListener.onRtcLastmileProbeResult(
+                                                NEVoiceRoomRtcLastmileProbeResult(
+                                                    state = result.state,
+                                                    rtt = result.rtt,
+                                                    uplinkReport = NEVoiceRoomRtcLastmileProbeOneWayResult(
+                                                        packetLossRate = result.uplinkReport.packetLossRate,
+                                                        jitter = result.uplinkReport.jitter,
+                                                        availableBandwidth = result.uplinkReport.availableBandwidth
+                                                    ),
+                                                    downlinkReport = NEVoiceRoomRtcLastmileProbeOneWayResult(
+                                                        packetLossRate = result.downlinkReport.packetLossRate,
+                                                        jitter = result.downlinkReport.jitter,
+                                                        availableBandwidth = result.downlinkReport.availableBandwidth
+                                                    )
+                                                )
+                                            )
+                                        }
+                                    }
+                                })
+                            }
+
+                            override fun onError(code: Int, message: String?) {
+                                super.onError(code, message)
+                                VoiceRoomLog.e(tag, "previewRoom error,code:$code,message:$message")
+                            }
+                        }
+                    )
                     callback?.onSuccess(Unit)
                 } else {
                     callback?.onFailure(code, message)
@@ -173,14 +241,19 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
             }
 
         NERoomKit.getInstance().getService(NEAuthService::class.java).addAuthListener(object :
-                NEAuthListener {
-                override fun onAuthEvent(evt: NEAuthEvent) {
-                    VoiceRoomLog.i(tag, "onAuthEvent evt = $evt")
-                    authListeners.forEach {
-                        it.onVoiceRoomAuthEvent(NEVoiceRoomAuthEvent.fromValue(evt.name.uppercase(Locale.getDefault())))
-                    }
+            NEAuthListener {
+            override fun onAuthEvent(evt: NEAuthEvent) {
+                VoiceRoomLog.i(tag, "onAuthEvent evt = $evt")
+                hasLogin = evt == NEAuthEvent.LOGGED_IN
+                authListeners.forEach {
+                    it.onVoiceRoomAuthEvent(
+                        NEVoiceRoomAuthEvent.fromValue(evt.name.uppercase(Locale.getDefault()))
+                    )
                 }
-            })
+            }
+        })
+
+        initRoomServiceListener()
         launch {
             voiceRoomHttpService.httpErrorEvents.collect { evt ->
                 if (evt.code == NEErrorCode.UNAUTHORIZED ||
@@ -198,6 +271,162 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         }
     }
 
+    private fun initRoomServiceListener() {
+        myRoomService.addListener(object : NEVoiceRoomListener {
+            override fun onMemberJoinRoom(members: List<NEVoiceRoomMember>) {
+                listeners.forEach {
+                    it.onMemberJoinRoom(members)
+                }
+            }
+
+            override fun onMemberLeaveRoom(members: List<NEVoiceRoomMember>) {
+                listeners.forEach {
+                    it.onMemberLeaveRoom(members)
+                }
+            }
+
+            override fun onMemberJoinChatroom(members: List<NEVoiceRoomMember>) {
+                listeners.forEach {
+                    it.onMemberJoinChatroom(members)
+                }
+            }
+
+            override fun onMemberLeaveChatroom(members: List<NEVoiceRoomMember>) {
+                listeners.forEach {
+                    it.onMemberLeaveChatroom(members)
+                }
+            }
+
+            override fun onRoomEnded(reason: NEVoiceRoomEndReason) {
+                joinedVoiceRoomInfo = null
+                createVoiceRoomInfo = null
+                listeners.forEach {
+                    it.onRoomEnded(reason)
+                }
+            }
+
+            override fun onRtcChannelError(code: Int) {
+                listeners.forEach {
+                    it.onRtcChannelError(code)
+                }
+            }
+
+            override fun onMemberAudioMuteChanged(member: NEVoiceRoomMember, mute: Boolean, operateBy: NEVoiceRoomMember?) {
+                listeners.forEach {
+                    it.onMemberAudioMuteChanged(member, mute, operateBy)
+                }
+            }
+
+            override fun onMemberAudioBanned(member: NEVoiceRoomMember, banned: Boolean) {
+                listeners.forEach {
+                    it.onMemberAudioBanned(member, banned)
+                }
+            }
+
+            override fun onReceiveTextMessage(message: NEVoiceRoomChatTextMessage) {
+                listeners.forEach {
+                    it.onReceiveTextMessage(message)
+                }
+            }
+
+            override fun onSeatRequestSubmitted(seatIndex: Int, account: String) {
+                listeners.forEach {
+                    it.onSeatRequestSubmitted(seatIndex, account)
+                }
+            }
+
+            override fun onSeatRequestCancelled(seatIndex: Int, account: String) {
+                listeners.forEach {
+                    it.onSeatRequestCancelled(seatIndex, account)
+                }
+            }
+
+            override fun onSeatRequestApproved(seatIndex: Int, account: String, operateBy: String, isAutoAgree: Boolean) {
+                listeners.forEach {
+                    it.onSeatRequestApproved(seatIndex, account, operateBy, isAutoAgree)
+                }
+            }
+
+            override fun onSeatRequestRejected(seatIndex: Int, account: String, operateBy: String) {
+                listeners.forEach {
+                    it.onSeatRequestRejected(seatIndex, account, operateBy)
+                }
+            }
+
+            override fun onSeatLeave(seatIndex: Int, account: String) {
+                listeners.forEach {
+                    it.onSeatLeave(seatIndex, account)
+                }
+            }
+
+            override fun onSeatKicked(seatIndex: Int, account: String, operateBy: String) {
+                listeners.forEach {
+                    it.onSeatKicked(seatIndex, account, operateBy)
+                }
+            }
+
+            override fun onSeatInvitationAccepted(seatIndex: Int, account: String, isAutoAgree: Boolean) {
+                listeners.forEach {
+                    it.onSeatInvitationAccepted(seatIndex, account, isAutoAgree)
+                }
+            }
+
+            override fun onSeatListChanged(seatItems: List<NEVoiceRoomSeatItem>) {
+                listeners.forEach {
+                    it.onSeatListChanged(seatItems)
+                }
+            }
+
+            override fun onAudioMixingStateChanged(reason: Int) {
+                listeners.forEach {
+                    it.onAudioMixingStateChanged(reason)
+                }
+            }
+
+            override fun onAudioOutputDeviceChanged(device: NEVoiceRoomAudioOutputDevice) {
+                listeners.forEach {
+                    it.onAudioOutputDeviceChanged(device)
+                }
+            }
+
+            override fun onReceiveGift(rewardMsg: NEVoiceRoomGiftModel) {
+                listeners.forEach {
+                    it.onReceiveGift(rewardMsg)
+                }
+            }
+
+            override fun onReceiveBatchGift(giftModel: NEVoiceRoomBatchGiftModel) {
+                listeners.forEach {
+                    it.onReceiveBatchGift(giftModel)
+                }
+            }
+
+            override fun onAudioEffectTimestampUpdate(effectId: Long, timeStampMS: Long) {
+                listeners.forEach {
+                    it.onAudioEffectTimestampUpdate(effectId, timeStampMS)
+                }
+            }
+
+            override fun onRtcLocalAudioVolumeIndication(volume: Int, vadFlag: Boolean) {
+                listeners.forEach {
+                    it.onRtcLocalAudioVolumeIndication(volume, vadFlag)
+                }
+            }
+
+            override fun onRtcRemoteAudioVolumeIndication(volumes: List<NEVoiceRoomMemberVolumeInfo>, totalVolume: Int) {
+                listeners.forEach {
+                    it.onRtcRemoteAudioVolumeIndication(volumes, totalVolume)
+                }
+            }
+
+            override fun onAudioEffectFinished(effectId: Int) {
+                listeners.forEach {
+                    it.onAudioEffectFinished(effectId)
+                }
+            }
+        })
+    }
+
     override val isInitialized: Boolean
         get() = NERoomKit.getInstance().isInitialized
 
@@ -206,7 +435,12 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
 
     override fun login(account: String, token: String, callback: NEVoiceRoomCallback<Unit>?) {
         VoiceRoomLog.logApi("login: account = $account,token = $token")
-        if (ServiceCreator.user == account && ServiceCreator.token == token) {
+        if (hasLogin) {
+            callback?.onSuccess(Unit)
+        } else if (NERoomKit.getInstance().getService(NEAuthService::class.java).isLoggedIn) {
+            VoiceRoomLog.i(tag, "login but isLoggedIn = true")
+            voiceRoomHttpService.addHeader("user", account)
+            voiceRoomHttpService.addHeader("token", token)
             callback?.onSuccess(Unit)
         } else {
             NERoomKit.getInstance().getService(NEAuthService::class.java).login(
@@ -215,10 +449,10 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 object : NECallback2<Unit>() {
                     override fun onSuccess(data: Unit?) {
                         VoiceRoomLog.i(tag, "login success")
-                        ServiceCreator.user = account
-                        ServiceCreator.token = token
-                        callback?.onSuccess(data)
+                        voiceRoomHttpService.addHeader("user", account)
+                        voiceRoomHttpService.addHeader("token", token)
                         hasLogin = true
+                        callback?.onSuccess(data)
                     }
 
                     override fun onError(code: Int, message: String?) {
@@ -233,8 +467,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
 
     override fun logout(callback: NEVoiceRoomCallback<Unit>?) {
         VoiceRoomLog.logApi("logout")
-        ServiceCreator.user = null
-        ServiceCreator.token = null
+        hasLogin = false
         NERoomKit.getInstance().getService(NEAuthService::class.java)
             .logout(object : NECallback2<Unit>() {
                 override fun onSuccess(data: Unit?) {
@@ -258,15 +491,17 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
      * @param callback 房间列表回调
      *
      */
-    override fun getVoiceRoomList(
+    override fun getRoomList(
         liveState: NEVoiceRoomLiveState,
         pageNum: Int,
         pageSize: Int,
         callback: NEVoiceRoomCallback<NEVoiceRoomList>?
     ) {
-        VoiceRoomLog.logApi("getVoiceRoomRoomList: liveState=$liveState, pageNum=$pageNum, pageSize=$pageSize")
+        VoiceRoomLog.logApi(
+            "getVoiceRoomRoomList: liveState=$liveState, pageNum=$pageNum, pageSize=$pageSize"
+        )
         voiceRoomHttpService.getVoiceRoomList(
-            roomMode,
+            NELiveType.LIVE_TYPE_VOICE,
             liveState.value,
             pageNum,
             pageSize,
@@ -278,7 +513,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 }
 
                 override fun success(info: VoiceRoomList?) {
-                    VoiceRoomLog.d(tag, "getVoiceRoomRoomList success info = $info")
+                    VoiceRoomLog.i(tag, "getVoiceRoomRoomList success info = $info")
                     callback?.onSuccess(
                         info?.let {
                             VoiceRoomUtils.voiceRoomList2NEVoiceRoomList(
@@ -310,7 +545,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         val createRoomParam = StartVoiceRoomParam(
             params.title,
             params.nick,
-            liveType = roomMode,
+            liveType = params.liveType,
             configId = params.configId,
             cover = params.cover ?: "",
             seatCount = params.seatCount
@@ -324,8 +559,8 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 }
 
                 override fun success(info: VoiceRoomInfo?) {
-                    voiceRoomInfo = info
-                    VoiceRoomLog.d(tag, "createRoom success info = $info")
+                    createVoiceRoomInfo = info
+                    VoiceRoomLog.i(tag, "createRoom success info = $info")
                     callback?.onSuccess(
                         info?.let {
                             VoiceRoomUtils.voiceRoomInfo2NEVoiceRoomInfo(
@@ -338,23 +573,25 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         )
     }
 
-    override fun getCreateRoomDefaultInfo(callback: NEVoiceRoomCallback<NEVoiceCreateRoomDefaultInfo>) {
+    override fun getCreateRoomDefaultInfo(
+        callback: NEVoiceRoomCallback<NEVoiceCreateRoomDefaultInfo>
+    ) {
         voiceRoomHttpService.getDefaultLiveInfo(object :
-                NetRequestCallback<VoiceRoomDefaultConfig> {
-                override fun success(info: VoiceRoomDefaultConfig?) {
-                    VoiceRoomLog.d(tag, "getRoomDefault success info = $info")
-                    callback.onSuccess(
-                        info?.let {
-                            NEVoiceCreateRoomDefaultInfo(it.topic, it.livePicture)
-                        }
-                    )
-                }
+            NetRequestCallback<VoiceRoomDefaultConfig> {
+            override fun success(info: VoiceRoomDefaultConfig?) {
+                VoiceRoomLog.i(tag, "getRoomDefault success info = $info")
+                callback.onSuccess(
+                    info?.let {
+                        NEVoiceCreateRoomDefaultInfo(it.topic, it.livePicture)
+                    }
+                )
+            }
 
-                override fun error(code: Int, msg: String?) {
-                    VoiceRoomLog.e(tag, "getRoomDefault error: code=$code message=$msg")
-                    callback.onFailure(code, msg)
-                }
-            })
+            override fun error(code: Int, msg: String?) {
+                VoiceRoomLog.e(tag, "getRoomDefault error: code=$code message=$msg")
+                callback.onFailure(code, msg)
+            }
+        })
     }
 
     override fun joinRoom(
@@ -376,10 +613,11 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                         params.liveRecordId,
                         object : NetRequestCallback<VoiceRoomInfo> {
                             override fun success(info: VoiceRoomInfo?) {
-                                VoiceRoomLog.d(
+                                VoiceRoomLog.i(
                                     tag,
                                     "joinRoom  getRoomInfo success"
                                 )
+                                joinedVoiceRoomInfo = info
                                 callback?.onSuccess(
                                     info?.let {
                                         VoiceRoomUtils.voiceRoomInfo2NEVoiceRoomInfo(
@@ -401,7 +639,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 }
 
                 override fun onError(code: Int, message: String?) {
-                    VoiceRoomLog.d(tag, "joinRoom error: code=$code message=$message")
+                    VoiceRoomLog.e(tag, "joinRoom error: code=$code message=$message")
                     callback?.onFailure(code, message)
                 }
             }
@@ -410,9 +648,13 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
 
     override fun endRoom(callback: NEVoiceRoomCallback<Unit>?) {
         VoiceRoomLog.logApi("endRoom")
-        voiceRoomInfo?.let {
+
+        val liveRecordId = createVoiceRoomInfo?.liveModel?.liveRecordId
+            ?: joinedVoiceRoomInfo?.liveModel?.liveRecordId
+
+        liveRecordId?.let {
             voiceRoomHttpService.stopVoiceRoom(
-                it.liveModel.liveRecordId,
+                it,
                 object : NetRequestCallback<Unit> {
                     override fun success(info: Unit?) {
                         VoiceRoomLog.i(tag, "stopVoiceRoom success")
@@ -436,6 +678,9 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 VoiceRoomLog.i(tag, "endRoom success")
             }
         })
+        joinedVoiceRoomInfo = null
+        createVoiceRoomInfo = null
+        listeners.clear()
     }
 
     override fun leaveRoom(callback: NEVoiceRoomCallback<Unit>?) {
@@ -447,10 +692,37 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
             }
 
             override fun onSuccess(data: Unit?) {
-                VoiceRoomLog.d(tag, "leaveRoom success")
+                VoiceRoomLog.i(tag, "leaveRoom success")
                 callback?.onSuccess(null)
             }
         })
+        joinedVoiceRoomInfo = null
+        listeners.clear()
+    }
+
+    override fun getRoomInfo(liveRecordId: Long, callback: NEVoiceRoomCallback<NEVoiceRoomInfo>) {
+        voiceRoomHttpService.getRoomInfo(
+            liveRecordId,
+            object : NetRequestCallback<VoiceRoomInfo> {
+                override fun success(info: VoiceRoomInfo?) {
+                    callback.onSuccess(
+                        info?.let {
+                            VoiceRoomUtils.voiceRoomInfo2NEVoiceRoomInfo(
+                                it
+                            )
+                        }
+                    )
+                }
+
+                override fun error(code: Int, msg: String?) {
+                    callback.onFailure(code, msg)
+                }
+            }
+        )
+    }
+
+    override fun getCurrentRoomInfo(): NEVoiceRoomInfo? {
+        return joinedVoiceRoomInfo?.let { VoiceRoomUtils.voiceRoomInfo2NEVoiceRoomInfo(it) }
     }
 
     override fun getSeatInfo(callback: NEVoiceRoomCallback<NEVoiceRoomSeatInfo>?) {
@@ -474,7 +746,9 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         })
     }
 
-    override fun getSeatRequestList(callback: NEVoiceRoomCallback<List<NEVoiceRoomSeatRequestItem>>?) {
+    override fun getSeatRequestList(
+        callback: NEVoiceRoomCallback<List<NEVoiceRoomSeatRequestItem>>?
+    ) {
         VoiceRoomLog.logApi("getSeatRequestList")
         myRoomService.getSeatRequestList(object : NECallback2<List<NESeatRequestItem>>() {
             override fun onSuccess(data: List<NESeatRequestItem>?) {
@@ -863,6 +1137,46 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         return myRoomService.stopEffect(effectId)
     }
 
+    override fun sendGift(giftId: Int, callback: NEVoiceRoomCallback<Unit>?) {
+        VoiceRoomLog.logApi("sendGift giftId:$giftId")
+        if (joinedVoiceRoomInfo?.liveModel?.liveRecordId == null) {
+            VoiceRoomLog.e(tag, "liveRecordId==null")
+            return
+        }
+
+        voiceRoomHttpService.reward(
+            joinedVoiceRoomInfo?.liveModel?.liveRecordId!!,
+            giftId,
+            object : NetRequestCallback<Unit> {
+                override fun success(info: Unit?) {
+                    VoiceRoomLog.i(tag, "reward success")
+                    callback?.onSuccess(info)
+                }
+
+                override fun error(code: Int, msg: String?) {
+                    VoiceRoomLog.e(tag, "reward error: code = $code message = $msg")
+                    callback?.onFailure(code, msg)
+                }
+            }
+        )
+    }
+
+    override fun setPlayingPosition(effectId: Int, position: Long): Int {
+        return myRoomService.setPlayingPosition(effectId, position)
+    }
+
+    override fun pauseEffect(effectId: Int): Int {
+        return myRoomService.pauseEffect(effectId)
+    }
+
+    override fun resumeEffect(effectId: Int): Int {
+        return myRoomService.resumeEffect(effectId)
+    }
+
+    override fun enableAudioVolumeIndication(enable: Boolean, interval: Int): Int {
+        return myRoomService.enableAudioVolumeIndication(enable, interval)
+    }
+
     override fun enableEarback(volume: Int): Int {
         VoiceRoomLog.logApi("enableEarBack: volume=$volume")
         return myRoomService.enableEarBack(volume)
@@ -880,11 +1194,106 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
 
     override fun addVoiceRoomListener(listener: NEVoiceRoomListener) {
         VoiceRoomLog.logApi("addVoiceRoomListener: listener=$listener")
-        myRoomService.addListener(listener)
+        listeners.add(listener)
     }
 
     override fun removeVoiceRoomListener(listener: NEVoiceRoomListener) {
         VoiceRoomLog.logApi("removeVoiceRoomListener: listener=$listener")
-        myRoomService.removeListener(listener)
+        listeners.remove(listener)
+    }
+
+    override fun sendBatchGift(
+        giftId: Int,
+        giftCount: Int,
+        userUuids: List<String>,
+        callback: NEVoiceRoomCallback<Unit>?
+    ) {
+        VoiceRoomLog.logApi(
+            "sendBatchGift giftId:$giftId,giftCount:$giftCount,userUuids:$userUuids"
+        )
+        if (joinedVoiceRoomInfo?.liveModel?.liveRecordId == null) {
+            VoiceRoomLog.e(tag, "liveRecordId==null")
+            return
+        }
+
+        voiceRoomHttpService.batchReward(
+            joinedVoiceRoomInfo?.liveModel?.liveRecordId!!,
+            giftId,
+            giftCount,
+            userUuids,
+            object : NetRequestCallback<Unit> {
+                override fun success(info: Unit?) {
+                    VoiceRoomLog.i(tag, "batchReward success")
+                    callback?.onSuccess(info)
+                }
+
+                override fun error(code: Int, msg: String?) {
+                    VoiceRoomLog.e(tag, "batchReward error: code = $code message = $msg")
+                    callback?.onFailure(code, msg)
+                }
+            }
+        )
+    }
+
+    override fun startLastmileProbeTest(config: NEVoiceRoomRtcLastmileProbeConfig): Int {
+        if (previewRoomContext == null || previewRoomContext?.previewController == null) {
+            VoiceRoomLog.e(tag, "startLastmileProbeTest failed,config:$config")
+            return NEVoiceRoomErrorCode.FAILURE
+        }
+        VoiceRoomLog.i(tag, "startLastmileProbeTest,config:$config")
+        return previewRoomContext!!.previewController.startLastmileProbeTest(
+            NERoomRtcLastmileProbeConfig(
+                probeDownlink = config.probeDownlink,
+                probeUplink = config.probeUplink,
+                expectedDownlinkBitrate = config.expectedDownlinkBitrate,
+                expectedUplinkBitrate = config.expectedUplinkBitrate
+            )
+        )
+    }
+
+    override fun stopLastmileProbeTest(): Int {
+        if (previewRoomContext == null || previewRoomContext?.previewController == null) {
+            VoiceRoomLog.e(tag, "stopLastmileProbeTest failed")
+            return NEVoiceRoomErrorCode.FAILURE
+        }
+        VoiceRoomLog.i(tag, "stopLastmileProbeTest")
+        return previewRoomContext!!.previewController.stopLastmileProbeTest()
+    }
+
+    override fun addPreviewListener(listener: NEVoiceRoomPreviewListener) {
+        VoiceRoomLog.i(tag, "addPreviewListener,listener:$listener")
+        previewRoomListeners.add(listener)
+    }
+
+    override fun removePreviewListener(listener: NEVoiceRoomPreviewListener) {
+        VoiceRoomLog.i(tag, "removePreviewListener,listener:$listener")
+        previewRoomListeners.remove(listener)
+    }
+
+    override fun uploadLog(): Int {
+        VoiceRoomLog.i(tag, "uploadLog")
+        return NERoomKit.getInstance().uploadLog()
+    }
+
+    override fun switchLanguage(language: NEVoiceRoomLanguage): Int {
+        when (language) {
+            NEVoiceRoomLanguage.AUTOMATIC -> {
+                val localLanguage = Locale.getDefault().language
+                voiceRoomHttpService.addHeader(
+                    ACCEPT_LANGUAGE_KEY,
+                    if (!localLanguage.contains(LANGUAGE_ZH)) LANGUAGE_EN else LANGUAGE_ZH
+                )
+                return NERoomKit.getInstance().switchLanguage(NERoomLanguage.AUTOMATIC)
+            }
+            NEVoiceRoomLanguage.CHINESE -> {
+                voiceRoomHttpService.addHeader(ACCEPT_LANGUAGE_KEY, LANGUAGE_ZH)
+                return NERoomKit.getInstance().switchLanguage(NERoomLanguage.CHINESE)
+            }
+            NEVoiceRoomLanguage.ENGLISH -> {
+                voiceRoomHttpService.addHeader(ACCEPT_LANGUAGE_KEY, LANGUAGE_EN)
+                return NERoomKit.getInstance().switchLanguage(NERoomLanguage.ENGLISH)
+            }
+            else -> return NEVoiceRoomErrorCode.FAILURE
+        }
     }
 }

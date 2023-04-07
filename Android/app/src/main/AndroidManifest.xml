@@ -70,58 +70,21 @@
             android:value="portrait|landscape" />
 
         <activity
-            android:name="com.netease.yunxin.app.chatroom.main.SplashActivity"
-            android:theme="@style/LaunchTheme"
-            android:screenOrientation="portrait"
-            android:exported="true"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="com.netease.yunxin.app.chatroom.main.MainActivity"
+            android:name="com.netease.yunxin.app.chatroom.activity.HomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"
             android:exported="false"
             android:launchMode="singleTask">
-
             <intent-filter>
-                <action android:name="https://netease.yunxin.voiceroom.home"/>
+                <action android:name="https://netease.yunxin.party.home"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-
         </activity>
 
         <activity
-            android:name="com.netease.yunxin.app.chatroom.main.WebViewActivity"
+            android:name=".activity.CommonSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name="com.netease.yunxin.app.chatroom.user.EditUserInfoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name="com.netease.yunxin.app.chatroom.user.UserInfoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name="com.netease.yunxin.app.chatroom.user.AppAboutActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name="com.netease.yunxin.app.chatroom.roomlist.RoomListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity android:name="com.netease.yunxin.app.chatroom.activity.CreateRoomActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            />
 
     </application>
 
