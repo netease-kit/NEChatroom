@@ -10,15 +10,6 @@
 
 + (UIImage *)nevoiceRoom_imageNamed:(NSString *)name {
   return [NEVoiceRoomUI ne_voice_imageName:name];
-
-  NSString *path = [[NSBundle mainBundle]
-      pathForResource:@"Frameworks/NEVoiceRoomUIKit.framework/NEVoiceRoomUIKit"
-               ofType:@"bundle"];
-  NSBundle *bundle = [NSBundle bundleWithPath:path];
-  if (!bundle) {
-    bundle = [NSBundle mainBundle];
-  }
-  return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
 }
 
 @end

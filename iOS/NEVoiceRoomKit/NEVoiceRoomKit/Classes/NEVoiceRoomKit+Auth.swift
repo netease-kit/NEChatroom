@@ -84,9 +84,11 @@ public extension NEVoiceRoomKit {
 
 extension NEVoiceRoomKit: NEAuthListener {
   public func onAuthEvent(evt: NEAuthEvent) {
-    reset()
+    if evt != .loggedIn {
+      reset()
+    }
     for pointerListener in authListeners.allObjects {
-      guard pointerListener is NEVoiceRoomAuthListener, let listener = pointerListener as? NEVoiceRoomAuthListener else { continue }
+      guard let listener = pointerListener as? NEVoiceRoomAuthListener else { continue }
       if listener.responds(to: #selector(NEVoiceRoomAuthListener.onVoiceRoomAuthEvent(_:))) {
         listener
           .onVoiceRoomAuthEvent?(NEVoiceRoomAuthEvent(rawValue: evt.rawValue) ?? .loggedOut)
