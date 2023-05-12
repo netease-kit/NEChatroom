@@ -5,8 +5,8 @@
 #import "NEUIConnectListCell.h"
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <SDWebImage/SDWebImage.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 
 @interface NEUIConnectListCell ()
 @property(nonatomic, strong) UIView *bottomLine;

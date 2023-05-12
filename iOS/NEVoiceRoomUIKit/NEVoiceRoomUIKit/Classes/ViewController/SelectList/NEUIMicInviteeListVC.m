@@ -4,8 +4,8 @@
 
 #import "NEUIMicInviteeListVC.h"
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
-#import "NSBundle+NELocalized.h"
 
 @interface NEUIMicInviteeListVC ()
 

@@ -7,9 +7,9 @@
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import "NEUICreateRoomTitleButton.h"
 #import "NEUIViewFactory.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIButton+Layout.h"
@@ -145,6 +145,9 @@
   if ([text isEqualToString:@"\n"]) {
     [textView resignFirstResponder];
     return NO;
+  }
+  if (textView.text.length >= text.length) {
+    return YES;
   }
   NSString *newString = [textView.text stringByReplacingCharactersInRange:range withString:text];
   return newString.length <= 20;  // 限制 20字符

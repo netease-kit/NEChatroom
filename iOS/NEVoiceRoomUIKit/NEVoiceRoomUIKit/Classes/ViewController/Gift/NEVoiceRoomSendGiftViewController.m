@@ -11,11 +11,11 @@
 #import "NEVoiceRoomGiftEngine.h"
 #import "NEVoiceRoomGiftNumCell.h"
 #import "NEVoiceRoomGiftToCell.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPopover.h"
 #import "NEVoiceRoomSendGiftCell.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEVoiceRoomSendGiftViewController () <UICollectionViewDelegate,

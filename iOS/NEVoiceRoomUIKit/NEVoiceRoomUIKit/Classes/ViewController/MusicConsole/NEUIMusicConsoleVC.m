@@ -4,7 +4,7 @@
 
 #import "NEUIMusicConsoleVC.h"
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 
 @interface NEUIMusicConsoleVC () <UITableViewDataSource, UITableViewDelegate>
 // 列表
@@ -106,7 +106,7 @@
   [super viewDidLoad];
   self.title = NELocalizedString(@"调音台");
   self.earbackSwitch.on = self.context.rtcConfig.earbackOn;
-  self.recordVolumeSlider.maximumValue = 400;
+  self.recordVolumeSlider.maximumValue = 200;
   self.recordVolumeSlider.value = self.context.rtcConfig.audioRecordVolume;
   self.audioMixingVolumeSlider.maximumValue = 100;
   self.audioMixingVolumeSlider.value = self.context.rtcConfig.audioMixingVolume;

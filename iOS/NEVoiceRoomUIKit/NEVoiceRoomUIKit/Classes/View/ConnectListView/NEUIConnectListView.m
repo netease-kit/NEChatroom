@@ -8,8 +8,8 @@
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEUIConnectAlertView.h"
 #import "NEUIConnectListCell.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 
 static CGFloat cellHeight = 48.0;
 static CGFloat connectAlertViewHeight = 38.0;

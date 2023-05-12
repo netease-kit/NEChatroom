@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, NEVoiceRoomClientEvent) {
   /// 被踢出登录
   NEVoiceRoomClientEventKicOut,
-  /// 授权过期
-  NEVoiceRoomClientEventUnauthorized,
   /// 服务器禁止登录
   NEVoiceRoomClientEventForbidden,
   /// 账号或密码错误

@@ -5,8 +5,8 @@
 #import "NEVoiceRoomUINavigationBar.h"
 #import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEVoiceRoomUINavigationBar ()

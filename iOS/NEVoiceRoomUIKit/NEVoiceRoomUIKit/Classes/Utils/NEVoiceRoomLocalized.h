@@ -6,9 +6,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define NELocalizedString(key) [NSBundle ne_localizedStringForKey:(key)]
+#define NELocalizedString(key) [NEVoiceRoomLocalized ne_localizedStringForKey:(key)]
 
-@interface NSBundle (NELocalized)
+@interface NEVoiceRoomLocalized : NSObject
 + (NSString *)ne_localizedStringForKey:(NSString *)key;
 @end
 

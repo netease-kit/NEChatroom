@@ -15,16 +15,20 @@ target 'LiveAudioRoom' do
   pod 'LottieSwift', :path => '../lottie/LottieSwift.podspec'
   pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
 
-  pod 'NERoomKit','1.12.2'
+  pod 'NERoomKit/Base_Special','1.14.0'
+  pod 'NERoomKit/Beauty_Special','1.14.0'
+  pod 'NERoomKit/Segment_Special','1.14.0'
+  pod 'NERoomKit/Audio_Special','1.14.0'
+
   pod 'NECopyrightedMedia','1.5.0'
 
   # Pods for NEVoiceRoomExample
   pod 'Masonry'
-  pod 'NERtcSDK/Beauty', '4.6.43'
-  pod 'NERtcSDK/FaceDetect', '4.6.43'
-  pod 'NERtcSDK/Segment', '4.6.43'
-  pod 'NERtcSDK/RtcBasic', '4.6.43'
-  pod 'NIMSDK_LITE', '9.8.0'
+  pod 'NERtcSDK/Beauty', '4.6.50'
+  pod 'NERtcSDK/FaceDetect', '4.6.50'
+  pod 'NERtcSDK/Segment', '4.6.50'
+  pod 'NERtcSDK/RtcBasic', '4.6.50'
+  pod 'NIMSDK_LITE', '9.10.0'
 end
 
 post_install do |installer|

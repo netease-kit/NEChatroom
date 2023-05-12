@@ -4,11 +4,11 @@
 
 #import "NEInnerSingleton.h"
 #import "NEVoiceRoomFloatWindowSingleton.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomViewController+Seat.h"
 #import "NEVoiceRoomViewController+Utils.h"
 #import "NSArray+NEUIExtension.h"
-#import "NSBundle+NELocalized.h"
 #import "UIView+NEUIToast.h"
 
 @implementation NEVoiceRoomViewController (Seat)

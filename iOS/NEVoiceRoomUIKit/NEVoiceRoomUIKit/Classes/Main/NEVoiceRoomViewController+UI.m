@@ -8,9 +8,9 @@
 #import <libextobjc/extobjc.h>
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMicInviteeListVC.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomViewController+UI.h"
-#import "NSBundle+NELocalized.h"
 #import "UIImage+VoiceRoom.h"
 #import "UIView+NEUIToast.h"
 

@@ -6,7 +6,7 @@
 #import <Masonry/Masonry.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import "NEUIViewFactory.h"
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NTESFontMacro.h"
 
 @interface NEUINoticePopView ()

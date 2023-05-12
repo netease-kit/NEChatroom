@@ -7,6 +7,7 @@
 #import <Masonry/Masonry.h>
 #import <SDWebImage/SDWebImage.h>
 #import <libextobjc/extobjc.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPickSongColorDefine.h"
 #import "NEVoiceRoomPickSongEngine.h"
 #import "NEVoiceRoomPointSongTableViewCell.h"
@@ -17,7 +18,6 @@
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUILog.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 @interface NEVoiceRoomPickSongView () <UITableViewDelegate,
                                        UITableViewDataSource,

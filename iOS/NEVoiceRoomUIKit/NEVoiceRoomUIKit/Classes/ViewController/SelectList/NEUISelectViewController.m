@@ -8,7 +8,7 @@
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEUIEmptyView.h"
 #import "NEUIUserInfoCell.h"
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEUISelectViewController ()

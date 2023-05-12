@@ -5,9 +5,9 @@
 #import "NEUIMicQueueCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NEInnerSingleton.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
 #import "NSArray+NEUIExtension.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 

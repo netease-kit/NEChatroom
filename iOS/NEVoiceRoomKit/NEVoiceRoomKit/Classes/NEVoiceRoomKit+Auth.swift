@@ -84,15 +84,12 @@ public extension NEVoiceRoomKit {
 
 extension NEVoiceRoomKit: NEAuthListener {
   public func onAuthEvent(evt: NEAuthEvent) {
-    DispatchQueue.main.async {
-      self.reset()
-      for pointerListener in self.authListeners.allObjects {
-        guard pointerListener is NEVoiceRoomAuthListener, let listener = pointerListener as? NEVoiceRoomAuthListener else { continue }
-
-        if listener.responds(to: #selector(NEVoiceRoomAuthListener.onVoiceRoomAuthEvent(_:))) {
-          listener
-            .onVoiceRoomAuthEvent?(NEVoiceRoomAuthEvent(rawValue: evt.rawValue) ?? .loggedOut)
-        }
+    reset()
+    for pointerListener in authListeners.allObjects {
+      guard pointerListener is NEVoiceRoomAuthListener, let listener = pointerListener as? NEVoiceRoomAuthListener else { continue }
+      if listener.responds(to: #selector(NEVoiceRoomAuthListener.onVoiceRoomAuthEvent(_:))) {
+        listener
+          .onVoiceRoomAuthEvent?(NEVoiceRoomAuthEvent(rawValue: evt.rawValue) ?? .loggedOut)
       }
     }
   }
