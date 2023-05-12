@@ -12,7 +12,6 @@ import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.entertainment.common.activity.CreateRoomActivity;
-import com.netease.yunxin.kit.entertainment.common.floatplay.FloatPlayManager;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.Utils;
 import com.netease.yunxin.kit.entertainment.common.utils.VoiceRoomUtils;
@@ -24,6 +23,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceCreateRoomDefaultInfo;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.NavUtils;
 import kotlin.Unit;
 

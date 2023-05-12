@@ -5,14 +5,12 @@
 package com.netease.yunxin.app.chatroom.adapter;
 
 import android.util.SparseArray;
-
-import com.netease.yunxin.app.chatroom.fragment.AppEntranceFragment;
-import com.netease.yunxin.app.chatroom.fragment.UserCenterFragment;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import com.netease.yunxin.app.chatroom.fragment.AppEntranceFragment;
+import com.netease.yunxin.app.chatroom.fragment.UserCenterFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
   /** fragment 缓存 */

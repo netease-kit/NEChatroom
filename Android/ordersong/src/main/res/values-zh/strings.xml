@@ -1,0 +1,19 @@
+<resources>
+    <string name="singing_network_error"></string>
+    <string name="did_not_find_right_result">没有找到合适的结果</string>
+    <string name="copyright_token_has_expired">版权token过期，请稍后再试</string>
+    <string name="get_song_list_failed">歌曲列表加载失败</string>
+
+    <string name="preloading_failure">预加载失败：%d, %s</string>
+    <string name="order_song_failure">点歌失败：%d, %s</string>
+    <string name="song_already_ordered">歌曲已点</string>
+    <string name="err_order_song_count_exceed_limit">已达到单人点歌数上限</string>
+    <string name="err_room_order_song_count_exceed_limit">已达到房间点歌数上限</string>
+    <string name="global_search_hint">搜索</string>
+    <string name="tab_to_order">点歌</string>
+    <string name="tab_ordered">歌曲列表(%1$d)</string>
+    <string name="downloading">下载中</string>
+    <string name="song_state_playing">正在播放</string>
+    <string name="nobody_ordered">还没有人点歌哦</string>
+    <string name="order_song">点歌</string>
+</resources>

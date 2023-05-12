@@ -70,6 +70,18 @@
             android:value="portrait|landscape" />
 
         <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/LaunchTheme"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.netease.yunxin.app.chatroom.activity.HomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"

@@ -78,22 +78,5 @@ public class ChatRoomMixerDialog extends BottomBaseDialog {
             effectPlayHelper.setAudioCaptureVolume(volume);
           }
         });
-    TextView tvMixer = bottomView.findViewById(R.id.tv_mixer);
-    SeekBar sbMixer = bottomView.findViewById(R.id.sb_mixer);
-    if (isAnchor) {
-      tvMixer.setVisibility(View.VISIBLE);
-      sbMixer.setVisibility(View.VISIBLE);
-      sbMixer.setProgress(effectPlayHelper.getAudioMixingVolume());
-      sbMixer.setOnSeekBarChangeListener(
-          new VolumeSetup() {
-            @Override
-            protected void onVolume(int volume) {
-              effectPlayHelper.setAudioMixingVolume(volume);
-            }
-          });
-    } else {
-      tvMixer.setVisibility(View.GONE);
-      sbMixer.setVisibility(View.GONE);
-    }
   }
 }

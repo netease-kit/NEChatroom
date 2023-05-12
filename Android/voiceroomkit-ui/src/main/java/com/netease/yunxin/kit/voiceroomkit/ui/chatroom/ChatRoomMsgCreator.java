@@ -97,10 +97,9 @@ public class ChatRoomMsgCreator {
         .append(userNickName, HIGH_COLOR)
         .append(": ", HIGH_COLOR)
         .append(
-            Objects.requireNonNull(Utils.getApp()).getString(R.string.voiceroom_donate) + " × ",
-            COMMON_COLOR)
+            Objects.requireNonNull(Utils.getApp()).getString(R.string.donate) + " × ", COMMON_COLOR)
         .append(String.valueOf(giftCount), COMMON_COLOR)
-        .append(Utils.getApp().getString(R.string.voiceroom_count), COMMON_COLOR)
+        .append(Utils.getApp().getString(R.string.count), COMMON_COLOR)
         .append(" ")
         .append(context, giftRes, gifSize, gifSize)
         .build()
@@ -128,8 +127,7 @@ public class ChatRoomMsgCreator {
     return new ChatMessageSpannableStr.Builder()
         .append(rewarderNickName, HIGH_COLOR)
         .append(" ")
-        .append(
-            Objects.requireNonNull(Utils.getApp()).getString(R.string.voiceroom_send2), HIGH_COLOR)
+        .append(Objects.requireNonNull(Utils.getApp()).getString(R.string.send2), HIGH_COLOR)
         .append(" ")
         .append(rewardeeNickName, Color.parseColor("#FF00AAFF"))
         .append(" ")

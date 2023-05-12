@@ -6,7 +6,7 @@ package com.netease.yunxin.app.chatroom.activity;
 
 import android.text.TextUtils;
 import android.view.View;
-
+import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.netease.yunxin.app.chatroom.R;
@@ -19,10 +19,7 @@ import com.netease.yunxin.kit.entertainment.common.activity.BasePartyActivity;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
-
 import java.util.Objects;
-
-import androidx.annotation.Nullable;
 import kotlin.Unit;
 
 public class HomeActivity extends BasePartyActivity {
@@ -42,9 +39,6 @@ public class HomeActivity extends BasePartyActivity {
     login(AppConfig.ACCOUNT, AppConfig.TOKEN);
     initViews();
   }
-
-  @Override
-  protected void onLogin() {}
 
   private void initViews() {
     binding.vpFragment.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
@@ -81,11 +75,6 @@ public class HomeActivity extends BasePartyActivity {
     super.onDestroy();
     curTabIndex = -1;
     ALog.flush(true);
-  }
-
-  @Override
-  protected void onKickOut() {
-    ALog.d(TAG, "kick out");
   }
 
   private void login(String account, String token) {

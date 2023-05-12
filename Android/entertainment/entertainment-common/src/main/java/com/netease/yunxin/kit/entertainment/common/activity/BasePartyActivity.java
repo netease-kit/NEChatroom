@@ -4,7 +4,6 @@
 
 package com.netease.yunxin.kit.entertainment.common.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -18,22 +17,8 @@ import com.netease.yunxin.kit.entertainment.common.AppStates;
 import com.netease.yunxin.kit.entertainment.common.AppStatusConstant;
 import com.netease.yunxin.kit.entertainment.common.AppStatusManager;
 import com.netease.yunxin.kit.entertainment.common.statusbar.StatusBarConfig;
-import com.netease.yunxin.kit.login.AuthorManager;
-import com.netease.yunxin.kit.login.model.EventType;
-import com.netease.yunxin.kit.login.model.LoginEvent;
-import com.netease.yunxin.kit.login.model.LoginObserver;
 
 public abstract class BasePartyActivity extends AppCompatActivity {
-
-  private final LoginObserver<LoginEvent> loginObserver =
-      event -> {
-        if (event.getEventType() == EventType.TYPE_LOGOUT && !ignoredLoginEvent()) {
-          finish();
-          onKickOut();
-        } else if (event.getEventType() == EventType.TYPE_LOGIN) {
-          onLogin();
-        }
-      };
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +26,6 @@ public abstract class BasePartyActivity extends AppCompatActivity {
     //校验APP状态
     if (validateAppStatus()) {
       setContentView(getRootView());
-      AuthorManager.INSTANCE.registerLoginObserver(loginObserver);
       if (needTransparentStatusBar()) {
         adapterStatusBar();
       } else {
@@ -62,9 +46,6 @@ public abstract class BasePartyActivity extends AppCompatActivity {
       }
       init();
     } else {
-      //异常退出
-      Intent intent = new Intent(BasePartyActivity.this, SplashActivity.class);
-      startActivity(intent);
       finish();
     }
   }
@@ -93,12 +74,6 @@ public abstract class BasePartyActivity extends AppCompatActivity {
     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
     //将状态栏设置成透明色
     window.setStatusBarColor(Color.TRANSPARENT);
-  }
-
-  @Override
-  protected void onDestroy() {
-    AuthorManager.INSTANCE.unregisterLoginObserver(loginObserver);
-    super.onDestroy();
   }
 
   protected StatusBarConfig provideStatusBarConfig() {

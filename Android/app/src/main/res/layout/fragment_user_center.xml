@@ -61,6 +61,32 @@
             android:background="@color/color_f5f8fc" />
 
         <com.netease.yunxin.kit.entertainment.common.widget.SettingItemView
+            android:id="@+id/log_upload"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:setting_item_icon="@drawable/icon_log_upload"
+            app:setting_item_title="@string/app_log_upload" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="-20dp"
+            android:background="@color/color_f5f8fc" />
+
+        <com.netease.yunxin.kit.entertainment.common.widget.SettingItemView
+            android:id="@+id/network_detect"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:setting_item_icon="@drawable/icon_network_detect"
+            app:setting_item_title="@string/app_network_detect" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="-20dp"
+            android:background="@color/color_f5f8fc" />
+
+        <com.netease.yunxin.kit.entertainment.common.widget.SettingItemView
             android:id="@+id/phone_consult"
             android:layout_width="match_parent"
             android:layout_height="46dp"

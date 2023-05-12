@@ -10,23 +10,31 @@ import android.content.Context
 import androidx.annotation.Keep
 import com.netease.yunxin.kit.corekit.XKitService
 import com.netease.yunxin.kit.corekit.startup.Initializer
+import com.netease.yunxin.kit.voiceroomkit.BuildConfig
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager
 
 @Keep
 class VoiceRoomXKitService(override val appKey: String?) : XKitService {
     companion object {
         const val GET_CURRENT_ROOM_INFO_METHOD = "getCurrentRoomInfo"
+        const val IS_SHOW_FLOAT_VIEW_METHOD = "isShowFloatView"
+        const val STOP_FLOAT_PLAY_METHOD = "stopFloatPlay"
     }
 
     override val serviceName: String
-        get() = "VoiceRoomXKitService"
+        get() = "VoiceRoomKit"
 
     override val versionName: String
-        get() = "1.0.0"
+        get() = BuildConfig.versionName
 
     override fun onMethodCall(method: String, param: Map<String, Any?>?): Any? {
         if (GET_CURRENT_ROOM_INFO_METHOD == method) {
             return NEVoiceRoomKit.instance.getCurrentRoomInfo() != null
+        } else if (IS_SHOW_FLOAT_VIEW_METHOD == method) {
+            return FloatPlayManager.getInstance().isShowFloatView
+        } else if (STOP_FLOAT_PLAY_METHOD == method) {
+            return FloatPlayManager.getInstance().stopFloatPlay()
         }
         return null
     }

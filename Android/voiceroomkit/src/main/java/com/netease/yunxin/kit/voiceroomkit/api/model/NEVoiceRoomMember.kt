@@ -46,6 +46,10 @@ interface NEVoiceRoomMember {
      */
     val avatar: String?
 
+    /**
+     * 自定义属性
+     */
+    val initialProperties: Map<String, String>?
     // /**
     //  * 是否在RTC房间中
     //  */

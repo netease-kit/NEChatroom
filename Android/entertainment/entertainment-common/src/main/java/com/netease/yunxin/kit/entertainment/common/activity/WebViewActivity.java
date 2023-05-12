@@ -99,6 +99,11 @@ public class WebViewActivity extends BasePartyActivity {
     webView.getSettings().setBlockNetworkImage(false);
 
     webView.getSettings().setJavaScriptEnabled(true);
+    webView.getSettings().setAllowFileAccessFromFileURLs(false);
+    webView.getSettings().setAllowUniversalAccessFromFileURLs(false);
+    webView.removeJavascriptInterface("searchBoxJavaBridge_");
+    webView.removeJavascriptInterface("accessibility");
+    webView.removeJavascriptInterface("accessibilityTraversal");
     return webView;
   }
 

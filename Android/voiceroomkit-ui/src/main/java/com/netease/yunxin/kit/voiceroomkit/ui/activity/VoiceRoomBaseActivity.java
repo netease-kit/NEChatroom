@@ -15,7 +15,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +44,15 @@ import com.netease.yunxin.kit.common.utils.PermissionUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
 import com.netease.yunxin.kit.entertainment.common.activity.BaseActivity;
-import com.netease.yunxin.kit.entertainment.common.floatplay.FloatPlayManager;
 import com.netease.yunxin.kit.entertainment.common.floatplay.FloatWindowPermissionManager;
+import com.netease.yunxin.kit.entertainment.common.gift.GifAnimationView;
+import com.netease.yunxin.kit.entertainment.common.gift.GiftCache;
+import com.netease.yunxin.kit.entertainment.common.gift.GiftDialog2;
+import com.netease.yunxin.kit.entertainment.common.gift.GiftHelper;
+import com.netease.yunxin.kit.entertainment.common.gift.GiftRender;
 import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
 import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
+import com.netease.yunxin.kit.entertainment.common.utils.BluetoothHeadsetUtil;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.InputUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.ReportUtils;
@@ -79,12 +83,9 @@ import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NoticeDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
-import com.netease.yunxin.kit.voiceroomkit.ui.gift.GifAnimationView;
-import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftCache;
-import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftDialog;
-import com.netease.yunxin.kit.voiceroomkit.ui.gift.GiftRender;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.KeepAliveService;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.BackgroundMusicPanel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.ChatRoomMsgRecyclerView;
@@ -92,7 +93,6 @@ import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -104,7 +104,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   public static final String TAG = "AudioRoom";
   public static final String TAG_REPORT_PAGE = "page_chatroom_detail";
-
+  public static List<CharSequence> charSequenceList = new ArrayList<>();
   private static final int KEY_BOARD_MIN_SIZE = SizeUtils.dp2px(80);
 
   protected static final int MORE_ITEM_MICRO_PHONE = 0; // 更多菜单麦克风
@@ -194,7 +194,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private boolean isOverSeaEnv = false;
   private boolean needJoinRoom = true;
-  public final HashSet<Integer> selectSeatSet = new HashSet<>();
+  private boolean prepareFloatPlay = false;
 
   private final BaseAdapter.ItemClickListener<RoomSeat> itemClickListener = this::onSeatItemClick;
 
@@ -203,7 +203,19 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private static final String RECORD_AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO;
   private boolean callLeaveRoom = false;
+  private final BluetoothHeadsetUtil.BluetoothHeadsetStatusObserver
+      bluetoothHeadsetStatusChangeListener =
+          new BluetoothHeadsetUtil.BluetoothHeadsetStatusObserver() {
+            @Override
+            public void connect() {
+              if (!BluetoothHeadsetUtil.hasBluetoothConnectPermission()) {
+                BluetoothHeadsetUtil.requestBluetoothConnectPermission();
+              }
+            }
 
+            @Override
+            public void disconnect() {}
+          };
   private final ActivityResultLauncher<String> requestPermissionLauncher =
       registerForActivityResult(
           new ActivityResultContracts.RequestPermission(),
@@ -289,6 +301,12 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     initListeners();
     initData();
     bindForegroundService();
+    BluetoothHeadsetUtil.registerBluetoothHeadsetStatusObserver(
+        bluetoothHeadsetStatusChangeListener);
+    if (BluetoothHeadsetUtil.isBluetoothHeadsetConnected()
+        && !BluetoothHeadsetUtil.hasBluetoothConnectPermission()) {
+      BluetoothHeadsetUtil.requestBluetoothConnectPermission();
+    }
   }
 
   private void initRoomViewModel() {
@@ -337,7 +355,9 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     }
     giftRender.release();
     unbindForegroundService();
-    selectSeatSet.clear();
+    GiftHelper.getInstance().clear();
+    BluetoothHeadsetUtil.unregisterBluetoothHeadsetStatusObserver(
+        bluetoothHeadsetStatusChangeListener);
     super.onDestroy();
   }
 
@@ -436,7 +456,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             v -> {
               if (FloatWindowPermissionManager.INSTANCE.isFloatWindowOpAllowed(
                   VoiceRoomBaseActivity.this)) {
-                finish();
+                prepareFloatPlay = true;
                 Intent intent = new Intent();
                 if (isAnchor) {
                   intent.setClass(VoiceRoomBaseActivity.this, AnchorActivity.class);
@@ -448,6 +468,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                 intent.putExtra(RoomConstants.INTENT_ROOM_MODEL, voiceRoomInfo);
                 FloatPlayManager.getInstance()
                     .startFloatPlay(VoiceRoomBaseActivity.this, voiceRoomInfo, intent);
+                finish();
               } else {
                 FloatWindowPermissionManager.INSTANCE.requestFloatWindowPermission(
                     VoiceRoomBaseActivity.this);
@@ -489,7 +510,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             return;
           }
 
-          GiftDialog giftDialog = new GiftDialog(VoiceRoomBaseActivity.this);
+          GiftDialog2 giftDialog = new GiftDialog2(VoiceRoomBaseActivity.this);
           giftDialog.show(
               (giftId, giftCount, userUuids) ->
                   NEVoiceRoomKit.getInstance()
@@ -505,8 +526,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
                             public void onFailure(int code, @Nullable String msg) {
                               if (application != null) {
                                 ToastUtils.INSTANCE.showShortToast(
-                                    application,
-                                    application.getString(R.string.voiceroom_reward_failed));
+                                    application, application.getString(R.string.reward_failed));
                               }
                             }
                           }));
@@ -521,8 +541,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private void initData() {
     audioPlay = new EffectPlayHelper(VoiceRoomBaseActivity.this);
     initDataObserver();
-    //默认选中第一个房主
-    selectSeatSet.add(0);
   }
 
   private void showSingingTable() {
@@ -613,6 +631,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     }
     if (!needJoinRoom) {
       joinRoomSuccess = true;
+      rcyChatMsgList.appendItems(charSequenceList);
       roomViewModel.initDataOnJoinRoom();
     } else {
       roomViewModel.joinRoom(
@@ -686,7 +705,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         });
 
     roomViewModel.chatRoomMsgData.observe(
-        this, charSequence -> rcyChatMsgList.appendItem(charSequence));
+        this,
+        charSequence -> {
+          charSequenceList.add(charSequence);
+          rcyChatMsgList.appendItem(charSequence);
+        });
 
     roomViewModel.errorData.observe(
         this,
@@ -807,12 +830,15 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           if (voiceRoomInfo == null) {
             return;
           }
-          rcyChatMsgList.appendItem(
+
+          CharSequence giftReward =
               ChatRoomMsgCreator.createGiftReward(
                   VoiceRoomBaseActivity.this,
                   reward.getSendNick(),
                   1,
-                  GiftCache.getGift(reward.getGiftId()).getStaticIconResId()));
+                  GiftCache.getGift(reward.getGiftId()).getStaticIconResId());
+          rcyChatMsgList.appendItem(giftReward);
+          charSequenceList.add(giftReward);
           if (!VoiceRoomUtils.isLocalAnchor()) {
             giftRender.addGift(GiftCache.getGift(reward.getGiftId()).getDynamicIconResId());
           }
@@ -826,14 +852,16 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           }
 
           ALog.i(TAG, "bachRewardData observe giftModel:" + batchReward);
-          rcyChatMsgList.appendItem(
+          CharSequence batchGiftReward =
               ChatRoomMsgCreator.createBatchGiftReward(
                   VoiceRoomBaseActivity.this,
                   batchReward.getRewarderUserName(),
                   batchReward.getRewardeeUserName(),
                   GiftCache.getGift(batchReward.getGiftId()).getName(),
                   batchReward.getGiftCount(),
-                  GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId()));
+                  GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId());
+          rcyChatMsgList.appendItem(batchGiftReward);
+          charSequenceList.add(batchGiftReward);
           if (!VoiceRoomUtils.isLocalAnchor()) {
             giftRender.addGift(GiftCache.getGift(batchReward.getGiftId()).getDynamicIconResId());
           }
@@ -938,12 +966,14 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             new NEVoiceRoomCallback<Unit>() {
               @Override
               public void onSuccess(@Nullable Unit unit) {
-                rcyChatMsgList.appendItem(
+                CharSequence charSequence =
                     ChatRoomMsgCreator.createText(
                         VoiceRoomBaseActivity.this,
                         VoiceRoomUtils.isLocalAnchor(),
                         VoiceRoomUtils.getLocalName(),
-                        content));
+                        content);
+                rcyChatMsgList.appendItem(charSequence);
+                charSequenceList.add(charSequence);
               }
 
               @Override
@@ -972,13 +1002,9 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private void initGiftAnimation(View baseAudioView) {
     GifAnimationView gifAnimationView = new GifAnimationView(this);
     int size = ScreenUtil.getDisplayWidth();
-    FrameLayout.LayoutParams layoutParams =
-        new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-    layoutParams.width = size;
-    layoutParams.height = size;
-    layoutParams.gravity = Gravity.BOTTOM;
-    layoutParams.bottomMargin = ScreenUtil.dip2px(166f);
+    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(size, size);
+    layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+    layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
     ViewGroup root = (ViewGroup) baseAudioView.findViewById(R.id.rl_base_audio_ui);
     root.addView(gifAnimationView, layoutParams);
     gifAnimationView.bringToFront();
@@ -1029,7 +1055,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     }
   }
 
-  public HashSet<Integer> getSelectedSeatSet() {
-    return selectSeatSet;
+  @Override
+  public void finish() {
+    if (!prepareFloatPlay) {
+      charSequenceList.clear();
+    }
+    super.finish();
   }
 }

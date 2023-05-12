@@ -13,6 +13,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_40_dp"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabSelectedTextColor="#222222"
         app:tabIndicatorColor="#337EFF"
         app:tabIndicatorFullWidth="@dimen/dimen_19_dp"
