@@ -4,7 +4,6 @@
 
 #import "NEVoiceRoomAnimationView.h"
 #import <Lottie/LOTAnimationView.h>
-#import "UIImage+VoiceRoom.h"
 
 @interface NEVoiceRoomAnimationView ()
 
@@ -52,10 +51,7 @@
     return;
   }
   NSString *gift = [self.gifts firstObject];
-  NSString *path = [[NSBundle mainBundle]
-      pathForResource:@"Frameworks/NEVoiceRoomUIKit.framework/NEVoiceRoomUIKit"
-               ofType:@"bundle"];
-  NSBundle *bundle = [NSBundle bundleWithPath:path];
+  NSBundle *bundle = [NSBundle bundleForClass:self.class];
   [self.animationView setAnimationNamed:gift inBundle:bundle];
   dispatch_async(dispatch_get_main_queue(), ^{
     self.animationView.hidden = NO;

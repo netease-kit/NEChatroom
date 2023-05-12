@@ -4,9 +4,9 @@
 
 #import "NEVoiceRoomPointedSongTableViewCell.h"
 #import <Masonry/Masonry.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPickSongColorDefine.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 @interface NEVoiceRoomPointedSongTableViewCell ()
 

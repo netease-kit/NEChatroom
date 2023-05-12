@@ -7,13 +7,13 @@
 #import <SDWebImage/SDWebImage.h>
 #import "NEInnerSingleton.h"
 #import "NEVoiceRoomKit/NEVoiceRoomKit-Swift.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
 #import "NEVoiceRoomViewController+Seat.h"
 #import "NEVoiceRoomViewController+Utils.h"
 #import "NSArray+NEUIExtension.h"
-#import "NSBundle+NELocalized.h"
 #import "UIView+NEUIToast.h"
 @implementation NEVoiceRoomViewController (Utils)
 

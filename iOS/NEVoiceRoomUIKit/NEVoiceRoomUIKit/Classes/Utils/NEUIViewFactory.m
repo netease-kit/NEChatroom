@@ -38,12 +38,7 @@
                        image:(NSString *)image
                       target:(id)target
                       action:(SEL)action {
-  NSString *path = [[NSBundle mainBundle]
-      pathForResource:@"Frameworks/NEVoiceRoomUIKit.framework/NEVoiceRoomUIKit"
-               ofType:@"bundle"];
-  //    NSString *path = [[NSBundle bundleForClass:[self class]].resourcePath
-  //    stringByAppendingPathComponent:@"NEVoiceRoomUIKit.bundle"];
-  NSBundle *bundle = [NSBundle bundleWithPath:path];
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   return [NEUIViewFactory createBtnFrame:frame
                                    title:title
                                  bgImage:bgImage

@@ -4,7 +4,7 @@
 
 #import "NEUIKeyboardToolbarView.h"
 #import <Masonry/Masonry.h>
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEUIKeyboardToolbarView () <UITextFieldDelegate>

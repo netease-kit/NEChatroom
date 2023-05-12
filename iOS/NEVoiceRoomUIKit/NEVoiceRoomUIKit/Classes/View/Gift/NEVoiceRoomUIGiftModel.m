@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomUIGiftModel.h"
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 
 @implementation NEVoiceRoomUIGiftModel
 

@@ -4,8 +4,8 @@
 
 #import "NEUIEmptyListView.h"
 #import <Masonry/Masonry.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+NEUIExtension.h"
 #import "UIImage+VoiceRoom.h"

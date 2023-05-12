@@ -12,11 +12,11 @@
 #import "NEUIPlanChooseAlertView.h"
 #import "NEUIViewFactory.h"
 #import "NEVoiceRoomFloatWindowSingleton.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
 #import "NEVoiceRoomViewController.h"
-#import "NSBundle+NELocalized.h"
 #import "NSObject+additions.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+NEUIExtension.h"
@@ -151,7 +151,11 @@
   params.title = self.createRoomNameView.getRoomName;
   params.seatCount = 9;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
+#ifdef DEBUG
+  params.configId = 76;
+#else
   params.configId = 569;
+#endif
   if ([[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
           isEqualToString:@"https://roomkit-sg.netease.im"]) {
     params.configId = 75;

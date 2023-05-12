@@ -13,16 +13,14 @@ public extension NEVoiceRoomKit {
   ///   - pageNum: 页码
   ///   - pageSize: 页大小
   ///   - callback: 房间列表回调
-  func getVoiceRoomList(_ type: Int = 2,
-                        liveState: NEVoiceRoomLiveState,
-                        pageNum: Int,
-                        pageSize: Int,
-                        callback: NEVoiceRoomCallback<NEVoiceRoomList>? = nil) {
+  func getRoomList(_ liveState: NEVoiceRoomLiveState,
+                   pageNum: Int,
+                   pageSize: Int,
+                   callback: NEVoiceRoomCallback<NEVoiceRoomList>? = nil) {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Room List.")
     Judge.initCondition({
-      self.roomService.getVoiceRoomList(
-        type,
-        liveState: liveState.rawValue,
+      self.roomService.getRoomList(
+        liveState.rawValue,
         pageNum: pageNum,
         pageSize: pageSize
       ) { list in
@@ -69,7 +67,7 @@ public extension NEVoiceRoomKit {
         )
         callback?(NEVoiceRoomErrorCode.success, nil, NEVoiceRoomInfo(create: info))
       }
-        failure: { error in
+      failure: { error in
         NEVoiceRoomLog.errorLog(
           kitTag,
           desc: "Failed to get room info. Code: \(error.code). Msg: \(error.localizedDescription)"
@@ -324,6 +322,7 @@ extension NEVoiceRoomKit {
     joinParams.userName = userName
     joinParams.role = role
     let joinOptions = NEJoinRoomOptions()
+    joinOptions.enableMyAudioDeviceOnJoinRtc = true
     NERoomKit.shared().roomService.joinRoom(params: joinParams,
                                             options: joinOptions) { [weak self] joinCode, joinMsg, context in
       guard let self = self else { return }

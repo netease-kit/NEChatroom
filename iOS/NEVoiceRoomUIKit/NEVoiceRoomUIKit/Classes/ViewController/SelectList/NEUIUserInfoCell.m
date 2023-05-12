@@ -7,8 +7,8 @@
 #import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <SDWebImage/SDWebImage.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 
 @interface NEUIUserInfoCell () {
   CGRect _preRect;

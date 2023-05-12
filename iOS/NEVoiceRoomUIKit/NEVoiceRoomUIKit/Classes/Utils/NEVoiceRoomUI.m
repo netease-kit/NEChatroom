@@ -6,12 +6,7 @@
 
 @implementation NEVoiceRoomUI
 + (UIImage *)ne_voice_imageName:(NSString *)imageName {
-  NSString *path = [[NSBundle bundleForClass:self.class].resourcePath
-      stringByAppendingPathComponent:@"NEVoiceRoomUIKit.bundle"];
-  //     [[NSBundle bundleForClass:self.class] pathForResource:@"NEVoiceRoomUIKit"
-  //     ofType:@"bundle"];
-
-  NSBundle *bundle = [NSBundle bundleWithPath:path];
+  NSBundle *bundle = [NSBundle bundleForClass:self.class];
   if (@available(iOS 13.0, *)) {
     UIImage *image = [UIImage imageNamed:imageName inBundle:bundle withConfiguration:nil];
     return image;
@@ -19,12 +14,7 @@
   return [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
 }
 + (NSBundle *_Nullable)ne_voice_sourceBundle {
-  NSString *path = [[NSBundle bundleForClass:self.class].resourcePath
-      stringByAppendingPathComponent:@"NEVoiceRoomUIKit.bundle"];
-  //     [[NSBundle bundleForClass:self.class] pathForResource:@"NEVoiceRoomUIKit"
-  //     ofType:@"bundle"];
-
-  NSBundle *bundle = [NSBundle bundleWithPath:path];
+  NSBundle *bundle = [NSBundle bundleForClass:self.class];
   return bundle;
 }
 

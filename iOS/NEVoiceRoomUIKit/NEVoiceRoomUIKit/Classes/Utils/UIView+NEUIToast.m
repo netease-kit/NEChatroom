@@ -5,8 +5,8 @@
 #import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "UIView+NEUIToast.h"
 
 static CGFloat kNEVoiceRoomToastMinWitdh = 120.0;

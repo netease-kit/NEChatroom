@@ -5,8 +5,8 @@
 #import "NEVoiceRoomFloatWindowSingleton.h"
 #import <ReactiveObjC/ReactiveObjC.h>
 #import "NEVoiceRoomDraggableButton.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 #import "UIView+VoiceRoom.h"
 
@@ -143,6 +143,7 @@
   if (self.target) {
     NSLog(@"Floating button target start!!!");
     UIViewController *currentViewController = [self findVisibleViewController];
+    self.target.hidesBottomBarWhenPushed = YES;
     if (currentViewController.navigationController) {
       [currentViewController.navigationController pushViewController:self.target animated:YES];
     } else {

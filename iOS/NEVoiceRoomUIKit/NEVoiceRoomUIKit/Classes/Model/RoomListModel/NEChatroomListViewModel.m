@@ -29,26 +29,25 @@
 - (void)requestNewDataWithLiveType:(NEVoiceRoomLiveRoomType)roomType {
   self.isLoading = YES;
   [[NEVoiceRoomKit getInstance]
-      getVoiceRoomList:NEVoiceRoomLiveRoomTypeMultiAudio
-             liveState:NEVoiceRoomLiveStateLive
-               pageNum:self.pageNum
-              pageSize:20
-              callback:^(NSInteger code, NSString *_Nullable msg, NEVoiceRoomList *_Nullable data) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  if (code != 0) {
-                    self.datas = @[];
-                    self.error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                                     code:code
-                                                 userInfo:@{NSLocalizedDescriptionKey : msg}];
-                    self.isEnd = YES;
-                  } else {
-                    self.datas = data.list;
-                    self.error = nil;
-                    self.isEnd = ([data.list count] < self.pageSize);
-                  }
-                  self.isLoading = NO;
-                });
-              }];
+      getRoomList:NEVoiceRoomLiveStateLive
+          pageNum:self.pageNum
+         pageSize:20
+         callback:^(NSInteger code, NSString *_Nullable msg, NEVoiceRoomList *_Nullable data) {
+           dispatch_async(dispatch_get_main_queue(), ^{
+             if (code != 0) {
+               self.datas = @[];
+               self.error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:code
+                                            userInfo:@{NSLocalizedDescriptionKey : msg}];
+               self.isEnd = YES;
+             } else {
+               self.datas = data.list;
+               self.error = nil;
+               self.isEnd = ([data.list count] < self.pageSize);
+             }
+             self.isLoading = NO;
+           });
+         }];
 }
 
 // 加载更多
@@ -59,28 +58,27 @@
   self.isLoading = YES;
   self.pageNum += 1;
   [[NEVoiceRoomKit getInstance]
-      getVoiceRoomList:NEVoiceRoomLiveRoomTypeMultiAudio
-             liveState:NEVoiceRoomLiveStateLive
-               pageNum:self.pageNum
-              pageSize:20
-              callback:^(NSInteger code, NSString *_Nullable msg, NEVoiceRoomList *_Nullable data) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  if (code != 0) {
-                    self.datas = @[];
-                    self.error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                                     code:code
-                                                 userInfo:@{NSLocalizedDescriptionKey : msg}];
-                    self.isEnd = YES;
-                  } else {
-                    NSMutableArray *temp = [NSMutableArray arrayWithArray:self.datas];
-                    [temp addObjectsFromArray:data.list];
-                    self.datas = [temp copy];
-                    self.isEnd = ([data.list count] < self.pageSize);
-                    self.error = nil;
-                  }
-                  self.isLoading = NO;
-                });
-              }];
+      getRoomList:NEVoiceRoomLiveStateLive
+          pageNum:self.pageNum
+         pageSize:20
+         callback:^(NSInteger code, NSString *_Nullable msg, NEVoiceRoomList *_Nullable data) {
+           dispatch_async(dispatch_get_main_queue(), ^{
+             if (code != 0) {
+               self.datas = @[];
+               self.error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:code
+                                            userInfo:@{NSLocalizedDescriptionKey : msg}];
+               self.isEnd = YES;
+             } else {
+               NSMutableArray *temp = [NSMutableArray arrayWithArray:self.datas];
+               [temp addObjectsFromArray:data.list];
+               self.datas = [temp copy];
+               self.isEnd = ([data.list count] < self.pageSize);
+               self.error = nil;
+             }
+             self.isLoading = NO;
+           });
+         }];
 }
 
 @end

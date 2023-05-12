@@ -5,7 +5,7 @@
 #import "NEUIConnectAlertView.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import "NEUIViewFactory.h"
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 #import "UIView+Gradient.h"
 
 @interface NEUIConnectAlertView ()
