@@ -4,7 +4,7 @@
 
 #import "NEVoiceRoomUIAlertView.h"
 #import "NEUIActionSheet.h"
-#import "NSBundle+NELocalized.h"
+#import "NEVoiceRoomLocalized.h"
 
 @interface NEVoiceRoomUIAlertView ()
 

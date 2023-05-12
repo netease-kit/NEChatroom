@@ -4,8 +4,8 @@
 
 #import "NEVoiceRoomChatView.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUIGiftModel.h"
-#import "NSBundle+NELocalized.h"
 #import "UIImage+VoiceRoom.h"
 
 @interface NEVoiceRoomChatViewMessage ()

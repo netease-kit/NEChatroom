@@ -63,6 +63,7 @@ public class NEVoiceRoomKit: NSObject {
     }
     NE.config.isDebug = isDebug
     let options = NERoomKitOptions(appKey: config.appKey)
+    options.reuseIM = config.reuseIM
     options.APNSCerName = config.APNSCerName
     options.extras = config.extras
     if overseaAndNotPrivte {
@@ -103,9 +104,8 @@ public class NEVoiceRoomKit: NSObject {
     listeners.removeWeakObject(listener)
   }
 
-  @discardableResult
   // 上传日志
-  public func uploadLog() -> Int32 {
+  public func uploadLog() {
     NERoomKit.shared().uploadLog()
   }
 

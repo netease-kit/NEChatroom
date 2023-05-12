@@ -6,8 +6,8 @@
 #import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 @implementation NEUIChatroomMicCell

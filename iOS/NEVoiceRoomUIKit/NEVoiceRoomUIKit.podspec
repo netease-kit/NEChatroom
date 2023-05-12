@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
   
   s.source_files = 'NEVoiceRoomUIKit/Classes/**/*'
   
+    s.resource = 'NEVoiceRoomUIKit/Assets/**/*'
   s.dependency 'NEVoiceRoomKit'
   s.dependency 'NEOrderSong'
   s.dependency 'Masonry'
@@ -45,9 +46,6 @@ Pod::Spec.new do |s|
   s.dependency 'NECoreKit'
   s.dependency 'LottieSwift'
   
-  s.resource_bundles = {
-    'NEVoiceRoomUIKit' => ['NEVoiceRoomUIKit/Assets/**/*']
-  }
   s.frameworks = 'UIKit'
   
   s.pod_target_xcconfig = {

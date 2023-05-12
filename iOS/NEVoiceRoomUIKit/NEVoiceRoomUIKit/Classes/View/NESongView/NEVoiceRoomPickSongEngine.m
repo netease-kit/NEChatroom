@@ -7,10 +7,10 @@
 #import <NEOrderSong/NEOrderSong-Swift.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import <YYModel/YYModel.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPickSongColorDefine.h"
 #import "NEVoiceRoomSongItem.h"
 #import "NEVoiceRoomUILog.h"
-#import "NSBundle+NELocalized.h"
 
 static int NEPageSize = 20;
 

@@ -5,8 +5,8 @@
 #import "NEVoiceRoomGiftToCell.h"
 #import <SDWebImage/SDWebImage.h>
 #import "NEVoiceRoomGiftEngine.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEVoiceRoomGiftToCell ()

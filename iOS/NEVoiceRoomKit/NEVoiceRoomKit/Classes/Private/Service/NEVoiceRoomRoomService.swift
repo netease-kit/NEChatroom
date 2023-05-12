@@ -12,17 +12,16 @@ class NEVoiceRoomRoomService {
   ///   - pageNum: 每页数量
   ///   - pageSize: 页号
   ///   - callback: 回调
-  func getVoiceRoomList(_ type: Int = 2,
-                        liveState: Int,
-                        pageNum: Int,
-                        pageSize: Int,
-                        success: ((NEVoiceRoomList?) -> Void)? = nil,
-                        failure: ((NSError) -> Void)? = nil) {
+  func getRoomList(_ liveState: Int,
+                   pageNum: Int,
+                   pageSize: Int,
+                   success: ((NEVoiceRoomList?) -> Void)? = nil,
+                   failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "pageNum": pageNum,
       "pageSize": pageSize,
       "live": liveState,
-      "liveType": type,
+      "liveType": 2,
     ]
     NEAPI.Room.roomList.request(params,
                                 returnType: _NEVoiceRoomListResponse.self) { data in

@@ -39,7 +39,12 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'NERoomKit'
+  
+    s.dependency 'NERoomKit/Base_Special'
+    s.dependency 'NERoomKit/Beauty_Special'
+    s.dependency 'NERoomKit/Segment_Special'
+    s.dependency 'NERoomKit/Audio_Special'
+  
   s.dependency 'NECopyrightedMedia'
   
   s.pod_target_xcconfig = {

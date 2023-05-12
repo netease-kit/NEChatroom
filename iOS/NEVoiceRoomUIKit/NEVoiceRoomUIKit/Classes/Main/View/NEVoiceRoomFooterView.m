@@ -11,9 +11,9 @@
 #import <NEUIKit/UIImage+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEUIViewFactory.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"

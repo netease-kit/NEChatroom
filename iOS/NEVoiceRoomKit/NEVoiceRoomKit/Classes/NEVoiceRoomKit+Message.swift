@@ -49,7 +49,7 @@ public extension NEVoiceRoomKit {
         .sendCustomMessage(roomUuid: self.roomContext!.roomUuid,
                            userUuid: userUuid,
                            commandId: commandId,
-                           data: data) { code, msg, _ in
+                           data: data, crossAppAuthorization: nil) { code, msg, _ in
           if code == 0 {
             NEVoiceRoomLog.successLog(kitTag, desc: "Successfully send custom message.")
           } else {

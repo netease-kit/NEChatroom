@@ -25,7 +25,7 @@ public extension NEOrderSong {
         .sendCustomMessage(roomUuid: self.roomContext!.roomUuid,
                            userUuid: userUuid,
                            commandId: commandId,
-                           data: data) { code, msg, _ in
+                           data: data, crossAppAuthorization: nil) { code, msg, _ in
           if code == 0 {
             NEOrderSongLog.successLog(kitTag, desc: "Successfully send custom message.")
           } else {

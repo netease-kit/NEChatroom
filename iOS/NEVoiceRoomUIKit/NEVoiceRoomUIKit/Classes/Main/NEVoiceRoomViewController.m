@@ -16,6 +16,7 @@
 #import "NEVoiceRoomChatView.h"
 #import "NEVoiceRoomFloatWindowSingleton.h"
 #import "NEVoiceRoomGiftEngine.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPickSongEngine.h"
 #import "NEVoiceRoomPickSongView.h"
 #import "NEVoiceRoomStringMacro.h"
@@ -25,7 +26,6 @@
 #import "NEVoiceRoomViewController+Seat.h"
 #import "NEVoiceRoomViewController+UI.h"
 #import "NEVoiceRoomViewController+Utils.h"
-#import "NSBundle+NELocalized.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 
@@ -56,6 +56,7 @@
   return self;
 }
 - (void)dealloc {
+  [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
   if ([[NEVoiceRoomUIManager sharedInstance].delegate
           respondsToSelector:@selector(onVoiceRoomLeaveRoom)]) {
     [[NEVoiceRoomUIManager sharedInstance].delegate onVoiceRoomLeaveRoom];
@@ -68,10 +69,25 @@
   self.lastSelfItem = nil;
   [[NEVoiceRoomGiftEngine getInstance] reInitData];
 }
+- (BOOL)prefersNavigationBarHidden {
+  return YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  self.navigationController.navigationBar.hidden = NO;
+}
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.ne_UINavigationItem.navigationBarHidden = YES;
+  //    [self.navigationController setNavigationBarHidden:YES];
+
   [NEVoiceRoomKit.getInstance addVoiceRoomListener:self];
   [NEOrderSong.getInstance addOrderSongListener:self];
   [self addSubviews];
@@ -90,12 +106,19 @@
   id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
   UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:traget action:nil];
   [self.view addGestureRecognizer:pan];
+  [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
 
 - (void)closeRoom {
   [self closeRoomWithViewPop:YES callback:nil];
 }
 - (void)closeRoomWithViewPop:(BOOL)changeView callback:(void (^)(void))callabck {
+  /// 目前存在内存泄露...导致回调未抛出，所以先处理保证回调抛出。
+  if ([[NEVoiceRoomUIManager sharedInstance].delegate
+          respondsToSelector:@selector(onVoiceRoomLeaveRoom)]) {
+    [[NEVoiceRoomUIManager sharedInstance].delegate onVoiceRoomLeaveRoom];
+  }
+
   if (self.role == NEVoiceRoomRoleHost) {  // 主播
     [NEVoiceRoomKit.getInstance
         endRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
@@ -704,7 +727,10 @@
       /// 删除的是播放中的歌曲
       if ([[NEOrderSong getInstance] isSongPreloaded:song.nextOrderSong.songId
                                              channel:(int)song.nextOrderSong.oc_channel]) {
-        [self readySongModel:song.nextOrderSong.orderId];
+        if ([song.nextOrderSong.account
+                isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
+          [self readySongModel:song.nextOrderSong.orderId];
+        }
       } else {
         [[NEOrderSong getInstance] preloadSong:song.nextOrderSong.songId
                                        channel:(int)song.nextOrderSong.oc_channel
@@ -737,7 +763,9 @@
       if (nextSong) {
         if ([[NEOrderSong getInstance] isSongPreloaded:nextSong.songId
                                                channel:(int)nextSong.oc_channel]) {
-          [self readySongModel:nextSong.orderId];
+          if ([nextSong.account isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
+            [self readySongModel:nextSong.orderId];
+          }
         } else {
           //        self.playingAction = PlayingAction_switchSong;
           [[NEOrderSong getInstance] preloadSong:nextSong.songId
@@ -796,7 +824,10 @@
                           // 有播放中歌曲
                         } else {
                           // 无播放中歌曲
-                          [self readySongModel:songModel.orderId];
+                          if ([songModel.account isEqualToString:[NEVoiceRoomKit getInstance]
+                                                                     .localMember.account]) {
+                            [self readySongModel:songModel.orderId];
+                          }
                         }
                       }
                     }];
@@ -862,14 +893,13 @@
 - (void)voiceroom_onPreloadComplete:(NSString *)songId
                             channel:(SongChannel)channel
                               error:(NSError *)error {
-  if ([songId isEqualToString:[NEVoiceRoomPickSongEngine sharedInstance]
-                                  .currrentSongModel.playMusicInfo.songId] &&
-      (channel ==
-       [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.oc_channel)) {
-    if ([NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel) {
-      [self readySongModel:[NEVoiceRoomPickSongEngine sharedInstance]
-                               .currrentSongModel.playMusicInfo.orderId];
-    }
+  NEOrderSongSongModel *currrentSongModel =
+      [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel;
+  if ([songId isEqualToString:currrentSongModel.playMusicInfo.songId] &&
+      (channel == currrentSongModel.playMusicInfo.oc_channel) &&
+      [currrentSongModel.actionOperator.account
+          isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
+    [self readySongModel:currrentSongModel.playMusicInfo.orderId];
   }
 }
 

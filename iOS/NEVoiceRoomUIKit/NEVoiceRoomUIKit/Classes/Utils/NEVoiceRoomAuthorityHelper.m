@@ -4,8 +4,8 @@
 
 #import "NEVoiceRoomAuthorityHelper.h"
 #import <AVFoundation/AVFoundation.h>
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
-#import "NSBundle+NELocalized.h"
 @implementation NEVoiceRoomAuthorityHelper
 + (BOOL)checkMicAuthority {
   BOOL isAvalible = NO;

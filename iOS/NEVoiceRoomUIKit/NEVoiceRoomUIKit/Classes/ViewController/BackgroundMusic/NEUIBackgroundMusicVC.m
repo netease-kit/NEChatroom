@@ -8,8 +8,8 @@
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import "NEUIBackgroundMusicModel.h"
 #import "NEUIBackgroundMusiceCell.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 
 static CGFloat kTableRowHeight = 60.0;
 static CGFloat kTableHeaderHeight = 60.0;

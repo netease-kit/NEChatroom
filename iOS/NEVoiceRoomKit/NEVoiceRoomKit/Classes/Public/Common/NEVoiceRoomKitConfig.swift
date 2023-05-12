@@ -14,4 +14,7 @@ public class NEVoiceRoomKitConfig: NSObject {
   public var extras: [String: String] = .init()
   /// 推送证书
   public var APNSCerName: String = ""
+
+  /// 是否复用IM，默认 false
+  public var reuseIM: Bool = false
 }

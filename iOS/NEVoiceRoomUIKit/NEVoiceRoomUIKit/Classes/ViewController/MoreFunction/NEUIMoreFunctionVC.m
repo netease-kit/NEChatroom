@@ -8,9 +8,9 @@
 #import "NEUIMoreCell.h"
 #import "NEUIMoreItem.h"
 #import "NEUIMusicConsoleVC.h"
+#import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
-#import "NSBundle+NELocalized.h"
 
 @interface NEUIMoreFunctionVC () <UICollectionViewDataSource,
                                   UICollectionViewDelegate,
