@@ -7,6 +7,8 @@
     <string name="voiceroom_refreshing">更新中...</string>
     <string name="voiceroom_load_more">上拉加载更多</string>
     <string name="voiceroom_start_live">开始直播</string>
+    <string name="voiceroom_start_voiceroom">开始语聊</string>
+    <string name="voiceroom_start_listen_together">开始一起听</string>
     <string name="voiceroom_random">随机</string>
     <string name="voiceroom_chatroom">聊天室</string>
     <string name="voiceroom_is_closed">房间已关闭</string>
@@ -46,4 +48,20 @@
     <string name="has_open">已开启</string>
     <string name="has_close">未开启</string>
     <string name="float_permission_desc">开启悬浮窗权限后，在锁屏状态或APP在后台运行状态下，也能收到语音或视频通话提醒。\n建议您再开启以下权限，以确保能及时通知到您语音或视频通话。\n1、允许后台活动；2、锁屏显示；3、后台弹出界面</string>
+    <string name="host">房主</string>
+    <string name="send_to">送给</string>
+    <string name="gift_send">赠送</string>
+    <string name="gift_send_memeber_empty">未选择送礼对象，无法送礼</string>
+    <string name="gift">礼物</string>
+    <string name="send_gift">送礼物</string>
+    <string name="glow_stick">荧光棒</string>
+    <string name="arrange">安排</string>
+    <string name="sports_car">跑车</string>
+    <string name="rockets">火箭</string>
+    <string name="send">发送</string>
+    <string name="send2">送给</string>
+    <string name="coin">coins</string>
+    <string name="reward_failed">打赏礼物失败</string>
+    <string name="donate">赠送了</string>
+    <string name="count">个</string>
 </resources>

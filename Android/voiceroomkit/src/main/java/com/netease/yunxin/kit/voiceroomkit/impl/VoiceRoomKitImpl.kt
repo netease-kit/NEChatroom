@@ -75,18 +75,25 @@ import com.netease.yunxin.kit.voiceroomkit.impl.utils.ScreenUtil
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.VoiceRoomLog
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.VoiceRoomUtils
 import java.util.Locale
+import java.util.concurrent.CopyOnWriteArrayList
 
 internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
     private val voiceRoomHttpService: VoiceRoomHttpService by lazy { VoiceRoomHttpServiceImpl }
     private var createVoiceRoomInfo: VoiceRoomInfo? = null
     private var joinedVoiceRoomInfo: VoiceRoomInfo? = null
     private val myRoomService = VoiceRoomService()
-    private val authListeners: ArrayList<NEVoiceRoomAuthListener> by lazy { ArrayList() }
+    private val authListeners: CopyOnWriteArrayList<NEVoiceRoomAuthListener> by lazy {
+        CopyOnWriteArrayList()
+    }
     private lateinit var context: Context
     private var hasLogin: Boolean = false
     private var previewRoomContext: NEPreviewRoomContext? = null
-    private val previewRoomListeners = ArrayList<NEVoiceRoomPreviewListener>()
-    private val listeners = ArrayList<NEVoiceRoomListener>()
+    private val previewRoomListeners: CopyOnWriteArrayList<NEVoiceRoomPreviewListener> by lazy {
+        CopyOnWriteArrayList<NEVoiceRoomPreviewListener>()
+    }
+    private val listeners: CopyOnWriteArrayList<NEVoiceRoomListener> by lazy {
+        CopyOnWriteArrayList<NEVoiceRoomListener>()
+    }
     companion object {
         private const val tag = "NEVoiceRoomKit"
         private const val ACCEPT_LANGUAGE_KEY = "Accept-Language"
@@ -605,6 +612,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
             params.role.value,
             params.nick,
             params.avatar,
+            params.extraData,
             object : NECallback2<Unit>() {
                 override fun onSuccess(data: Unit?) {
                     VoiceRoomLog.i(tag, "joinRoom success")

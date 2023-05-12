@@ -5,6 +5,7 @@
 package com.netease.yunxin.kit.voiceroomkit.ui.widget;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.VoiceRoomBaseActivity;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.SongPlayManager;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager;
 
 public class BackgroundMusicPanel extends AppCompatTextView {
   private static final String TAG = "BackgroundMusicPanel";
@@ -44,7 +46,8 @@ public class BackgroundMusicPanel extends AppCompatTextView {
         @Override
         public void onAudioEffectTimestampUpdate(long effectId, long timeStampMS) {
           ALog.i(
-              TAG, "onAudioEffectFinished,effectId:" + effectId + ", timeStampMS:" + timeStampMS);
+              TAG,
+              "onAudioEffectTimestampUpdate,effectId:" + effectId + ", timeStampMS:" + timeStampMS);
         }
 
         @Override
@@ -134,17 +137,27 @@ public class BackgroundMusicPanel extends AppCompatTextView {
 
   public void startPlay(Song song, boolean isLocalPlay) {
     ALog.i(TAG, "startPlay,song:" + song.toString());
-    if (currentSong != null) {
+    if (currentSong != null && song.getOrderId() != currentSong.getOrderId()) {
       stopPlay();
     }
-    currentSong = song;
-    setText(song.getSongName());
-    setVisibility(View.VISIBLE);
+
     if (isLocalPlay) {
       String songURI =
           NECopyrightedMedia.getInstance()
               .getSongURI(song.getSongId(), song.getChannel(), SongResType.TYPE_ORIGIN);
-      songPlayManager.start(songURI, 0);
+      if (!TextUtils.isEmpty(songURI)) {
+        currentSong = song;
+        setText(song.getSongName());
+        setVisibility(View.VISIBLE);
+        songPlayManager.start(songURI, 0);
+      } else {
+        ALog.i(TAG, "startPlay but songURI is empty");
+        switchSong(null, true);
+      }
+    } else {
+      currentSong = song;
+      setText(song.getSongName());
+      setVisibility(View.VISIBLE);
     }
   }
 
@@ -214,6 +227,9 @@ public class BackgroundMusicPanel extends AppCompatTextView {
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     NEVoiceRoomKit.getInstance().removeVoiceRoomListener(roomListener);
+    if (!FloatPlayManager.getInstance().isShowFloatView()) {
+      stopPlay();
+    }
   }
 
   public void setRoomUuid(String roomUuid) {

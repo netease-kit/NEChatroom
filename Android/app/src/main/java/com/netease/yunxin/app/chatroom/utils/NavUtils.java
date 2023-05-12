@@ -7,7 +7,6 @@ package com.netease.yunxin.app.chatroom.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import com.netease.yunxin.app.chatroom.activity.CommonSettingActivity;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;

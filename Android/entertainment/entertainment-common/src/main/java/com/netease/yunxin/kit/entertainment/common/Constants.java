@@ -14,11 +14,9 @@ public class Constants {
   public static final String INTENT_KEY_TITLE = "intent_key_title";
 
   public static final String INTENT_KEY_URL = "intent_key_url";
-
   public static final String INTENT_KEY_NICK = "intent_key_nick";
-
-  public static final String MAIN_PAGE_ACTION = "https://netease.yunxin.party.home";
-
+  public static final String PAGE_ACTION_HOME = "https://netease.yunxin.party.home";
+  public static final String PAGE_ACTION_AUTH = "https://netease.yunxin.party.auth";
   public static final String PRIVACY_POLICY_ZH = "https://yunxin.163.com/m/clauses/privacy";
   public static final String USER_AGREEMENT_ZH = "https://yunxin.163.com/m/clauses/user";
   public static final String PRIVACY_POLICY_EN = "https://commsease.com/en/m/clauses/privacy";

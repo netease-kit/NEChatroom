@@ -6,6 +6,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_61_dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -61,16 +62,23 @@
         android:src="@drawable/icon_cloud_music"
         />
 
-    <ImageView
+    <TextView
         android:id="@+id/order_song"
-        android:layout_width="@dimen/dimen_52_dp"
+        android:layout_width="wrap_content"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp"
         android:layout_height="@dimen/dimen_28_dp"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/dimen_21_dp"
-        android:src="@drawable/icon_song_order"
+        android:text="@string/order_song"
         android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        tools:visibility="visible"
+        android:background="@drawable/order_song_bg"
         />
 
     <TextView

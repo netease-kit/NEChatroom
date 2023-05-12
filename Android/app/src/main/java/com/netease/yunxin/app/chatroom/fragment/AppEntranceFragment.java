@@ -8,19 +8,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.databinding.FragmentAppEntranceBinding;
 import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.entertainment.common.adapter.FunctionAdapter;
 import com.netease.yunxin.kit.entertainment.common.fragment.BaseFragment;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class AppEntranceFragment extends BaseFragment {
 

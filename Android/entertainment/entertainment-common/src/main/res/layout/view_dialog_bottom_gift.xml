@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 NetEase, Inc. All rights reserved. -->
+<!-- Use of this source code is governed by a MIT license that can be -->
+<!-- found in the LICENSE file. -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="18dp">
+
+
+    <TextView
+        android:id="@+id/tv_send_to"
+        android:text="@string/send_to"
+        android:textColor="#666666"
+        android:textSize="10sp"
+        android:paddingLeft="6dp"
+        android:paddingRight="9dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.netease.yunxin.kit.entertainment.common.gift.SelectMemberSendGiftView
+        android:id="@+id/select_member_view"
+        app:layout_constraintLeft_toRightOf="@+id/tv_send_to"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dialog_gift_list"
+        android:layout_width="match_parent"
+        android:layout_height="136dp"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@+id/select_member_view"/>
+    <com.netease.yunxin.kit.entertainment.common.gift.GiftSendButton
+        android:id="@+id/send_button"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_dialog_gift_list"
+        android:layout_marginRight="14dp"
+        android:layout_width="140dp"
+        android:layout_height="32dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

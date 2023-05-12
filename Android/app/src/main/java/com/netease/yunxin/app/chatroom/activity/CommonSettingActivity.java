@@ -5,7 +5,6 @@
 package com.netease.yunxin.app.chatroom.activity;
 
 import android.view.View;
-
 import com.netease.yunxin.app.chatroom.databinding.ActivitySettingBinding;
 import com.netease.yunxin.kit.entertainment.common.activity.BasePartyActivity;
 import com.netease.yunxin.kit.entertainment.common.utils.NavUtils;

@@ -55,7 +55,6 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     netErrorView = findViewById(R.id.view_net_error);
     createMoreItems();
     enterRoom();
-    audioPlay.checkMusicFiles();
     watchNetWork();
   }
 

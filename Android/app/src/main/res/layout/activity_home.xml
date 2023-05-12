@@ -24,7 +24,7 @@
         app:tabPaddingEnd="40dp"
         android:layout_alignParentBottom="true"
         android:background="#0cffffff"
-        app:tabBackground="@color/transparent"
-        app:tabRippleColor="@color/transparent" />
+        app:tabBackground="@android:color/transparent"
+        app:tabRippleColor="@android:color/transparent" />
 
 </RelativeLayout>

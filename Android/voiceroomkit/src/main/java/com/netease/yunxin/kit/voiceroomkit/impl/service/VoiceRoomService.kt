@@ -147,10 +147,28 @@ internal class VoiceRoomService {
         role: String,
         userName: String,
         avatar: String?,
+        extraData: Map<String, String>?,
         callback: NECallback2<Unit>
     ) {
+        val neJoinRoomParams: NEJoinRoomParams?
+        if (extraData != null) {
+            neJoinRoomParams = NEJoinRoomParams(
+                roomUuid = roomUuid,
+                userName = userName,
+                avatar = avatar,
+                role = role,
+                initialProperties = extraData
+            )
+        } else {
+            neJoinRoomParams = NEJoinRoomParams(
+                roomUuid = roomUuid,
+                userName = userName,
+                avatar = avatar,
+                role = role
+            )
+        }
         NERoomKit.getInstance().getService(NERoomService::class.java).joinRoom(
-            NEJoinRoomParams(roomUuid = roomUuid, userName = userName, avatar = avatar, role = role),
+            neJoinRoomParams,
             NEJoinRoomOptions(),
             object : NECallback2<NERoomContext>() {
                 override fun onSuccess(data: NERoomContext?) {
@@ -198,7 +216,7 @@ internal class VoiceRoomService {
                                 TAG,
                                 "joinRtcChannel failed roomUuid = $roomUuid error code = $code message = $message"
                             )
-                            leaveRtcChannel(null)
+                            currentRoomContext?.leaveRoom(object : NECallback2<Unit?>() {})
                             callback.onError(code, message)
                         }
                     })

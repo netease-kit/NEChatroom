@@ -14,7 +14,6 @@ import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
 import com.netease.yunxin.kit.entertainment.common.activity.RoomListActivity;
 import com.netease.yunxin.kit.entertainment.common.adapter.RoomListAdapter;
-import com.netease.yunxin.kit.entertainment.common.floatplay.FloatPlayManager;
 import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.ReportUtils;
@@ -24,6 +23,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
 import com.netease.yunxin.kit.voiceroomkit.ui.adapter.VoiceRoomListAdapter;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.NavUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import kotlin.Unit;
@@ -35,6 +35,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     binding.tvTitle.setText(getString(R.string.voiceroom_chat_room));
+    binding.tvStart.setText(getString(R.string.voiceroom_start_voiceroom));
     ReportUtils.report(VoiceRoomListActivity.this, TAG_REPORT_PAGE_VOICE_ROOM, "chatroom_enter");
   }
 

@@ -6,8 +6,7 @@ package com.netease.yunxin.app.chatroom;
 
 import android.app.Application;
 import android.content.Context;
-
-import com.blankj.utilcode.util.ProcessUtils;
+import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.kit.alog.ALog;
@@ -18,11 +17,8 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKitConfig;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.Nullable;
 import kotlin.Unit;
 
 public class VoiceRoomApplication extends Application {

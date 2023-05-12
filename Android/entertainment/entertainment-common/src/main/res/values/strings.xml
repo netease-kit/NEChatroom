@@ -8,6 +8,8 @@
     <string name="voiceroom_refreshing">Updating...</string>
     <string name="voiceroom_load_more">Load more</string>
     <string name="voiceroom_start_live">Start</string>
+    <string name="voiceroom_start_voiceroom">Start</string>
+    <string name="voiceroom_start_listen_together">Start</string>
     <string name="voiceroom_random">Random</string>
     <string name="voiceroom_chatroom">chatroom</string>
     <string name="voiceroom_is_closed">Room closed</string>
@@ -48,4 +50,20 @@
     <string name="has_open">Enabled</string>
     <string name="has_close">Disabled</string>
     <string name="float_permission_desc">By granting the floating window permission, you can also receive notifications for voice or video calls even when the app is running in the background or the screen is locked. \nTo ensure timely notification of incoming voice or video calls, please allow the following permissions: \n1. Allow background activity; 2. Show on lock screen; 3. Allow pop-up windows in the background.</string>
+    <string name="host">房主</string>
+    <string name="send_to">送给</string>
+    <string name="gift_send">赠送</string>
+    <string name="gift_send_memeber_empty">未选择送礼对象，无法送礼</string>
+    <string name="gift">礼物</string>
+    <string name="send_gift">送礼物</string>
+    <string name="glow_stick">荧光棒</string>
+    <string name="arrange">安排</string>
+    <string name="sports_car">跑车</string>
+    <string name="rockets">火箭</string>
+    <string name="send">发送</string>
+    <string name="send2">送给</string>
+    <string name="coin">coins</string>
+    <string name="reward_failed">打赏礼物失败</string>
+    <string name="donate">赠送了</string>
+    <string name="count">个</string>
 </resources>

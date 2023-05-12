@@ -641,7 +641,7 @@ data class NEJoinVoiceRoomParams(
     val avatar: String?,
     val role: NEVoiceRoomRole,
     val liveRecordId: Long,
-    val extraData: String? = null
+    val extraData: Map<String, String>? = HashMap()
 ) {
     override fun toString(): String {
         return "NEJoinVoiceRoomParams(roomUuid='$roomUuid', nick='$nick', avatar=$avatar, role=$role, liveRecordId=$liveRecordId, extraData=$extraData)"

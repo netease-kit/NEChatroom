@@ -7,21 +7,11 @@
     package="com.netease.yunxin.kit.entertainment.common">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application>
-        <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/LaunchTheme"
-            android:screenOrientation="portrait"
-            android:exported="true"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name=".activity.WebViewActivity"
             android:screenOrientation="portrait"

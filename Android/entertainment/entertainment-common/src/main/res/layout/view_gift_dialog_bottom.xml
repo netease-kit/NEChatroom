@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 NetEase, Inc. All rights reserved. -->
+<!-- Use of this source code is governed by a MIT license that can be -->
+<!-- found in the LICENSE file. -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="18dp">
+
+    <LinearLayout
+        android:id="@+id/ll_send_to_member"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_send_to"
+            android:text="@string/send_to"
+            android:textColor="#666666"
+            android:textSize="11sp"
+            android:paddingStart="6dp"
+            android:paddingEnd="9dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.netease.yunxin.kit.entertainment.common.gift.SelectMemberSendGiftView
+            android:id="@+id/select_member_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dialog_gift_list"
+        android:layout_width="wrap_content"
+        android:layout_height="136dp"
+        android:overScrollMode="never"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_send_to_member"/>
+    <com.netease.yunxin.kit.entertainment.common.gift.GiftSendButton
+        android:id="@+id/send_button"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_dialog_gift_list"
+        android:layout_marginEnd="14dp"
+        android:layout_width="140dp"
+        android:layout_height="32dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

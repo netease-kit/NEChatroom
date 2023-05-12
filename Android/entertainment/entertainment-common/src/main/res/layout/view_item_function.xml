@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_below="@+id/tv_function_name"
             android:layout_marginTop="10dp"
             android:lineSpacingExtra="6dp"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="12sp" />
     </RelativeLayout>
 
