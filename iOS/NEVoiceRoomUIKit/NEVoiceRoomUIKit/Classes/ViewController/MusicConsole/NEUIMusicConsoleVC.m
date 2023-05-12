@@ -94,13 +94,16 @@
   [self.audioMixingVolumeCell.contentView addSubview:self.audioMixingVolumeSlider];
 
   // 主播
-  if (self.context.role == NEVoiceRoomRoleHost) {
-    self.cells = @[ self.earbackCell, self.recordVolumeCell, self.audioMixingVolumeCell ];
-    self.heights = @[ @64, @49, @49 ];
-  } else {  // 观众
-    self.cells = @[ self.earbackCell, self.recordVolumeCell ];
-    self.heights = @[ @64, @49 ];
-  }
+  //  if (self.context.role == NEVoiceRoomRoleHost) {
+  //    self.cells = @[ self.earbackCell, self.recordVolumeCell, self.audioMixingVolumeCell ];
+  //    self.heights = @[ @64, @49, @49 ];
+  //  } else {  // 观众
+  //    self.cells = @[ self.earbackCell, self.recordVolumeCell ];
+  //    self.heights = @[ @64, @49 ];
+  //  }
+
+  self.cells = @[ self.earbackCell, self.recordVolumeCell ];
+  self.heights = @[ @64, @49 ];
 }
 - (void)viewDidLoad {
   [super viewDidLoad];
