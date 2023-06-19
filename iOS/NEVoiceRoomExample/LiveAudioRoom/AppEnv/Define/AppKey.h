@@ -5,8 +5,8 @@
 #ifndef AppKey_h
 #define AppKey_h
 
-/// 跑通Server Demo后，替换为实际的host,默认是http://127.0.0.1:9981 需要模拟器运行
-static NSString *const kApiHost = @"https://127.0.0.1:9981";
+/// 服务器地址
+static NSString *const kApiHost = @"";
 
 /// 数据收集
 static NSString *const kApiDataHost = @"https://statistic.live.126.net";
