@@ -6,7 +6,7 @@
     <string name="get_song_list_failed">Failed to load the song list</string>
 
     <string name="preloading_failure">Loading failed: %d, %s</string>
-    <string name="order_song_failure">Failed to pick the song: %d, %s</string>
+    <string name="order_song_failure">Failed to pick the song</string>
     <string name="song_already_ordered">Picked</string>
     <string name="err_order_song_count_exceed_limit">The number of picked songs per user reaches the upper limit</string>
     <string name="err_room_order_song_count_exceed_limit">The number of picked songs per room reaches the upper limit</string>

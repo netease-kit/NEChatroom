@@ -97,11 +97,11 @@ public class HomeActivity extends BasePartyActivity {
               @Override
               public void onSuccess(@Nullable Unit unit) {
                 ALog.d(TAG, "NEVoiceRoomKit login success");
-                String serverUrl = "https://roomkit.netease.im/";
                 NEOrderSongService.INSTANCE.initialize(
                     HomeActivity.this.getApplicationContext(),
                     AppConfig.getAppKey(),
-                    serverUrl,
+                    AppConfig.getBaseUrl(),
+                    AppConfig.getNERoomServerUrl(),
                     account);
                 NEOrderSongService.INSTANCE.setSongScene(SongScene.TYPE_LISTENING_TO_MUSIC);
                 NEOrderSongService.INSTANCE.addHeader("user", account);

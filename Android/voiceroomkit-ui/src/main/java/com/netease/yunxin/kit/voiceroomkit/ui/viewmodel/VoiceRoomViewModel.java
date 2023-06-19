@@ -24,6 +24,7 @@ import com.netease.yunxin.kit.ordersong.core.model.OrderSong;
 import com.netease.yunxin.kit.ordersong.core.model.Song;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions;
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams;
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAudioOutputDevice;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
@@ -39,6 +40,7 @@ import com.netease.yunxin.kit.voiceroomkit.ui.model.MemberAudioBannedModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.MemberAudioMuteChangedModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.model.VoiceRoomSeatEvent;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.VoiceRoomService;
+import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUILog;
 import java.util.ArrayList;
 import java.util.List;
 import kotlin.*;
@@ -59,14 +61,14 @@ public class VoiceRoomViewModel extends ViewModel {
   public MutableLiveData<Integer> memberCountData = new MutableLiveData<>(); // 房间人数
 
   public MutableLiveData<Integer> anchorReward = new MutableLiveData<>(); // 主播金币数量
-  public MutableLiveData<NEVoiceRoomEndReason> errorData = new MutableLiveData<>(); // 错误信息
+  public MutableLiveData<NEVoiceRoomEndReason> roomEndData = new MutableLiveData<>();
+  public MutableLiveData<Integer> roomRtcErrorData = new MutableLiveData<>();
   public MutableLiveData<Integer> currentSeatState = new MutableLiveData<>(CURRENT_SEAT_STATE_IDLE);
   public MutableLiveData<List<RoomSeat>> onSeatListData =
       new MutableLiveData<>(VoiceRoomUtils.createSeats());
   public MutableLiveData<List<RoomSeat>> applySeatListData = new MutableLiveData<>(); // 申请麦位列表
   public MutableLiveData<VoiceRoomSeatEvent> currentSeatEvent = new SingleLiveEvent<>(); // 当前操作的麦位
   public MutableLiveData<Integer> netData = new MutableLiveData<>();
-  public MutableLiveData<NEVoiceRoomGiftModel> rewardData = new MutableLiveData<>();
 
   public MutableLiveData<NEVoiceRoomBatchGiftModel> bachRewardData = new MutableLiveData<>();
   public MutableLiveData<Boolean> hostLeaveSeatData = new MutableLiveData<>();
@@ -85,6 +87,9 @@ public class VoiceRoomViewModel extends ViewModel {
   public MutableLiveData<NEVoiceRoomMember> anchorMemberData = new MutableLiveData<>();
 
   public MutableLiveData<NEVoiceRoomMember> localMemberData = new MutableLiveData<>();
+
+  public MutableLiveData<Boolean> earBackData = new MutableLiveData<>();
+
   // mute状态（观众主动操作的）
   private boolean isMute = false;
   protected String roomUuid;
@@ -96,13 +101,6 @@ public class VoiceRoomViewModel extends ViewModel {
   private List<RoomSeat> roomSeats;
   private final NEVoiceRoomListenerAdapter listener =
       new NEVoiceRoomListenerAdapter() {
-
-        @Override
-        public void onReceiveGift(@NonNull NEVoiceRoomGiftModel rewardMsg) {
-          super.onReceiveGift(rewardMsg);
-          rewardData.postValue(rewardMsg);
-        }
-
         @Override
         public void onReceiveBatchGift(@NonNull NEVoiceRoomBatchGiftModel giftModel) {
           ALog.i(TAG, "onReceiveBatchGift giftModel:" + giftModel);
@@ -235,14 +233,12 @@ public class VoiceRoomViewModel extends ViewModel {
 
         @Override
         public void onRoomEnded(@NonNull NEVoiceRoomEndReason reason) {
-          errorData.postValue(reason);
+          roomEndData.postValue(reason);
         }
 
         @Override
         public void onRtcChannelError(int code) {
-          if (code == 30015) {
-            errorData.postValue(NEVoiceRoomEndReason.valueOf("END_OF_RTC"));
-          }
+          roomRtcErrorData.postValue(code);
         }
 
         @Override
@@ -260,6 +256,15 @@ public class VoiceRoomViewModel extends ViewModel {
         @Override
         public void onMemberAudioBanned(@NonNull NEVoiceRoomMember member, boolean banned) {
           memberAudioBannedData.postValue(new MemberAudioBannedModel(member, banned));
+        }
+
+        @Override
+        public void onAudioOutputDeviceChanged(@NonNull NEVoiceRoomAudioOutputDevice device) {
+          VoiceRoomUILog.i(TAG, "onAudioOutputDeviceChanged device = " + device);
+          if (device != NEVoiceRoomAudioOutputDevice.BLUETOOTH_HEADSET
+              && device != NEVoiceRoomAudioOutputDevice.WIRED_HEADSET) {
+            earBackData.postValue(false);
+          }
         }
       };
 
@@ -383,7 +388,7 @@ public class VoiceRoomViewModel extends ViewModel {
                 if (neVoiceRoomSeatRequestItems != null) {
                   List<RoomSeat> applySeatList = new ArrayList<>();
                   for (NEVoiceRoomSeatRequestItem requestItem : neVoiceRoomSeatRequestItems) {
-                    if (requestItem.getIndex() == ANCHOR_SEAT_INDEX) {
+                    if (VoiceRoomUtils.isHost(requestItem.getUser())) {
                       continue;
                     }
                     applySeatList.add(

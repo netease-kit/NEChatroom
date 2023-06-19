@@ -12,63 +12,46 @@ import com.netease.yunxin.kit.voiceroomkit.impl.model.response.VoiceRoomList
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface VoiceRoomApi {
 
     /**
      * 获取语聊房房间列表
      */
-    @POST("scene/apps/{appKey}/ent/live/v1/list")
+    @POST("nemo/entertainmentLive/live/list")
     suspend fun getVoiceRoomList(
-        @Path("appKey") appKey: String,
         @Body body: Map<String, @JvmSuppressWildcards Any?>
     ): Response<VoiceRoomList>
 
     /**
      * 创建语聊房 房间
      */
-    @POST("scene/apps/{appKey}/ent/live/v1/createLive")
+    @POST("nemo/entertainmentLive/live/createLive")
     suspend fun startVoiceRoom(
-        @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any?>
     ): Response<VoiceRoomInfo>
 
     /**
      * 结束 语聊房 房间
      */
-    @POST("scene/apps/{appKey}/ent/live/v1/destroyLive")
+    @POST("nemo/entertainmentLive/live/destroyLive")
     suspend fun stopVoiceRoom(
-        @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any>
     ): Response<Unit>
 
-    @POST("scene/apps/{appKey}/ent/live/v1/info")
+    @POST("nemo/entertainmentLive/live/info")
     suspend fun getRoomInfo(
-        @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any>
     ): Response<VoiceRoomInfo>
 
-    @GET("/scene/apps/{appKey}/ent/live/v1/getDefaultLiveInfo")
-    suspend fun getDefaultLiveInfo(
-        @Path("appKey") appKey: String
-    ): Response<VoiceRoomDefaultConfig>
-
-    /**
-     * 观众打赏
-     */
-    @POST("scene/apps/{appKey}/ent/live/v1/reward")
-    suspend fun reward(
-        @Path("appKey") appKey: String,
-        @Body params: Map<String, @JvmSuppressWildcards Any>
-    ): Response<Unit>
+    @GET("nemo/entertainmentLive/live/getDefaultLiveInfo")
+    suspend fun getDefaultLiveInfo(): Response<VoiceRoomDefaultConfig>
 
     /**
      * 批量打赏
      */
-    @POST("scene/apps/{appKey}/ent/live/v1/batch/reward")
+    @POST("nemo/entertainmentLive/live/batch/reward")
     suspend fun batchReward(
-        @Path("appKey") appKey: String,
         @Body params: Map<String, @JvmSuppressWildcards Any>
     ): Response<Unit>
 }

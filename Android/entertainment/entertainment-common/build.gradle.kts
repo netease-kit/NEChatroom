@@ -38,7 +38,7 @@ dependencies {
 
     implementation("com.netease.yunxin.kit.common:common-ui:1.1.20")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.3.1")
+    implementation(project(":voiceroomkit"))
     implementation("com.netease.yunxin.kit.auth:auth-yunxin-login:1.0.4")
 
 }

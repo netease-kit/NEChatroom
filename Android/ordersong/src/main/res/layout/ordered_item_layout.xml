@@ -76,7 +76,7 @@
 
     <TextView
         android:id="@+id/user_name"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="@dimen/dimen_18_dp"
         android:maxLines="1"
         android:ellipsize="end"
@@ -98,8 +98,8 @@
         android:textSize="@dimen/text_size_12"
         android:textColor="#999999"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/dimen_191_dp"
+        app:layout_constraintLeft_toRightOf="@+id/user_name"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="@dimen/dimen_34_dp"
         android:layout_gravity="center_vertical" />
 

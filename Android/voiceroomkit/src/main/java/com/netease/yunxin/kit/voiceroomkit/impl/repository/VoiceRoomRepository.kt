@@ -27,10 +27,10 @@ class VoiceRoomRepository {
 
     private lateinit var voiceRoomApi: VoiceRoomApi
 
-    fun initialize(context: Context) {
+    fun initialize(context: Context, url: String) {
         serviceCreator.init(
             context,
-            serverConfig.serverUrl,
+            url,
             if (BuildConfig.DEBUG) ServiceCreator.LOG_LEVEL_BODY else ServiceCreator.LOG_LEVEL_BASIC,
             NERoomKit.getInstance().deviceId
         )
@@ -55,7 +55,7 @@ class VoiceRoomRepository {
             "pageNum" to pageNum,
             "pageSize" to pageSize
         )
-        voiceRoomApi.getVoiceRoomList(serverConfig.appKey, params)
+        voiceRoomApi.getVoiceRoomList(params)
     }
 
     suspend fun startVoiceRoom(
@@ -63,6 +63,7 @@ class VoiceRoomRepository {
         cover: String?,
         liveType: Int,
         configId: Int,
+        roomName: String?,
         seatCount: Int,
         seatApplyMode: Int,
         seatInviteMode: Int
@@ -73,18 +74,19 @@ class VoiceRoomRepository {
                 "cover" to cover,
                 "liveType" to liveType,
                 "configId" to configId,
+                "roomName" to roomName,
                 "seatCount" to seatCount,
                 "seatApplyMode" to seatApplyMode,
                 "seatInviteMode" to seatInviteMode
             )
-            voiceRoomApi.startVoiceRoom(serverConfig.appKey, params)
+            voiceRoomApi.startVoiceRoom(params)
         }
 
     suspend fun stopVoiceRoom(liveRecordId: Long): Response<Unit> = withContext(Dispatchers.IO) {
         val params = mapOf(
             "liveRecordId" to liveRecordId
         )
-        voiceRoomApi.stopVoiceRoom(serverConfig.appKey, params)
+        voiceRoomApi.stopVoiceRoom(params)
     }
 
     suspend fun getRoomInfo(liveRecordId: Long): Response<VoiceRoomInfo> = withContext(
@@ -93,21 +95,11 @@ class VoiceRoomRepository {
         val params = mapOf(
             "liveRecordId" to liveRecordId
         )
-        voiceRoomApi.getRoomInfo(appKey = serverConfig.appKey, params)
+        voiceRoomApi.getRoomInfo(params)
     }
 
     suspend fun getDefaultLiveInfo(): Response<VoiceRoomDefaultConfig> = withContext(Dispatchers.IO) {
-        voiceRoomApi.getDefaultLiveInfo(appKey = serverConfig.appKey)
-    }
-
-    suspend fun reward(liveRecordId: Long, giftId: Int): Response<Unit> = withContext(
-        Dispatchers.IO
-    ) {
-        val params = mapOf(
-            "liveRecordId" to liveRecordId,
-            "giftId" to giftId
-        )
-        voiceRoomApi.reward(serverConfig.appKey, params)
+        voiceRoomApi.getDefaultLiveInfo()
     }
 
     suspend fun batchReward(liveRecordId: Long, giftId: Int, giftCount: Int, userUuids: List<String>): Response<Unit> = withContext(
@@ -117,8 +109,8 @@ class VoiceRoomRepository {
             "liveRecordId" to liveRecordId,
             "giftId" to giftId,
             "giftCount" to giftCount,
-            "userUuids" to userUuids
+            "targets" to userUuids
         )
-        voiceRoomApi.batchReward(serverConfig.appKey, params)
+        voiceRoomApi.batchReward(params)
     }
 }

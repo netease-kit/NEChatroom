@@ -11,10 +11,7 @@ public class GiftHelper {
 
   private static volatile GiftHelper mInstance;
 
-  private GiftHelper() {
-    //默认选中第一个房主
-    selectSeatSet.add(0);
-  }
+  private GiftHelper() {}
 
   public static GiftHelper getInstance() {
     if (null == mInstance) {
@@ -25,6 +22,11 @@ public class GiftHelper {
       }
     }
     return mInstance;
+  }
+
+  public void init() {
+    //默认选中第一个房主
+    selectSeatSet.add(0);
   }
 
   public void add(int position) {

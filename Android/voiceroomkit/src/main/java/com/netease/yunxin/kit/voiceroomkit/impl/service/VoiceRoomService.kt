@@ -29,8 +29,6 @@ import com.netease.yunxin.kit.roomkit.api.model.NEAudioOutputDevice
 import com.netease.yunxin.kit.roomkit.api.model.NEMemberVolumeInfo
 import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioEffectOption
 import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioMixingOption
-import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcAudioProfile
-import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcAudioScenario
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcAudioStreamType
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcChannelProfile
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcClientRole
@@ -49,14 +47,13 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAudioOutputDevice
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomErrorCode
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListener
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcAudioStreamType
-import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomGiftModel
+import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomBatchGiftModel
 import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomMember
 import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomMemberVolumeInfo
 import com.netease.yunxin.kit.voiceroomkit.impl.utils.GsonUtils
@@ -112,8 +109,7 @@ internal class VoiceRoomService {
         private const val ERROR_MSG_ROOM_NOT_EXISTS = "Room not exists"
         private const val ERROR_MSG_MEMBER_NOT_EXISTS = "Member not exists"
         private const val ERROR_MSG_MEMBER_AUDIO_BANNED = "Member audio banned"
-        const val TYPE_GIFT = 1001 // 礼物
-        const val TYPE_BATCH_GIFT = 1002 // 批量礼物
+        const val TYPE_BATCH_GIFT = 1005 // 批量礼物
     }
 
     fun getLocalMember(): NEVoiceRoomMember? {
@@ -133,10 +129,6 @@ internal class VoiceRoomService {
     fun isEarBackEnable() = isEarBackEnable
 
     private fun setAudioProfile() {
-        currentRoomContext?.rtcController?.setAudioProfile(
-            NERoomRtcAudioProfile.HIGH_QUALITY,
-            NERoomRtcAudioScenario.MUSIC
-        )
         currentRoomContext?.rtcController?.setChannelProfile(
             NERoomRtcChannelProfile.liveBroadcasting
         )
@@ -788,34 +780,17 @@ internal class VoiceRoomService {
                         }
                     } else if (it is RoomCustomMessages) {
                         when (getType(it.attachStr)) {
-                            TYPE_GIFT -> {
-                                val result2 = GsonUtils.fromJson(
-                                    it.attachStr,
-                                    VoiceRoomGiftModel::class.java
-                                )
-                                listeners.forEach { listener ->
-                                    VoiceRoomLog.i(
-                                        TAG,
-                                        "onReceiveGift customAttachment:${it.attachStr}"
-                                    )
-                                    listener.onReceiveGift(
-                                        VoiceRoomUtils.voiceRoomGiftModel2NEVoiceRoomGiftModel(
-                                            result2
-                                        )
-                                    )
-                                }
-                            }
                             TYPE_BATCH_GIFT -> {
                                 val result = GsonUtils.fromJson(
                                     it.attachStr,
-                                    NEVoiceRoomBatchGiftModel::class.java
+                                    VoiceRoomBatchGiftModel::class.java
                                 )
                                 listeners.forEach { listener ->
                                     VoiceRoomLog.i(
                                         TAG,
                                         "onReceiveBatchGift customAttachment:${it.attachStr}"
                                     )
-                                    listener.onReceiveBatchGift(result)
+                                    listener.onReceiveBatchGift(result.data)
                                 }
                             }
                         }

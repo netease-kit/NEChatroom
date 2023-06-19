@@ -15,8 +15,8 @@ android {
         minSdk = 21
         targetSdk = 30
         applicationId = "com.netease.yunxin.app.chatroom"
-        versionCode = 131
-        versionName = "1.3.1"
+        versionCode = 132
+        versionName = "1.3.2"
         multiDexEnabled = true
     }
 
@@ -49,7 +49,7 @@ dependencies {
     implementation("com.blankj:utilcodex:1.30.6")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
     implementation("com.scwang.smart:refresh-layout-kernel:2.0.1")
-    implementation("com.netease.yunxin.kit.voiceroom:voiceroomkit:1.3.1")
+    implementation(project(":voiceroomkit"))
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.6.0")
 
 }

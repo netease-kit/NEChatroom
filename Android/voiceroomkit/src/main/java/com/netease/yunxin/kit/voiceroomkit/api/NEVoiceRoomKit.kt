@@ -486,14 +486,6 @@ interface NEVoiceRoomKit {
     fun stopEffect(effectId: Int): Int
 
     /**
-     * 发送礼物
-     * @param giftId 礼物id
-     * @param callback 发送礼物的回调
-     * <br>相关回调：发送礼物成功后，房间内所有人会收到[NEVoiceRoomListener.onReceiveGift]回调
-     */
-    fun sendGift(giftId: Int, callback: NEVoiceRoomCallback<Unit>? = null)
-
-    /**
      * 指定播放位置
      * <br>使用前提：该方法仅在调用[login]方法登录成功且上麦成功调用有效
      * @param effectId 音效文件id
@@ -583,16 +575,11 @@ interface VoiceRoomInterceptor {
 /**
  * NEVoiceRoomKit配置
  * @property appKey NEVoiceRoom 服务的key
- * @property reuseIM 是否开启IM复用
  * @property extras 额外参数
  */
-data class NEVoiceRoomKitConfig(val appKey: String, val reuseIM: Boolean = false, val extras: Map<String, Any?> = mapOf()) {
+data class NEVoiceRoomKitConfig(val appKey: String, val extras: Map<String, Any?> = mapOf()) {
     constructor(appKey: String) :
-        this(appKey, false, mapOf())
-    constructor(appKey: String, reuseIM: Boolean) :
-        this(appKey, reuseIM, mapOf())
-    constructor(appKey: String, extras: Map<String, Any?>) :
-        this(appKey, false, extras)
+        this(appKey, mapOf())
 }
 
 /**

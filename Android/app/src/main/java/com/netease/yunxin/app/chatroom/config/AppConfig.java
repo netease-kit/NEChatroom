@@ -15,6 +15,8 @@ public class AppConfig {
   // 获取userUuid和对应的userToken，请参考https://doc.yunxin.163.com/neroom/docs/TY1NzM5MjQ?platform=server
   public static final String ACCOUNT = "your userUuid";
   public static final String TOKEN = "your userToken";
+  // 跑通Server Demo后，替换为实际的host
+  public static final String BASE_URL = "";
   private static final int ONLINE_CONFIG_ID = 569;
   private static final int OVERSEA_CONFIG_ID = 75;
 
@@ -45,5 +47,16 @@ public class AppConfig {
     } else {
       return ONLINE_CONFIG_ID;
     }
+  }
+
+  public static String getBaseUrl() {
+    return BASE_URL;
+  }
+
+  public static String getNERoomServerUrl() {
+    if (isOversea()) {
+      return "oversea";
+    }
+    return "online";
   }
 }

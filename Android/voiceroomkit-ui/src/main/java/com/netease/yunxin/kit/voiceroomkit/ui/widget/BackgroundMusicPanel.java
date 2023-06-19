@@ -102,18 +102,19 @@ public class BackgroundMusicPanel extends AppCompatTextView {
             neOrderSong -> {
               if (neOrderSong != null) {
                 ALog.i(TAG, "order song dialog ordered list switch song");
-                if (currentSong != null && currentSong.getOrderId() == neOrderSong.getOrderId()) {
+                if (currentSong != null
+                    && currentSong.getOrderId() == neOrderSong.getOrderSong().getOrderId()) {
                   ALog.i(TAG, "the same song");
                   return;
                 }
                 Song nextSong = new Song();
-                nextSong.setOrderId(neOrderSong.getOrderId());
-                nextSong.setSongId(neOrderSong.getSongId());
-                nextSong.setSongName(neOrderSong.getSongName());
-                nextSong.setSinger(neOrderSong.getSinger());
-                nextSong.setChannel(neOrderSong.getChannel());
-                if (neOrderSong.getSongTime() != null) {
-                  nextSong.setSongTime(neOrderSong.getSongTime());
+                nextSong.setOrderId(neOrderSong.getOrderSong().getOrderId());
+                nextSong.setSongId(neOrderSong.getOrderSong().getSongId());
+                nextSong.setSongName(neOrderSong.getOrderSong().getSongName());
+                nextSong.setSinger(neOrderSong.getOrderSong().getSinger());
+                nextSong.setChannel(neOrderSong.getOrderSong().getChannel());
+                if (neOrderSong.getOrderSong().getSongTime() != 0) {
+                  nextSong.setSongTime(neOrderSong.getOrderSong().getSongTime());
                 }
                 switchSong(nextSong);
               } else {
@@ -149,6 +150,7 @@ public class BackgroundMusicPanel extends AppCompatTextView {
         currentSong = song;
         setText(song.getSongName());
         setVisibility(View.VISIBLE);
+        songPlayManager.stop();
         songPlayManager.start(songURI, 0);
       } else {
         ALog.i(TAG, "startPlay but songURI is empty");
