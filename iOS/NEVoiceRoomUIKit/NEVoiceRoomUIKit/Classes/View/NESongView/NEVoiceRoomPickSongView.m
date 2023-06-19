@@ -531,14 +531,18 @@
     return cell;
 
   } else {
-    NEOrderSongOrderSongModel *item =
+    NEOrderSongResponse *item =
         [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray[indexPath.row];
     NEVoiceRoomPointedSongTableViewCell *cell =
         [tableView dequeueReusableCellWithIdentifier:@"Identifier2" forIndexPath:indexPath];
+    if ([NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray.count <= indexPath.row) {
+      return cell;
+    }
+
     if ([[NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.songId
-            isEqualToString:item.songId] &&
+            isEqualToString:item.orderSong.songId] &&
         [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.oc_channel ==
-            item.oc_channel) {
+            item.orderSong.oc_channel) {
       cell.playingImageView.hidden = NO;
       cell.songNumberLabel.hidden = YES;
       cell.statueLabel.hidden = NO;
@@ -553,7 +557,8 @@
         cell.cancelButton.hidden = NO;
       } else {
         // 是自己点的
-        if ([item.account isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
+        if ([item.orderSongUser.userUuid
+                isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
           cell.cancelButton.hidden = NO;
         } else {
           // 其他人的歌
@@ -564,30 +569,31 @@
     cell.clickCancel = ^{
       // 点击取消
       [[NEOrderSong getInstance]
-          deleteSongWithOrderId:item.orderId
+          deleteSongWithOrderId:item.orderSong.orderId
                        callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                          if (code != 0) {
-                           [NEVoiceRoomToast
-                               showToast:[NSString
-                                             stringWithFormat:@"%@ %@",
-                                                              NELocalizedString(@"删除歌曲失败"),
-                                                              msg]];
+                           //                           [NEVoiceRoomToast
+                           //                               showToast:[NSString
+                           //                                             stringWithFormat:@"%@ %@",
+                           //                                                              NELocalizedString(@"删除歌曲失败"),
+                           //                                                              msg]];
                          }
                        }];
     };
     cell.songNumberLabel.text = [NSString stringWithFormat:@"%02d", (int)indexPath.row + 1];
-    [cell.songIconImageView sd_setImageWithURL:[NSURL URLWithString:item.songCover]];
-    cell.songNameLabel.text = [NSString stringWithFormat:@"%@ - %@", item.songName, item.singer];
-    if (item.icon) {
-      [cell.userIconImageView sd_setImageWithURL:[NSURL URLWithString:item.icon]];
+    [cell.songIconImageView sd_setImageWithURL:[NSURL URLWithString:item.orderSong.songCover]];
+    cell.songNameLabel.text =
+        [NSString stringWithFormat:@"%@ - %@", item.orderSong.songName, item.orderSong.singer];
+    if (item.orderSongUser.icon) {
+      [cell.userIconImageView sd_setImageWithURL:[NSURL URLWithString:item.orderSongUser.icon]];
     } else {
       [cell.userIconImageView setImage:[NEVoiceRoomUI ne_voice_imageName:@"user_default_icon"]];
     }
 
-    cell.userNickNameLabel.text = [NSString stringWithFormat:@"%@", item.userName];
+    cell.userNickNameLabel.text = [NSString stringWithFormat:@"%@", item.orderSongUser.userName];
     cell.songDurationLabel.hidden = NO;
     // duration暂时不做处理
-    cell.songDurationLabel.text = [self formatSeconds:[item oc_songTime]];
+    cell.songDurationLabel.text = [self formatSeconds:[item.orderSong oc_songTime]];
     // 歌曲状态 -2 已唱 -1 删除 0:等待唱 1 唱歌中
     // 状态第一行直接显示正在演唱
     cell.statueLabel.text = NELocalizedString(@"正在播放");
@@ -602,10 +608,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if (tableView == self.pickedSongsTableView) {
     /// 已点列表
-    NEOrderSongOrderSongModel *item =
+    NEOrderSongResponse *item =
         [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray[indexPath.row];
     if (self.delegate && [self.delegate respondsToSelector:@selector(nextSong:)]) {
-      [self.delegate nextSong:item];
+      [self.delegate nextSong:item.orderSong];
     }
   }
 }
@@ -691,7 +697,7 @@
   }
 }
 
-- (void)onOrderSong:(NEOrderSongOrderSongModel *)songModel error:(NSString *)errorMessage {
+- (void)onOrderSong:(NEOrderSongResponse *)songModel error:(NSString *)errorMessage {
   if (errorMessage && errorMessage.length > 0) {
     [NEVoiceRoomToast showToast:errorMessage];
   }

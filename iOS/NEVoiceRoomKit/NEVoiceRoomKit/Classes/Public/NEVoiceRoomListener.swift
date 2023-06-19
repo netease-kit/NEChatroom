@@ -27,7 +27,6 @@ public protocol NEVoiceRoomListener: NSObjectProtocol {
   /// - Parameter reason: 房间结束原因
   @objc optional func onRoomEnded(_ reason: NEVoiceRoomEndReason)
 
-  // FIXME: 断网退房
   /// Rtc频道错误回调
   /// - Parameter code: 错误码
   @objc optional func onRtcChannelError(_ code: Int)

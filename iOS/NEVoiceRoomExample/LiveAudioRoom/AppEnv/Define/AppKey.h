@@ -5,11 +5,8 @@
 #ifndef AppKey_h
 #define AppKey_h
 
-/// 服务器host
-static NSString *const kApiHost = @"https://yiyong.netease.im";
-
-// Chatroom host address
-static NSString *const kChatRoomHost = @"http://yiyong-voice-chat.netease.im";
+/// 跑通Server Demo后，替换为实际的host,默认是http://127.0.0.1:9981 需要模拟器运行
+static NSString *const kApiHost = @"https://127.0.0.1:9981";
 
 /// 数据收集
 static NSString *const kApiDataHost = @"https://statistic.live.126.net";

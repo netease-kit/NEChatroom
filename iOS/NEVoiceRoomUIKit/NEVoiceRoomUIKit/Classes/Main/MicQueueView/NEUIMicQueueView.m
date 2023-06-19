@@ -4,6 +4,7 @@
 
 #import "NEUIMicQueueView.h"
 #import <ReactiveObjC/ReactiveObjC.h>
+#import "NEInnerSingleton.h"
 #import "NEUIChatroomMicCell.h"
 #import "NTESGlobalMacro.h"
 #import "UIView+NEUIExtension.h"
@@ -194,8 +195,20 @@
 
 #pragma mark - getter/setter
 - (void)setAnchorMicInfo:(NEVoiceRoomSeatItem *)anchorMicInfo {
-  if (!anchorMicInfo) return;
-
+  if (!anchorMicInfo) {
+    NEVoiceRoomAnchor *anchor = NEInnerSingleton.singleton.roomInfo.anchor;
+    anchorMicInfo = [[NEVoiceRoomSeatItem alloc] init];
+    anchorMicInfo.icon = anchor.icon;
+    anchorMicInfo.user = anchor.userUuid;
+    anchorMicInfo.userName = anchor.userName;
+    anchorMicInfo.index = -1;
+    for (NEVoiceRoomMember *m in [NEVoiceRoomKit getInstance].allMemberList) {
+      if ([m.account isEqualToString:anchor.userUuid]) {
+        anchorMicInfo.icon = m.avatar;
+        anchorMicInfo.userName = m.name;
+      }
+    }
+  }
   _anchorMicInfo = anchorMicInfo;
   [self.anchorCell refresh:anchorMicInfo];
   [self updateAnchorGift];

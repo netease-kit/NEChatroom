@@ -31,6 +31,10 @@ public class NEOrderSong: NSObject {
     NEOrderSongLog.apiLog(kitTag, desc: "Initialize")
     self.config = config
 
+    if let baseUrl = config.extras["baseUrl"] {
+      NE.config.customUrl = baseUrl
+    }
+
     /// 非私有化 且要出海 使用默认海外环境
     var overseaAndNotPrivte = false
     if let serverUrl = config.extras["serverUrl"] {
@@ -38,13 +42,12 @@ public class NEOrderSong: NSObject {
       isOversea = serverUrl == "oversea"
       if !serverUrl.contains("http"), isOversea {
         overseaAndNotPrivte = true
-        NE.config.customUrl = "https://roomkit-sg.netease.im"
         config.extras["serverUrl"] = "https://roomkit-sg.netease.im"
       }
     }
     NE.config.isDebug = isDebug
+    NE.config.isOverSea = isOversea
     let options = NERoomKitOptions(appKey: config.appKey)
-    options.reuseIM = config.reuseIM
     options.extras = config.extras
     options.APNSCerName = config.APNSCerName
     if overseaAndNotPrivte {

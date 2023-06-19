@@ -12,13 +12,16 @@ class NetworkConfig {
     if let url = customUrl {
       return url
     } else if isDebug {
-      return "https://roomkit-dev.netease.im"
+      return "https://yiyong-qa.netease.im"
+    } else if isOverSea {
+      return "https://yiyong-sg.netease.im"
     } else {
-      return "https://roomkit.netease.im"
+      return "https://yiyong.netease.im"
     }
   }
 
   var isDebug: Bool = false
+  var isOverSea: Bool = false
   var deviceId: String {
     NERoomKit.shared().deviceId()
   }
@@ -69,13 +72,13 @@ internal class NEVoiceRoomNetwork {
   }
 
   /// 请求session
-  var session: URLSession {
+  lazy var session: URLSession = {
     let sessionConfigure = URLSessionConfiguration.default
     sessionConfigure.httpAdditionalHeaders = ["Content-Type": "application/json;charset=utf-8"]
     sessionConfigure.timeoutIntervalForRequest = 10
     sessionConfigure.requestCachePolicy = .reloadIgnoringLocalCacheData
     return URLSession(configuration: sessionConfigure)
-  }
+  }()
 
   // MARK: - ------------------------- Request --------------------------
 
@@ -161,13 +164,13 @@ internal class NEVoiceRoomNetwork {
       }
       // 打印requestId
       if let requestId = response["requestId"] as? String {
-        NEVoiceRoomLog.infoLog(self.tag, desc: "RequestId:\n\(requestId)")
+        NEVoiceRoomLog.infoLog(self.tag, desc: "Url:\(url) RequestId:\(requestId)")
       }
       guard let code = response["code"] as? Int else {
         failed(makeError(NEVoiceRoomErrorCode.failed, "Empty code in response body!"))
         return
       }
-      guard code == 0 else {
+      guard code == 200 else {
         let message = response["msg"] as? String ?? "Empty message in response body!"
         NEVoiceRoomLog.errorLog(
           self.tag,

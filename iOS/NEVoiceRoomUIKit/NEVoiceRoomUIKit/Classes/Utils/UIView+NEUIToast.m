@@ -9,22 +9,6 @@
 #import "NEVoiceRoomUI.h"
 #import "UIView+NEUIToast.h"
 
-static CGFloat kNEVoiceRoomToastMinWitdh = 120.0;
-static NSInteger KNEVoiceRoomToastBarTag = 111;
-
-@interface NEUIToastBar : UIView
-
-@property(nonatomic, assign) NEUIToastState state;
-@property(nonatomic, strong) UILabel *infoLab;
-@property(nonatomic, strong) UIImageView *imgView;
-@property(nonatomic, strong) UIButton *cancelBtn;
-@property(nonatomic, strong) dispatch_block_t cancel;
-
-- (instancetype)initWithState:(NEUIToastState)state;
-- (CGFloat)setInfo:(NSString *)info;
-
-@end
-
 @implementation UIView (NEUIToast)
 
 - (void)showToastWithMessage:(NSString *)message state:(NEUIToastState)state {

@@ -7,19 +7,15 @@ import Foundation
 @objc
 /// 房间类型
 public enum NEVoiceRoomLiveRoomType: Int {
-  /// PK直播
-  case pkLive = 1
   /// 语聊房
   case multiAudio = 2
-  /// KTV
-  case ktv = 3
   /// 一起听
   case listen_together = 5
 }
 
 @objc
 /// 直播状态
-public enum NEVoiceRoomLiveStatus: UInt {
+public enum NEVoiceRoomLiveStatus: Int {
   /// 未直播
   case idle = 0
   /// 直播中
@@ -33,5 +29,5 @@ public enum NEVoiceRoomLiveStatus: UInt {
   /// PK邀请中
   case inviting = 5
   /// 直播结束
-  case end = 6
+  case end = -1
 }

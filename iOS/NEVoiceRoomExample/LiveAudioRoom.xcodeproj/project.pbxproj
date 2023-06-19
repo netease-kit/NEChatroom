@@ -216,7 +216,6 @@
 				CE0349BBAD27D0C053F5D205 /* Pods-LiveAudioRoom.debug.xcconfig */,
 				823E028A7FF1676A586900BE /* Pods-LiveAudioRoom.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -560,7 +559,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 569GNZ5392;
+				DEVELOPMENT_TEAM = 7C9A6NRV5L;
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LiveAudioRoom/Info.plist;

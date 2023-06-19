@@ -24,7 +24,6 @@
   // Do any additional setup after loading the view.
   self.ne_UINavigationItem.navigationBarHidden = YES;
   [self didSetUpUI];
-  [self setUpNotications];
 }
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
@@ -41,17 +40,6 @@
   [self.view addSubview:self.navBar];
   [self.view addSubview:self.tableview];
   [self.view addSubview:self.emptyView];
-}
-
-- (void)setUpNotications {
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(didMemberEnter:)
-                                               name:kVoiceRoomUIJoinRoom
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(didMemberLeave:)
-                                               name:kVoiceRoomUILeaveRoom
-                                             object:nil];
 }
 #pragma mark - Notciations
 - (void)didMemberEnter:(NSNotification *)note {

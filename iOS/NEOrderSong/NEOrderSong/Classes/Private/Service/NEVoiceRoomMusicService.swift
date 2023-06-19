@@ -5,9 +5,9 @@
 import Foundation
 /// 关于
 class NEOrderSongMusicService {
-  var roomUuid: String!
-  init(_ roomUuid: String) {
-    self.roomUuid = roomUuid
+  var liveRecordId: UInt64
+  init(_ liveRecordId: UInt64) {
+    self.liveRecordId = liveRecordId
   }
 
   /// 开始演唱
@@ -25,9 +25,10 @@ class NEOrderSongMusicService {
              failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "orderId": orderId,
+      "liveRecordId": liveRecordId,
     ]
 
-    NEAPI.Music.ready(roomUuid).request(params, success: { _ in
+    NEAPI.Music.ready().request(params, success: { _ in
       success?()
     }, failed: failure)
   }
@@ -43,8 +44,9 @@ class NEOrderSongMusicService {
                  failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "action": action.rawValue,
+      "liveRecordId": liveRecordId,
     ]
-    NEAPI.Music.action(roomUuid).request(params, success: { _ in
+    NEAPI.Music.action().request(params, success: { _ in
       success?()
     }, failed: failure)
   }
@@ -55,14 +57,15 @@ class NEOrderSongMusicService {
                   failure: ((NSError) -> Void)? = nil) {
     var params: [String: Any] = [
       "currentOrderId": orderId,
+      "liveRecordId": liveRecordId,
     ]
     if let attachment = attachment {
       params["attachment"] = attachment
     }
-    NEAPI.PickSong.switchSong(roomUuid).request(params,
-                                                success: { _ in
-                                                  success?()
-                                                }, failed: failure)
+    NEAPI.PickSong.switchSong().request(params,
+                                        success: { _ in
+                                          success?()
+                                        }, failed: failure)
   }
 
   /// 获取房间当前演唱信息
@@ -71,42 +74,43 @@ class NEOrderSongMusicService {
   ///   - failure: 失败回调
   func currentInfo(_ success: ((NEOrderSongPlayMusicInfo?) -> Void)? = nil,
                    failure: ((NSError) -> Void)? = nil) {
-    NEAPI.Music.info(roomUuid).request(returnType: NEOrderSongPlayMusicInfo.self,
-                                       success: success,
-                                       failed: failure)
+    NEAPI.Music.info(String(liveRecordId)).request(returnType: NEOrderSongPlayMusicInfo.self,
+                                                   success: success,
+                                                   failed: failure)
   }
 
   /// 点歌
   /// - Parameters:
   /// - success: 成功回调
   /// - failure: 失败回调
-  func orderSong(songInfo: NEOrderSongOrderSongModel,
-                 _ success: ((NEOrderSongOrderSongModel?) -> Void)? = nil,
+  func orderSong(songInfo: NEOrderSongOrderSongParams,
+                 _ success: ((NEOrderSongResponse?) -> Void)? = nil,
                  failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "songId": songInfo.songId,
       "channel": songInfo.channel ?? 0,
+      "liveRecordId": liveRecordId,
       "songName": songInfo.songName ?? "",
       "songCover": songInfo.songCover ?? "",
       "songTime": songInfo.songTime ?? 0,
       "singer": songInfo.singer ?? "",
     ]
-    NEAPI.PickSong.orderSong(roomUuid).request(params,
-                                               returnType: NEOrderSongOrderSongModel.self,
-                                               success: success,
-                                               failed: failure)
+    NEAPI.PickSong.orderSong().request(params,
+                                       returnType: NEOrderSongResponse.self,
+                                       success: success,
+                                       failed: failure)
   }
 
   /// 获取已点列表
   /// - Parameters:
   ///   - success: 成功回调
   ///   - failure: 失败回调
-  func getOrderedSongs(_ success: (([NEOrderSongOrderSongModel]?) -> Void)? = nil,
+  func getOrderedSongs(_ success: (([NEOrderSongResponse]?) -> Void)? = nil,
                        failure: ((NSError) -> Void)? = nil) {
-    NEAPI.PickSong.getOrderedSongs(roomUuid).request(success: { data in
+    NEAPI.PickSong.getOrderedSongs(String(liveRecordId)).request(success: { data in
       guard let data = data,
             let arr = data["data"] as? [[String: Any]],
-            let models = NEOrderSongDecoder.decode(NEOrderSongOrderSongModel.self, array: arr)
+            let models = NEOrderSongDecoder.decode(NEOrderSongResponse.self, array: arr)
       else {
         failure?(makeError(NEOrderSongErrorCode.failed))
         return
@@ -126,8 +130,9 @@ class NEOrderSongMusicService {
                   failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "orderId": orderId,
+      "liveRecordId": liveRecordId,
     ]
-    NEAPI.PickSong.deleteSong(roomUuid).request(params, success: { _ in
+    NEAPI.PickSong.deleteSong().request(params, success: { _ in
       success?()
     }, failed: failure)
   }
@@ -142,8 +147,9 @@ class NEOrderSongMusicService {
                failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "orderId": orderId,
+      "liveRecordId": liveRecordId,
     ]
-    NEAPI.PickSong.topSong(roomUuid).request(params, success: { _ in
+    NEAPI.PickSong.topSong().request(params, success: { _ in
       success?()
     }, failed: failure)
   }

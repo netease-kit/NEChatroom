@@ -41,7 +41,7 @@
               block:^{
                   //        [[NENavigator shared] showLiveListVC];
               }];
-    _datas = @[ @[ live ] ];
+  _datas = @[ @[ live ] ];
 }
 
 - (void)setupUI {

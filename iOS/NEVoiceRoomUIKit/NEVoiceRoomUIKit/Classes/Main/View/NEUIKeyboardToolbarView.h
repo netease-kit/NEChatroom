@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-#import "NEUIBaseView.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface NEUIKeyboardToolbarView : NEUIBaseView
+@interface NEUIKeyboardToolbarView : UIView
 
 @property(nonatomic, weak) id<NEUIKeyboardToolbarDelegate> cusDelegate;
 

@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomUINavigationBar.h"
-#import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
@@ -76,7 +75,7 @@
   if (!_titleLab) {
     _titleLab = [[UILabel alloc] init];
     _titleLab.text = NELocalizedString(@"未知");
-    _titleLab.font = [UIFont ne_font:16 weight:NEUIFontWeightMedium];
+    _titleLab.font = [UIFont systemFontOfSize:16];
     _titleLab.textColor = HEXCOLOR(0x222222);
     _titleLab.textAlignment = NSTextAlignmentCenter;
     [_titleLab sizeToFit];
@@ -87,7 +86,7 @@
 - (UIButton *)backBtn {
   if (!_backBtn) {
     _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.titleLabel.font = [UIFont ne_font:14];
+    _backBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [_backBtn setTitle:NELocalizedString(@"取消") forState:UIControlStateNormal];
     [_backBtn addTarget:self
                   action:@selector(backAction:)

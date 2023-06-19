@@ -2,7 +2,6 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-#import <NEUIKit/NEUIBaseViewController.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import <UIKit/UIKit.h>
 #import "NEUIEmptyView.h"
@@ -11,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NEUISelectViewController
-    : NEUIBaseViewController <UITableViewDataSource, UITableViewDataSource>
+    : UIViewController <UITableViewDataSource, UITableViewDataSource>
 @property(nonatomic, strong) NEVoiceRoomUINavigationBar *navBar;
 @property(nonatomic, strong) UITableView *tableview;
 @property(nonatomic, strong) NEUIEmptyView *emptyView;

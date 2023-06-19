@@ -10,7 +10,6 @@
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
-#import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIButton+Layout.h"
 #import "UIImage+VoiceRoom.h"
@@ -30,6 +29,16 @@
 
 - (void)ntes_bindViewModel {
   [self createRandomRoomName];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+    self.backgroundColor = [UIColor whiteColor];
+    [self ntes_setupViews];
+    [self ntes_bindViewModel];
+  }
+  return self;
 }
 
 - (void)ntes_setupViews {
@@ -162,7 +171,7 @@
     [_chatRoomButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"chatroom_titleIcon"]
                      forState:UIControlStateNormal];
     _chatRoomButton.titleLabel.textColor = UIColor.whiteColor;
-    _chatRoomButton.titleLabel.font = TextFont_16;
+    _chatRoomButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_chatRoomButton addTarget:self
                         action:@selector(chatRoomButtonClick)
               forControlEvents:UIControlEventTouchUpInside];
@@ -177,7 +186,7 @@
     [_ktvButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"ktv_titleIcon"]
                 forState:UIControlStateNormal];
     _ktvButton.titleLabel.textColor = UIColor.whiteColor;
-    _ktvButton.titleLabel.font = TextFont_16;
+    _ktvButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_ktvButton addTarget:self
                    action:@selector(ktvButtonClick)
          forControlEvents:UIControlEventTouchUpInside];
@@ -207,7 +216,7 @@
     _contentTextView = [[UITextView alloc] init];
     _contentTextView.backgroundColor = UIColor.clearColor;
     _contentTextView.textColor = UIColor.whiteColor;
-    _contentTextView.font = TextFont_14;
+    _contentTextView.font = [UIFont systemFontOfSize:14];
     _contentTextView.delegate = self;
     _contentTextView.text = NELocalizedString(@"随机");
   }

@@ -68,56 +68,18 @@ public extension NEVoiceRoomKit {
     NEVoiceRoomLog.infoLog(kitTag, desc: "Receive custom message.")
     guard let dic = message.attachStr?.toDictionary() else { return }
     NEVoiceRoomLog.infoLog(kitTag, desc: "custom message:\(dic)")
-    if let data = dic["data"] as? [String: Any],
-       let cmd = data["cmd"] as? Int {
-    } else if let content = message.attachStr,
-              let subCmd = dic["subCmd"] as? Int,
-              let type = dic["type"] as? Int,
-              subCmd == 2,
-              type == 1001,
-              let obj = NEVoiceRoomDecoder.decode(
-                _NEVoiceRoomRewardMessage.self,
-                jsonString: content
-              ) {
-      handleGiftMessage(obj)
-    } else if let content = message.attachStr,
-              let subCmd = dic["subCmd"] as? Int,
-              let type = dic["type"] as? Int,
-              subCmd == 4,
-              type == 1002,
-              let obj = NEVoiceRoomDecoder.decode(
-                _NEVoiceRoomBatchRewardMessage.self,
-                jsonString: content
-              ) {
+    if let content = message.attachStr,
+       let data = dic["data"] as? [String: Any],
+       let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []),
+       let jsonString = String(data: jsonData, encoding: .utf8),
+       let type = dic["type"] as? Int,
+//              subCmd == 4,
+       type == 1005,
+       let obj = NEVoiceRoomDecoder.decode(
+         _NEVoiceRoomBatchRewardMessage.self,
+         jsonString: jsonString
+       ) {
       handleBatchGiftMessage(obj)
-    }
-  }
-
-  /// 发送礼物
-  /// - Parameters:
-  ///   - giftId: 礼物Id
-  func sendGift(_ giftId: Int,
-                callback: NEVoiceRoomCallback<AnyObject>? = nil) {
-    NEVoiceRoomLog.apiLog(kitTag, desc: "Send gift. GiftId: \(giftId)")
-    guard NEVoiceRoomKit.getInstance().isInitialized else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "Failed to send Gift. Uninitialized.")
-      callback?(NEVoiceRoomErrorCode.failed, "Failed to send Gift. Uninitialized.", nil)
-      return
-    }
-    guard let liveRecordId = liveInfo?.live?.liveRecordId
-    else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "Failed to send Gift. liveRecordId not exist.")
-      callback?(
-        NEVoiceRoomErrorCode.failed,
-        "Failed to send Gift. liveRecordId not exist.",
-        nil
-      )
-      return
-    }
-    roomService.reward(liveRecordId, giftId: giftId) {
-      callback?(NEVoiceRoomErrorCode.success, "Successfully send gift.", nil)
-    } failure: { error in
-      callback?(error.code, error.localizedDescription, nil)
     }
   }
 
@@ -171,15 +133,18 @@ public extension NEVoiceRoomKit {
 
   /// 处理批量礼物消息
   internal func handleBatchGiftMessage(_ rewardMsg: _NEVoiceRoomBatchRewardMessage) {
-    guard let _ = rewardMsg.rewarderUserUuid,
-          let _ = rewardMsg.rewarderUserName,
-          let _ = rewardMsg.rewardeeUserName,
-          let _ = rewardMsg.giftId
-    else { return }
+    guard
+      let _ = rewardMsg.userUuid,
+      let _ = rewardMsg.userName,
+      let _ = rewardMsg.giftId,
+      rewardMsg.targets.count > 0
+    else {
+      return
+    }
     let giftModel = NEVoiceRoomBatchGiftModel(rewardMsg)
     NEVoiceRoomLog.messageLog(
       kitTag,
-      desc: "Handle batch gift message. SendAccount: \(giftModel.rewarderUserUuid). SendNick: \(giftModel.rewarderUserName). GiftId: \(giftModel.giftId). rewarderUserUuid:\(giftModel.rewarderUserUuid) rewarderUserName:\(giftModel.rewardeeUserName)"
+      desc: "Handle batch gift message. SendAccount: \(giftModel.sendAccout). SendNick: \(giftModel.rewarderUserName). GiftId: \(giftModel.giftId)."
     )
     DispatchQueue.main.async {
       for pointerListener in self.listeners.allObjects {
@@ -277,6 +242,7 @@ extension NEVoiceRoomKit: NERoomListener {
     for member in members {
       if member.uuid == localMember?.account {
         roomContext?.rtcController.unmuteMyAudio()
+        return
       }
     }
   }
@@ -325,7 +291,6 @@ extension NEVoiceRoomKit: NERoomListener {
       self.reset()
       for pointListener in self.listeners.allObjects {
         guard pointListener is NEVoiceRoomListener, let listener = pointListener as? NEVoiceRoomListener else { continue }
-
         if listener.responds(to: #selector(NEVoiceRoomListener.onRoomEnded(_:))) {
           listener
             .onRoomEnded?(NEVoiceRoomEndReason(rawValue: reason.rawValue) ?? .unknow)

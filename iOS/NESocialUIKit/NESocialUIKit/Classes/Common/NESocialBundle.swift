@@ -2,9 +2,10 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-#ifndef NEVoiceRoomStringMacro_h
-#define NEVoiceRoomStringMacro_h
+import UIKit
 
-#define PlayComplete @"playComplete"
-
-#endif /* NEVoiceRoomStringMacro_h */
+@objcMembers public class NESocialBundle: NSObject {
+  public static func bundle() -> Bundle {
+    Bundle(for: NESocialBundle.self)
+  }
+}

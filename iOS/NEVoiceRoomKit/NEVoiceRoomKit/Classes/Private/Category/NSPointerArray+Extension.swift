@@ -6,15 +6,16 @@ import Foundation
 
 /// NSPointerArray 扩展
 extension NSPointerArray {
-  /// 添加元素
   func addWeakObject<T: NSObjectProtocol>(_ object: T?) {
     guard let weakObjc = object else { return }
     let pointer = Unmanaged.passUnretained(weakObjc).toOpaque()
+    objc_sync_enter(self)
     addPointer(pointer)
+    objc_sync_exit(self)
   }
 
-  /// 删除元素
   func removeWeakObject<T: NSObjectProtocol>(_ object: T?) {
+    objc_sync_enter(self)
     var listenerIndexArray = [Int]()
     for index in 0 ..< allObjects.count {
       let pointerListener = pointer(at: index)
@@ -30,5 +31,6 @@ extension NSPointerArray {
         removePointer(at: listenerIndex)
       }
     }
+    objc_sync_exit(self)
   }
 }

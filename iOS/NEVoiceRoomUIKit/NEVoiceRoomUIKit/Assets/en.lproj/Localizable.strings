@@ -105,7 +105,7 @@
 "加入直播间失败" = "Failed to join the room";
 "随机" = "Random";
 "送给" = "Send";
-"主持" = "Host";
+"房主" = "Host";
 "赠送"= "Send";
 "聊天室" = "Chat room";
 "未选择送礼对象，无法送礼" = "No recipient is selected, unable to send gifts";
@@ -154,3 +154,7 @@
 "申请上麦" = "request to speak";
 "请先开启麦克风权限" = "Grant the microphone permission";
 "已取消申请上麦" = "canceled the request to speak";
+
+"确认结束直播？" = "Are you sure you want to end the stream?";
+"请确认是否结束直播" = "End the live stream";
+"确认" = "Yes";

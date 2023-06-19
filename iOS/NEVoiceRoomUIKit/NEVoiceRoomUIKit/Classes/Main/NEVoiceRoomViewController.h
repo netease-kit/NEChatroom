@@ -4,20 +4,20 @@
 
 #import <NEAudioEffectKit/NEAudioEffectManager.h>
 #import <NEOrderSong/NEOrderSong-Swift.h>
-#import <NEUIKit/NEUIBaseViewController.h>
 #import <NEUIKit/NEUICommon.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEUIChatroomContext.h"
 #import "NEUIConnectListView.h"
 #import "NEUIKeyboardToolbarView.h"
 #import "NEUIMicQueueView.h"
 #import "NEVoiceRoomAnimationView.h"
-#import "NEVoiceRoomChatView.h"
 #import "NEVoiceRoomFooterView.h"
 #import "NEVoiceRoomHeaderView.h"
 #import "NEVoiceRoomReachability.h"
 #import "NEVoiceRoomSendGiftViewController.h"
 #import "NEVoiceRoomUIAlertView.h"
+@import NESocialUIKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,8 +29,7 @@ typedef enum : NSUInteger {
 } PlayingStatus;
 
 /// 语聊房vc
-@interface NEVoiceRoomViewController
-    : NEUIBaseViewController <NEVoiceRoomListener, NEOrderSongListener>
+@interface NEVoiceRoomViewController : UIViewController <NEVoiceRoomListener, NEOrderSongListener>
 @property(nonatomic, strong) NEVoiceRoomInfo *detail;
 
 @property(nonatomic, assign) NEVoiceRoomRole role;
@@ -45,7 +44,7 @@ typedef enum : NSUInteger {
 /// 麦位视图
 @property(nonatomic, strong) NEUIMicQueueView *micQueueView;
 /// 内容视图
-@property(nonatomic, strong) NEVoiceRoomChatView *chatView;
+@property(nonatomic, strong) NESocialChatroomView *chatView;
 /// 上下文
 @property(nonatomic, strong) NEUIChatroomContext *context;
 /// 网络监听

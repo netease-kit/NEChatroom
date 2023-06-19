@@ -2,14 +2,14 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-#import "NEUIBaseView.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol NEVoiceRoomHeaderDelegate <NSObject>
 
 // 退出事件
-- (void)headerExitAction;
+- (void)headerExitAction:(void (^)(void))complete;
 /// 小窗事件
 - (void)smallWindowAction;
 
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface NEVoiceRoomHeaderView : NEUIBaseView
+@interface NEVoiceRoomHeaderView : UIView
 // 事件回调
 @property(nonatomic, weak) id<NEVoiceRoomHeaderDelegate> delegate;
 // 在线人数

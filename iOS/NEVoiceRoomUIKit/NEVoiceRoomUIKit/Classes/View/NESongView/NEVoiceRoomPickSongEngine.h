@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 点歌接口协议
 /// @param errorMessage 有则失败 无则成功
-- (void)onOrderSong:(NEOrderSongOrderSongModel *)songModel error:(NSString *_Nullable)errorMessage;
+- (void)onOrderSong:(NEOrderSongResponse *)songModel error:(NSString *_Nullable)errorMessage;
 
 // Token过期
 - (void)onVoiceRoomSongTokenExpired;
@@ -95,7 +95,7 @@ typedef void (^SongListBlock)(NSError *_Nullable error);
  */
 - (void)preloadSong:(NSString *)songId channel:(SongChannel)channel;
 
-- (NEOrderSongOrderSongModel *)getNextSong;
+- (NEOrderSongResponseOrderSongModel *)getNextSong;
 @end
 
 NS_ASSUME_NONNULL_END

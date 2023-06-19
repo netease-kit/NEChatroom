@@ -8,19 +8,23 @@ class NEVoiceRoomRoomService {
   /// 获取房间列表
   /// - Parameters:
   ///   - type: 房间类型，默认为2：ChatRoom
-  ///   - liveState: 房间状态
+  ///   - liveType: 房间类型
   ///   - pageNum: 每页数量
   ///   - pageSize: 页号
   ///   - callback: 回调
-  func getRoomList(_ liveState: Int,
-                   pageNum: Int,
+  ///  liveType类型：
+  /// 1：互动直播,
+  /// 2：语聊房,
+  /// 3："KTV房间"，
+  /// 4：互动直播——跨频道转发房间，
+  /// 5：一起听
+  func getRoomList(_ pageNum: Int,
                    pageSize: Int,
                    success: ((NEVoiceRoomList?) -> Void)? = nil,
                    failure: ((NSError) -> Void)? = nil) {
     let params: [String: Any] = [
       "pageNum": pageNum,
       "pageSize": pageSize,
-      "live": liveState,
       "liveType": 2,
     ]
     NEAPI.Room.roomList.request(params,
@@ -77,14 +81,15 @@ class NEVoiceRoomRoomService {
                       success: ((_NECreateLiveResponse?) -> Void)? = nil,
                       failure: ((NSError) -> Void)? = nil) {
     let param: [String: Any] = [
+      "userUuid": params.userUuid,
       "liveType": params.liveType.rawValue,
-      "liveTopic": params.title,
+      "liveTopic": params.liveTopic ?? "",
       "cover": params.cover ?? "",
       "configId": params.configId,
-      ///      "singMode": params.singMode.rawValue,
+      "roomName": params.roomName ?? "",
       "seatCount": params.seatCount,
-      "seatApplyMode": params.seatMode,
-      "seatInviteMode": 0,
+      "seatApplyMode": params.seatApplyMode,
+      "seatInviteMode": params.seatInviteMode,
     ]
     NEAPI.Room.create.request(param,
                               returnType: _NECreateLiveResponse.self) { resp in
@@ -112,25 +117,6 @@ class NEVoiceRoomRoomService {
                                }, failed: failure)
   }
 
-  /// 打赏主播
-  /// - Parameters:
-  ///   - liveRecordId: 直播记录编号
-  ///   - giftId: 礼物编号
-  ///   - success: 成功回调
-  ///   - failure: 失败回调
-  func reward(_ liveRecordId: Int,
-              giftId: Int,
-              success: (() -> Void)? = nil,
-              failure: ((NSError) -> Void)? = nil) {
-    let param = [
-      "liveRecordId": liveRecordId,
-      "giftId": giftId,
-    ] as [String: Any]
-    NEAPI.Room.reward.request(param, success: { _ in
-      success?()
-    }, failed: failure)
-  }
-
   /// 批量礼物打赏
   /// - Parameters:
   ///   - liveRecordId: 直播编号
@@ -149,7 +135,7 @@ class NEVoiceRoomRoomService {
       "liveRecordId": liveRecordId,
       "giftId": giftId,
       "giftCount": giftCount,
-      "userUuids": userUuids,
+      "targets": userUuids,
     ] as [String: Any]
     NEAPI.Room.batchReward.request(param, success: { _ in
       success?()
@@ -160,11 +146,11 @@ class NEVoiceRoomRoomService {
   /// - Parameters:
   ///   - success: 成功回调
   ///   - failure: 失败回调
-  func currentInfo(_ roomUuid: String,
-                   success: ((NEVoiceRoomPlayMusicInfo?) -> Void)? = nil,
-                   failure: ((NSError) -> Void)? = nil) {
-    NEAPI.Music.info(roomUuid).request(returnType: NEVoiceRoomPlayMusicInfo.self,
-                                       success: success,
-                                       failed: failure)
-  }
+//  func currentInfo(_ roomUuid: String,
+//                   success: ((NEVoiceRoomPlayMusicInfo?) -> Void)? = nil,
+//                   failure: ((NSError) -> Void)? = nil) {
+//    NEAPI.Music.info(roomUuid).request(returnType: NEVoiceRoomPlayMusicInfo.self,
+//                                       success: success,
+//                                       failed: failure)
+//  }
 }

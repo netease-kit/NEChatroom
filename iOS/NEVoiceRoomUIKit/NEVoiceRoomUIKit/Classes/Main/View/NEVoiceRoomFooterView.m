@@ -3,9 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomFooterView.h"
-// #import "UIImage+NTES.h"
-// #import "NTESPickMusicService.h"
-// #import "NTESRtcConfig.h"
 #import <Masonry/Masonry.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIImage+NEUIExtension.h>
@@ -14,7 +11,6 @@
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomUIManager.h"
-#import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 #import "UIView+VoiceRoom.h"
@@ -40,7 +36,7 @@ static void *KVOContext = &KVOContext;
 
 @implementation NEVoiceRoomFooterView
 - (instancetype)initWithContext:(NEUIChatroomContext *)context {
-  self = [super initWithFrame:CGRectZero];
+  self = [self initWithFrame:CGRectZero];
   if (self) {
     self.context = context;
     [self.context.rtcConfig addObserver:self
@@ -51,7 +47,13 @@ static void *KVOContext = &KVOContext;
   return self;
 }
 
-- (void)ntes_bindViewModel {
+- (instancetype)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+    self.backgroundColor = [UIColor whiteColor];
+    [self ntes_setupViews];
+  }
+  return self;
 }
 
 - (void)ntes_setupViews {
@@ -259,7 +261,7 @@ static void *KVOContext = &KVOContext;
     _inputTextField.attributedPlaceholder = [[NSAttributedString alloc]
         initWithString:NELocalizedString(@"一起聊聊吧~")
             attributes:@{NSForegroundColorAttributeName : HEXCOLOR(0xAAACB7)}];
-    _inputTextField.font = TextFont_13;
+    _inputTextField.font = [UIFont systemFontOfSize:13];
     _inputTextField.delegate = self;
     _inputTextField.textColor = UIColor.whiteColor;
   }
@@ -351,7 +353,7 @@ static void *KVOContext = &KVOContext;
   if (!_markLable) {
     _markLable = [[UILabel alloc] initWithFrame:CGRectMake(kBtnWidth - 16, 0, 20, 12)];
     _markLable.textColor = HEXCOLOR(0x222222);
-    _markLable.font = Font_Default(10);
+    _markLable.font = [UIFont systemFontOfSize:10];
     _markLable.backgroundColor = UIColor.whiteColor;
     _markLable.text = @"0";
     _markLable.textAlignment = NSTextAlignmentCenter;

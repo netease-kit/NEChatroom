@@ -64,6 +64,15 @@ public extension NEVoiceRoomKit {
         callback?(NEVoiceRoomErrorCode.failed, "Can't find LocalMember", nil)
         return
       }
+      if let banned = self.localMember?.isAudioBanned,
+         banned {
+        NEVoiceRoomLog.errorLog(
+          kitTag,
+          desc: "Failed to mute my audio. Audio banned"
+        )
+        callback?(NEVoiceRoomErrorCode.failed, "Audio banned", nil)
+        return
+      }
       self.roomContext?.updateMemberProperty(
         userUuid: local,
         key: MemberPropertyConstants.MuteAudio.key,
@@ -499,6 +508,7 @@ public extension NEVoiceRoomKit {
     let route = AVAudioSession.sharedInstance().currentRoute
     var isHead = false
     for desc in route.outputs {
+      NEVoiceRoomLog.apiLog(kitTag, desc: "isHeadSetPlugging. portType: \(desc.portType.rawValue)")
       switch desc.portType {
       case .headphones, .bluetoothA2DP, .usbAudio, .bluetoothHFP:
         isHead = true

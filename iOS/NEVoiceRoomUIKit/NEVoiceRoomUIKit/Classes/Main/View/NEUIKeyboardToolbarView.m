@@ -15,6 +15,15 @@
 
 @implementation NEUIKeyboardToolbarView
 
+- (instancetype)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+    self.backgroundColor = [UIColor whiteColor];
+    [self ntes_setupViews];
+  }
+  return self;
+}
+
 - (void)ntes_setupViews {
   [self addSubview:self.textField];
   [self addSubview:self.sendBtn];

@@ -8,10 +8,8 @@
 #import "NEUICreateRoomTitleButton.h"
 #import "NEVoiceRoomUI.h"
 #import "NSString+NTES.h"
-#import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIButton+Layout.h"
-#import "UIImageView+CornerRadius.h"
 
 @interface NEUILiveListCell ()
 
@@ -171,7 +169,7 @@
     [_tagButton setImage:[NEVoiceRoomUI ne_voice_imageName:@"music_ico"]
                 forState:UIControlStateNormal];
     [_tagButton setTitle:@"歌曲名" forState:UIControlStateNormal];
-    _tagButton.titleLabel.font = Font_Default(12);
+    _tagButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [_tagButton layoutButtonWithEdgeInsetsStyle:QSButtonEdgeInsetsStyleLeft imageTitleSpace:3];
     _tagButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _tagButton.hidden = YES;

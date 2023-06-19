@@ -110,14 +110,15 @@
 }
 
 - (void)canUseEarback {
-  for (NEUIMoreItem *item in self.items) {
-    if (item.tag == 1) {
-      if ([[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
-        item.on = true;
-      }
-    }
-  }
-  [self.collectionView reloadData];
+  // 默认不开启耳返
+  //  for (NEUIMoreItem *item in self.items) {
+  //    if (item.tag == 1) {
+  //      if ([[NEVoiceRoomKit getInstance] isHeadSetPlugging]) {
+  //        item.on = true;
+  //      }
+  //    }
+  //  }
+  //  [self.collectionView reloadData];
 }
 
 - (void)canNotUseEarback {

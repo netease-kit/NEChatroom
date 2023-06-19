@@ -5,7 +5,6 @@
 #import "NEUICreateRoomTitleButton.h"
 #import <Masonry/Masonry.h>
 #import "NEUIViewFactory.h"
-#import "NTESFontMacro.h"
 
 @interface NEUICreateRoomTitleButton ()
 @property(nonatomic, strong) NSString *imageName;
@@ -17,13 +16,6 @@
 @end
 
 @implementation NEUICreateRoomTitleButton
-
-//- (instancetype)initWithFrame:(CGRect)frame {
-//    if ([super initWithFrame:frame]) {
-//        [self ntes_setupViews];
-//    }
-//    return self;
-//}
 
 - (instancetype)initWithImage:(NSString *)imageName content:(NSString *)content {
   if (self = [super init]) {
@@ -84,7 +76,7 @@
                                                 title:self.content
                                             textColor:UIColor.whiteColor
                                         textAlignment:NSTextAlignmentLeft
-                                                 font:TextFont_16];
+                                                 font:[UIFont systemFontOfSize:16]];
   }
   return _contentLable;
 }

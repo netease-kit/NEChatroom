@@ -51,8 +51,6 @@ public extension NEVoiceRoomKit {
           "user": account,
           "token": token,
         ])
-        /// 初始化 preview配置信息
-        self.previewRoom(callback: nil)
       } else {
         NEVoiceRoomLog.errorLog(kitTag, desc: "Failed to login. Code: \(code)")
       }
@@ -84,9 +82,6 @@ public extension NEVoiceRoomKit {
 
 extension NEVoiceRoomKit: NEAuthListener {
   public func onAuthEvent(evt: NEAuthEvent) {
-    if evt != .loggedIn {
-      reset()
-    }
     for pointerListener in authListeners.allObjects {
       guard let listener = pointerListener as? NEVoiceRoomAuthListener else { continue }
       if listener.responds(to: #selector(NEVoiceRoomAuthListener.onVoiceRoomAuthEvent(_:))) {

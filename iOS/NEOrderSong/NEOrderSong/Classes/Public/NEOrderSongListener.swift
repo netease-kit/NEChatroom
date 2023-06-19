@@ -23,17 +23,17 @@ public protocol NEOrderSongListener: NSObjectProtocol {
 
   /// 点歌
   /// - Parameter song: 歌曲
-  @objc optional func onSongOrdered(_ song: NEOrderSongOrderSongModel?)
+  @objc optional func onSongOrdered(_ song: NEOrderSongProtocolResult?)
 
   /// 已点列表的删除
   /// - Parameter song: 歌曲
-  @objc optional func onSongDeleted(_ song: NEOrderSongOrderSongModel?)
+  @objc optional func onSongDeleted(_ song: NEOrderSongProtocolResult?)
 
   /// 已点列表的置顶
   /// - Parameter song: 歌曲
-  @objc optional func onSongTopped(_ song: NEOrderSongOrderSongModel?)
+  @objc optional func onSongTopped(_ song: NEOrderSongProtocolResult?)
 
   /// 切歌
   /// - Parameter song: 被切歌曲
-  @objc optional func onNextSong(_ song: NEOrderSongOrderSongModel?)
+  @objc optional func onNextSong(_ song: NEOrderSongProtocolResult?)
 }

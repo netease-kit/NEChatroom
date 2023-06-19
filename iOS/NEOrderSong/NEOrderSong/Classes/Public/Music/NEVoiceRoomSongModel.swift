@@ -21,14 +21,17 @@ public class NEOrderSongOperator: NSObject, Codable {
 
 @objcMembers
 public class NEOrderSongPlayMusicInfo: NSObject, Codable {
-  /// 应用id
-  public var appId: String?
+  /// 直播间记录编号
+  public var liveRecordId: Int64 = 0
   /// 渠道
   public var channel: Int?
   /// 点歌编号
   public var orderId: Int64 = 0
   /// 房间uuid
   public var roomUuid: String = ""
+  /// 房间唯一编号
+  public var roomArchiveId: String = ""
+
   /// 歌曲封面
   public var songCover: String?
   /// 歌手名称
@@ -41,21 +44,15 @@ public class NEOrderSongPlayMusicInfo: NSObject, Codable {
   /// 歌曲编号
   public var songId: String?
   /// 状态：0: 暂停  1:播放  2:结束
-  public var songStatus: Int?
-  /// 歌曲时长
-  public var songTime: Int?
+  public var musicStatus: Int?
 
   /// oc使用 状态：0: 暂停  1:播放  2:结束
-  public var oc_songStatus: Int {
-    songStatus ?? 0
+  public var oc_musicStatus: Int {
+    musicStatus ?? 0
   }
 
-  /// Object-C使用
-  /// 歌曲时长
-  public var oc_songTime: Int {
-    songTime ?? 0
-  }
-
+//  /// Object-C使用
+//  /// 歌曲时长
   public var oc_channel: Int {
     channel ?? 0
   }

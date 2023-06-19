@@ -6,6 +6,7 @@
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
+#import "NEVoiceRoomUILog.h"
 
 @interface NEUIMicInviteeListVC ()
 
@@ -18,10 +19,12 @@
   // Do any additional setup after loading the view.
   self.navBar.title = NELocalizedString(@"选择成员");
   self.emptyView.info = NELocalizedString(@"暂无群成员～");
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [self fetchMembers];
 }
 // 房间内 未上麦的成员
 - (void)fetchMembers {
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
                                             NEVoiceRoomSeatInfo *_Nullable seatInfo) {
     if (code == 0 && seatInfo) {

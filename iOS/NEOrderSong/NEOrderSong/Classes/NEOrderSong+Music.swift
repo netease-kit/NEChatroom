@@ -33,20 +33,6 @@ public extension NEOrderSong {
     }, failure: callback)
   }
 
-  /// 是否插入耳机
-  internal func isHeadSetPlugging() -> Bool {
-    let route = AVAudioSession.sharedInstance().currentRoute
-    var isHead = false
-    for desc in route.outputs {
-      switch desc.portType {
-      case .headphones, .bluetoothA2DP, .usbAudio, .bluetoothHFP:
-        isHead = true
-      default: break
-      }
-    }
-    return isHead
-  }
-
   /// 暂停歌曲
   /// - Parameter callback: 回调
   func requestPausePlayingSong(_ orderId: Int64, callback: NEOrderSongCallback<AnyObject>? = nil) {
@@ -136,8 +122,8 @@ public extension NEOrderSong {
 
   /// 点歌台接口
   /// 点歌
-  func orderSong(_ songinfo: NEOrderSongOrderSongModel,
-                 callback: NEOrderSongCallback<NEOrderSongOrderSongModel>? = nil) {
+  func orderSong(_ songinfo: NEOrderSongOrderSongParams,
+                 callback: NEOrderSongCallback<NEOrderSongResponse>? = nil) {
     NEOrderSongLog.apiLog(kitTag, desc: "Order Song")
     Judge.preCondition({
       self.musicService?.orderSong(songInfo: songinfo) { data in
@@ -154,7 +140,7 @@ public extension NEOrderSong {
   }
 
   /// 获取已点列表
-  func getOrderedSongs(callback: NEOrderSongCallback<[NEOrderSongOrderSongModel]>? = nil) {
+  func getOrderedSongs(callback: NEOrderSongCallback<[NEOrderSongResponse]>? = nil) {
     NEOrderSongLog.apiLog(kitTag, desc: "Get Ordered Songs")
     Judge.preCondition({
       self.musicService?.getOrderedSongs { data in

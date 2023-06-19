@@ -21,22 +21,6 @@ struct Judge {
     success()
   }
 
-  /// 前置条件判断
-  static func prePreViewCondition<T: Any>(_ success: @escaping () -> Void,
-                                          failure: NEVoiceRoomCallback<T>? = nil) {
-    guard NEVoiceRoomKit.getInstance().isInitialized else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "Uninitialized.")
-      failure?(NEVoiceRoomErrorCode.failed, "Uninitialized.", nil)
-      return
-    }
-    guard let _ = NEVoiceRoomKit.getInstance().previewRoomContext else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "previewRoomContext not exist.")
-      failure?(NEVoiceRoomErrorCode.failed, "previewRoomContext not exist.", nil)
-      return
-    }
-    success()
-  }
-
   /// 初始化判断条件
   static func initCondition<T: Any>(_ success: @escaping () -> Void,
                                     failure: NEVoiceRoomCallback<T>? = nil) {
@@ -58,19 +42,6 @@ struct Judge {
     }
     guard let _ = NEVoiceRoomKit.getInstance().roomContext else {
       NEVoiceRoomLog.errorLog(kitTag, desc: "RoomContext is nil.")
-      return NEVoiceRoomErrorCode.failed
-    }
-    return success()
-  }
-
-  /// 同步返回
-  static func syncPreviewCondition(_ success: @escaping () -> Int) -> Int {
-    guard NEVoiceRoomKit.getInstance().isInitialized else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "Uninitialized.")
-      return NEVoiceRoomErrorCode.failed
-    }
-    guard let _ = NEVoiceRoomKit.getInstance().previewRoomContext else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "previewRoomContext is nil.")
       return NEVoiceRoomErrorCode.failed
     }
     return success()
