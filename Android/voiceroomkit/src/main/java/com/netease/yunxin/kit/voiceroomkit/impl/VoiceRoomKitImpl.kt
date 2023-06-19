@@ -46,12 +46,13 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKitConfig
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListener
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomPreviewListener
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatInvitationConfirmMode
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatRequestApprovalMode
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceCreateRoomDefaultInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomLanguage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList
@@ -98,6 +99,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         private const val tag = "NEVoiceRoomKit"
         private const val ACCEPT_LANGUAGE_KEY = "Accept-Language"
         private const val SERVER_URL_KEY = "serverUrl"
+        private const val BASE_URL_KEY = "baseUrl"
         private const val HTTP_PREFIX = "http"
         private const val TEST_URL_VALUE = "test"
         private const val OVER_URL_VALUE = "oversea"
@@ -127,7 +129,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         }
 
     private var config: NEVoiceRoomKitConfig? = null
-
+    private var baseUrl: String = ""
     override fun initialize(
         context: Context,
         config: NEVoiceRoomKitConfig,
@@ -137,30 +139,33 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         this.context = context
         this.config = config
         ScreenUtil.init(context)
-        var realServerUrl = ""
+        var realRoomServerUrl = ""
         var isOversea = false
-        val realExtras = HashMap<String, String>()
+        val realExtras = HashMap<String, Any?>()
+        realExtras.putAll(config.extras)
         if (config.extras[SERVER_URL_KEY] != null) {
             val serverUrl: String = config.extras[SERVER_URL_KEY] as String
+            baseUrl = config.extras[BASE_URL_KEY] as String
             VoiceRoomLog.i(tag, "serverUrl:$serverUrl")
+            VoiceRoomLog.i(tag, "baseUrl:$baseUrl")
             if (!TextUtils.isEmpty(serverUrl)) {
                 when {
                     TEST_URL_VALUE == serverUrl -> {
-                        realServerUrl = serverUrl
+                        realRoomServerUrl = serverUrl
                     }
                     OVER_URL_VALUE == serverUrl -> {
-                        realServerUrl = OVERSEA_SERVER_URL
+                        realRoomServerUrl = OVERSEA_SERVER_URL
                         isOversea = true
                     }
                     serverUrl.startsWith(HTTP_PREFIX) -> {
-                        realServerUrl = serverUrl
+                        realRoomServerUrl = serverUrl
                     }
                 }
             }
         }
-        realExtras[SERVER_URL_KEY] = realServerUrl
+        realExtras[SERVER_URL_KEY] = realRoomServerUrl
         val serverConfig =
-            ServerConfig.selectServer(config.appKey, realServerUrl)
+            ServerConfig.selectServer(config.appKey, realRoomServerUrl)
         VoiceRoomRepository.serverConfig = serverConfig
         NERoomKit.getInstance()
             .initialize(
@@ -168,7 +173,6 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 options = NERoomKitOptions(
                     appKey = config.appKey,
                     extras = realExtras,
-                    reuseIM = config.reuseIM,
                     serverConfig = if (isOversea) {
                         NEServerConfig().apply {
                             imServerConfig = NEIMServerConfig().apply {
@@ -181,7 +185,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                                 httpsEnabled = true
                             }
                             roomKitServerConfig = NERoomKitServerConfig().apply {
-                                roomServer = realServerUrl
+                                roomServer = realRoomServerUrl
                             }
                         }
                     } else {
@@ -190,7 +194,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 )
             ) { code, message, _ ->
                 if (code == NEErrorCode.SUCCESS) {
-                    voiceRoomHttpService.initialize(context)
+                    voiceRoomHttpService.initialize(context, baseUrl)
                     NERoomKit.getInstance().roomService.previewRoom(
                         NEPreviewRoomParams(),
                         NEPreviewRoomOptions(),
@@ -396,12 +400,6 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 }
             }
 
-            override fun onReceiveGift(rewardMsg: NEVoiceRoomGiftModel) {
-                listeners.forEach {
-                    it.onReceiveGift(rewardMsg)
-                }
-            }
-
             override fun onReceiveBatchGift(giftModel: NEVoiceRoomBatchGiftModel) {
                 listeners.forEach {
                     it.onReceiveBatchGift(giftModel)
@@ -550,12 +548,14 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
     ) {
         VoiceRoomLog.logApi("createRoom: params=$params")
         val createRoomParam = StartVoiceRoomParam(
-            params.title,
-            params.nick,
+            roomTopic = params.title,
+            roomName = params.title,
             liveType = params.liveType,
             configId = params.configId,
             cover = params.cover ?: "",
-            seatCount = params.seatCount
+            seatCount = params.seatCount,
+            seatInviteMode = NEVoiceRoomSeatInvitationConfirmMode.OFF,
+            seatApplyMode = NEVoiceRoomSeatRequestApprovalMode.ON
         )
         voiceRoomHttpService.startVoiceRoom(
             createRoomParam,
@@ -1143,30 +1143,6 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
     override fun stopEffect(effectId: Int): Int {
         VoiceRoomLog.logApi("stopEffect effectId:$effectId")
         return myRoomService.stopEffect(effectId)
-    }
-
-    override fun sendGift(giftId: Int, callback: NEVoiceRoomCallback<Unit>?) {
-        VoiceRoomLog.logApi("sendGift giftId:$giftId")
-        if (joinedVoiceRoomInfo?.liveModel?.liveRecordId == null) {
-            VoiceRoomLog.e(tag, "liveRecordId==null")
-            return
-        }
-
-        voiceRoomHttpService.reward(
-            joinedVoiceRoomInfo?.liveModel?.liveRecordId!!,
-            giftId,
-            object : NetRequestCallback<Unit> {
-                override fun success(info: Unit?) {
-                    VoiceRoomLog.i(tag, "reward success")
-                    callback?.onSuccess(info)
-                }
-
-                override fun error(code: Int, msg: String?) {
-                    VoiceRoomLog.e(tag, "reward error: code = $code message = $msg")
-                    callback?.onFailure(code, msg)
-                }
-            }
-        )
     }
 
     override fun setPlayingPosition(effectId: Int, position: Long): Int {

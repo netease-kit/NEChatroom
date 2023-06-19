@@ -6,25 +6,16 @@
 
 package com.netease.yunxin.kit.voiceroomkit.impl.model
 
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatInvitationConfirmMode
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatRequestApprovalMode
+
 data class StartVoiceRoomParam(
     val roomTopic: String,
-    val userName: String,
+    val roomName: String,
     val cover: String,
     val liveType: Int,
     val configId: Int = 0,
     val seatCount: Int = 7,
-    val seatApplyMode: Int = SeatRequestApprovalMode.ON,
-    val seatInviteMode: Int = SeatInvitationConfirmMode.OFF
+    val seatApplyMode: NEVoiceRoomSeatRequestApprovalMode,
+    val seatInviteMode: NEVoiceRoomSeatInvitationConfirmMode
 )
-
-// 上麦申请是否需要管理员同意
-internal object SeatRequestApprovalMode {
-    const val OFF = 0
-    const val ON = 1
-}
-
-// 管理员抱麦是否需要成员同意
-internal object SeatInvitationConfirmMode {
-    const val OFF = 0
-    const val ON = 1
-}

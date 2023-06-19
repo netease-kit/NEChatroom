@@ -27,9 +27,8 @@
     <string name="app_pstn_setting_title">高接通配置</string>
     <string name="app_high_keep_alive_feature">应用保活功能</string>
     <string name="app_high_keep_alive_title_level1">高接通功能说明：</string>
-    <string name="app_high_keep_alive_content1">高接通有3种方式能够提升用户之间的连通；\n可以单独或者组合使用。</string>
     <string name="app_high_keep_alive_title_level2">二级标题</string>
-    <string name="app_high_keep_alive_content2">1、应用保活功能：\n打开应用保活功能后，通知栏会出现通知，该通知是为了测试展示。\n该功能能够使APP长时间保活（具体时间视不同品牌手机）\n\n\n2、音频网络电话：\n该功能是为了当用户打不通时会自动切换为网络电话进行语音聊天。\n为了测试，当进行点击语音聊天按钮时，如超过15S还未接通，自动切换为网络电话。触发条件可自由定制。\n\n\n3、短信通知：\n该功能是为了提醒被呼叫方有用户请求聊天。让用户去打开APP处理。\n为了测试，当进行拨打音频/视频链接时，超过30S中断请求时，自动发送短信通知。</string>
+    <string name="app_high_keep_alive_content2">1、应用保活功能：\n打开应用保活功能后，通知栏会出现通知，该通知是为了测试展示。\n该功能能够使APP长时间保活（具体时间视不同品牌手机）\n\n\n</string>
     <string name="app_high_keep_alive_content3">以下条款也约束并适用于本网站的使用，并且通过此处援引纳入本条款：</string>
     <string name="app_tips">提示</string>
     <string name="app_dialog_protocol_tips_title">用户协议与隐私政策</string>

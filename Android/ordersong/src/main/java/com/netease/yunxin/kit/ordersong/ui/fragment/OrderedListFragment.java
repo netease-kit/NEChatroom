@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.blankj.utilcode.util.CollectionUtils;
 import com.netease.yunxin.kit.common.ui.fragments.BaseFragment;
 import com.netease.yunxin.kit.ordersong.ui.adapter.OrderedAdapter;
 import com.netease.yunxin.kit.ordersong.ui.databinding.OrderedListLayoutBinding;
@@ -63,7 +62,7 @@ public class OrderedListFragment extends BaseFragment {
         .observe(
             getViewLifecycleOwner(),
             orderSongs -> {
-              if (CollectionUtils.isNotEmpty(orderSongs)) {
+              if (orderSongs != null && !orderSongs.isEmpty()) {
                 binding.recyclerView.setVisibility(View.VISIBLE);
                 binding.llyEmpty.setVisibility(View.GONE);
                 adapter.refresh(orderSongs);

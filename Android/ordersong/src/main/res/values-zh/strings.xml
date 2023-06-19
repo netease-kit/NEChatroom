@@ -5,7 +5,7 @@
     <string name="get_song_list_failed">歌曲列表加载失败</string>
 
     <string name="preloading_failure">预加载失败：%d, %s</string>
-    <string name="order_song_failure">点歌失败：%d, %s</string>
+    <string name="order_song_failure">点歌失败</string>
     <string name="song_already_ordered">歌曲已点</string>
     <string name="err_order_song_count_exceed_limit">已达到单人点歌数上限</string>
     <string name="err_room_order_song_count_exceed_limit">已达到房间点歌数上限</string>

@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,7 +34,6 @@ import kotlin.Unit;
 
 /** 观众页 */
 public class AudienceActivity extends VoiceRoomBaseActivity {
-  private List<ChatRoomMoreDialog.MoreItem> moreItems;
   private ListItemDialog bottomDialog;
   private int networkErrorCount;
   private static final int ZERO_COUNT = 0;
@@ -408,17 +406,6 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
     moreItems.get(MORE_ITEM_MICRO_PHONE).setVisible(visible);
     moreItems.get(MORE_ITEM_EAR_BACK).setVisible(visible);
     moreItems.get(MORE_ITEM_MIXER).setVisible(visible);
-  }
-
-  @NonNull
-  @Override
-  protected List<ChatRoomMoreDialog.MoreItem> getMoreItems() {
-    boolean isAudioOn =
-        NEVoiceRoomKit.getInstance().getLocalMember() != null
-            && NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn();
-    moreItems.get(MORE_ITEM_MICRO_PHONE).setEnable(isAudioOn);
-    moreItems.get(MORE_ITEM_EAR_BACK).setEnable(NEVoiceRoomKit.getInstance().isEarbackEnable());
-    return moreItems;
   }
 
   @Override

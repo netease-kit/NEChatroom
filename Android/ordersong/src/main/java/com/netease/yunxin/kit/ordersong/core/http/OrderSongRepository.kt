@@ -9,7 +9,6 @@ import android.content.Context
 import android.text.TextUtils
 import com.netease.yunxin.kit.common.network.Response
 import com.netease.yunxin.kit.common.network.ServiceCreator
-import com.netease.yunxin.kit.ordersong.core.NEOrderSongService
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSong
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSongDynamicToken
 import com.netease.yunxin.kit.ordersong.core.model.OrderSong
@@ -26,33 +25,34 @@ class OrderSongRepository {
     }
 
     private val serviceCreator: ServiceCreator = ServiceCreator()
+    private val playSongServiceCreator: ServiceCreator = ServiceCreator()
 
     private lateinit var orderSongApi: OrderSongApi
 
-    fun initialize(context: Context, baseUrl: String) {
+    fun initialize(context: Context, orderSongServerUrl: String) {
         serviceCreator.init(
             context,
-            baseUrl,
+            orderSongServerUrl,
             if (BuildConfig.DEBUG) ServiceCreator.LOG_LEVEL_BODY else ServiceCreator.LOG_LEVEL_BASIC,
             NERoomKit.getInstance().deviceId
         )
-        val localLanguage = Locale.getDefault().language
-        serviceCreator.addHeader(ServiceCreator.ACCEPT_LANGUAGE_KEY, localLanguage)
+        serviceCreator.addHeader(ServiceCreator.ACCEPT_LANGUAGE_KEY, Locale.getDefault().language)
         orderSongApi = serviceCreator.create(OrderSongApi::class.java)
     }
 
     fun addHeader(key: String, value: String) {
         serviceCreator.addHeader(key, value)
+        playSongServiceCreator.addHeader(key, value)
     }
 
-    suspend fun getSongToken(appKey: String): Response<NEOrderSongDynamicToken> = withContext(
+    suspend fun getSongToken(): Response<NEOrderSongDynamicToken> = withContext(
         Dispatchers.IO
     ) {
-        orderSongApi.getMusicToken(appKey)
+        orderSongApi.getMusicToken()
     }
 
     suspend fun orderSong(
-        roomUuid: String,
+        liveRecordId: Long,
         songId: String,
         songName: String?,
         songCover: String?,
@@ -61,6 +61,7 @@ class OrderSongRepository {
         singer: String
     ): Response<NEOrderSong> = withContext(Dispatchers.IO) {
         val params = mapOf<String, Any?>(
+            "liveRecordId" to liveRecordId,
             "songId" to songId,
             "songName" to songName,
             "songCover" to songCover,
@@ -68,75 +69,81 @@ class OrderSongRepository {
             "channel" to channel,
             "singer" to singer
         )
-        orderSongApi.orderSong(NEOrderSongService.appKey, roomUuid, params)
+        orderSongApi.orderSong(params)
     }
 
     suspend fun switchSong(
-        roomUuid: String,
+        liveRecordId: Long,
         currentOrderId: Long,
         attachment: String?
     ): Response<Boolean> = withContext(Dispatchers.IO) {
         if (!TextUtils.isEmpty(attachment)) {
             val params = mapOf<String, Any?>(
+                "liveRecordId" to liveRecordId,
                 "currentOrderId" to currentOrderId,
                 "attachment" to attachment
             )
-            orderSongApi.switchSong(NEOrderSongService.appKey, roomUuid, params)
+            orderSongApi.switchSong(params)
         } else {
             val params = mapOf<String, Any?>(
+                "liveRecordId" to liveRecordId,
                 "currentOrderId" to currentOrderId
             )
-            orderSongApi.switchSong(NEOrderSongService.appKey, roomUuid, params)
+            orderSongApi.switchSong(params)
         }
     }
 
-    suspend fun getOrderSongs(
-        roomUuid: String
-    ): Response<List<NEOrderSong>> = withContext(Dispatchers.IO) {
-        orderSongApi.orderSongs(NEOrderSongService.appKey, roomUuid)
+    suspend fun getOrderSongs(liveRecordId: Long): Response<List<NEOrderSong>> = withContext(
+        Dispatchers.IO
+    ) {
+        orderSongApi.orderSongs(liveRecordId)
     }
 
     suspend fun cancelOrderSong(
-        roomUuid: String,
+        liveRecordId: Long,
         orderId: Long
     ): Response<Boolean> = withContext(Dispatchers.IO) {
         val params = mapOf<String, Any?>(
-            "orderId" to orderId
+            "orderId" to orderId,
+            "liveRecordId" to liveRecordId
         )
-        orderSongApi.cancelOrderSong(NEOrderSongService.appKey, roomUuid, params)
+        orderSongApi.cancelOrderSong(params)
     }
 
     suspend fun reportReady(
-        roomUuid: String,
+        liveRecordId: Long,
         orderId: Long
     ): Response<Boolean> = withContext(Dispatchers.IO) {
         val params = mapOf<String, Any?>(
-            "orderId" to orderId
+            "orderId" to orderId,
+            "liveRecordId" to liveRecordId
         )
-        orderSongApi.reportReady(NEOrderSongService.appKey, roomUuid, params)
+        orderSongApi.reportReady(params)
     }
 
     suspend fun queryPlayingSongInfo(
-        roomUuid: String
+        liveRecordId: Long
     ): Response<OrderSong> = withContext(Dispatchers.IO) {
-        orderSongApi.queryPlayingSongInfo(NEOrderSongService.appKey, roomUuid)
+        orderSongApi.queryPlayingSongInfo(liveRecordId)
     }
 
-    suspend fun reportResume(appKey: String, roomUuid: String, orderId: Long): Response<Boolean> =
+    suspend fun reportResume(liveRecordId: Long, orderId: Long): Response<Boolean> =
         withContext(Dispatchers.IO) {
             val params = mapOf<String, Any?>(
                 "orderId" to orderId,
+                "liveRecordId" to liveRecordId,
                 "action" to PLAY
             )
-            orderSongApi.reportResume(appKey, roomUuid, params)
+            orderSongApi.reportResume(params)
         }
 
-    suspend fun reportPause(appKey: String, roomUuid: String, orderId: Long): Response<Boolean> =
+    suspend fun reportPause(liveRecordId: Long, orderId: Long): Response<Boolean> =
         withContext(Dispatchers.IO) {
             val params = mapOf<String, Any?>(
                 "orderId" to orderId,
+                "liveRecordId" to liveRecordId,
                 "action" to PAUSE
             )
-            orderSongApi.reportPause(appKey, roomUuid, params)
+            orderSongApi.reportPause(params)
         }
 }

@@ -4,8 +4,6 @@
 
 package com.netease.yunxin.kit.voiceroomkit.ui.helper;
 
-import static com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper.AudioMixingPlayState.STATE_PAUSED;
-import static com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper.AudioMixingPlayState.STATE_PLAYING;
 import static com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper.AudioMixingPlayState.STATE_STOPPED;
 
 import android.content.Context;
@@ -17,11 +15,8 @@ import com.netease.yunxin.kit.entertainment.common.utils.CommonUtil;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcAudioStreamType;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
 
@@ -30,8 +25,6 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
   /** 音效文件 */
   private String[] effectPaths;
 
-  /** 混音文件 */
-  private String[] audioMixingFilePaths;
   /** 音效音量 */
   private int effectVolume = 100;
 
@@ -52,12 +45,8 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
   private Context context;
 
   private static final String MUSIC_DIR = "music";
-  private static final String MUSIC1 = "music1.mp3";
-  private static final String MUSIC2 = "music2.mp3";
-  private static final String MUSIC3 = "music3.mp3";
   private static final String EFFECT1 = "effect1.wav";
   private static final String EFFECT2 = "effect2.wav";
-  private List<MusicItem> audioMixingMusicInfos;
 
   public EffectPlayHelper(Context context) {
     this.context = context;
@@ -89,23 +78,7 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
               String[] effectPaths = new String[2];
               effectPaths[0] = extractMusicFile(root, EFFECT1);
               effectPaths[1] = extractMusicFile(root, EFFECT2);
-
               setEffectPaths(effectPaths);
-
-              String[] musicPaths = new String[4];
-              musicPaths[0] = extractMusicFile(root, MUSIC1);
-              musicPaths[1] = extractMusicFile(root, MUSIC2);
-              musicPaths[2] = extractMusicFile(root, MUSIC3);
-
-              setAudioMixingFilePaths(musicPaths);
-              if (audioMixingMusicInfos == null) {
-                audioMixingMusicInfos = new ArrayList<>();
-              }
-              audioMixingMusicInfos.clear();
-              for (int i = 0; i < musicPaths.length - 1; i++) {
-                String path = musicPaths[i];
-                audioMixingMusicInfos.add(getMusicInfo("0" + (i + 1), path));
-              }
             })
         .start();
   }
@@ -124,10 +97,6 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
     return new MusicItem(order, name, author);
   }
 
-  public List<MusicItem> getAudioMixingMusicInfos() {
-    return audioMixingMusicInfos;
-  }
-
   public void setCallBack(IPlayCallback callBack) {
     this.callBack = callBack;
   }
@@ -136,22 +105,11 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
     this.effectPaths = effectPaths;
   }
 
-  public void setAudioMixingFilePaths(String[] audioMixingFilePaths) {
-    this.audioMixingFilePaths = audioMixingFilePaths;
-  }
-
   public void setEffectVolume(int effectVolume) {
     this.effectVolume = effectVolume;
     for (int index = 0; index < effectPaths.length; index++) {
       int effectId = effectIndexToEffectId(index);
       NEVoiceRoomKit.getInstance().setEffectVolume(effectId, effectVolume);
-    }
-  }
-
-  public void setAudioMixingVolume(int audioMixingVolume) {
-    this.audioMixingVolume = audioMixingVolume;
-    for (int index = 0; index < audioMixingFilePaths.length; index++) {
-      NEVoiceRoomKit.getInstance().setAudioMixingVolume(audioMixingVolume);
     }
   }
 
@@ -205,31 +163,11 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
     }
   }
 
-  // 播放伴音
-  public boolean playAudioMixing(int index) {
-    if (isAudioMixingIndexInvalid(index, audioMixingFilePaths)) {
-      return false;
-    }
-    stopAudioMixing();
-    audioMixingIndex = index;
-    return shiftPlayState();
-  }
-
-  public boolean playNextMixing() {
-    stopAudioMixing();
-    audioMixingIndex = getNextAudioMixingIndex(audioMixingIndex, audioMixingFilePaths);
-    return shiftPlayState();
-  }
-
   private int getNextAudioMixingIndex(int index, @NonNull String[] paths) {
     do {
       index = (index + 1) % paths.length;
     } while (isAudioMixingIndexInvalid(index, paths));
     return index;
-  }
-
-  public boolean playOrPauseMixing() {
-    return shiftPlayState();
   }
 
   private boolean isAudioMixingIndexInvalid(int index, @NonNull String[] paths) {
@@ -251,37 +189,6 @@ public class EffectPlayHelper extends NEVoiceRoomListenerAdapter {
     if (callBack != null) {
       callBack.onAudioMixingPlayState(audioMixingState, audioMixingIndex);
     }
-  }
-
-  // 恢复伴音
-  public int resumeAudioMixing() {
-    return NEVoiceRoomKit.getInstance().resumeAudioMixing();
-  }
-
-  /** STATE_PLAYING -> STATE_PAUSED STATE_PAUSED -> STATE_PLAYING STATE_STOPPED -> STATE_PLAYING */
-  private boolean shiftPlayState() {
-    int stateOld = audioMixingState;
-    int stateNew;
-    int result;
-    if (stateOld == STATE_PLAYING) {
-      stateNew = STATE_PAUSED;
-      result = pauseAudioMixing();
-    } else if (stateOld == STATE_PAUSED) {
-      stateNew = STATE_PLAYING;
-      result = resumeAudioMixing();
-    } else {
-      stateNew = STATE_PLAYING;
-      String path = audioMixingFilePaths[audioMixingIndex];
-      NEVoiceRoomCreateAudioMixingOption option =
-          new NEVoiceRoomCreateAudioMixingOption(
-              path, 1, true, audioMixingVolume, true, audioMixingVolume);
-      result = NEVoiceRoomKit.getInstance().startAudioMixing(option);
-    }
-    if (result == 0) {
-      audioMixingState = stateNew;
-      notifyAudioMixingState();
-    }
-    return result == 0;
   }
 
   @Override

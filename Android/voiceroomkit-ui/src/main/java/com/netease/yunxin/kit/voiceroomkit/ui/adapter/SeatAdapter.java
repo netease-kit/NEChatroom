@@ -88,7 +88,7 @@ public class SeatAdapter extends BaseAdapter<RoomSeat> {
       viewHolder.tvNick.setText(member.getName());
     } else {
       viewHolder.tvNick.setText(
-          String.format(context.getString(R.string.voiceroom_seat), seat.getSeatIndex() - 1));
+          String.format(context.getString(R.string.voiceroom_seat), position + 1));
       viewHolder.circle.setVisibility(View.INVISIBLE);
       viewHolder.ivAvatar.setVisibility(View.INVISIBLE);
       viewHolder.avatarBg.setVisibility(View.INVISIBLE);

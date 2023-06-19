@@ -36,8 +36,8 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
         voiceRoomScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     }
 
-    override fun initialize(context: Context) {
-        voiceRoomRepository.initialize(context)
+    override fun initialize(context: Context, url: String) {
+        voiceRoomRepository.initialize(context, url)
     }
 
     override fun addHeader(key: String, value: String) {
@@ -83,9 +83,10 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
                         param.cover,
                         param.liveType,
                         param.configId,
+                        param.roomName,
                         param.seatCount,
-                        param.seatApplyMode,
-                        param.seatInviteMode
+                        param.seatApplyMode.value,
+                        param.seatInviteMode.value
                     )
                 },
                 success = {
@@ -141,25 +142,6 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
         voiceRoomScope?.launch {
             Request.request(
                 { voiceRoomRepository.getDefaultLiveInfo() },
-                success = {
-                    callback.success(it)
-                },
-                error = { code: Int, msg: String ->
-                    reportHttpErrorEvent(HttpErrorReporter.ErrorEvent(code, msg, ""))
-                    callback.error(code, msg)
-                }
-            )
-        }
-    }
-
-    override fun reward(
-        liveRecodeId: Long,
-        giftId: Int,
-        callback: NetRequestCallback<Unit>
-    ) {
-        voiceRoomScope?.launch {
-            Request.request(
-                { voiceRoomRepository.reward(liveRecodeId, giftId) },
                 success = {
                     callback.success(it)
                 },

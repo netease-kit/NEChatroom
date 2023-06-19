@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import com.blankj.utilcode.util.CollectionUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.activities.adapter.CommonMoreAdapter;
 import com.netease.yunxin.kit.common.ui.activities.viewholder.BaseMoreViewHolder;
@@ -39,13 +38,13 @@ public class OrderAdapter extends CommonMoreAdapter<OrderSongModel, OrderItemLay
   private OrderSongViewModel orderSongViewModel;
 
   /** 歌曲已点 */
-  private static final int ERR_SONG_ALREADY_ORDERED = 1401;
+  private static final int ERR_SONG_ALREADY_ORDERED = 1011;
 
   /** 每个用户最多点2首歌 */
-  private static final int ERR_ORDER_SONG_COUNT_EXCEED_LIMIT = 1403;
+  private static final int ERR_ORDER_SONG_COUNT_EXCEED_LIMIT = 1009;
 
   /** 每个房间最多点10首歌 */
-  private static final int ERR_ROOM_ORDER_SONG_COUNT_EXCEED_LIMIT = 1404;
+  private static final int ERR_ROOM_ORDER_SONG_COUNT_EXCEED_LIMIT = 1010;
 
   public OrderAdapter(FragmentActivity activity, OrderSongViewModel orderSongViewModel) {
     this.orderSongViewModel = orderSongViewModel;
@@ -96,7 +95,7 @@ public class OrderAdapter extends CommonMoreAdapter<OrderSongModel, OrderItemLay
         getBinding().songCover.setData(item.getSongCover(), "");
       }
       getBinding().songName.setText(item.getSongName());
-      if (CollectionUtils.isNotEmpty(item.getSingers())) {
+      if (!item.getSingers().isEmpty()) {
         getBinding().userName.setText(item.getSingers().get(0).getSingerName());
       }
       int channelIconRes = getChannelIconRes(item.getChannel());
@@ -229,7 +228,7 @@ public class OrderAdapter extends CommonMoreAdapter<OrderSongModel, OrderItemLay
                   context, context.getString(R.string.err_room_order_song_count_exceed_limit));
             } else {
               ToastUtils.INSTANCE.showShortToast(
-                  context, context.getString(R.string.order_song_failure, code, msg));
+                  context, context.getString(R.string.order_song_failure));
             }
           }
         });

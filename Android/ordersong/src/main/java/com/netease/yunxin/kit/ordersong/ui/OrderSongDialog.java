@@ -14,10 +14,10 @@ import android.view.WindowManager;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.netease.yunxin.kit.common.ui.adapter.BaseFragmentAdapter;
+import com.netease.yunxin.kit.common.utils.ScreenUtils;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongListener;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.ordersong.core.model.Song;
@@ -164,7 +164,7 @@ public class OrderSongDialog extends BaseBottomDialogFragment {
       params.gravity = Gravity.BOTTOM;
       // 使用ViewGroup.LayoutParams，以便Dialog 宽度充满整个屏幕
       params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-      params.height = ScreenUtils.getScreenHeight() * 3 / 4;
+      params.height = ScreenUtils.getDisplayHeight() * 3 / 4;
       window.setAttributes(params);
     }
     setCancelable(true); //设置点击外部是否消失

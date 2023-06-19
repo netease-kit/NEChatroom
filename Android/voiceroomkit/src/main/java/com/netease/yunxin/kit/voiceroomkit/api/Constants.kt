@@ -284,3 +284,29 @@ object NELiveType {
     const val LIVE_INTERACTION = 4 // 互动直播
     const val LIVE_TYPE_TOGETHER_LISTEN = 5 // 一起听
 }
+
+// 上麦申请是否需要管理员同意
+enum class NEVoiceRoomSeatRequestApprovalMode(val value: Int) {
+    /**
+     * 申请上麦时不需要管理员同意，直接上麦
+     */
+    OFF(0),
+
+    /**
+     * 申请上麦时需要管理员同意
+     */
+    ON(1)
+}
+
+// 管理员抱麦是否需要成员同意
+enum class NEVoiceRoomSeatInvitationConfirmMode(val value: Int) {
+    /**
+     * 抱麦时不需要对方同意
+     */
+    OFF(0),
+
+    /**
+     * 抱麦时需要对方同意
+     */
+    ON(1)
+}

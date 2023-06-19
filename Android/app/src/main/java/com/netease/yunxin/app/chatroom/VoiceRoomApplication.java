@@ -64,9 +64,8 @@ public class VoiceRoomApplication extends Application {
       Context context, String appKey, NEVoiceRoomCallback<Unit> callback) {
     ALog.i(TAG, "initVoiceRoomKit");
     Map<String, String> extras = new HashMap<>();
-    if (AppConfig.isOversea()) {
-      extras.put("serverUrl", "oversea");
-    }
+    extras.put("serverUrl", AppConfig.getNERoomServerUrl());
+    extras.put("baseUrl", AppConfig.getBaseUrl());
     NEVoiceRoomKit.getInstance()
         .initialize(context, new NEVoiceRoomKitConfig(appKey, extras), callback);
     NEVoiceRoomKit.getInstance()

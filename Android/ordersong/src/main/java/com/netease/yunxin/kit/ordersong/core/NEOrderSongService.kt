@@ -40,8 +40,10 @@ import org.json.JSONObject
 object NEOrderSongService {
     private var hasAddRoomListen = false
     private var roomUuid: String? = null
+    private var liveRecordId: Long? = null
     const val TAG = "NEOrderSongService"
-
+    const val overseaServerUrl = "https://roomkit-sg.netease.im/"
+    const val overseaValues = "oversea"
     private var orderSongRepository = OrderSongRepository()
 
     private var coroutineScope: CoroutineScope? = null
@@ -57,15 +59,21 @@ object NEOrderSongService {
                 if (it is RoomCustomMessages) {
                     val jsonObject = JSONObject(it.attachStr)
                     val data = jsonObject.opt("data")
+                    val type = jsonObject.optInt("type")
+                    if (type == OrderSongCmd.ORDERED_SONG_LIST_CHANGED_CMD) {
+                        ALog.i(TAG, "onOrderedSongListChanged")
+                        listeners.forEach { listener ->
+                            listener.onOrderedSongListChanged()
+                        }
+                    }
                     if (data != null) {
-                        val dataJsonObject = data as JSONObject
-                        when (dataJsonObject.optInt("cmd")) {
+                        when (type) {
                             OrderSongCmd.ORDER_SONG_CMD -> {
                                 val event =
                                     GsonUtils.fromJson(it.attachStr, OrderSongEvent::class.java)
                                 ALog.i(TAG, "onSongOrdered,event:$event")
                                 listeners.forEach { listener ->
-                                    listener.onSongOrdered(event.data.data)
+                                    listener.onSongOrdered(event.data.orderSongResultDto.orderSong)
                                 }
                             }
                             OrderSongCmd.CANCEL_ORDER_SONG_CMD -> {
@@ -73,7 +81,11 @@ object NEOrderSongService {
                                     GsonUtils.fromJson(it.attachStr, OrderSongEvent::class.java)
                                 ALog.i(TAG, "onSongDeleted,event:$event")
                                 listeners.forEach { listener ->
-                                    listener.onSongDeleted(event.data.data)
+                                    val song = event.data.orderSongResultDto.orderSong
+                                    if (event.data.nextOrderSong != null) {
+                                        song.nextOrderSong = event.data.nextOrderSong.orderSong
+                                    }
+                                    listener.onSongDeleted(song)
                                 }
                             }
                             OrderSongCmd.SWITCH_SONG_CMD -> {
@@ -81,21 +93,19 @@ object NEOrderSongService {
                                     GsonUtils.fromJson(it.attachStr, OrderSongEvent::class.java)
                                 ALog.i(TAG, "onSongSwitched,event:$event")
                                 listeners.forEach { listener ->
-                                    listener.onSongSwitched(event.data.data)
+                                    val song = event.data.orderSongResultDto.orderSong
+                                    song.operator = event.data.operatorUser
+                                    song.nextOrderSong = event.data.nextOrderSong.orderSong
+                                    song.attachment = event.data.attachment
+                                    listener.onSongSwitched(song)
                                 }
                             }
 
-                            OrderSongCmd.ORDERED_SONG_LIST_CHANGED_CMD -> {
-                                ALog.i(TAG, "onOrderedSongListChanged")
-                                listeners.forEach { listener ->
-                                    listener.onOrderedSongListChanged()
-                                }
-                            }
                             OrderSongCmd.START_PLAY_CMD -> {
                                 val event =
                                     GsonUtils.fromJson(it.attachStr, SongPlayEvent::class.java)
-                                val song = event.data.data.playMusicInfo
-                                song.operator = event.data.data.operatorInfo
+                                val song = event.data.playMusicInfo
+                                song.operator = event.data.operatorInfo
                                 ALog.i(TAG, "onSongStarted")
                                 listeners.forEach { listener ->
                                     listener.onSongStarted(song)
@@ -104,8 +114,8 @@ object NEOrderSongService {
                             OrderSongCmd.PAUSE_PLAY_CMD -> {
                                 val event =
                                     GsonUtils.fromJson(it.attachStr, SongPlayEvent::class.java)
-                                val song = event.data.data.playMusicInfo
-                                song.operator = event.data.data.operatorInfo
+                                val song = event.data.playMusicInfo
+                                song.operator = event.data.operatorInfo
                                 ALog.i(TAG, "onSongPaused")
                                 listeners.forEach { listener ->
                                     listener.onSongPaused(song)
@@ -114,8 +124,8 @@ object NEOrderSongService {
                             OrderSongCmd.RESUME_PLAY_CMD -> {
                                 val event =
                                     GsonUtils.fromJson(it.attachStr, SongPlayEvent::class.java)
-                                val song = event.data.data.playMusicInfo
-                                song.operator = event.data.data.operatorInfo
+                                val song = event.data.playMusicInfo
+                                song.operator = event.data.operatorInfo
                                 ALog.i(TAG, "onSongResumed")
                                 listeners.forEach { listener ->
                                     listener.onSongResumed(song)
@@ -132,10 +142,16 @@ object NEOrderSongService {
         coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     }
 
-    fun initialize(context: Context, appKey: String, serverUrl: String, account: String) {
+    fun initialize(
+        context: Context,
+        appKey: String,
+        orderSongServerUrl: String,
+        copyrightedMediaServerUrl: String,
+        account: String
+    ) {
         NEOrderSongService.appKey = appKey
         TimerTaskUtil.init()
-        orderSongRepository.initialize(context, serverUrl)
+        orderSongRepository.initialize(context, orderSongServerUrl)
         getSongDynamicTokenUntilSuccess(object :
             NetRequestCallback<NEOrderSongDynamicToken> {
             override fun success(info: NEOrderSongDynamicToken?) {
@@ -144,7 +160,10 @@ object NEOrderSongService {
                     appKey,
                     info!!.accessToken,
                     account,
-                    mapOf("serverUrl" to serverUrl)
+                    mapOf(
+                        "serverUrl" to if (overseaValues == copyrightedMediaServerUrl) {
+                            overseaServerUrl } else { copyrightedMediaServerUrl }
+                    )
                 )
             }
 
@@ -217,7 +236,7 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    orderSongRepository.getSongToken(appKey)
+                    orderSongRepository.getSongToken()
                 },
                 success = {
                     callback.success(it)
@@ -248,9 +267,9 @@ object NEOrderSongService {
                         }
                     }
 
-                    roomUuid?.let {
+                    liveRecordId?.let {
                         orderSongRepository.orderSong(
-                            it,
+                            liveRecordId!!,
                             songModel.songId,
                             songModel.songName,
                             songModel.songCover,
@@ -278,7 +297,9 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.switchSong(it, currentOrderId, attachment) }
+                    liveRecordId?.let {
+                        orderSongRepository.switchSong(liveRecordId!!, currentOrderId, attachment)
+                    }
                 },
                 success = {
                     callback.success(it)
@@ -296,7 +317,7 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.getOrderSongs(it) }
+                    liveRecordId?.let { orderSongRepository.getOrderSongs(liveRecordId!!) }
                 },
                 success = {
                     callback.success(it)
@@ -315,7 +336,9 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.cancelOrderSong(it, orderId) }
+                    liveRecordId?.let {
+                        orderSongRepository.cancelOrderSong(liveRecordId!!, orderId)
+                    }
                 },
                 success = {
                     callback.success(it)
@@ -334,7 +357,7 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.reportReady(it, orderId) }
+                    liveRecordId?.let { orderSongRepository.reportReady(liveRecordId!!, orderId) }
                 },
                 success = {
                     callback.success(it)
@@ -352,7 +375,7 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.queryPlayingSongInfo(it) }
+                    liveRecordId?.let { orderSongRepository.queryPlayingSongInfo(liveRecordId!!) }
                 },
                 success = {
                     callback.success(it)
@@ -371,7 +394,7 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.reportResume(appKey, it, orderId) }
+                    liveRecordId?.let { orderSongRepository.reportResume(liveRecordId!!, orderId) }
                 },
                 success = {
                     callback.success(it)
@@ -390,7 +413,7 @@ object NEOrderSongService {
         coroutineScope?.launch {
             Request.request(
                 {
-                    roomUuid?.let { orderSongRepository.reportPause(appKey, it, orderId) }
+                    liveRecordId?.let { orderSongRepository.reportPause(liveRecordId!!, orderId) }
                 },
                 success = {
                     callback.success(it)
@@ -406,6 +429,10 @@ object NEOrderSongService {
 
     fun setRoomUuid(roomUuid: String) {
         this.roomUuid = roomUuid
+    }
+
+    fun setLiveRecordId(liveRecordId: Long) {
+        this.liveRecordId = liveRecordId
     }
 
     fun addListener(listener: NEOrderSongListener) {

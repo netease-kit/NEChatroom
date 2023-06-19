@@ -52,11 +52,11 @@ public class OrderedAdapter extends CommonMoreAdapter<NEOrderSong, OrderedItemLa
     @Override
     public void bind(NEOrderSong item) {
       getBinding().songCover.setCornerRadius(SizeUtils.dp2px(5));
-      if (item.getStatus() == STATUS_SINGING) {
+      if (item.getOrderSong().getStatus() == STATUS_SINGING) {
         getBinding().songOrder.setVisibility(View.GONE);
         getBinding().songSinging.setVisibility(View.VISIBLE);
         getBinding().musicIcon.setVisibility(View.VISIBLE);
-      } else if (item.getStatus() == STATUS_WAIT) {
+      } else if (item.getOrderSong().getStatus() == STATUS_WAIT) {
         getBinding().songOrder.setVisibility(View.VISIBLE);
         getBinding().songSinging.setVisibility(View.INVISIBLE);
         getBinding().musicIcon.setVisibility(View.INVISIBLE);
@@ -66,26 +66,33 @@ public class OrderedAdapter extends CommonMoreAdapter<NEOrderSong, OrderedItemLa
         getBinding().musicIcon.setVisibility(View.INVISIBLE);
       }
       getBinding().orderCancel.setVisibility(View.VISIBLE);
-      getBinding().orderCancel.setOnClickListener(v -> deleteSong(v, item.getOrderId()));
+      getBinding()
+          .orderCancel
+          .setOnClickListener(
+              v -> {
+                getDataList().remove(item);
+                notifyDataSetChanged();
+                deleteSong(v, item.getOrderSong().getOrderId());
+              });
       getBinding()
           .songOrder
           .setText(String.format(Locale.CHINA, "%02d", getBindingAdapterPosition() + 1));
-      if (TextUtils.isEmpty(item.getSongCover())) {
+      if (TextUtils.isEmpty(item.getOrderSong().getSongCover())) {
         getBinding().songCover.setData(R.drawable.icon_song_cover, "");
       } else {
-        getBinding().songCover.setData(item.getSongCover(), "");
+        getBinding().songCover.setData(item.getOrderSong().getSongCover(), "");
       }
 
-      getBinding().songName.setText(item.getSongName());
-      if (TextUtils.isEmpty(item.getIcon())) {
+      getBinding().songName.setText(item.getOrderSong().getSongName());
+      if (TextUtils.isEmpty(item.getOrderSongUser().getIcon())) {
         getBinding().userAvatar.setData(R.drawable.default_avatar, "");
       } else {
-        getBinding().userAvatar.setData(item.getIcon(), "");
+        getBinding().userAvatar.setData(item.getOrderSongUser().getIcon(), "");
       }
 
-      getBinding().songName.setText(item.getSongName());
-      getBinding().userName.setText(item.getUserName());
-      getBinding().songSize.setText(DateFormatUtils.long2StrHS(item.getSongTime()));
+      getBinding().songName.setText(item.getOrderSong().getSongName());
+      getBinding().userName.setText(item.getOrderSongUser().getUserName());
+      getBinding().songSize.setText(DateFormatUtils.long2StrHS(item.getOrderSong().getSongTime()));
     }
   }
 

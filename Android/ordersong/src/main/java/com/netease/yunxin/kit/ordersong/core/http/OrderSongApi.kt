@@ -12,54 +12,42 @@ import com.netease.yunxin.kit.ordersong.core.model.OrderSong
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface OrderSongApi {
-
     /**
      * 获取版权曲库API鉴权的token
      */
-    @POST("scene/apps/{appKey}/ent/song/v2/getMusicToken")
-    suspend fun getMusicToken(
-        @Path("appKey") appKey: String
-    ): Response<NEOrderSongDynamicToken>
+    @POST("nemo/entertainmentLive/live/song/getMusicToken")
+    suspend fun getMusicToken(): Response<NEOrderSongDynamicToken>
 
     /**
      * 点歌
      */
-    @POST("scene/apps/{appKey}/ent/song/{roomUuid}/v1/song/orderSong")
+    @POST("nemo/entertainmentLive/live/song/orderSong")
     suspend fun orderSong(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String,
         @Body params: Map<String, @JvmSuppressWildcards Any?>
     ): Response<NEOrderSong>
 
     /**
      * 切歌
      */
-    @POST("scene/apps/{appKey}/ent/song/{roomUuid}/v1/switchSong")
+    @POST("nemo/entertainmentLive/live/song/switchSong")
     suspend fun switchSong(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String,
         @Body body: Map<String, @JvmSuppressWildcards Any?>
     ): Response<Boolean>
 
     /**
      * 点歌列表查询
      */
-    @GET("scene/apps/{appKey}/ent/song/{roomUuid}/v1/orderSongs")
-    suspend fun orderSongs(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String
-    ): Response<List<NEOrderSong>>
+    @GET("nemo/entertainmentLive/live/song/getOrderSongs")
+    suspend fun orderSongs(@Query("liveRecordId") liveRecordId: Long): Response<List<NEOrderSong>>
 
     /**
      * 已点歌曲删除
      */
-    @POST("scene/apps/{appKey}/ent/song/{roomUuid}/v1/cancelOrderSong")
+    @POST("nemo/entertainmentLive/live/song/cancelOrderSong")
     suspend fun cancelOrderSong(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String,
         @Body body: Map<String, @JvmSuppressWildcards Any?>
     ): Response<Boolean>
 
@@ -68,30 +56,23 @@ interface OrderSongApi {
      * 如果房间内只有1人，1人上报ready后，服务端就会下发cmd=135的聊天室消息 @see[OrderSongCmd.START_PLAY_CMD]
      * 如果房间内有2人，则需要2人都上报下载ready，服务端就会下发cmd=135的聊天室消息 @see[OrderSongCmd.START_PLAY_CMD]
      */
-    @POST("scene/apps/{appKey}/ent/listen/v1/{roomUuid}/ready")
+    @POST("nemo/entertainmentLive/music/ready")
     suspend fun reportReady(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String,
         @Body params: Map<String, @JvmSuppressWildcards Any?>
     ): Response<Boolean>
 
     /**
      * 查询当前正在播放的歌曲
      */
-    @POST("scene/apps/{appKey}/ent/listen/v1/{roomUuid}/info")
-    suspend fun queryPlayingSongInfo(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String
-    ): Response<OrderSong>
+    @GET("nemo/entertainmentLive/music/info")
+    suspend fun queryPlayingSongInfo(@Query("liveRecordId") liveRecordId: Long): Response<OrderSong>
 
     /**
      * 恢复播放歌曲
      * 上报resume后，服务端就会下发cmd=138的聊天室消息 @see[OrderSongCmd.RESUME_PLAY_CMD]
      */
-    @POST("scene/apps/{appKey}/ent/listen/v1/{roomUuid}/listenAction")
+    @POST("nemo/entertainmentLive/music/action")
     suspend fun reportResume(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String,
         @Body params: Map<String, @JvmSuppressWildcards Any?>
     ): Response<Boolean>
 
@@ -99,10 +80,8 @@ interface OrderSongApi {
      * 暂停歌曲
      * 上报pause后，服务端就会下发cmd=136的聊天室消息 @see[OrderSongCmd.PAUSE_PLAY_CMD]
      */
-    @POST("scene/apps/{appKey}/ent/listen/v1/{roomUuid}/listenAction")
+    @POST("nemo/entertainmentLive/music/action")
     suspend fun reportPause(
-        @Path("appKey") appKey: String,
-        @Path("roomUuid") roomId: String,
         @Body params: Map<String, @JvmSuppressWildcards Any?>
     ): Response<Boolean>
 }

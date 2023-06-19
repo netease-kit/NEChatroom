@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.blankj.utilcode.util.ToastUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.fragments.BaseFragment;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.copyrightedmedia.api.NECopyrightedMedia;
 import com.netease.yunxin.kit.ordersong.core.model.OrderSongModel;
 import com.netease.yunxin.kit.ordersong.ui.R;
@@ -122,7 +122,7 @@ public class OrderListFragment extends BaseFragment {
           public void error(int code, @Nullable String msg) {
             ALog.e("orderSong fail:" + code + " " + msg);
             if (isAdded()) {
-              ToastUtils.showLong(getString(R.string.get_song_list_failed));
+              ToastX.showShortToast(getString(R.string.get_song_list_failed));
             }
           }
         });
@@ -139,7 +139,7 @@ public class OrderListFragment extends BaseFragment {
             if (info == null) {
               return;
             } else if (info.size() == 0) {
-              ToastUtils.showShort(R.string.did_not_find_right_result);
+              ToastX.showShortToast(R.string.did_not_find_right_result);
             }
             adapter.append(info);
             pageNum++;

@@ -11,7 +11,6 @@ import com.netease.yunxin.kit.roomkit.api.service.NESeatItem
 import com.netease.yunxin.kit.roomkit.api.service.NESeatRequestItem
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomAnchor
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchSeatUserReward
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomLiveModel
@@ -19,7 +18,6 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatRequestItem
 import com.netease.yunxin.kit.voiceroomkit.impl.model.SeatUserReward
-import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.impl.model.VoiceRoomInfo
 import com.netease.yunxin.kit.voiceroomkit.impl.model.response.Operator
 import com.netease.yunxin.kit.voiceroomkit.impl.model.response.VoiceRoomList
@@ -34,9 +32,19 @@ internal object VoiceRoomUtils {
                 voiceRoomInfo.anchor.icon
             ),
             NEVoiceRoomLiveModel(
-                voiceRoomInfo.liveModel.appId, voiceRoomInfo.liveModel.roomUuid, voiceRoomInfo.liveModel.liveRecordId, voiceRoomInfo.liveModel.userUuid,
-                voiceRoomInfo.liveModel.liveType, voiceRoomInfo.liveModel.live, voiceRoomInfo.liveModel.liveTopic, voiceRoomInfo.liveModel.cover, voiceRoomInfo.liveModel.rewardTotal,
-                voiceRoomInfo.liveModel.audienceCount, voiceRoomInfo.liveModel.onSeatCount, voiceRoomInfo.liveModel.liveConfig,
+                voiceRoomInfo.liveModel.roomUuid,
+                voiceRoomInfo.liveModel.roomName,
+                voiceRoomInfo.liveModel.liveRecordId,
+                voiceRoomInfo.liveModel.userUuid,
+                voiceRoomInfo.liveModel.status,
+                voiceRoomInfo.liveModel.liveType,
+                voiceRoomInfo.liveModel.live,
+                voiceRoomInfo.liveModel.liveTopic,
+                voiceRoomInfo.liveModel.cover,
+                voiceRoomInfo.liveModel.rewardTotal,
+                voiceRoomInfo.liveModel.audienceCount,
+                voiceRoomInfo.liveModel.onSeatCount,
+                voiceRoomInfo.liveModel.liveConfig,
                 voiceRoomInfo.liveModel.seatUserReward?.map { seatUserReward2NESeatUserReward(it) }
             )
         )
@@ -94,14 +102,6 @@ internal object VoiceRoomUtils {
             seatRequestItem.user,
             seatRequestItem.userName,
             seatRequestItem.icon
-        )
-    }
-
-    fun voiceRoomGiftModel2NEVoiceRoomGiftModel(karaokeGiftModel: VoiceRoomGiftModel): NEVoiceRoomGiftModel {
-        return NEVoiceRoomGiftModel(
-            karaokeGiftModel.rewarderUserUuid,
-            karaokeGiftModel.rewarderUserName,
-            karaokeGiftModel.giftId
         )
     }
 }

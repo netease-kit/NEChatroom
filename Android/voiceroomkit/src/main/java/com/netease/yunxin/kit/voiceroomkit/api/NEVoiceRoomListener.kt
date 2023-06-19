@@ -8,7 +8,6 @@ package com.netease.yunxin.kit.voiceroomkit.api
 
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeResult
@@ -162,12 +161,6 @@ interface NEVoiceRoomListener {
     fun onAudioOutputDeviceChanged(device: NEVoiceRoomAudioOutputDevice)
 
     /**
-     * 收到礼物
-     * @param rewardMsg 礼物消息
-     */
-    fun onReceiveGift(rewardMsg: NEVoiceRoomGiftModel)
-
-    /**
      * 收到批量礼物
      * @param giftModel 礼物消息
      */
@@ -274,9 +267,6 @@ open class NEVoiceRoomListenerAdapter : NEVoiceRoomListener {
     }
 
     override fun onAudioOutputDeviceChanged(device: NEVoiceRoomAudioOutputDevice) {
-    }
-
-    override fun onReceiveGift(rewardMsg: NEVoiceRoomGiftModel) {
     }
 
     override fun onReceiveBatchGift(giftModel: NEVoiceRoomBatchGiftModel) {

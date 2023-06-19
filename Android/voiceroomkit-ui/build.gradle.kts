@@ -22,7 +22,7 @@ dependencies {
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.14.0")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.15.0")
     implementation("com.netease.yunxin.kit.common:common-ui:1.1.20")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.8")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
@@ -31,6 +31,7 @@ dependencies {
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation(project(":ordersong"))
     implementation(project(":entertainment:entertainment-common"))
+    implementation(project(":voiceroomkit"))
     implementation("com.blankj:utilcodex:1.30.6")
 
 }

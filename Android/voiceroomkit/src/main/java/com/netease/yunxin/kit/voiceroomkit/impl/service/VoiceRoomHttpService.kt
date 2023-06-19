@@ -39,7 +39,7 @@ interface HttpErrorReporter {
  */
 interface VoiceRoomHttpService : HttpErrorReporter {
 
-    fun initialize(context: Context)
+    fun initialize(context: Context, url: String)
 
     fun addHeader(key: String, value: String)
 
@@ -69,12 +69,6 @@ interface VoiceRoomHttpService : HttpErrorReporter {
     fun stopVoiceRoom(liveRecodeId: Long, callback: NetRequestCallback<Unit>)
 
     fun getDefaultLiveInfo(callback: NetRequestCallback<VoiceRoomDefaultConfig>)
-
-    fun reward(
-        liveRecodeId: Long,
-        giftId: Int,
-        callback: NetRequestCallback<Unit>
-    )
 
     fun batchReward(
         liveRecodeId: Long,

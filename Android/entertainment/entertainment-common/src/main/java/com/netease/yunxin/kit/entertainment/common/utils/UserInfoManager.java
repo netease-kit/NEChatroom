@@ -31,6 +31,10 @@ public class UserInfoManager {
     return selfImNickname;
   }
 
+  public static void setSelfNickname(String nickname) {
+    selfImNickname = nickname;
+  }
+
   // 设置云信IM用户信息
   public static void setIMUserInfo(
       String imAccid, String imToken, String imNickname, String imAvatar, String phoneNumber) {

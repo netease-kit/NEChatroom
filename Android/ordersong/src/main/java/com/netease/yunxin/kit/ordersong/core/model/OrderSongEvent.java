@@ -28,92 +28,110 @@ public class OrderSongEvent implements Serializable {
   }
 
   public static class DataBean implements Serializable {
-    private String appKey;
-    private String roomUuid;
-    private String type;
-    private int cmd;
-    private int version;
-    private Song data;
-    private String requestId;
+    private OrderSongResultDto orderSongResultDto;
+    private NEOperator operatorUser;
+    private NextOrderSong nextOrderSong;
+    private String attachment;
 
-    public String getAppKey() {
-      return appKey;
+    public NextOrderSong getNextOrderSong() {
+      return nextOrderSong;
     }
 
-    public void setAppKey(String appKey) {
-      this.appKey = appKey;
+    public void setNextOrderSong(NextOrderSong nextOrderSong) {
+      this.nextOrderSong = nextOrderSong;
     }
 
-    public String getRoomUuid() {
-      return roomUuid;
+    public NEOperator getOperatorUser() {
+      return operatorUser;
     }
 
-    public void setRoomUuid(String roomUuid) {
-      this.roomUuid = roomUuid;
+    public void setOperatorUser(NEOperator operatorUser) {
+      this.operatorUser = operatorUser;
     }
 
-    public String getType() {
-      return type;
+    public OrderSongResultDto getOrderSongResultDto() {
+      return orderSongResultDto;
     }
 
-    public void setType(String type) {
-      this.type = type;
+    public void setOrderSongResultDto(OrderSongResultDto orderSongResultDto) {
+      this.orderSongResultDto = orderSongResultDto;
     }
 
-    public int getCmd() {
-      return cmd;
+    public String getAttachment() {
+      return attachment;
     }
 
-    public void setCmd(int cmd) {
-      this.cmd = cmd;
-    }
-
-    public int getVersion() {
-      return version;
-    }
-
-    public void setVersion(int version) {
-      this.version = version;
-    }
-
-    public Song getData() {
-      return data;
-    }
-
-    public void setData(Song data) {
-      this.data = data;
-    }
-
-    public String getRequestId() {
-      return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-      this.requestId = requestId;
+    public void setAttachment(String attachment) {
+      this.attachment = attachment;
     }
 
     @Override
     public String toString() {
       return "DataBean{"
-          + "appKey='"
-          + appKey
-          + '\''
-          + ", roomUuid='"
-          + roomUuid
-          + '\''
-          + ", type='"
-          + type
-          + '\''
-          + ", cmd="
-          + cmd
-          + ", version="
-          + version
-          + ", data="
-          + data
-          + ", requestId='"
-          + requestId
-          + '\''
+          + "orderSongResultDto="
+          + orderSongResultDto
+          + ", operatorUser="
+          + operatorUser
+          + ", nextOrderSong="
+          + nextOrderSong
           + '}';
+    }
+  }
+
+  public static class OrderSongResultDto implements Serializable {
+    private Song orderSong;
+    private NEOperator orderSongUser;
+
+    public Song getOrderSong() {
+      return orderSong;
+    }
+
+    public void setOrderSong(Song orderSong) {
+      this.orderSong = orderSong;
+    }
+
+    public NEOperator getOrderSongUser() {
+      return orderSongUser;
+    }
+
+    public void setOrderSongUser(NEOperator orderSongUser) {
+      this.orderSongUser = orderSongUser;
+    }
+
+    @Override
+    public String toString() {
+      return "OrderSongResultDto{"
+          + "orderSong="
+          + orderSong
+          + ", orderSongUser="
+          + orderSongUser
+          + '}';
+    }
+  }
+
+  public static class NextOrderSong implements Serializable {
+    private Song orderSong;
+    private NEOperator orderSongUser;
+
+    public Song getOrderSong() {
+      return orderSong;
+    }
+
+    public void setOrderSong(Song orderSong) {
+      this.orderSong = orderSong;
+    }
+
+    public NEOperator getOrderSongUser() {
+      return orderSongUser;
+    }
+
+    public void setOrderSongUser(NEOperator orderSongUser) {
+      this.orderSongUser = orderSongUser;
+    }
+
+    @Override
+    public String toString() {
+      return "NextOrderSong{" + "orderSong=" + orderSong + ", orderSongUser=" + orderSongUser + '}';
     }
   }
 

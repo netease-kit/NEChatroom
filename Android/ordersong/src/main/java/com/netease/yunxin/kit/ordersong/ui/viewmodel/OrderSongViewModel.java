@@ -160,7 +160,7 @@ public class OrderSongViewModel extends ViewModel {
           @Override
           public void success(@Nullable NEOrderSong info) {
             callback.success(true);
-            copyrightSong.setOrderId(info.getOrderId());
+            copyrightSong.setOrderId(info.getOrderSong().getOrderId());
           }
 
           @Override

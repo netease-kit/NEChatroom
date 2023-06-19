@@ -67,6 +67,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole;
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchRewardTarget;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMemberVolumeInfo;
@@ -91,7 +92,6 @@ import com.netease.yunxin.kit.voiceroomkit.ui.widget.BackgroundMusicPanel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.ChatRoomMsgRecyclerView;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.VolumeSetup;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +116,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   protected static final int MORE_ITEM_AUDIO = 3; // 伴音
 
   protected static final int MORE_ITEM_FINISH = 4; // 更多菜单 结束房间
-
+  protected List<ChatRoomMoreDialog.MoreItem> moreItems;
   protected ConstraintLayout clyAnchorView;
 
   //主播基础信息
@@ -298,6 +298,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     setContentView(getContentViewID());
     initViews();
     NEOrderSongService.INSTANCE.setRoomUuid(voiceRoomInfo.getRoomUuid());
+    NEOrderSongService.INSTANCE.setLiveRecordId(voiceRoomInfo.getLiveRecordId());
     initListeners();
     initData();
     bindForegroundService();
@@ -307,6 +308,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         && !BluetoothHeadsetUtil.hasBluetoothConnectPermission()) {
       BluetoothHeadsetUtil.requestBluetoothConnectPermission();
     }
+    GiftHelper.getInstance().init();
   }
 
   private void initRoomViewModel() {
@@ -569,8 +571,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     seatAdapter.setItemLongClickListener(itemLongClickListener);
     recyclerView.setAdapter(seatAdapter);
     seatAdapter.notifyDataSetChanged();
-    roomViewModel.onSeatListData.observe(
-        this, voiceRoomSeats -> seatAdapter.setItems(voiceRoomSeats));
   }
 
   protected abstract int getContentViewID();
@@ -583,7 +583,12 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   @NonNull
   protected List<ChatRoomMoreDialog.MoreItem> getMoreItems() {
-    return Collections.emptyList();
+    boolean isAudioOn =
+        NEVoiceRoomKit.getInstance().getLocalMember() != null
+            && NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn();
+    moreItems.get(MORE_ITEM_MICRO_PHONE).setEnable(isAudioOn);
+    moreItems.get(MORE_ITEM_EAR_BACK).setEnable(NEVoiceRoomKit.getInstance().isEarbackEnable());
+    return moreItems;
   }
 
   protected ChatRoomMoreDialog.OnItemClickListener getMoreItemClickListener() {
@@ -693,12 +698,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         seatList -> {
           List<RoomSeat> audienceSeats = new ArrayList<>();
           for (RoomSeat model : seatList) {
-            if (model.getSeatIndex() != VoiceRoomViewModel.ANCHOR_SEAT_INDEX) {
-              audienceSeats.add(model);
-            }
             final NEVoiceRoomMember member = model.getMember();
             if (member != null && VoiceRoomUtils.isHost(member.getAccount())) {
               updateAnchorUI(member.getName(), member.getAvatar(), member.isAudioOn());
+            } else {
+              audienceSeats.add(model);
             }
           }
           seatAdapter.setItems(audienceSeats);
@@ -711,21 +715,23 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           rcyChatMsgList.appendItem(charSequence);
         });
 
-    roomViewModel.errorData.observe(
+    roomViewModel.roomRtcErrorData.observe(
+        this,
+        code -> {
+          ALog.e(TAG, "roomRtcErrorData code = " + code);
+        });
+
+    roomViewModel.roomEndData.observe(
         this,
         endReason -> {
-          if (endReason == NEVoiceRoomEndReason.CLOSE_BY_MEMBER) {
-            if (!VoiceRoomUtils.isLocalAnchor()) {
-              ToastUtils.INSTANCE.showShortToast(
-                  VoiceRoomBaseActivity.this, getString(R.string.voiceroom_host_close_room));
-            }
-            finish();
-          } else if (endReason == NEVoiceRoomEndReason.END_OF_RTC) {
-            leaveRoom();
-          } else {
-            finish();
+          if (endReason == NEVoiceRoomEndReason.CLOSE_BY_MEMBER
+              && !VoiceRoomUtils.isLocalAnchor()) {
+            ToastUtils.INSTANCE.showShortToast(
+                VoiceRoomBaseActivity.this, getString(R.string.voiceroom_host_close_room));
           }
+          finish();
         });
+
     roomViewModel.rtcLocalAudioVolumeIndicationData.observe(
         this,
         volume -> {
@@ -824,26 +830,6 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           seatAdapter.notifyDataSetChanged();
         });
 
-    roomViewModel.rewardData.observe(
-        this,
-        reward -> {
-          if (voiceRoomInfo == null) {
-            return;
-          }
-
-          CharSequence giftReward =
-              ChatRoomMsgCreator.createGiftReward(
-                  VoiceRoomBaseActivity.this,
-                  reward.getSendNick(),
-                  1,
-                  GiftCache.getGift(reward.getGiftId()).getStaticIconResId());
-          rcyChatMsgList.appendItem(giftReward);
-          charSequenceList.add(giftReward);
-          if (!VoiceRoomUtils.isLocalAnchor()) {
-            giftRender.addGift(GiftCache.getGift(reward.getGiftId()).getDynamicIconResId());
-          }
-        });
-
     roomViewModel.bachRewardData.observe(
         this,
         batchReward -> {
@@ -852,16 +838,23 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           }
 
           ALog.i(TAG, "bachRewardData observe giftModel:" + batchReward);
-          CharSequence batchGiftReward =
-              ChatRoomMsgCreator.createBatchGiftReward(
-                  VoiceRoomBaseActivity.this,
-                  batchReward.getRewarderUserName(),
-                  batchReward.getRewardeeUserName(),
-                  GiftCache.getGift(batchReward.getGiftId()).getName(),
-                  batchReward.getGiftCount(),
-                  GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId());
-          rcyChatMsgList.appendItem(batchGiftReward);
-          charSequenceList.add(batchGiftReward);
+          List<NEVoiceRoomBatchRewardTarget> targets = batchReward.getTargets();
+          if (targets.isEmpty()) {
+            return;
+          }
+          for (NEVoiceRoomBatchRewardTarget target : targets) {
+            CharSequence batchGiftReward =
+                ChatRoomMsgCreator.createBatchGiftReward(
+                    VoiceRoomBaseActivity.this,
+                    batchReward.getUserName(),
+                    target.getUserName(),
+                    GiftCache.getGift(batchReward.getGiftId()).getName(),
+                    batchReward.getGiftCount(),
+                    GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId());
+            rcyChatMsgList.appendItem(batchGiftReward);
+            charSequenceList.add(batchGiftReward);
+            ALog.i(TAG, "target:" + target);
+          }
           if (!VoiceRoomUtils.isLocalAnchor()) {
             giftRender.addGift(GiftCache.getGift(batchReward.getGiftId()).getDynamicIconResId());
           }
@@ -876,6 +869,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           } else {
             tvAnchorReward.setVisibility(View.INVISIBLE);
           }
+        });
+    roomViewModel.earBackData.observe(
+        this,
+        isOpen -> {
+          enableEarBack(isOpen);
+          moreItems.get(MORE_ITEM_EAR_BACK).setEnable(isOpen);
+          chatRoomMoreDialog.updateData();
         });
   }
 

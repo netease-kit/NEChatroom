@@ -28,9 +28,8 @@
     <string name="app_pstn_setting_title">PSTN Connectivity Settings</string>
     <string name="app_high_keep_alive_feature">PSTN Connectivity</string>
     <string name="app_high_keep_alive_title_level1">PSTN Connectivity: </string>
-    <string name="app_high_keep_alive_content1">PSTN service provides three methods to promote connectivity.\nUse PSTN solely or in combination with other services.</string>
     <string name="app_high_keep_alive_title_level2">Level 2</string>
-    <string name="app_high_keep_alive_content2">1. Keep app running in the background: \nIf Keep app running in the background is enabled, a notification will be shown on the notification bar for testing purposes.\nThe feature allows the app to run in the background for a long time (depending on different brands) \n\n\n2. Audio call: \nSIP calls are automatically switched to audio calls if failed.\nIf you start an audio call by clicking Auido Call and fails to get connected after 15 seconds, you are switched to SIP calling. The trigger condition can be customized.\n\n\n3. SMS notification:\nThe feature can notify the called parity of call requests. Users can open the app can handle the requests.\nIf an audio or video call is connecting for 30 seconds and fails, an SMS notification will be delivered.</string>
+    <string name="app_high_keep_alive_content2">1. Keep app running in the background: \nIf Keep app running in the background is enabled, a notification will be shown on the notification bar for testing purposes.\nThe feature allows the app to run in the background for a long time (depending on different brands) \n\n\n</string>
     <string name="app_high_keep_alive_content3">The following articles also restrict and applies to the user of this website and is referenced herewith:</string>
     <string name="app_tips">Tips</string>
     <string name="app_dialog_protocol_tips_title">Terms of Service and Privacy Policy</string>

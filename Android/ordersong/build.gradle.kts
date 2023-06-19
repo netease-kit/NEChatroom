@@ -31,7 +31,7 @@ dependencies {
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
     implementation("com.netease.yunxin.kit.common:common-ui:1.1.20")
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.6.0")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.14.0")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.15.0")
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

@@ -37,9 +37,6 @@ import kotlin.Unit;
 
 /** 主播页 */
 public class AnchorActivity extends VoiceRoomBaseActivity {
-
-  private List<ChatRoomMoreDialog.MoreItem> moreItems;
-
   private TextView tvApplyHint;
 
   private SeatApplyDialog seatApplyDialog;
@@ -55,6 +52,7 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
     netErrorView = findViewById(R.id.view_net_error);
     createMoreItems();
     enterRoom();
+    audioPlay.checkMusicFiles();
     watchNetWork();
   }
 
@@ -199,20 +197,6 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
         .setNegative(getString(R.string.voiceroom_cancel), null)
         .setPositive(getString(R.string.voiceroom_sure), v -> super.onBackPressed())
         .show();
-  }
-
-  @NonNull
-  @Override
-  protected List<ChatRoomMoreDialog.MoreItem> getMoreItems() {
-    if (NEVoiceRoomKit.getInstance().getLocalMember() != null) {
-      moreItems
-          .get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE)
-          .setEnable(NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn());
-    }
-    moreItems
-        .get(VoiceRoomBaseActivity.MORE_ITEM_EAR_BACK)
-        .setEnable(NEVoiceRoomKit.getInstance().isEarbackEnable());
-    return moreItems;
   }
 
   private void onSeatAction(RoomSeat seat, String item) {
