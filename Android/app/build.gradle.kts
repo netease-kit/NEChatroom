@@ -15,8 +15,8 @@ android {
         minSdk = 21
         targetSdk = 30
         applicationId = "com.netease.yunxin.app.chatroom"
-        versionCode = 132
-        versionName = "1.3.2"
+        versionCode = 140
+        versionName = "1.4.0"
         multiDexEnabled = true
     }
 
