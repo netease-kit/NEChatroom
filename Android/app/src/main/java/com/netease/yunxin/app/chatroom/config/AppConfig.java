@@ -15,8 +15,8 @@ public class AppConfig {
   // 获取userUuid和对应的userToken，请参考https://doc.yunxin.163.com/neroom/docs/TY1NzM5MjQ?platform=server
   public static final String ACCOUNT = "your userUuid";
   public static final String TOKEN = "your userToken";
-  // 跑通Server Demo后，替换为实际的host,默认是http://127.0.0.1:9981 需要连网络代理运行
-  public static final String BASE_URL = "http://127.0.0.1:9981";
+  // 跑通Server Demo后，替换为实际的host
+  public static final String BASE_URL = "";
   private static final int ONLINE_CONFIG_ID = 569;
   private static final int OVERSEA_CONFIG_ID = 75;
 
