@@ -126,7 +126,7 @@
 
 - (void)canUseEarback {
   self.earbackSwitch.enabled = true;
-  self.earbackSwitch.on = true;
+  //  self.earbackSwitch.on = true;
 }
 
 - (void)canNotUseEarback {

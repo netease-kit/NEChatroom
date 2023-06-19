@@ -7,7 +7,6 @@
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import "NEUIViewFactory.h"
 #import "NEVoiceRoomLocalized.h"
-#import "NTESFontMacro.h"
 
 @interface NEUINoticePopView ()
 @property(nonatomic, strong) UIView *containerView;
@@ -18,6 +17,15 @@
 @end
 
 @implementation NEUINoticePopView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+    self.backgroundColor = [UIColor whiteColor];
+    [self ntes_setupViews];
+  }
+  return self;
+}
 
 - (void)ntes_setupViews {
   self.backgroundColor = [UIColor ne_colorWithHex:0x00000 alpha:0.5];
@@ -72,7 +80,7 @@
                                               title:NELocalizedString(@"公告")
                                           textColor:[UIColor ne_colorWithHex:0x222222]
                                       textAlignment:NSTextAlignmentLeft
-                                               font:TextFont_16];
+                                               font:[UIFont systemFontOfSize:16]];
   }
   return _titleLable;
 }
@@ -84,7 +92,7 @@
                                     title:NELocalizedString(@"本应用为示例产品，请勿商用。")
                                 textColor:[UIColor ne_colorWithHex:0x222222]
                             textAlignment:NSTextAlignmentLeft
-                                     font:TextFont_14];
+                                     font:[UIFont systemFontOfSize:14]];
     //        [UILabel  changeLineSpaceForLabel:_contentLabel WithSpace:5];
     _contentLabel.numberOfLines = 0;
   }

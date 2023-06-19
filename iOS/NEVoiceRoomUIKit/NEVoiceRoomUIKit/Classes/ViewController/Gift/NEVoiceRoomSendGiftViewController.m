@@ -16,6 +16,7 @@
 #import "NEVoiceRoomSendGiftCell.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUI.h"
+#import "NEVoiceRoomUILog.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEVoiceRoomSendGiftViewController () <UICollectionViewDelegate,
@@ -125,8 +126,7 @@
 
   @weakify(self);
   [RACObserve(self, datas) subscribeNext:^(id _Nullable x) {
-    @strongify(self);
-    ntes_main_async_safe(^{
+    @strongify(self) ntes_main_async_safe(^{
       for (NEVoiceRoomSeatItem *item in self->_datas) {
         //            NSLog(@"麦位信息 --- index = %ld,status = %ld,icon =
         //            %@",(long)item.index,(long)item.status,item.icon);
@@ -136,16 +136,15 @@
   }];
 
   [RACObserve(self, anchorMicInfo) subscribeNext:^(id _Nullable x) {
-    @strongify(self);
-    ntes_main_async_safe(^{
+    @strongify(self) ntes_main_async_safe(^{
       [self.giftToCollectionView reloadData];
     });
   }];
   self.btnPopover.willDismissHandler = ^{
-    @strongify(self);
-    self.bottomSendGiftIcon.selected = !self.bottomSendGiftIcon.selected;
+    @strongify(self) self.bottomSendGiftIcon.selected = !self.bottomSendGiftIcon.selected;
   };
 
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [self getSeatInfo];
 
   [self collectionView:self.collectionView
@@ -244,6 +243,7 @@
 
 #pragma mark - 获取麦位信息
 - (void)getSeatInfo {
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
                                             NEVoiceRoomSeatInfo *_Nullable seatInfo) {
     if (code == 0 && seatInfo) {

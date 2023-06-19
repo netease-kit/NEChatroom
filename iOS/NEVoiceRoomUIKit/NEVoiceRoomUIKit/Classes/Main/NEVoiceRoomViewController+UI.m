@@ -5,7 +5,6 @@
 #import <Masonry/Masonry.h>
 #import <NEUIKit/NEUIBackNavigationController.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
-#import <libextobjc/extobjc.h>
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMicInviteeListVC.h"
 #import "NEVoiceRoomLocalized.h"
@@ -97,11 +96,11 @@
 - (NSMutableArray<NEVoiceRoomUIAlertAction *> *)setupAlertActions {
   NSMutableArray<NEVoiceRoomUIAlertAction *> *actions = @[].mutableCopy;
   // 抱麦操作
-  NEVoiceRoomUIAlertAction *inviteAction = [NEVoiceRoomUIAlertAction
+  @weakify(self) NEVoiceRoomUIAlertAction *inviteAction = [NEVoiceRoomUIAlertAction
       actionWithTitle:NELocalizedString(@"将成员抱上麦")
                  type:NEUIAlertActionTypeInviteMic
               handler:^(id _Nonnull info) {
-                NEVoiceRoomSeatItem *seatItem = (NEVoiceRoomSeatItem *)info;
+                @strongify(self) NEVoiceRoomSeatItem *seatItem = (NEVoiceRoomSeatItem *)info;
                 NEUIMicInviteeListVC *inviteeVC = [[NEUIMicInviteeListVC alloc] init];
                 inviteeVC.seatIndex = seatItem.index;
                 NEUIBackNavigationController *navigationVC =
@@ -218,7 +217,7 @@
                     cancelSeatRequest:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                       if (code == 0) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                          [self.view dismissToast];
+                          @strongify(self)[self.view dismissToast];
                         });
                       }
                     }];
@@ -244,16 +243,15 @@
       [NEVoiceRoomUIAlertAction actionWithTitle:NELocalizedString(@"退出并解散房间")
                                            type:NEUIAlertActionTypeExistRoom
                                         handler:^(id _Nonnull info) {
-                                          [self closeRoom];
+                                          @strongify(self)[self closeRoom];
                                         }];
   [actions addObject:exitAction];
   return actions;
 }
 
 - (void)sendChatroomNotifyMessage:(NSString *)content {
-  NEVoiceRoomChatViewMessage *message = [[NEVoiceRoomChatViewMessage alloc] init];
-  message.type = NEVoiceRoomChatViewMessageTypeNotication;
-  message.notication = content;
+  NESocialChatroomNotiMessage *message = [[NESocialChatroomNotiMessage alloc] init];
+  message.notification = content;
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.chatView addMessages:@[ message ]];
   });

@@ -4,7 +4,6 @@
 
 #import "NEUIUserInfoCell.h"
 #import <NEUIKit/UIColor+NEUIExtension.h>
-#import <NEUIKit/UIFont+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import <SDWebImage/SDWebImage.h>
 #import "NEVoiceRoomLocalized.h"
@@ -86,7 +85,7 @@
   if (!_titleLab) {
     _titleLab = [[UILabel alloc] init];
     _titleLab.textColor = [UIColor ne_colorWithHex:0x222222];
-    _titleLab.font = [UIFont ne_font:14];
+    _titleLab.font = [UIFont systemFontOfSize:14];
     _titleLab.text = NELocalizedString(@"未知");
     [_titleLab sizeToFit];
   }

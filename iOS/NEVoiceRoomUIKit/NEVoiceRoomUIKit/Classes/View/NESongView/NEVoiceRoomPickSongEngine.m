@@ -87,7 +87,7 @@ static int NEPageSize = 20;
 - (void)getKaraokeSongOrderedList:(SongListBlock)callback {
   [[NEOrderSong getInstance]
       getOrderedSongsWithCallback:^(NSInteger code, NSString *_Nullable msg,
-                                    NSArray<NEOrderSongOrderSongModel *> *_Nullable orderSongs) {
+                                    NSArray<NEOrderSongResponse *> *_Nullable orderSongs) {
         if (code != 0) {
           callback([NSError errorWithDomain:@"getVoiceRoomSongOrderedList" code:code userInfo:nil]);
         } else {
@@ -344,7 +344,7 @@ static int NEPageSize = 20;
     if (!currentSongitem) {
       return;
     }
-    NEOrderSongOrderSongModel *orderSong = [NEOrderSongOrderSongModel new];
+    NEOrderSongOrderSongParams *orderSong = [[NEOrderSongOrderSongParams alloc] init];
     orderSong.songId = songId;
     orderSong.songName = [NSString stringWithFormat:@"%@", currentSongitem.songName];
     orderSong.songCover = [NSString stringWithFormat:@"%@", currentSongitem.songCover];
@@ -391,7 +391,7 @@ static int NEPageSize = 20;
     [[NEOrderSong getInstance]
         orderSong:orderSong
          callback:^(NSInteger code, NSString *_Nullable msg,
-                    NEOrderSongOrderSongModel *_Nullable object) {
+                    NEOrderSongResponse *_Nullable object) {
            if (code != 0) {
              NSString *message = nil;
              if (code == SONG_ERROR_SONG_POINTED) {
@@ -495,17 +495,18 @@ static int NEPageSize = 20;
   return second;
 }
 
-- (NEOrderSongOrderSongModel *)getNextSong {
+- (NEOrderSongResponse *)getNextSong {
   NSMutableArray *tempPickedSongArray = [[self pickedSongArray] mutableCopy];
   BOOL songMatched = NO;
-  NEOrderSongOrderSongModel *nextSong;
-  for (NEOrderSongOrderSongModel *orderSongModel in tempPickedSongArray) {
+  NEOrderSongResponse *nextSong;
+  for (NEOrderSongResponse *orderSongModel in tempPickedSongArray) {
     if (songMatched) {
       nextSong = orderSongModel;
       break;
     }
-    if ([orderSongModel.songId isEqualToString:self.currrentSongModel.playMusicInfo.songId] &&
-        orderSongModel.oc_channel == self.currrentSongModel.playMusicInfo.oc_channel) {
+    if ([orderSongModel.orderSong.songId
+            isEqualToString:self.currrentSongModel.playMusicInfo.songId] &&
+        orderSongModel.orderSong.oc_channel == self.currrentSongModel.playMusicInfo.oc_channel) {
       songMatched = YES;
     }
   }

@@ -22,7 +22,7 @@
   [NEVoiceRoomUIManager.sharedInstance
       loginWithAccount:accountId
                  token:accessToken
-              nickname:@"nickname"
+              nickname:@"nickName"
               callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
                 if (code != 0) {
                   NSLog(@"登录失败");
@@ -39,10 +39,16 @@
 - (void)vr_setupVoiceRoom {
   NEVoiceRoomKitConfig *config = [[NEVoiceRoomKitConfig alloc] init];
   config.appKey = [self getAppkey];
+  NSMutableDictionary *mutableDict;
   BOOL isOutsea = isOverSea;
   if (isOutsea) {
-    config.extras = @{@"serverUrl" : @"oversea"};
+    mutableDict = [@{@"serverUrl" : @"oversea"} mutableCopy];
   }
+  if (!mutableDict) {
+    mutableDict = [NSMutableDictionary dictionary];
+  }
+  mutableDict[@"baseUrl"] = kApiHost;
+  config.extras = mutableDict;
   [NEVoiceRoomUIManager.sharedInstance
       initializeWithConfig:config
                   callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc) {
@@ -57,9 +63,7 @@
   /// 点歌台属配置初始化
   NEOrderSongConfig *orderSongConfig = [[NEOrderSongConfig alloc] init];
   orderSongConfig.appKey = [self getAppkey];
-  if (isOutsea) {
-    orderSongConfig.extras = @{@"serverUrl" : @"oversea"};
-  }
+  orderSongConfig.extras = mutableDict;
   [[NEOrderSong getInstance]
       initializeWithConfig:orderSongConfig
                   callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable objc){

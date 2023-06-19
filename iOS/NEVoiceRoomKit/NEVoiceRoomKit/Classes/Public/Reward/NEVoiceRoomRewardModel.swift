@@ -33,21 +33,23 @@ public class NEVoiceRoomBatchGiftModel: NSObject {
   public var rewarderUserUuid: String = ""
 //  // 打赏者昵称
   public var rewarderUserName: String = ""
-  public var rewardeeUserUuid: String = ""
-  // 被打赏者昵称
-  public var rewardeeUserName: String = ""
+//  public var rewardeeUserUuid: String = ""
+//  // 被打赏者昵称
+//  public var rewardeeUserName: String = ""
 
+  /// 麦上主播或者观众打赏信息
   public var seatUserReward: [NEVoiceRoomBatchSeatUserReward]
+  ///
+  public var rewardeeUsers: [NEVoiceRoomBatchSeatUserRewardee]
 
   internal init(_ rewardMsg: _NEVoiceRoomBatchRewardMessage) {
     sendAccout = rewardMsg.senderUserUuid ?? ""
     giftId = rewardMsg.giftId ?? 0
     giftCount = rewardMsg.giftCount ?? 0
-    rewarderUserName = rewardMsg.rewarderUserName ?? ""
-    rewarderUserUuid = rewardMsg.rewarderUserUuid ?? ""
-    rewardeeUserName = rewardMsg.rewardeeUserName ?? ""
-    rewardeeUserUuid = rewardMsg.rewardeeUserUuid ?? ""
+    rewarderUserName = rewardMsg.userName ?? ""
+    rewarderUserUuid = rewardMsg.userUuid ?? ""
     seatUserReward = rewardMsg.seatUserReward.map { NEVoiceRoomBatchSeatUserReward($0) }
+    rewardeeUsers = rewardMsg.targets.map { NEVoiceRoomBatchSeatUserRewardee($0) }
   }
 }
 
@@ -66,6 +68,21 @@ public class NEVoiceRoomBatchSeatUserReward: NSObject {
       userName = batchSeatUserReward.userName
       rewardTotal = batchSeatUserReward.rewardTotal
       icon = batchSeatUserReward.icon
+    }
+  }
+}
+
+@objcMembers
+public class NEVoiceRoomBatchSeatUserRewardee: NSObject {
+  public var userUuid: String?
+  public var userName: String?
+  public var icon: String?
+
+  internal init(_ batchSeatUserReward: _NEVoiceRoomBatchSeatUserRewardee?) {
+    if let batchSeatUserRewardee = batchSeatUserReward {
+      userUuid = batchSeatUserRewardee.userUuid
+      userName = batchSeatUserRewardee.userName
+      icon = batchSeatUserRewardee.icon
     }
   }
 }

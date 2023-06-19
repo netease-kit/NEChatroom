@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
-#import "NEUIBaseView.h"
 #import "NEUIChatroomContext.h"
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,7 +47,7 @@ typedef NS_ENUM(NSUInteger, NEUIMuteType) {
 - (void)footerDidReceiveMusicClickAciton;
 @end
 
-@interface NEVoiceRoomFooterView : NEUIBaseView
+@interface NEVoiceRoomFooterView : UIView
 
 @property(nonatomic, weak) id<NEVoiceRoomFooterFunctionAreaDelegate> delegate;
 /// 用户角色
@@ -62,8 +61,6 @@ typedef NS_ENUM(NSUInteger, NEUIMuteType) {
 - (void)cancelMute;
 /// 上下麦 更新 观众的操作按钮
 - (void)updateAudienceOperatingButton:(BOOL)isOnSeat;
-
-- (void)configPickSongUnreadNumber:(NSInteger)number;
 @end
 
 NS_ASSUME_NONNULL_END

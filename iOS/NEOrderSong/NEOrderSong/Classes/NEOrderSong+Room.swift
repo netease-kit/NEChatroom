@@ -8,10 +8,10 @@ import UIKit
 
 // 加入扩展
 public extension NEOrderSong {
-  func configRoomSetting(_ roomUuid: String) {
+  func configRoomSetting(_ roomUuid: String, liveRecordId: UInt64) {
     _audioPlayService = NEOrderSongAudioPlayService(roomUuid: roomUuid)
     _audioPlayService?.callback = self
-    musicService = NEOrderSongMusicService(roomUuid)
+    musicService = NEOrderSongMusicService(liveRecordId)
     NERoomKit.shared().roomService.getRoomContext(roomUuid: roomUuid)?.addRoomListener(listener: self)
   }
 

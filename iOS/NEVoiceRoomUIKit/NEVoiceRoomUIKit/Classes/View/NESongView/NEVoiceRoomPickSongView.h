@@ -12,20 +12,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resumeSong;
 
-- (void)nextSong:(NEOrderSongOrderSongModel *_Nullable)orderSongModel;
+- (void)nextSong:(NEOrderSongResponseOrderSongModel *_Nullable)orderSongModel;
 
 - (void)volumeChanged:(float)volume;
 
 @end
 
-typedef bool (^IsUserOnSeat)(void);
 typedef void (^ApplyOnSeat)(void);
 
 @interface NEVoiceRoomPickSongView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame detail:(NEVoiceRoomInfo *)detail;
 
-@property(nonatomic, copy) IsUserOnSeat isUserOnSeat;
 @property(nonatomic, copy) ApplyOnSeat applyOnseat;
 
 @property(nonatomic, weak) id<NEVoiceRoomPickSongViewProtocol> delegate;

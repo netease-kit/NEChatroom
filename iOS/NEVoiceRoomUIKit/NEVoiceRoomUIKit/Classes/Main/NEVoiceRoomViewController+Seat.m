@@ -6,6 +6,7 @@
 #import "NEVoiceRoomFloatWindowSingleton.h"
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
+#import "NEVoiceRoomUILog.h"
 #import "NEVoiceRoomViewController+Seat.h"
 #import "NEVoiceRoomViewController+Utils.h"
 #import "NSArray+NEUIExtension.h"
@@ -13,11 +14,12 @@
 
 @implementation NEVoiceRoomViewController (Seat)
 - (void)getSeatInfo {
-  [NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
-                                            NEVoiceRoomSeatInfo *_Nullable seatInfo) {
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+  @weakify(self)[NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
+                                                          NEVoiceRoomSeatInfo *_Nullable seatInfo) {
     if (code == 0 && seatInfo) {
       dispatch_async(dispatch_get_main_queue(), ^{
-        NEVoiceRoomSeatItem *anchorSeatInfo =
+        @strongify(self) NEVoiceRoomSeatItem *anchorSeatInfo =
             [NEInnerSingleton.singleton fetchAnchorItem:seatInfo.seatItems];
         NSArray *otherDatas =
             [NEInnerSingleton.singleton fetchAudienceSeatItems:seatInfo.seatItems];
@@ -38,17 +40,19 @@
     }
   }];
   [self updateRoomInfo];
-  [NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
-                                            NEVoiceRoomSeatInfo *_Nullable seatInfo) {
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+  @weakify(self)[NEVoiceRoomKit.getInstance getSeatInfo:^(NSInteger code, NSString *_Nullable msg,
+                                                          NEVoiceRoomSeatInfo *_Nullable seatInfo) {
     if (code == 0 && seatInfo) {
       dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.role == NEVoiceRoomRoleHost) {
+        @strongify(self) if (self.role == NEVoiceRoomRoleHost) {
           self.connectorArray = [seatInfo.seatItems ne_filter:^BOOL(NEVoiceRoomSeatItem *obj) {
                                   return obj.status == NEVoiceRoomSeatItemStatusWaiting;
                                 }].mutableCopy;
           // 刷新请求连麦队列
           [self.connectListView refreshWithDataArray:self.connectorArray];
-        } else {
+        }
+        else {
           NEVoiceRoomSeatItem *selfSeat =
               [seatInfo.seatItems ne_find:^BOOL(NEVoiceRoomSeatItem *obj) {
                 return [obj.user isEqualToString:[NEVoiceRoomKit getInstance].localMember.account];
@@ -57,9 +61,12 @@
             // 自己已经在麦上，更新底部工具栏
             [self.roomFooterView updateAudienceOperatingButton:YES];
             self.context.rtcConfig.micOn = [NEVoiceRoomKit getInstance].localMember.isAudioOn;
-            if (!self.context.rtcConfig.micOn && self.lastSelfItem == nil) {
+            if (!self.context.rtcConfig.micOn && self.lastSelfItem == nil &&
+                ![NEVoiceRoomKit getInstance].localMember.isAudioBanned) {
               /// 麦克风关闭，并且原来不在麦上
               /// 打开麦克风
+              [NEVoiceRoomUILog infoLog:@"GetSeatInfo"
+                                   desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
               [self unmuteAudio:YES];
             }
             self.lastSelfItem = selfSeat;
@@ -78,7 +85,8 @@
         NEVoiceRoomSeatItemStatus tempStatus = self.selfStatus;
         [self updateAudienceToast:seatInfo.seatItems];
         if (tempStatus == NEVoiceRoomSeatItemStatusInitial &&
-            self.selfStatus == NEVoiceRoomSeatItemStatusTaken) {
+            self.selfStatus == NEVoiceRoomSeatItemStatusTaken &&
+            ![NEVoiceRoomKit getInstance].localMember.isAudioBanned) {
           [self unmuteAudio:YES];
         }
       });
@@ -165,24 +173,30 @@
     case NEVoiceRoomSeatItemStatusInitial: {  // 无人
       switch (self.selfStatus) {
         case NEVoiceRoomSeatItemStatusInitial: {
+          // 当前正在申请中，直接返回
+          for (UIView *subView in self.view.subviews) {
+            if (subView.tag == KNEVoiceRoomToastBarTag &&
+                ((NEUIToastBar *)subView).infoLab.text ==
+                    NELocalizedString(@"已申请上麦，等待通过...")) {
+              return;
+            }
+          }
           // 申请上麦
           __weak typeof(self) weakSelf = self;
+          [self.view showToastWithMessage:NELocalizedString(@"已申请上麦，等待通过...")
+                                    state:NEUIToastCancel
+                                   cancel:^{
+                                     [weakSelf.alertView
+                                         showWithTypes:@[ @(NEUIAlertActionTypeCancelOnMicRequest) ]
+                                                  info:seatItem];
+                                   }];
           [NEVoiceRoomKit.getInstance
               submitSeatRequest:seatItem.index
                       exclusive:YES
                        callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                          dispatch_async(dispatch_get_main_queue(), ^{
-                           if (code == 0) {
-                             [weakSelf.view
-                                 showToastWithMessage:NELocalizedString(@"已申请上麦，等待通过...")
-                                                state:NEUIToastCancel
-                                               cancel:^{
-                                                 [weakSelf.alertView showWithTypes:@[
-                                                   @(NEUIAlertActionTypeCancelOnMicRequest)
-                                                 ]
-                                                                              info:seatItem];
-                                               }];
-                           } else {
+                           if (code != 0) {
+                             [weakSelf.view dismissToast];
                              [NEVoiceRoomToast showToast:NELocalizedString(@"该麦位正在被操作")];
                            }
                          });
@@ -234,22 +248,11 @@
   if (![self isAnchor] && [self isSelfWithSeatAccount:account]) {
     self.mute = false;
     [NEVoiceRoomToast showToast:NELocalizedString(@"您已下麦")];
+    [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
     [self muteAudio:NO];
     [self.roomFooterView updateAudienceOperatingButton:NO];
     self.lastSelfItem = nil;
   }
-  if ([account isEqualToString:self.detail.liveModel.userUuid]) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (self.presentedViewController) {
-        [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
-      }
-      [self.navigationController popViewControllerAnimated:YES];
-    });
-    [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
-    [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
-  }
-
-  NSLog(@"下麦");
 }
 - (void)onSeatKicked:(NSInteger)seatIndex
              account:(NSString *)account
@@ -269,6 +272,8 @@
     self.mute = false;
     [NEVoiceRoomToast showToast:NELocalizedString(@"您已被主播踢下麦")];
     [self.view dismissToast];
+    [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
+#warning 放到VoiceRoomKit里
     [self muteAudio:NO];
     [self.roomFooterView updateAudienceOperatingButton:NO];
     self.lastSelfItem = nil;
@@ -304,6 +309,7 @@
   [self NotifityMessage:NELocalizedString(@"已上麦") account:account];
   if (![account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) return;
   [self.view dismissToast];
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [self unmuteAudio:YES];
   [self.roomFooterView updateAudienceOperatingButton:YES];
   NSLog(@"房主同意请求");
@@ -312,6 +318,7 @@
                       account:(NSString *)account
                     operateBy:(NSString *)operateBy {
   [self NotifityMessage:NELocalizedString(@"申请麦位已被拒绝") account:account];
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [self getSeatInfo];
   if ([self isAnchor]) return;
   if (![account isEqualToString:NEVoiceRoomKit.getInstance.localMember.account]) return;
@@ -342,6 +349,7 @@
     [NEVoiceRoomToast
         showToast:[NSString stringWithFormat:@"%@%ld", NELocalizedString(@"您已被主播抱上麦位"),
                                              seatIndex - 1]];
+    [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
     [self unmuteAudio:NO];
     [self.roomFooterView updateAudienceOperatingButton:YES];
     [self.view dismissToast];
@@ -350,6 +358,7 @@
 - (void)onMemberAudioMuteChanged:(NEVoiceRoomMember *)member
                             mute:(BOOL)mute
                        operateBy:(NEVoiceRoomMember *)operateBy {
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   [self getSeatInfo];
 }
 - (void)onMemberAudioBanned:(NEVoiceRoomMember *)member banned:(BOOL)banned {
@@ -363,6 +372,7 @@
   if (![NEVoiceRoomKit.getInstance.localMember.account isEqualToString:member.account]) {
     return;
   }
+  [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   if (!banned) {
     if (!self.mute) {
       [self unmuteAudio:NO];
@@ -412,9 +422,8 @@
   if (!member) return;
 
   NSMutableArray *messages = @[].mutableCopy;
-  NEVoiceRoomChatViewMessage *message = [NEVoiceRoomChatViewMessage new];
-  message.type = NEVoiceRoomChatViewMessageTypeNotication;
-  message.notication = [NSString stringWithFormat:@"%@ %@", member.name, msg];
+  NESocialChatroomNotiMessage *message = [NESocialChatroomNotiMessage new];
+  message.notification = [NSString stringWithFormat:@"%@ %@", member.name, msg];
   [messages addObject:message];
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.chatView addMessages:messages];

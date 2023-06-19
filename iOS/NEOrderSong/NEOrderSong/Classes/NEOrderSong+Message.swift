@@ -43,14 +43,11 @@ public extension NEOrderSong {
   func handleCustomMessage(_ message: NERoomChatCustomMessage) {
     NEOrderSongLog.infoLog(kitTag, desc: "Receive custom message.")
     guard let dic = message.attachStr?.toDictionary() else { return }
-    if let data = dic["data"] as? [String: Any],
-       let cmd = data["cmd"] as? Int {
+    if let cmd = dic["type"] as? Int {
       switch cmd {
       // 合唱消息
-      case NEOrderSongChorusActionType.startSong.rawValue ... NEOrderSongChorusActionType.next
+      case NEOrderSongChorusActionType.startSong.rawValue ... NEOrderSongChorusActionType.resumeSong
         .rawValue:
-        NEOrderSongLog.infoLog(kitTag, desc: "Chorus message. \(data)")
-        guard let dic = data["data"] as? [String: Any] else { return }
         handleChorusMessage(cmd, data: dic)
       case NEOrderSongPickSongActionType.pick.rawValue ... NEOrderSongPickSongActionType
         .listChange.rawValue: // 点歌台
@@ -63,8 +60,9 @@ public extension NEOrderSong {
   /// 处理合唱消息
   func handleChorusMessage(_ cmd: Int, data: [String: Any]) {
     NEOrderSongLog.messageLog(kitTag, desc: "Handle chorus message. Cmd: \(cmd). Data: \(data)")
+    guard let dic = data["data"] as? [String: Any] else { return }
     let actionType = NEOrderSongChorusActionType(rawValue: cmd) ?? .startSong
-    guard let songModel = NEOrderSongDecoder.decode(NEOrderSongSongModel.self, param: data)
+    guard let songModel = NEOrderSongDecoder.decode(NEOrderSongSongModel.self, param: dic)
     else { return }
     // 回调
     DispatchQueue.main.async {
@@ -102,21 +100,16 @@ public extension NEOrderSong {
     if let data = dic["data"] as? [String: Any] {
       temp = data
     }
+
     let actionType = NEOrderSongPickSongActionType(rawValue: cmd) ?? .pick
-    let orderSongModel = NEOrderSongDecoder.decode(NEOrderSongOrderSongModel.self, param: temp)
+    let orderSongModel = NEOrderSongDecoder.decode(NEOrderSongProtocolResult.self, param: temp)
     if let attachment = temp["attachment"] as? String {
       orderSongModel?.attachment = attachment
-    }
-    if let operato = temp["operator"] as? [String: Any] {
-      orderSongModel?.actionOperator = NEOrderSongDecoder.decode(
-        NEOrderSongOperator.self,
-        param: operato
-      )
     }
 
     if let nextOrderSong = temp["nextOrderSong"] as? [String: Any] {
       orderSongModel?.nextOrderSong = NEOrderSongDecoder.decode(
-        NEOrderSongOrderSongModel.self,
+        NEOrderSongResponse.self,
         param: nextOrderSong
       )
     }

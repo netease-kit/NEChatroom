@@ -70,7 +70,7 @@
   if (indexPath.row == 0) {
     NSLog(@"主播头像 --- %@", anchorData.icon);
     [cell installWithModel:anchorData];
-    cell.info.text = NELocalizedString(@"主持");
+    cell.info.text = NELocalizedString(@"房主");
   } else {
     cell.info.text = [NSString stringWithFormat:@"%ld", indexPath.row];
     if ([datas count] > indexPath.row - 1) {

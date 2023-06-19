@@ -2,69 +2,7 @@
 
 
 ```
-┌── NEListenTogetherKit                # 一起听基于NERoom封装组件
-│   ├── NEListenTogetherKit  
-│   │   ├── NEListenTogetherKit            # 单例对象
-│   │   ├── NEListenTogetherKit+Auth        # 单例对象拓展登录相关接口
-│   │   ├── NEListenTogetherKit+CopyrightedMedia # 单例对象拓展版权相关接口
-│   │   ├── NEListenTogetherKit+Message # 单例对象拓展消息相关接口
-│   │   ├── NEListenTogetherKit+Music  # 单例对象拓展音乐相关接口
-│   │   ├── NEListenTogetherKit+Room  # 单例对象拓展房间相关接口
-│   │   ├── NEListenTogetherKit+Rtc  # 单例对象拓展RTC相关接口
-│   │   ├── NEListenTogetherKit+Seat # 单例对象拓展麦位相关接口
-│   │   └──  NEListenTogetherKit+Song # 单例对象拓展播放回调相关接口
-│   │   
-│   ├── Service
-│   │   ├── NEListenTogetherKitAudioPlayService # 播放具体实现
-│   │   ├── NEListenTogetherKitAudioPlayService+Delegate # 播放回调
-│   │   ├── NEListenTogetherKitCopyrightedMediaService  # 版权Token相关处理
-│   │   ├── NEListenTogetherKitMusicService  # 音乐接口具体实现
-│   │   └──NEListenTogetherKitRoomService #房间相关具体实现
-│   │   
-│   ├── Public
-│   │   ├── NEListenTogetherKitAuthListener # 登录监听
-│   │   ├── NEListenTogetherKitCopyrightedMediaListener # 版权监听
-│   │   ├── NEListenTogetherKitListener # 一起听监听
-│   │   ├── NEListenTogetherKitChorusActionType # 业务逻辑信令定义
-│   │   ├── Common 文件夹 # 通用定义
-│   │   ├── Message 文件夹 # 文本消息相关model定义
-│   │   ├── Music 文件夹 # 歌曲相关model定义
-│   │   ├── Reward 文件夹 # 礼物相关model定义
-│   │   ├── Room 文件夹 # 房间相关model定义
-│   │   └── Seat 文件夹 # 麦位相关model定义
-│   │
-│   │   
-│   │
-├── NEListenTogetherUIKit              # 一起听UI视图
-│   ├── NEListenTogetherRoomListViewController # 语聊房列表视图控制器
-│   │   ├── NEListenTogetherUIEmptyListView   # 空列表提示视图
-│   │   └── NEListenTogetherUILiveListCell    # 语聊歌房信息预览
-│   │
-│   ├── NEListenTogetherOpenRoomViewController # 创建语聊房视图控制器
-│   │   ├── NEListenTogetherUICreateRoomNameView #创建房间视图
-│   │   └── UIButton                             # 创建房间按钮
-│   │
-│   │
-│   │
-│   │
-│   ├──NEListenTogetherViewController   #语聊房视图控制器
-│   │   ├── NEListenTogetherViewController+Seat #语聊房麦位相关逻辑
-│   │   ├── NEListenTogetherViewController+UI #语聊房布局相关
-│   │   ├── NEListenTogetherViewController+Utils #语聊房其他逻辑
-│   │   ├── NEListenTogetherHeaderView                  # 头部视图
-│   │   ├── NEListenTogetherFooterView                  # 底部工具栏，包含输入框等控件
-│   │   ├── NEListenTogetherChatView                    # 聊天室视图，显示系统通知消息、普通文本消息以及礼物息
-│   │   ├── NEListenTogetherKeyboardToolbarView                # 聊天室文本输入框
-│   │   ├── NEListenTogetherUIConnectListView                    # 主播顶部弹框
-│   │   ├── NEListenTogetherMicQueueView                       # 麦位视图
-│   │   ├── NEListenTogetherLyricActionView                       # 歌词展示页面
-│   │   ├── NEListenTogetherLyricControlView                       # 播放控制器
-│   │   ├── NEListenTogetherPickSongView                       # 歌曲列表视图
-│   │   ├── PlayingStatus                       # 播放状态
-│   │   ├── PlayingAction                       # 歌曲下载完成状态标记位，歌曲基于何种操作下开始
-│   │   └── NEListenTogetherInfo                        # 语聊房信息
-│   │   
-├── NEOrderSong                        # 点歌台相关封装，NEVoiceroomUIKit 使用
+┌── NEOrderSong                        # 点歌台相关封装，NEVoiceroomUIKit 使用
 │    ├── NEOrderSong                    # 单例对象
 │    ├── NEOrderSong+Auth                    # 单例对象拓展登录相关接口
 │    ├── NEOrderSong+CopyrightedMedia                    # 单例对象拓展版权相关接口
@@ -143,22 +81,26 @@
 >若您计划将源码用于生产环境，请确保应用正式上线前已经过全面测试，以免因兼容性等问题造成损失。
 
 1. 克隆示例项目源码仓库至您本地工程。
-2. 在 Podfile 文件中添加类似如下命令导入目标文件。
-```
-pod 'NEVoiceRoomKit'
-```
-3. 打开终端，在 Podfile 所在文件夹中执行如下命令进行安装：
+2. 打开终端，在 Podfile 所在文件夹中执行如下命令进行安装：
 
 ```
 pod install 
 ```
 
-4. 在 NEVoiceRoomExample/NEVoiceRoomExample/AppEnv/Category/AppDelegate+VoiceRoom.m中，替换您自己的AppKey。
+4. 在 NEVoiceRoomExample/NEVoiceRoomExample/AppEnv/Define/AppKey.h 中 ，替换以下信息
 
 ```
-- (NSString *)getAppkey {
- return @"your App Key "
-}
+/// 服务器host
+static NSString *const kApiHost = @"https://127.0.0.1:9981";
+static NSString *const APP_KEY_MAINLAND = @"your mainland appKey";  // 国内用户填写
+// AccountId
+static NSString *const accountId = @"";
+// accessToken
+static NSString *const accessToken = @"";
+
+如果需要配置海外环境，则修改以下内容
+static BOOL isOverSea = NO;  // 是否是海外环境
+static NSString *const APP_KEY_OVERSEA = @"your oversea appKey";  // 海外用户填写
 ```
 
 5. 运行工程。

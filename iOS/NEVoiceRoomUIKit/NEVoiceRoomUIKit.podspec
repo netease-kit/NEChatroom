@@ -45,6 +45,7 @@ Pod::Spec.new do |s|
   s.dependency 'NEAudioEffectKit'
   s.dependency 'NECoreKit'
   s.dependency 'LottieSwift'
+  s.dependency 'NESocialUIKit'
   
   s.frameworks = 'UIKit'
   

@@ -9,15 +9,10 @@ class NetworkConfig {
   /// 自定义url
   var customUrl: String?
   var baseUrl: String {
-    if let url = customUrl {
-      return url
-    } else if isDebug {
-      return "https://roomkit-dev.netease.im"
-    } else {
-      return "https://roomkit.netease.im"
-    }
+    customUrl ?? ""
   }
 
+  var isOverSea: Bool = false
   var isDebug: Bool = false
   var deviceId: String {
     NERoomKit.shared().deviceId()
@@ -69,13 +64,13 @@ internal class NEOrderSongNetwork {
   }
 
   /// 请求session
-  var session: URLSession {
+  lazy var session: URLSession = {
     let sessionConfigure = URLSessionConfiguration.default
     sessionConfigure.httpAdditionalHeaders = ["Content-Type": "application/json;charset=utf-8"]
     sessionConfigure.timeoutIntervalForRequest = 10
     sessionConfigure.requestCachePolicy = .reloadIgnoringLocalCacheData
     return URLSession(configuration: sessionConfigure)
-  }
+  }()
 
   // MARK: - ------------------------- Request --------------------------
 
@@ -161,13 +156,13 @@ internal class NEOrderSongNetwork {
       }
       // 打印requestId
       if let requestId = response["requestId"] as? String {
-        NEOrderSongLog.infoLog(self.tag, desc: "RequestId:\n\(requestId)")
+        NEOrderSongLog.infoLog(self.tag, desc: "Url:\(url) RequestId:\(requestId)")
       }
       guard let code = response["code"] as? Int else {
         failed(makeError(NEOrderSongErrorCode.failed, "Empty code in response body!"))
         return
       }
-      guard code == 0 else {
+      guard code == 200 else {
         let message = response["msg"] as? String ?? "Empty message in response body!"
         NEOrderSongLog.errorLog(
           self.tag,

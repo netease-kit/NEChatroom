@@ -5,11 +5,8 @@
 #ifndef AppKey_h
 #define AppKey_h
 
-/// 服务器host
-static NSString *const kApiHost = @"https://yiyong.netease.im";
-
-// Chatroom host address
-static NSString *const kChatRoomHost = @"http://yiyong-voice-chat.netease.im";
+/// 服务器地址
+static NSString *const kApiHost = @"";
 
 /// 数据收集
 static NSString *const kApiDataHost = @"https://statistic.live.126.net";

@@ -10,7 +10,6 @@
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
 #import "NSString+NTES.h"
-#import "NTESFontMacro.h"
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 #import "UIView+VoiceRoom.h"
@@ -30,6 +29,15 @@
 
 @implementation NEVoiceRoomHeaderView
 
+- (instancetype)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+    self.backgroundColor = [UIColor whiteColor];
+    [self ntes_setupViews];
+  }
+  return self;
+}
+
 - (void)ntes_setupViews {
   self.backgroundColor = UIColor.clearColor;
   [self addSubview:self.roomNameLabel];
@@ -48,7 +56,8 @@
   [self.onlinePersonLabel mas_makeConstraints:^(MASConstraintMaker *make) {
     make.bottom.right.equalTo(self);
     make.height.mas_equalTo(20);
-    make.width.mas_equalTo([@"在线%@人" sizeWithFont:Font_Default(12) maxH:20].width + 10);
+    make.width.mas_equalTo([@"在线%@人" sizeWithFont:[UIFont systemFontOfSize:12] maxH:20].width +
+                           10);
   }];
   [self.closeRoomButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.top.right.equalTo(self);
@@ -59,7 +68,7 @@
     make.left.bottom.equalTo(self);
     make.height.mas_equalTo(CGSizeMake(54, 20));
     make.width.mas_equalTo(
-        [NELocalizedString(@"公告") sizeWithFont:Font_Default(12) maxH:20].width + 30);
+        [NELocalizedString(@"公告") sizeWithFont:[UIFont systemFontOfSize:12] maxH:20].width + 30);
   }];
 
   [self.smallButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -87,8 +96,12 @@
 }
 
 - (void)closeRoomButtonClickAction {
-  if (_delegate && [_delegate respondsToSelector:@selector(headerExitAction)]) {
-    [self.delegate headerExitAction];
+  if (_delegate && [_delegate respondsToSelector:@selector(headerExitAction:)]) {
+    self.closeRoomButton.enabled = false;
+    __weak typeof(self) weakSelf = self;
+    [self.delegate headerExitAction:^{
+      weakSelf.closeRoomButton.enabled = true;
+    }];
   }
 }
 - (void)smallButtonClickAction {
@@ -120,7 +133,8 @@
       [NSString stringWithFormat:NELocalizedString(@"在线%@人"), @(onlinePeople)];
   self.onlinePersonLabel.text = onLineNumberString;
   [self.onlinePersonLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-    make.width.mas_equalTo([onLineNumberString sizeWithFont:Font_Default(12) maxH:20].width + 10);
+    make.width.mas_equalTo(
+        [onLineNumberString sizeWithFont:[UIFont systemFontOfSize:12] maxH:20].width + 10);
   }];
 }
 
@@ -142,7 +156,7 @@
                                                  title:NELocalizedString(@"房间名称")
                                              textColor:UIColor.whiteColor
                                          textAlignment:NSTextAlignmentLeft
-                                                  font:TextFont_16];
+                                                  font:[UIFont systemFontOfSize:16]];
   }
   return _roomNameLabel;
 }
@@ -153,7 +167,7 @@
                                                      title:NELocalizedString(@"在线0人")
                                                  textColor:UIColor.whiteColor
                                              textAlignment:NSTextAlignmentCenter
-                                                      font:Font_Default(12)];
+                                                      font:[UIFont systemFontOfSize:12]];
     [_onlinePersonLabel setBackgroundColor:UIColorFromRGBA(0x000000, 0.5)];
   }
   return _onlinePersonLabel;
@@ -166,7 +180,7 @@
     [_noticeButton addTarget:self
                       action:@selector(noticeButtonClickAction)
             forControlEvents:UIControlEventTouchUpInside];
-    [_noticeButton setLableFont:Font_Default(12)];
+    [_noticeButton setLableFont:[UIFont systemFontOfSize:12]];
     [_noticeButton setLeftMargin:8 imageSize:CGSizeMake(12, 12)];
     _noticeButton.backgroundColor = UIColorFromRGBA(0x000000, 0.5);
   }
@@ -208,7 +222,7 @@
 - (UILabel *)headerMusicLabel {
   if (!_headerMusicLabel) {
     _headerMusicLabel = [[UILabel alloc] init];
-    _headerMusicLabel.font = Font_Default(12);
+    _headerMusicLabel.font = [UIFont systemFontOfSize:12];
     _headerMusicLabel.textColor = HEXCOLOR(0xFFFFFF);
   }
   return _headerMusicLabel;

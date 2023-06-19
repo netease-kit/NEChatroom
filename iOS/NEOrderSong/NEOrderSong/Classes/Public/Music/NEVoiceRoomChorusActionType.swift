@@ -7,31 +7,31 @@ import Foundation
 @objc
 /// 合唱状态
 public enum NEOrderSongChorusActionType: Int {
-  /// 开始唱歌
-  case startSong = 135
+  /// 开始播放
+  case startSong = 1013
   /// 暂停唱歌
-  case pauseSong = 136
+  case pauseSong = 1014
   /// 已准备好合唱
-  case ready = 137
+  case ready = 1015
   /// 恢复唱歌
-  case resumeSong = 138
-  /// 播放下一首歌
-  case next = 150
+  case resumeSong = 1016
+//  /// 播放下一首歌
+//  case next = 1500
 }
 
 @objc
 /// 点歌状态
 public enum NEOrderSongPickSongActionType: Int {
   /// 点歌
-  case pick = 130
+  case pick = 1008
   /// 删除歌曲
-  case cancelPick = 131
+  case cancelPick = 1009
   /// 切歌
-  case switchSong = 132
+  case switchSong = 1010
   /// 置顶
-  case top = 133
+  case top = 1011
   /// 列表变化
-  case listChange = 134
+  case listChange = 1012
 }
 
 @objc

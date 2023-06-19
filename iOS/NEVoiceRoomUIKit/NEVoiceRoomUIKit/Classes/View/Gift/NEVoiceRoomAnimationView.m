@@ -4,6 +4,7 @@
 
 #import "NEVoiceRoomAnimationView.h"
 #import <Lottie/LOTAnimationView.h>
+@import NESocialUIKit;
 
 @interface NEVoiceRoomAnimationView ()
 
@@ -51,8 +52,7 @@
     return;
   }
   NSString *gift = [self.gifts firstObject];
-  NSBundle *bundle = [NSBundle bundleForClass:self.class];
-  [self.animationView setAnimationNamed:gift inBundle:bundle];
+  [self.animationView setAnimationNamed:gift inBundle:[NESocialBundle bundle]];
   dispatch_async(dispatch_get_main_queue(), ^{
     self.animationView.hidden = NO;
     [self.animationView playWithCompletion:^(BOOL animationFinished) {

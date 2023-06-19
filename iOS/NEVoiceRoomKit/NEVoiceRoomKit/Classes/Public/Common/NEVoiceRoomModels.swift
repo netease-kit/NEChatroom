@@ -43,6 +43,7 @@ public class NEVoiceRoomAnchor: NSObject {
       userUuid = anchor.userUuid
       userName = anchor.userName
       icon = anchor.icon
+      rtcUid = anchor.rtcUid ?? 0
     }
   }
 }
@@ -50,18 +51,19 @@ public class NEVoiceRoomAnchor: NSObject {
 @objcMembers
 /// 直播信息
 public class NEVoiceRoomLiveModel: NSObject {
-  /// 应用编号
-  public var appId: String = ""
+  /// 直播记录编号
+  public var liveRecordId: Int = 0
   /// 房间号
   public var roomUuid: String?
   /// 创建人账号
   public var userUuid: String?
-  /// 直播记录编号
-  public var liveRecordId: Int = 0
+
   /// 直播类型
   public var liveType: NEVoiceRoomLiveRoomType = .multiAudio
   /// 直播记录是否有效 1: 有效 -1 无效
   public var status: Int = 1
+  /// 直播状态
+  public var live: NEVoiceRoomLiveStatus = .idle
   /// 直播主题
   public var liveTopic: String?
   /// 背景图地址
@@ -70,15 +72,14 @@ public class NEVoiceRoomLiveModel: NSObject {
   public var rewardTotal: Int = 0
   /// 观众人数
   public var audienceCount: Int = 0
-  /// 直播状态
-  public var live: NEVoiceRoomLiveStatus = .idle
-  /// 唱歌模式
-  ///  public var singMode: NEKaraokeSingMode = .AIChorus
   /// 麦位人数
   public var onSeatCount: Int = 0
 
   /// 打赏信息
   public var seatUserReward: [NEVoiceRoomBatchSeatUserReward]?
+
+  /// 房间名称
+  var roomName: String?
 
   internal init(_ live: _NECreateLiveLive?) {
     if let live = live {
@@ -91,9 +92,9 @@ public class NEVoiceRoomLiveModel: NSObject {
       cover = live.cover
       rewardTotal = live.rewardTotal ?? 0
       audienceCount = live.audienceCount ?? 0
-      self.live = NEVoiceRoomLiveStatus(rawValue: UInt(live.live ?? 0)) ?? .idle
-      /// singMode = NEKaraokeSingMode(rawValue: live.singMode ?? 0) ?? .AIChorus
+      self.live = NEVoiceRoomLiveStatus(rawValue: Int(live.live ?? 0)) ?? .idle
       onSeatCount = live.onSeatCount ?? 0
+      roomName = live.roomName
       if let infoSeatUserReward = live.seatUserReward {
         seatUserReward = infoSeatUserReward.map { NEVoiceRoomBatchSeatUserReward($0) }
       }
@@ -102,7 +103,7 @@ public class NEVoiceRoomLiveModel: NSObject {
 }
 
 @objcMembers
-/// Karaoke 房间列表
+/// 语聊房 房间列表
 public class NEVoiceRoomList: NSObject {
   /// 数据列表
   public var list: [NEVoiceRoomInfo]?
@@ -112,7 +113,7 @@ public class NEVoiceRoomList: NSObject {
   public var hasNextPage: Bool = false
   internal init(_ list: _NEVoiceRoomListResponse?) {
     if let list = list {
-      pageNum = list.pageNum ?? 0
+      pageNum = list.pageNum ?? 1
       hasNextPage = list.hasNextPage
       if let details = list.list {
         self.list = details.compactMap { detail in

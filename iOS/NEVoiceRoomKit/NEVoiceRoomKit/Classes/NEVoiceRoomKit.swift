@@ -52,18 +52,21 @@ public class NEVoiceRoomKit: NSObject {
 
     /// 非私有化 且要出海 使用默认海外环境
     var overseaAndNotPrivte = false
+
+    if let baseUrl = config.extras["baseUrl"] {
+      NE.config.customUrl = baseUrl
+    }
     if let serverUrl = config.extras["serverUrl"] {
       isDebug = serverUrl == "test"
       isOversea = serverUrl == "oversea"
       if !serverUrl.contains("http"), isOversea {
         overseaAndNotPrivte = true
-        NE.config.customUrl = "https://roomkit-sg.netease.im"
         config.extras["serverUrl"] = "https://roomkit-sg.netease.im"
       }
     }
     NE.config.isDebug = isDebug
+    NE.config.isOverSea = isOversea
     let options = NERoomKitOptions(appKey: config.appKey)
-    options.reuseIM = config.reuseIM
     options.APNSCerName = config.APNSCerName
     options.extras = config.extras
     if overseaAndNotPrivte {
@@ -140,8 +143,6 @@ public class NEVoiceRoomKit: NSObject {
   var isOversea: Bool = false
   // 维护房间上下文
   var roomContext: NERoomContext?
-  // 维护预览房间上下文
-  var previewRoomContext: NEPreviewRoomContext?
 
   // 房间服务
   private var _roomService = NEVoiceRoomRoomService()

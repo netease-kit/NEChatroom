@@ -20,8 +20,7 @@ public extension NEVoiceRoomKit {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Room List.")
     Judge.initCondition({
       self.roomService.getRoomList(
-        liveState.rawValue,
-        pageNum: pageNum,
+        pageNum,
         pageSize: pageSize
       ) { list in
         NEVoiceRoomLog.successLog(kitTag, desc: "Successfully get room list.")
@@ -30,24 +29,6 @@ public extension NEVoiceRoomKit {
         NEVoiceRoomLog.errorLog(
           kitTag,
           desc: "Failed to get room list. Code: \(error.code). Msg: \(error.localizedDescription)"
-        )
-        callback?(error.code, error.localizedDescription, nil)
-      }
-    }, failure: callback)
-  }
-
-  /// 获取当前房间内歌曲信息
-  /// - Parameter callback: 回调
-  func queryPlayingSongInfo(_ roomUuid: String, callback: NEVoiceRoomCallback<NEVoiceRoomPlayMusicInfo>? = nil) {
-    NEVoiceRoomLog.apiLog(kitTag, desc: "Get current song info.")
-    Judge.preCondition({
-      self.roomService.currentInfo(roomUuid) { data in
-        NEVoiceRoomLog.successLog(kitTag, desc: "Successfully get current song info.")
-        callback?(NEVoiceRoomErrorCode.success, nil, data)
-      } failure: { error in
-        NEVoiceRoomLog.errorLog(
-          kitTag,
-          desc: "Failed to get current song info. Code: \(error.code). Msg: \(error.localizedDescription)"
         )
         callback?(error.code, error.localizedDescription, nil)
       }
@@ -275,9 +256,42 @@ extension NEVoiceRoomKit {
     // 初始化播放模块
     context.rtcController.setClientRole(.audience)
     _audioPlayService = NEVoiceRoomAudioPlayService(roomUuid: context.roomUuid)
+
+    let group = DispatchGroup()
+
+    var rtcCode: Int?
+    var rtcMsg: String?
+    var chatCode: Int?
+    var chatMsg: String?
+
     // 加入rtc
-    context.rtcController.joinRtcChannel { rtcCode, rtcMsg, _ in
-      guard rtcCode == 0 else {
+    group.enter()
+    var timestamp = Date().timeIntervalSince1970
+    print("joinRtcChannel Timestamp: \(timestamp)")
+    context.rtcController.joinRtcChannel { code, msg, _ in
+      timestamp = Date().timeIntervalSince1970
+      print("joinRtcChannel callback Timestamp: \(timestamp)")
+      rtcCode = code
+      rtcMsg = msg
+      group.leave()
+    }
+
+    // 加入聊天室
+    group.enter()
+    timestamp = Date().timeIntervalSince1970
+    print("joinChatroom Timestamp: \(timestamp)")
+    context.chatController.joinChatroom { code, msg, _ in
+      timestamp = Date().timeIntervalSince1970
+      print("joinChatroom callback Timestamp: \(timestamp)")
+      chatCode = code
+      chatMsg = msg
+      group.leave()
+    }
+
+    group.notify(queue: .main) {
+      timestamp = Date().timeIntervalSince1970
+      print("joinRoom notify Timestamp: \(timestamp)")
+      if let rtcCode = rtcCode, rtcCode != 0 {
         // 加入rtc 失败，离开房间
         context.leaveRoom()
         NEVoiceRoomLog.errorLog(
@@ -285,23 +299,17 @@ extension NEVoiceRoomKit {
           desc: "Failed to join rtc. Code: \(rtcCode). Msg: \(rtcMsg ?? "")"
         )
         callback?(rtcCode, rtcMsg, nil)
-        return
-      }
-      // 加入聊天室
-      context.chatController.joinChatroom { chatCode, chatMsg, _ in
-        guard chatCode == 0 else {
-          // 加入聊天室失败，离开房间
-          context.leaveRoom()
-          NEVoiceRoomLog.errorLog(
-            kitTag,
-            desc: "Failed to join chatroom. Code: \(chatCode). Msg: \(chatMsg ?? "")"
-          )
-          callback?(chatCode, chatMsg, nil)
-          return
-        }
-//                context.rtcController.getNtpTimeOffset()
+      } else if let chatCode = chatCode, chatCode != 0 {
+        // 加入聊天室失败，离开房间
+        context.leaveRoom()
+        NEVoiceRoomLog.errorLog(
+          kitTag,
+          desc: "Failed to join chatroom. Code: \(chatCode). Msg: \(chatMsg ?? "")"
+        )
+        callback?(chatCode, chatMsg, nil)
+      } else {
         NEVoiceRoomLog.successLog(kitTag, desc: "Successfully join room.")
-        callback?(chatCode, nil, nil)
+        callback?(0, nil, nil)
       }
     }
   }

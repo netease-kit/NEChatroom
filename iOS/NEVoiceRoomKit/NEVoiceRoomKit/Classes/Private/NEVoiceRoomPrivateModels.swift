@@ -37,18 +37,18 @@ internal class _NECreateRoomDefaultInfo: NSObject, Codable {
 @objcMembers
 /// 直播信息
 internal class _NECreateLiveLive: NSObject, Codable {
-  /// 应用编号
-  var appId: String?
+  /// 直播记录编号
+  var liveRecordId: Int?
   /// 房间号
   var roomUuid: String?
   /// 创建人账号
   var userUuid: String?
-  /// 直播记录编号
-  var liveRecordId: Int?
   /// 直播类型
   var liveType: Int?
   /// 直播记录是否有效 1: 有效 -1 无效
   var status: Int?
+  /// 直播状态，0.未开始，1.直播中，2.PK中 3. 惩罚中  4.连麦中  5.等待PK中  6.直播结束
+  var live: Int?
   /// 直播主题
   var liveTopic: String?
   /// 背景图地址
@@ -57,13 +57,11 @@ internal class _NECreateLiveLive: NSObject, Codable {
   var rewardTotal: Int?
   /// 观众人数
   var audienceCount: Int?
-  /// 直播状态，0.未开始，1.直播中，2.PK中 3. 惩罚中  4.连麦中  5.等待PK中  6.直播结束
-  var live: Int?
-  /// 唱歌模式
-  var singMode: Int?
   /// 麦位人数
   var onSeatCount: Int?
-
+  /// 房间名称
+  var roomName: String?
+  /// 打赏信息
   var seatUserReward: [_NEVoiceRoomBatchSeatUserReward]?
 }
 
@@ -99,7 +97,6 @@ internal class _NEVoiceRoomListResponse: NSObject, Codable {
 internal class _NEVoiceRoomInfoResponse: NSObject, Codable {
   var anchor: _NECreateLiveAnchor?
   var live: _NECreateLiveLive?
-  var seatUserReward: [_NEVoiceRoomBatchSeatUserReward]?
 }
 
 /// 设备参数 判断走串行还是实时合唱的参数
@@ -164,21 +161,27 @@ internal class _NEVoiceRoomRewardMessage: NSObject, Codable {
 @objcMembers
 
 internal class _NEVoiceRoomBatchRewardMessage: NSObject, Codable {
-  var subCmd: Int?
-  var type: Int?
+//  var subCmd: Int?
+//  var type: Int?
+  /// 消息发送者用户编号
   var senderUserUuid: String?
+  /// 发送消息时间
   var sendTime: Int?
-  var rewarderUserUuid: String?
+//  var rewarderUserUuid: String?
   // 打赏者昵称
-  var rewarderUserName: String?
+  var userName: String?
 
-  var rewardeeUserUuid: String?
-  // 被打赏者昵称
-  var rewardeeUserName: String?
+  var userUuid: String?
+//  // 被打赏者昵称
+//  var rewardeeUserName: String?
+  /// 礼物编号
   var giftId: Int?
-  var cloudCoin: Int?
+//  var cloudCoin: Int?
+  /// 礼物个数
   var giftCount: Int?
   var seatUserReward: [_NEVoiceRoomBatchSeatUserReward]
+  /// 被打赏者信息列表
+  var targets: [_NEVoiceRoomBatchSeatUserRewardee]
 }
 
 internal class _NEVoiceRoomBatchSeatUserReward: NSObject, Codable {
@@ -186,5 +189,11 @@ internal class _NEVoiceRoomBatchSeatUserReward: NSObject, Codable {
   var userUuid: String?
   var userName: String?
   var rewardTotal: Int
+  var icon: String?
+}
+
+internal class _NEVoiceRoomBatchSeatUserRewardee: NSObject, Codable {
+  var userUuid: String?
+  var userName: String?
   var icon: String?
 }

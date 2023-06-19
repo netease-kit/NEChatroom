@@ -6,19 +6,20 @@ target 'LiveAudioRoom' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   
-  plugin 'cocoapods-pod-sign'
-  skip_pod_bundle_sign
+#  plugin 'cocoapods-pod-sign'
+#  skip_pod_bundle_sign
   
   pod 'NEUIKit', :path => '../NEUIKit/NEUIKit.podspec'
   pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
   pod 'NEOrderSong', :path => '../NEOrderSong/NEOrderSong.podspec'
   pod 'LottieSwift', :path => '../lottie/LottieSwift.podspec'
   pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
+  pod 'NESocialUIKit', :path => '../NESocialUIKit/NESocialUIKit.podspec'
 
-  pod 'NERoomKit/Base_Special','1.14.0'
-  pod 'NERoomKit/Beauty_Special','1.14.0'
-  pod 'NERoomKit/Segment_Special','1.14.0'
-  pod 'NERoomKit/Audio_Special','1.14.0'
+  pod 'NERoomKit/Base_Special','1.15.0'
+  pod 'NERoomKit/Beauty_Special','1.15.0'
+  pod 'NERoomKit/Segment_Special','1.15.0'
+  pod 'NERoomKit/Audio_Special','1.15.0'
 
   pod 'NECopyrightedMedia','1.5.0'
 

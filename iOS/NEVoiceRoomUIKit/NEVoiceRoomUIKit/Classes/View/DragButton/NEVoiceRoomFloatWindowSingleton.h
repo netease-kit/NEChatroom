@@ -17,7 +17,7 @@
 - (void)setHideWindow:(BOOL)hide;
 - (BOOL)hasFloatingView;
 
-- (void)clickCloseButton:(BOOL)pop callback:(void (^)(void))callback;
+- (void)clickCloseButton:(BOOL)pop callback:(void (^_Nullable)(void))callback;
 
 // TEST
 - (void)dragButtonClicked:(UIButton *_Nullable)sender;
