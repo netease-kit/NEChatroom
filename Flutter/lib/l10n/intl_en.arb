@@ -120,5 +120,6 @@
   "leaveRoom": "Leave room",
   "voiceRoomLive": "VoiceRoom Live",
   "topAndCoverEmptyHint": "topic and cover should not be empty",
-  "startLiveFailed": "start live failed"
+  "startLiveFailed": "start live failed",
+  "noInternet": "No internet"
 }

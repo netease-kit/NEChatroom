@@ -15,9 +15,10 @@ class HandleSeatCase extends HandleVoiceRoomBaseCase {
     super.handle(event);
 
     if (className == "NEVoiceRoomKit" && methodName == "openSeats") {
-      ret = await voiceRoomKit.openSeats(params?[0]["seatIndices"]);
+      ret = await voiceRoomKit.openSeats(params?[0]["seatIndices"].cast<int>());
     } else if (className == "NEVoiceRoomKit" && methodName == "closeSeats") {
-      ret = await voiceRoomKit.closeSeats(params?[0]["seatIndices"]);
+      ret =
+          await voiceRoomKit.closeSeats(params?[0]["seatIndices"].cast<int>());
     } else if (className == "NEVoiceRoomKit" && methodName == "getSeatInfo") {
       ret = await voiceRoomKit.getSeatInfo();
     } else if (className == "NEVoiceRoomKit" &&

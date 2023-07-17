@@ -70,7 +70,7 @@ class _HttpExecutor with _AloggerMixin {
         var msg = map['msg'] as String?;
         var data = map['data'];
         commonLogger.i('execute requestId:$requestId response:$map');
-        if (code != 0) {
+        if (code != 200) {
           return NEResult(
               code: code, msg: msg ?? 'Empty message in response body!');
         }
@@ -132,7 +132,7 @@ class _HttpExecutor with _AloggerMixin {
         var msg = map['msg'] as String?;
         var data = map['data'];
         commonLogger.i('execute requestId:$requestId response:$map');
-        if (code != 0) {
+        if (code != 200) {
           return NEResult(
               code: code, msg: msg ?? 'Empty message in response body!');
         }

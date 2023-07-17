@@ -26,6 +26,9 @@ class VoiceRoomMemberImpl extends NEVoiceRoomMember {
       MemberPropertyConstants.CAN_OPEN_MIC_VALUE_NO;
 
   @override
+  Map<String, String>? get properties => roomMember.properties;
+
+  @override
   String toString() {
     return 'VoiceRoomMemberImpl{roomMember: $roomMember}';
   }

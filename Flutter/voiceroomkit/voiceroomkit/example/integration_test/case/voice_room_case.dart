@@ -35,7 +35,8 @@ class HandleVoiceRoomCase extends HandleVoiceRoomBaseCase {
                 ? NEVoiceRoomRole.host
                 : NEVoiceRoomRole.audience,
             liveRecordId: params?[0]["params"]["liveRecordId"],
-            extraData: params?[0]["params"]["extraData"],
+            extraData:
+                Map<String, String>.from(params?[0]["params"]["extraData"]),
           ),
           NEJoinVoiceRoomOptions());
     } else if (className == "NEVoiceRoomKit" && methodName == "leaveRoom") {
@@ -58,9 +59,8 @@ class HandleVoiceRoomCase extends HandleVoiceRoomBaseCase {
       voiceRoomKit.removeVoiceRoomListener(listenerMap[
           params?[0]['listener']?.toString() ?? 'voiceRoomListener']);
       ret = "removeVoiceRoomListener";
-    } else if (className == "NEVoiceRoomKit" &&
-        methodName == "getVoiceRoomList") {
-      ret = await voiceRoomKit.getVoiceRoomList(
+    } else if (className == "NEVoiceRoomKit" && methodName == "getRoomList") {
+      ret = await voiceRoomKit.getRoomList(
         getLiveStatus(params?[0]["liveState"]),
         params?[1]["pageNum"],
         params?[2]["pageSize"],

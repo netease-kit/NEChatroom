@@ -54,7 +54,7 @@
   "seatMuted": "该麦位被主播屏蔽语音\n现在您已无法进行语音互动",
   "voiceChatRoom": "语音聊天室",
   "announcementTitle": "公告",
-  "announcementContent": "本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。\n感谢网易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。",
+  "announcementContent": "本应用为示例产品，请勿商用。",
   "roomName": "房间名称",
   "online": "在线",
   "onlineNumber": "人",
@@ -120,5 +120,6 @@
   "leaveRoom": "离开房间",
   "voiceRoomLive": "语聊房",
   "topAndCoverEmptyHint": "主题和封面不能为空",
-  "startLiveFailed": "创建房间失败"
+  "startLiveFailed": "创建房间失败",
+  "noInternet": "当前网络不可用，请检查你当网络设置。"
 }

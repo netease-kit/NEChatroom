@@ -1,7 +1,3 @@
-// Copyright (c) 2022 NetEase, Inc. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
-
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a zh locale. All the
 // messages from the main program should be duplicated here with the same
@@ -33,8 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyLeaveSeat": MessageLookupByLibrary.simpleMessage("您已下麦"),
         "alreadyOnSeat": MessageLookupByLibrary.simpleMessage("您已在麦上"),
         "alreadySeat": MessageLookupByLibrary.simpleMessage("已上麦"),
-        "announcementContent": MessageLookupByLibrary.simpleMessage(
-            "本应用为示例产品，请勿商用，单场直播最长10分钟，最多10人次。\n感谢网易MMORPG游戏《新倩女幽魂》提供伴奏歌曲。"),
+        "announcementContent":
+            MessageLookupByLibrary.simpleMessage("本应用为示例产品，请勿商用。"),
         "announcementTitle": MessageLookupByLibrary.simpleMessage("公告"),
         "appVersion": MessageLookupByLibrary.simpleMessage("应用版本"),
         "applause": MessageLookupByLibrary.simpleMessage("鼓掌声"),
@@ -101,6 +97,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "muteSeatFail": MessageLookupByLibrary.simpleMessage("该麦位语音屏蔽失败"),
         "nickName": MessageLookupByLibrary.simpleMessage("昵称"),
         "no": MessageLookupByLibrary.simpleMessage("否"),
+        "noInternet":
+            MessageLookupByLibrary.simpleMessage("当前网络不可用，请检查你当网络设置。"),
         "noMore": MessageLookupByLibrary.simpleMessage("没有更多啦"),
         "notify": MessageLookupByLibrary.simpleMessage("通知"),
         "onSeatedTips": MessageLookupByLibrary.simpleMessage("您已被主播抱上麦位"),

@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+3
+version: 1.1.0+3
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -37,22 +37,22 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
-  permission_handler: ^8.3.0
+  permission_handler: ^10.3.0
 
   flutter_easyrefresh: ^2.2.1
   flutter_svg: ^1.0.3
 
   #firebase
-#  firebase_core: ^1.0.3
-#  firebase_crashlytics: ^2.0.0
-#  firebase_analytics: ^7.1.1
+  #  firebase_core: ^1.0.3
+  #  firebase_crashlytics: ^2.0.0
+  #  firebase_analytics: ^7.1.1
   uuid: ^3.0.2
   bot_toast: ^4.0.1
   shared_preferences: ^2.0.6
   crypto: ^3.0.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   path_provider: ^2.0.1
-  yunxin_alog: ^1.0.7-rc.1
+  yunxin_alog: ^2.0.0
   device_info: ^2.0.0
   package_info: ^2.0.0
   url_launcher: ^6.0.2
@@ -63,15 +63,15 @@ dependencies:
   archive: ^3.1.11
 
   connectivity_plus: ^2.3.0
-  wakelock: ^0.6.1+2
-  netease_voiceroomkit: ^0.0.1-rc.0
-  # voiceroomkit源码依赖
-#  netease_voiceroomkit:
-#    path: voiceroomkit/voiceroomkit
-  netease_roomkit: ^0.0.4-rc.0
-  netease_auth: ^0.0.1-rc.0
+  wakelock_plus: ^1.1.1
+  netease_voiceroomkit:
+    path: voiceroomkit/voiceroomkit
+  netease_roomkit: ^1.17.1
   provider: ^6.0.0
   restart_app: ^1.1.0
+
+dependency_overrides:
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
@@ -83,7 +83,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  hawk: ^0.0.1-rc.7
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

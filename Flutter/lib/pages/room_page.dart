@@ -24,7 +24,7 @@ import 'package:voiceroomkit_ui/widgets/seat_option_list_widget.dart';
 import 'package:voiceroomkit_ui/widgets/seat_widget.dart';
 import 'package:voiceroomkit_ui/viewmodel/roominfo_viewmodel.dart';
 import 'package:voiceroomkit_ui/widgets/voice_room_buttom_tool_view.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../utils/nav_utils.dart';
 import '../constants/router_name.dart';
@@ -62,7 +62,7 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
   void initState() {
     super.initState();
     VoiceRoomKitLog.i(tag, "room page initState");
-    Wakelock.enable();
+    WakelockPlus.enable();
     seatViewModel = SeatViewModel();
     viewModel = RoomInfoViewModel();
     viewModel.initData(widget.arguments);
@@ -71,6 +71,7 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
       if (value == NEVoiceRoomErrorCode.success) {
         VoiceRoomKitLog.i(tag, "joinRoomSuccess");
         seatViewModel.initSeatInfo();
+        _reloadWithDatas();
       } else {
         VoiceRoomKitLog.i(tag, "joinRoomFail");
         ToastUtils.showToast(context, "joinRoomFail");
@@ -165,6 +166,11 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
           ToastUtils.showToast(Application.context, S.current.closeRoomTips);
           _leaveRoom();
         }
+        if (viewModel.isAnchor &&
+            (reason == NEVoiceRoomEndReason.endOfRtc ||
+                reason == NEVoiceRoomEndReason.unknown)) {
+          _leaveRoom();
+        }
       },
     );
     NEVoiceRoomKit.instance.addVoiceRoomListener(_callback);
@@ -221,7 +227,7 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
   void dispose() {
     super.dispose();
     NEVoiceRoomKit.instance.removeVoiceRoomListener(_callback);
-    Wakelock.disable();
+    WakelockPlus.disable();
   }
 
   Widget _buildPageUI(BuildContext context) {
@@ -504,7 +510,7 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
     }
     VoiceRoomKitLog.i(tag,
         "handleMyAudioState,isAudioOn:${localMember.isAudioOn},isAudioBanned:${localMember.isAudioBanned}");
-    if (isOnSeat && !localMember.isAudioOn) {
+    if (isOnSeat && !localMember.isAudioOn && !seatViewModel.selfSeatMuted) {
       var status = await Permission.microphone.status;
       if (status.isGranted) {
         VoiceRoomKitLog.i(tag, "microphone permission isGranted1");
@@ -568,7 +574,7 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
       if (!mounted) {
         return;
       }
-      _memberNum = (tempIconNum! - 1 < 0) ? 0 : (tempIconNum - 1);
+      _memberNum = tempIconNum;
     });
   }
 

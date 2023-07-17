@@ -18,16 +18,24 @@ class AppConfig {
   AppConfig._internal();
 
   // 请填写您的appKey,如果您的APP是国内环境，请填写onlineAppKey，如果是海外环境，请填写overSeaAppKey
-  static const String onlineAppKey = "51e61565dc21cfbc12d63140076d14fa";// 国内用户填写
+  static const String onlineAppKey =
+      "your mainland appKey"; // 国内用户填写
 
-  static const String overSeaAppKey = "your oversea appKey";// 海外用户填写
+  static const String overSeaAppKey =
+      "your oversea appKey"; // 海外用户填写
+
+  static const String account = "your account"; // 请填写您的账号
+  static const String token = "your token"; // 请填写您的token
+  static const String nickname = "your nickname"; // 请填写您的昵称
+  static const String avatar = "your avatar"; // 请填写您的头像
+  // 跑通Server Demo(https://github.com/netease-kit/nemo)后，替换为实际的host
+  static const String baseurl = 'your base url';
 
   late int onlineScope = 4;
 
   late int sgScope = 4;
 
   late int onlineParentScope = 5;
-
 
   late int sgParentScope = 5;
 
@@ -37,9 +45,9 @@ class AppConfig {
 
   String appKey = "";
 
-  int scope = 4;
+  int scope = 11;
 
-  int parentScope = 5;
+  int parentScope = 7;
 
   int configId = 569;
 
@@ -62,13 +70,14 @@ class AppConfig {
     if (isOverSea) {
       appKey = overSeaAppKey;
       configId = 75;
-    } else  {
+    } else {
       appKey = onlineAppKey;
       configId = 569;
     }
     VoiceRoomKitLog.i(tag,
         "initVoiceRoomConfig,isOverSea:$isOverSea,appKey:$appKey,configId:$configId");
   }
+
 
   Future<void> loadPackageInfo() async {
     var info = await PackageInfo.fromPlatform();

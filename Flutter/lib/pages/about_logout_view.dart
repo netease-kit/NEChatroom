@@ -3,14 +3,14 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:netease_auth/auth.dart';
-import 'package:netease_auth/provider/login_provider.dart';
+
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/utils/nav_utils.dart';
 import 'package:voiceroomkit_ui/constants/asset_name.dart';
 import 'package:voiceroomkit_ui/constants/colors.dart';
 import 'package:voiceroomkit_ui/constants/dimem.dart';
+import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 
 class AboutLogoutViewRoute extends StatefulWidget {
   const AboutLogoutViewRoute({
@@ -23,8 +23,8 @@ class AboutLogoutViewRoute extends StatefulWidget {
 }
 
 class _AboutLogoutViewRouteRouteState extends State<AboutLogoutViewRoute> {
-  String? iconUrl = LoginModel.instance.userInfo?.avatar;
-  String nickname = LoginModel.instance.userInfo?.nickname ?? 'name';
+  String? iconUrl = UserInfoManager.getAvatar();
+  String nickname = UserInfoManager.getNickname();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,6 @@ class _AboutLogoutViewRouteRouteState extends State<AboutLogoutViewRoute> {
               GestureDetector(
                 onTap: () {
                   ///click logout
-                  UnifyLogin.logout();
                   NEVoiceRoomKit.instance.logout();
                   Navigator.pop(context);
                 },

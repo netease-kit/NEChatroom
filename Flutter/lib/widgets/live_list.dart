@@ -27,7 +27,7 @@ mixin LiveListDataMixin {
       nextPageNum = 1;
     }
     NEVoiceRoomKit.instance
-        .getVoiceRoomList(NEVoiceRoomLiveState.live, nextPageNum, pageSize)
+        .getRoomList(NEVoiceRoomLiveState.live, nextPageNum, pageSize)
         .then((value) {
       print('fetchLiveList  ====> ${value.toString()} ');
       if (value.code == 0) {

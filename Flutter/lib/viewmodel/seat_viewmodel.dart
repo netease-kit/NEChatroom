@@ -7,12 +7,13 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:netease_auth/provider/login_provider.dart';
+
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/model/voiceroom_seat.dart';
 import 'package:voiceroomkit_ui/model/voiceroom_seat_event.dart';
 import 'package:voiceroomkit_ui/utils/seat_util.dart';
+import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 import 'package:voiceroomkit_ui/widgets/chatroom_list_view.dart';
 
@@ -35,9 +36,9 @@ class SeatViewModel extends ChangeNotifier {
   int currentSeatState = CURRENT_SEAT_STATE_IDLE;
 
   bool get isAnchor => SeatUtil.isAnchor();
-  late NEVoiceRoomEventCallback eventCallback;
+  NEVoiceRoomEventCallback? eventCallback;
   EventBus eventBus = EventBus();
-  late StreamSubscription<ConnectivityResult> _networkSubscription;
+  StreamSubscription<ConnectivityResult>? _networkSubscription;
 
   bool selfSeatMuted = false;
   bool showApplySeatListUI = false;
@@ -69,16 +70,22 @@ class SeatViewModel extends ChangeNotifier {
       _notifySeatRequestApproved(seatIndex, account, operateBy, isAutoAgree);
     }, seatRequestRejectedCallback: (seatIndex, account, operateBy) {
       _notifySeatRequestRejected(seatIndex, account, operateBy);
+    }, seatInvitationReceivedCallback: (seatIndex, account, operateBy) {
+      _notifySeatInvitationReceived(seatIndex, account, operateBy);
+    }, seatInvitationCancelledCallback: (seatIndex, account, operateBy) {
+      _notifySeatInvitationCancelled(seatIndex, account, operateBy);
     }, seatLeaveCallback: (seatIndex, account) {
       _notifySeatLeave(seatIndex, account);
     }, seatKickedCallback: (seatIndex, account, operateBy) {
       _notifySeatKicked(seatIndex, account, operateBy);
     }, seatInvitationAcceptedCallback: (seatIndex, account, isAutoAgree) {
       _notifySeatInvitationAccepted(seatIndex, account, isAutoAgree);
+    }, seatInvitationRejectedCallback: (seatIndex, account) {
+      _notifySeatInvitationRejected(seatIndex, account);
     }, seatListChangedCallback: (seatItems) {
       _notifySeatListChanged(seatItems);
     });
-    NEVoiceRoomKit.instance.addVoiceRoomListener(eventCallback);
+    NEVoiceRoomKit.instance.addVoiceRoomListener(eventCallback!);
   }
 
   void _notifyMemberAudioMuteChanged(
@@ -87,6 +94,17 @@ class SeatViewModel extends ChangeNotifier {
         "_notifyMemberAudioMuteChanged,role:${member.role},member:$member,mute:$mute,operateBy:$operateBy");
     if (SeatUtil.isSelf(member.account)) {
       selfSeatMuted = mute;
+    }
+    if (member.role == NEVoiceRoomRole.host.name.toLowerCase()) {
+      NEVoiceRoomMember? member = anchorSeat.member;
+      if (member != null) {
+        anchorSeat = VoiceRoomSeat(
+            _anchorSeatIndex,
+            Status.ON,
+            Reason.NONE,
+            NEVoiceRoomMember(member.account, member.name, member.role, !mute,
+                member.isAudioBanned, member.avatar));
+      }
     }
     notifyListeners();
   }
@@ -188,18 +206,7 @@ class SeatViewModel extends ChangeNotifier {
       if (value.isSuccess()) {
         List<NEVoiceRoomSeatItem>? seatItems = value.data?.seatItems;
         if (seatItems != null) {
-          List<VoiceRoomSeat> allSeats =
-              _transNESeatItem2VoiceRoomSeat(seatItems);
-          List<VoiceRoomSeat> audienceSeatList = [];
-          if (allSeats.isNotEmpty) {
-            for (var seat in allSeats) {
-              if (seat.index != _anchorSeatIndex) {
-                audienceSeatList.add(seat);
-              }
-            }
-          }
-          audienceSeats = audienceSeatList;
-          notifyListeners();
+          _handleSeatItemListChanged(seatItems);
         }
       }
     });
@@ -212,7 +219,7 @@ class SeatViewModel extends ChangeNotifier {
       for (var requestItem in list) {
         if (isAnchor) {
           ///获取当前信息判断是否和主播信息一致，如果一致则过滤
-          if (requestItem.user == LoginModel.instance.userInfo?.accountId) {
+          if (requestItem.user == UserInfoManager.getAccount()) {
             continue;
           }
         }
@@ -328,8 +335,10 @@ class SeatViewModel extends ChangeNotifier {
   void dispose() {
     super.dispose();
     VoiceRoomKitLog.i(tag, 'seatViewModel dispose');
-    NEVoiceRoomKit.instance.removeVoiceRoomListener(eventCallback);
-    _networkSubscription.cancel();
+    if (eventCallback != null) {
+      NEVoiceRoomKit.instance.removeVoiceRoomListener(eventCallback!);
+    }
+    _networkSubscription?.cancel();
   }
 
   void showCancelApplySeatUI(bool show) {
@@ -402,6 +411,33 @@ class SeatViewModel extends ChangeNotifier {
         NEVoiceRoomMember(anchorInfo.account!, anchorInfo.nick!, role, true,
             false, anchorInfo.avatar));
     notifyListeners();
+  }
+
+  void _notifySeatInvitationReceived(
+      int seatIndex, String account, String operateBy) {
+    VoiceRoomKitLog.i(
+        tag,
+        "_notifySeatInvitationReceived,seatIndex:$seatIndex" +
+            ",account:$account,operateBy:$operateBy");
+    // if(!isAnchor){
+    //    NEVoiceRoomKit.instance.acceptSeatInvitation();
+    //    NEVoiceRoomKit.instance.rejectSeatInvitation();
+    // }
+  }
+
+  void _notifySeatInvitationCancelled(
+      int seatIndex, String account, String operateBy) {
+    VoiceRoomKitLog.i(
+        tag,
+        "_notifySeatInvitationCancelled,seatIndex:$seatIndex" +
+            ",account:$account,operateBy:$operateBy");
+  }
+
+  void _notifySeatInvitationRejected(int seatIndex, String account) {
+    VoiceRoomKitLog.i(
+        tag,
+        "_notifySeatInvitationRejected,seatIndex:$seatIndex" +
+            ",account:$account");
   }
 }
 

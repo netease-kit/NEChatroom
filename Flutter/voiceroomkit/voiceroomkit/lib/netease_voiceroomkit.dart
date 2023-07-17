@@ -5,6 +5,7 @@
 /// 网易云信语聊房组件
 library netease_voiceroomkit;
 
+import 'dart:async';
 import 'dart:collection';
 import 'dart:core';
 import 'dart:ffi';
