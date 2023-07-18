@@ -47,7 +47,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  hawk: ^0.0.1-rc.8
+#  hawk: ^0.0.1-rc.32
+  hawk:
+    path: ../../../auto_test/hawk
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

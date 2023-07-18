@@ -22,13 +22,13 @@ class HandleMediaCase extends HandleVoiceRoomBaseCase {
     if (className == "NEVoiceRoomKit" && methodName == "unmuteMyAudio") {
       ret = await voiceRoomKit.unmuteMyAudio();
     }
-    if (className == "NEVoiceRoomKit" && methodName == "enableEarBack") {
+    if (className == "NEVoiceRoomKit" && methodName == "enableEarback") {
       ret = await voiceRoomKit.enableEarback(params?[0]["volume"]);
     }
-    if (className == "NEVoiceRoomKit" && methodName == "disableEarBack") {
+    if (className == "NEVoiceRoomKit" && methodName == "disableEarback") {
       ret = await voiceRoomKit.disableEarback();
     }
-    if (className == "NEVoiceRoomKit" && methodName == "isEarBackEnable") {
+    if (className == "NEVoiceRoomKit" && methodName == "isEarbackEnable") {
       ret = voiceRoomKit.isEarbackEnable();
     }
 

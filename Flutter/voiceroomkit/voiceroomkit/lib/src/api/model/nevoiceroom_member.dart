@@ -24,11 +24,16 @@ class NEVoiceRoomMember {
   /// 头像
   final String? avatar;
 
+  /**
+   * 自定义属性
+   */
+  Map<String, String>? properties;
+
   NEVoiceRoomMember(this.account, this.name, this.role, this.isAudioOn,
       this.isAudioBanned, this.avatar);
 
   @override
   String toString() {
-    return 'NEVoiceRoomMember{account: $account, name: $name, role: $role, isAudioOn: $isAudioOn, isAudioBanned: $isAudioBanned, avatar: $avatar}';
+    return 'NEVoiceRoomMember{account: $account, name: $name, role: $role, isAudioOn: $isAudioOn, isAudioBanned: $isAudioBanned, avatar: $avatar，properties:$properties}';
   }
 }

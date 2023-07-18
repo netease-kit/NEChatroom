@@ -1,6 +1,6 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, '11.0'
-platform :ios, '10.0'
+platform :ios, '11.0'
 source 'https://github.com/CocoaPods/Specs.git'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
@@ -34,9 +34,9 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-
-#  pod 'NERoomKit', :path => '../../../../iOS/xkit-ios-voice/RoomKit/NERoomKit/NERoomKit.podspec'
-  # pod 'NERoomKit-SNAPSHOT', :path => '../../../../xkit-ios/roomkit/NERoomKit/NERoomKit-SNAPSHOT.podspec'
+  
+#  pod 'NECoreIMKit', '9.3.2'
+#  pod 'NERoomKit', :path => '../../../../../iOS/xkit-ios-karaoke/RoomKit/NERoomKit/NERoomKit.podspec'
 end
 
 post_install do |installer|

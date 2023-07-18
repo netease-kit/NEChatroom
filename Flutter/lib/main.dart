@@ -9,7 +9,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:netease_auth/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:voiceroomkit_ui/constants/style/app_style_util.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
@@ -24,11 +23,11 @@ import 'base/net_util.dart';
 import 'utils/nav_register.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   AppStyle.setStatusBarTextBlackColor();
   VoiceRoomKitLog.init()
       .then((value) => VoiceRoomKitLog.i("main", "log init result = $value"));
   runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
       AppConfig().init().then((value) {
@@ -64,48 +63,44 @@ class NEVoiceRoomApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Application.context = context;
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: UnifyLogin.getLoginModel()),
+    return MaterialApp(
+        builder: BotToastInit(),
+        color: Colors.black,
+        theme: ThemeData(
+            brightness: Brightness.light,
+            appBarTheme: const AppBarTheme(
+                systemOverlayStyle: SystemUiOverlayStyle.light)),
+        themeMode: ThemeMode.light,
+        // navigatorKey: NavUtils.navigatorKey,
+        home: const SplashPage(),
+        navigatorObservers: [BotToastNavigatorObserver(), routeObserver],
+        // routes: RoutesRegister.routes,
+        onGenerateRoute: (settings) {
+          WidgetBuilder builder =
+          RoutesRegister.routes(settings)[settings.name]
+          as WidgetBuilder;
+          return MaterialPageRoute(
+              builder: (ctx) => builder(ctx),
+              settings: RouteSettings(name: settings.name));
+        },
+        localizationsDelegates: const [
+          S.delegate,
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
-        child: MaterialApp(
-            builder: BotToastInit(),
-            color: Colors.black,
-            theme: ThemeData(
-                brightness: Brightness.light,
-                appBarTheme: const AppBarTheme(
-                    systemOverlayStyle: SystemUiOverlayStyle.light)),
-            themeMode: ThemeMode.light,
-            // navigatorKey: NavUtils.navigatorKey,
-            home: const SplashPage(),
-            navigatorObservers: [BotToastNavigatorObserver(), routeObserver],
-            // routes: RoutesRegister.routes,
-            onGenerateRoute: (settings) {
-              WidgetBuilder builder =
-                  RoutesRegister.routes(settings)[settings.name]
-                      as WidgetBuilder;
-              return MaterialPageRoute(
-                  builder: (ctx) => builder(ctx),
-                  settings: RouteSettings(name: settings.name));
-            },
-            localizationsDelegates: [
-              S.delegate,
-              UnifyLogin.getLoginDelegate(),
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            localeResolutionCallback: (deviceLocale, supportedLocales) {
-              print('deviceLocale languageCode: ${deviceLocale?.languageCode}');
-              if (languageCodeZh == deviceLocale?.languageCode) {
-                AppConfig().language = languageCodeZh;
-              } else {
-                AppConfig().language = languageCodeEn;
-              }
-            },
-            supportedLocales: const [
-              Locale('en', 'US'),
-              Locale('zh', 'CN'),
-            ]));
+        localeResolutionCallback: (deviceLocale, supportedLocales) {
+          print('deviceLocale languageCode: ${deviceLocale?.languageCode}');
+          if (languageCodeZh == deviceLocale?.languageCode) {
+            AppConfig().language = languageCodeZh;
+          } else {
+            AppConfig().language = languageCodeEn;
+          }
+        },
+        supportedLocales: const [
+          Locale('en', 'US'),
+          Locale('zh', 'CN'),
+        ]);
   }
 }

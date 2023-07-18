@@ -24,11 +24,17 @@ typedef SeatRequestApprovedCallback = void Function(
     int seatIndex, String account, String operateBy, bool isAutoAgree);
 typedef SeatRequestRejectedCallback = void Function(
     int seatIndex, String account, String operateBy);
+typedef SeatInvitationReceivedCallback = void Function(
+    int seatIndex, String account, String operateBy);
+typedef SeatInvitationCancelledCallback = void Function(
+    int seatIndex, String account, String operateBy);
 typedef SeatLeaveCallback = void Function(int seatIndex, String account);
 typedef SeatKickedCallback = void Function(
     int seatIndex, String account, String operateBy);
 typedef SeatInvitationAcceptedCallback = void Function(
     int seatIndex, String account, bool isAutoAgree);
+typedef SeatInvitationRejectedCallback = void Function(
+    int seatIndex, String account);
 typedef SeatListChangedCallback = void Function(
     List<NEVoiceRoomSeatItem> seatItems);
 typedef AudioMixingStateChangedCallback = void Function(int reason);
@@ -77,6 +83,12 @@ class NEVoiceRoomEventCallback {
   /// 管理员拒绝了成员的麦位申请的回调
   final SeatRequestRejectedCallback? seatRequestRejectedCallback;
 
+  /// 成员收到了管理员的麦位邀请的回调
+  final SeatInvitationReceivedCallback? seatInvitationReceivedCallback;
+
+  /// 成员收到了管理员的麦位取消邀请的回调
+  final SeatInvitationCancelledCallback? seatInvitationCancelledCallback;
+
   /// 成员下麦的回调
   final SeatLeaveCallback? seatLeaveCallback;
 
@@ -85,6 +97,9 @@ class NEVoiceRoomEventCallback {
 
   /// 成员接受了上麦邀请的回调
   final SeatInvitationAcceptedCallback? seatInvitationAcceptedCallback;
+
+  /// 成员拒绝了上麦邀请的回调
+  final SeatInvitationRejectedCallback? seatInvitationRejectedCallback;
 
   /// 麦位变更的回调
   final SeatListChangedCallback? seatListChangedCallback;
@@ -107,9 +122,12 @@ class NEVoiceRoomEventCallback {
       this.seatRequestCancelledCallback,
       this.seatRequestApprovedCallback,
       this.seatRequestRejectedCallback,
+      this.seatInvitationReceivedCallback,
+      this.seatInvitationCancelledCallback,
       this.seatLeaveCallback,
       this.seatKickedCallback,
       this.seatInvitationAcceptedCallback,
+      this.seatInvitationRejectedCallback,
       this.seatListChangedCallback,
       this.audioMixingStateChangedCallback,
       this.audioOutputDeviceChangedCallback});

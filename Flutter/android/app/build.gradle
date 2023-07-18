@@ -30,7 +30,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -50,8 +50,8 @@ android {
         applicationId "com.netease.yunxin.app.chatroom_flutter"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 3
+        versionName "1.1.0"
         multiDexEnabled true
     }
 
@@ -62,6 +62,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    ndkVersion '21.1.6352462'
 }
 
 flutter {

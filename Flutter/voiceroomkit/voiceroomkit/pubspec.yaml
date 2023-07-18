@@ -1,6 +1,6 @@
 name: netease_voiceroomkit
 description: A Flutter package for VoiceRoom.
-version: 0.0.1-rc.0
+version: 1.1.0
 homepage: https://yunxin.163.com/
 
 environment:
@@ -10,20 +10,37 @@ dependencies:
   flutter:
     sdk: flutter
 
-  yunxin_alog: ^1.0.6
+  yunxin_alog: ^2.0.0
 
-  netease_roomkit: 0.0.4-rc.0
+#  netease_roomkit:
+#     git:
+#       url: ssh://git@g.hz.netease.com:22222/yunxin-app/xkit-flutter.git
+#       path: roomkit/roomkit
+#       ref: sunkeding/release_meeting
+  netease_roomkit: ^1.17.1
+#  netease_roomkit:
+#    path: ../../roomkit/roomkit
 
+#  netease_roomkit_interface:
+#    git:
+#      url: ssh://git@g.hz.netease.com:22222/yunxin-app/xkit-flutter.git
+#      path: roomkit/roomkit_platform_interface
+#      ref: sunkeding/release_meeting
+  netease_roomkit_interface: ^1.17.1
+#  netease_roomkit_interface:
+#    path: ../../roomkit/roomkit_platform_interface
 
-  netease_roomkit_interface: 0.0.4-rc.0
-
-
-  netease_common: ^0.0.1-rc.0
-
+#  netease_common:
+#    git:
+#      url: ssh://git@g.hz.netease.com:22222/yunxin-app/xkit-flutter.git
+#      path: common/common
+#      ref: sunkeding/release_meeting
+  netease_common: ^1.0.0
+#  netease_common:
+#    path: ../../common/common
 
   dio: ^4.0.0
   uuid: ^3.0.6
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

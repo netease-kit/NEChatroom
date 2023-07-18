@@ -6,8 +6,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:netease_auth/auth.dart';
-import 'package:netease_auth/provider/login_provider.dart';
+
+
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:restart_app/restart_app.dart';
 
@@ -17,6 +17,7 @@ import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/app_config.dart';
 import 'package:voiceroomkit_ui/constants/servers.dart';
 import 'package:voiceroomkit_ui/utils/dialog_utils.dart';
+import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:voiceroomkit_ui/utils/web_view_utils.dart';
 import 'package:voiceroomkit_ui/constants/ValueKeys.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
@@ -282,10 +283,10 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
 
   Widget buildSettingPage() {
     /// name
-    var personalName = LoginModel.instance.userInfo?.nickname;
+    var personalName = UserInfoManager.getNickname();
 
     ///iconImage
-    var personalIconUrl = LoginModel.instance.userInfo?.avatar;
+    var personalIconUrl = UserInfoManager.getAvatar();
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -476,7 +477,6 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
           _dataCenter = value;
         });
         await GlobalPreferences().setDataCenter(value.index);
-        UnifyLogin.logout();
         await NEVoiceRoomKit.instance.logout();
         if (Platform.isAndroid) {
           Restart.restartApp();

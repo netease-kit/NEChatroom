@@ -25,13 +25,13 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   static const String ERROR_MSG_LIVEID_NOT_EXIST = "LiveId not exist";
 
   static const String SERVER_URL_KEY = "serverUrl";
+  static const String BASE_URL_KEY = "baseUrl";
   static const String HTTP_PREFIX = "http";
   static const String TEST_URL_VALUE = "test";
   static const String OVERSEA_URL_VALUE = "oversea";
   static const String OVERSEA_SERVER_URL = "https://roomkit-sg.netease.im/";
-  static const String ROOMKIT_TEST_SERVER_URL =
-      "https://roomkit-dev.netease.im";
-  static const String ROOMKIT_ONLINE_SERVER_URL = "https://roomkit.netease.im/";
+  // 自己操作后的mute状态，区别于ban之后的mute
+  bool _isSelfMuted = false;
 
   @override
   void addAuthListener(NEVoiceRoomAuthEventCallback listener) {
@@ -136,16 +136,20 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
         nick: params.nick,
         seatCount: params.seatCount,
         configId: params.configId,
+        roomName: params.title,
         cover: params.cover,
         liveType: _roomMode);
+    var seatInviteMode = NEVoiceRoomSeatInvitationConfirmMode.off.index;
+    var seatApplyMode = NEVoiceRoomSeatRequestApprovalMode.on.index;
     var ret = await _NEVoiceRoomHttpRepository.startVoiceRoom(
         startParams.title,
         startParams.cover,
         startParams.liveType,
         startParams.configId,
+        startParams.roomName,
         startParams.seatCount,
-        startParams.seatApplyMode.index,
-        startParams.seatInviteMode.index);
+        seatApplyMode,
+        seatInviteMode);
     if (ret.isSuccess()) {
       commonLogger.i('createRoom success info = ${ret.data}');
       _voiceRoomInfo = ret.data;
@@ -305,7 +309,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   }
 
   @override
-  Future<NEResult<NEVoiceRoomList>> getVoiceRoomList(
+  Future<NEResult<NEVoiceRoomList>> getRoomList(
       NEVoiceRoomLiveState liveState, int pageNum, int pageSize) async {
     commonLogger.i(
         'fetchLiveList pageNum:$pageNum pageSize:$pageSize liveStatus:$liveState');
@@ -322,36 +326,33 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
       _handleAuthEvent(event);
     });
 
-    String realServerUrl = "";
+    String realRoomServerUrl = "";
     bool isOversea = false;
-    HashMap<String, String> realExtras = HashMap();
+    var realExtras = Map<String, String>();
+    options.extras?.entries.forEach((element) {
+      realExtras[element.key] = element.value;
+    });
     if (options.extras?[SERVER_URL_KEY] != null) {
       String? serverUrl = options.extras?[SERVER_URL_KEY];
-      commonLogger.i("serverUrl:$serverUrl");
       if (!TextUtils.isEmpty(serverUrl)) {
         if (TEST_URL_VALUE == serverUrl) {
-          realServerUrl = serverUrl!;
-          ServersConfig().serverUrl = ROOMKIT_TEST_SERVER_URL;
+          realRoomServerUrl = serverUrl!;
         } else if (OVERSEA_URL_VALUE == serverUrl) {
-          realServerUrl = OVERSEA_SERVER_URL;
+          realRoomServerUrl = OVERSEA_SERVER_URL;
           isOversea = true;
-          ServersConfig().serverUrl = OVERSEA_SERVER_URL;
         } else if (serverUrl!.startsWith(HTTP_PREFIX)) {
-          realServerUrl = serverUrl;
-          ServersConfig().serverUrl = realServerUrl;
-        } else {
-          ServersConfig().serverUrl = ROOMKIT_ONLINE_SERVER_URL;
+          realRoomServerUrl = serverUrl;
         }
-      } else {
-        ServersConfig().serverUrl = ROOMKIT_ONLINE_SERVER_URL;
       }
-    } else {
-      ServersConfig().serverUrl = ROOMKIT_ONLINE_SERVER_URL;
+    }
+    realExtras[SERVER_URL_KEY] = realRoomServerUrl;
+    if (options.extras?[BASE_URL_KEY] != null) {
+      var baseUrl = options.extras?[BASE_URL_KEY];
+      ServersConfig().serverUrl = baseUrl ?? '';
     }
     _NEVoiceRoomHttpRepository.appKey = options.appKey;
-    realExtras[SERVER_URL_KEY] = realServerUrl;
     commonLogger.i(
-        "ServersConfig().baseUrl:${ServersConfig().baseUrl},realServerUrl:$realServerUrl,isOversea:$isOversea");
+        "ServersConfig().baseUrl:${ServersConfig().baseUrl},realRoomServerUrl:$realRoomServerUrl,isOversea:$isOversea,realExtras:$realExtras");
     if (isOversea) {
       NEServerConfig serversConfig = NEServerConfig();
       NEIMServerConfig imServerConfig = NEIMServerConfig();
@@ -363,14 +364,16 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
       imServerConfig.nosUploaderHost = IMPrivateConstants.NOS_UPLOADER_HOST;
       imServerConfig.httpsEnabled = true;
       serversConfig.imServerConfig = imServerConfig;
+      NERoomKitServerConfig roomKitServerConfig = NERoomKitServerConfig();
+      roomKitServerConfig.roomServer = realRoomServerUrl;
+      serversConfig.roomKitServerConfig = roomKitServerConfig;
       return NERoomKit.instance.initialize(NERoomKitOptions(
           appKey: options.appKey,
-          reuseIM:options.reuseIM,
-          serverConfig: serversConfig,
-          extras: realExtras));
+          extras: realExtras,
+          serverConfig: serversConfig));
     } else {
       return NERoomKit.instance.initialize(
-          NERoomKitOptions(appKey: options.appKey, reuseIM:options.reuseIM, extras: realExtras));
+          NERoomKitOptions(appKey: options.appKey, extras: realExtras));
     }
   }
 
@@ -392,12 +395,14 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     commonLogger.i('joinRoom params=$params');
     var joinRet = await NERoomKit.instance.roomService.joinRoom(
         NEJoinRoomParams(
-          roomUuid: params.roomUuid,
-          userName: params.nick,
-          avatar: params.avatar,
-          role: params.role.name.toLowerCase(),
-        ),
-        NEJoinRoomOptions());
+            roomUuid: params.roomUuid,
+            userName: params.nick,
+            avatar: params.avatar,
+            role: params.role.name.toLowerCase(),
+            initialMyProperties: params.extraData),
+        NEJoinRoomOptions(
+            enableMyAudioDeviceOnJoinRtc:
+                options.enableMyAudioDeviceOnJoinRtc));
 
     /// 加入房间失败
     if (!joinRet.isSuccess() || joinRet.data == null) {
@@ -410,33 +415,32 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     _currentRoomContext = joinRet.data;
     _setAudioProfile();
     _roomEventCallback = NERoomEventCallback(
-      memberJoinRtcChannel: _notifyMemberJoinRtcChannel,
-      roomEnd: _notifyRoomEnd,
-      memberJoinRoom: _notifyMembersJoin,
-      memberLeaveRoom: _notifyMembersLeave,
-      chatroomMessagesReceived: _notifyChatroomMessageReceived,
-      rtcChannelError: _notifyRtcChannelError,
-      memberAudioMuteChanged: _notifyMemberAudioMuteChanged,
-      rtcAudioOutputDeviceChanged: _notifyAudioOutputDeviceChanged,
-      rtcAudioMixingStateChanged: _notifyAudioMixingStateChanged,
-      memberPropertiesChanged: _notifyMemberPropertiesChanged,
-    );
+        memberJoinRtcChannel: _notifyMemberJoinRtcChannel,
+        roomEnd: _notifyRoomEnd,
+        memberJoinRoom: _notifyMembersJoin,
+        memberLeaveRoom: _notifyMembersLeave,
+        chatroomMessagesReceived: _notifyChatroomMessageReceived,
+        rtcChannelError: _notifyRtcChannelError,
+        memberAudioMuteChanged: _notifyMemberAudioMuteChanged,
+        rtcAudioOutputDeviceChanged: _notifyAudioOutputDeviceChanged,
+        rtcAudioMixingStateChanged: _notifyAudioMixingStateChanged,
+        memberPropertiesChanged: _notifyMemberPropertiesChanged,
+        memberJoinChatroom: _notifyMemberJoinChatroom);
     _seatEventCallback = NESeatEventCallback(
-        _notifySeatManagerAddedCallback,
-        _notifySeatManagerRemovedCallback,
-        _notifySeatRequestSubmittedCallback,
-        _notifySeatRequestCancelledCallback,
-        _notifySeatRequestApprovedCallback,
-        _notifySeatRequestRejectedCallback,
-        _notifySeatInvitationReceivedCallback,
-        _notifySeatInvitationCancelledCallback,
-        _notifySeatInvitationAcceptedCallback,
-        _notifySeatInvitationRejectedCallback,
-        _notifySeatLeaveCallback,
-        _notifySeatKickedCallback,
-        _notifySeatListChangedCallback);
+        seatManagerAddedCallback: _notifySeatManagerAddedCallback,
+        seatManagerRemovedCallback: _notifySeatManagerRemovedCallback,
+        seatRequestSubmittedCallback: _notifySeatRequestSubmittedCallback,
+        seatRequestCancelledCallback: _notifySeatRequestCancelledCallback,
+        seatRequestApprovedCallback: _notifySeatRequestApprovedCallback,
+        seatRequestRejectedCallback: _notifySeatRequestRejectedCallback,
+        seatInvitationReceivedCallback: _notifySeatInvitationReceivedCallback,
+        seatInvitationCancelledCallback: _notifySeatInvitationCancelledCallback,
+        seatInvitationAcceptedCallback: _notifySeatInvitationAcceptedCallback,
+        seatInvitationRejectedCallback: _notifySeatInvitationRejectedCallback,
+        seatLeaveCallback: _notifySeatLeaveCallback,
+        seatKickedCallback: _notifySeatKickedCallback,
+        seatListChangedCallback: _notifySeatListChangedCallback);
     _addListener();
-
     _currentRoomContext?.rtcController
         .setClientRole(NERoomRtcClientRole.AUDIENCE);
     var rtcRet = await _currentRoomContext!.rtcController.joinRtcChannel();
@@ -476,7 +480,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   }
 
   void _setAudioProfile() {
-    _currentRoomContext?.rtcController.setLocalAudioProfile(
+    _currentRoomContext?.rtcController.setAudioProfile(
         NERoomRtcAudioProfile.HIGH_QUALITY_STEREO,
         NERoomRtcAudioScenario.MUSIC);
     _currentRoomContext?.rtcController
@@ -552,12 +556,20 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   @override
   Future<VoidResult> muteMyAudio() async {
     commonLogger.i('muteMyAudio');
+    return _muteMyAudioInner(true);
+  }
+
+  Future<VoidResult> _muteMyAudioInner(bool operateBySelf) async {
+    commonLogger.i('_muteMyAudioInner,operateBySelf:$operateBySelf');
     if (_currentRoomContext != null) {
       var ret = await _currentRoomContext!.updateMemberProperty(
           _currentRoomContext!.localMember.uuid,
           MemberPropertyConstants.MUTE_VOICE_KEY,
           MemberPropertyConstants.MUTE_VOICE_VALUE_OFF);
       commonLogger.i('muteMyAudio,ret:$ret');
+      if (operateBySelf && ret.isSuccess()) {
+        _isSelfMuted = true;
+      }
       return ret;
     } else {
       commonLogger.e("_currentRoomContext == null");
@@ -852,6 +864,9 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
                 MemberPropertyConstants.MUTE_VOICE_VALUE_ON);
         commonLogger.i(
             'unmuteMyAudio,isAudioOn:${_currentRoomContext!.localMember.isAudioOn},updateMemberProperty,code:${updateMemberPropertyResult.code},msg:${updateMemberPropertyResult.msg}');
+        if (updateMemberPropertyResult.isSuccess()) {
+          _isSelfMuted = false;
+        }
         return Future.value(NEResult(
             code: updateMemberPropertyResult.code,
             msg: updateMemberPropertyResult.msg));
@@ -1037,10 +1052,13 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
       if (member.uuid == uuid) {
         if (banned) {
           // 响应房主关麦操作
-          muteMyAudio();
+          _muteMyAudioInner(false);
         } else {
           // 响应房主开麦操作
-          unmuteMyAudio();
+          if (!_isSelfMuted) {
+            // 自己未主动闭麦的情况下，打开麦克风
+            unmuteMyAudio();
+          }
         }
       }
       NEVoiceRoomMember voiceRoomMember = mapMember(member);
@@ -1097,9 +1115,20 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   }
 
   void _notifySeatInvitationReceivedCallback(
-      int seatIndex, String user, String operateBy) {}
+      int seatIndex, String user, String operateBy) {
+    for (var callback in _eventCallbacks.copy()) {
+      callback.seatInvitationReceivedCallback?.call(seatIndex, user, operateBy);
+    }
+  }
+
   void _notifySeatInvitationCancelledCallback(
-      int seatIndex, String user, String operateBy) {}
+      int seatIndex, String user, String operateBy) {
+    for (var callback in _eventCallbacks.copy()) {
+      callback.seatInvitationCancelledCallback
+          ?.call(seatIndex, user, operateBy);
+    }
+  }
+
   void _notifySeatInvitationAcceptedCallback(
       int seatIndex, String user, bool isAutoAgree) {
     for (var callback in _eventCallbacks.copy()) {
@@ -1108,7 +1137,12 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     }
   }
 
-  void _notifySeatInvitationRejectedCallback(int seatIndex, String user) {}
+  void _notifySeatInvitationRejectedCallback(int seatIndex, String user) {
+    for (var callback in _eventCallbacks.copy()) {
+      callback.seatInvitationRejectedCallback?.call(seatIndex, user);
+    }
+  }
+
   void _notifySeatLeaveCallback(int seatIndex, String user) {
     for (var callback in _eventCallbacks.copy()) {
       callback.seatLeaveCallback?.call(seatIndex, user);
@@ -1149,7 +1183,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     } else if (old != null &&
         old.status == NESeatItemStatus.TAKEN &&
         now == null) {
-      muteMyAudio();
+      _muteMyAudioInner(false);
       _currentRoomContext!.rtcController
           .setClientRole(NERoomRtcClientRole.AUDIENCE);
       // 成员自己重置
@@ -1185,5 +1219,63 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     _currentRoomContext = null;
     currentSeatItems = null;
     _removeListener();
+  }
+
+  @override
+  Future<VoidResult> cancelSeatInvitation(String account) async {
+    commonLogger.i('cancelSeatInvitation,account:$account');
+    if (_currentRoomContext != null) {
+      var ret = await _currentRoomContext!.seatController
+          .cancelSeatInvitation(account);
+      commonLogger.i('cancelSeatInvitation,ret:$ret');
+      return ret;
+    } else {
+      commonLogger.e("_currentRoomContext == null");
+      return Future.value(const NEResult(
+          code: NEVoiceRoomErrorCode.failure, msg: ERROR_MSG_NOT_IN_ROOM));
+    }
+  }
+
+  @override
+  Future<VoidResult> acceptSeatInvitation() async {
+    commonLogger.i('acceptSeatInvitation');
+    if (_currentRoomContext != null) {
+      var ret =
+          await _currentRoomContext!.seatController.acceptSeatInvitation();
+      commonLogger.i('acceptSeatInvitation,ret:$ret');
+      return ret;
+    } else {
+      commonLogger.e("_currentRoomContext == null");
+      return Future.value(const NEResult(
+          code: NEVoiceRoomErrorCode.failure, msg: ERROR_MSG_NOT_IN_ROOM));
+    }
+  }
+
+  @override
+  Future<VoidResult> rejectSeatInvitation() async {
+    commonLogger.i('rejectSeatInvitation');
+    if (_currentRoomContext != null) {
+      var ret =
+          await _currentRoomContext!.seatController.rejectSeatInvitation();
+      commonLogger.i('rejectSeatInvitation,ret:$ret');
+      return ret;
+    } else {
+      commonLogger.e("_currentRoomContext == null");
+      return Future.value(const NEResult(
+          code: NEVoiceRoomErrorCode.failure, msg: ERROR_MSG_NOT_IN_ROOM));
+    }
+  }
+
+  void _notifyMemberJoinChatroom(List<NERoomMember> members) {
+    for (int i = 0; i < members.length; i++) {
+      if (members[i].uuid == NEVoiceRoomKit.instance.localMember?.account) {
+        _currentRoomContext!.seatController.getSeatInfo().then((value) {
+          if (value.isSuccess()) {
+            _notifySeatListChangedCallback(value.data!.seatItems!);
+          }
+        });
+        break;
+      }
+    }
   }
 }

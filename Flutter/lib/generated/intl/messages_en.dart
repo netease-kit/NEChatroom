@@ -1,7 +1,3 @@
-// Copyright (c) 2022 NetEase, Inc. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
-
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a en locale. All the
 // messages from the main program should be duplicated here with the same
@@ -122,6 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "muteSeatFail": MessageLookupByLibrary.simpleMessage("Failed to mute"),
         "nickName": MessageLookupByLibrary.simpleMessage("Nickname"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
+        "noInternet": MessageLookupByLibrary.simpleMessage("No internet"),
         "noMore": MessageLookupByLibrary.simpleMessage("No more"),
         "notify": MessageLookupByLibrary.simpleMessage("Notification"),
         "onSeatedTips":

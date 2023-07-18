@@ -5,14 +5,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:netease_auth/provider/login_provider.dart';
+
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/app_config.dart';
+import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:voiceroomkit_ui/widgets/live_info_view.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
-import 'package:netease_roomkit/netease_roomkit.dart';
 
 import '../base/lifecycle_base_state.dart';
 import '../utils/nav_utils.dart';
@@ -129,13 +129,13 @@ class _StartLivePageRouteState extends LifecycleBaseState<StartLivePageRoute> {
   void _startLive() async {
     LoadingUtil.showLoading();
     if (TextUtils.isNotEmpty(_topic) && TextUtils.isNotEmpty(_cover)) {
+      // todo 改为上麦申请需要主播同意（默认）+ 邀请上麦需要观众同意（测试新增的麦位接口）
       var createVoiceRoomParams = NECreateVoiceRoomParams(
-        title: _topic!,
-        cover: _cover!,
-        seatCount: 9,
-        nick: LoginModel.instance.userInfo?.nickname ?? "",
-        configId: AppConfig().configId,
-      );
+          title: _topic!,
+          cover: _cover!,
+          seatCount: 9,
+          nick: UserInfoManager.getNickname(),
+          configId: AppConfig().configId);
 
       NEVoiceRoomKit.instance
           .createRoom(createVoiceRoomParams, NECreateVoiceRoomOptions())

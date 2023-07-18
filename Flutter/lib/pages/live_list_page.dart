@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
@@ -219,9 +220,7 @@ class _LiveListPageState extends State<LiveListPage>
     var itemWidth = (MediaQuery.of(context).size.width - 8.0 * 3) / 2;
     return GestureDetector(
       onTap: () {
-        NavUtils.pushNamed(context, RouterName.roomPage,
-                arguments: {'roomInfo': item, 'isAnchor': false})
-            .then((value) => {loadData()});
+        _gotoRoomPage(item);
       },
       child: Stack(
         alignment: Alignment.topLeft,
@@ -288,7 +287,7 @@ class _LiveListPageState extends State<LiveListPage>
             child: Text(
               item.liveModel == null
                   ? "0"
-                  : item.liveModel!.audienceCount.toString(),
+                  : (item.liveModel!.audienceCount! + 1).toString(),
               style: const TextStyle(color: Colors.white, fontSize: 12),
             ),
           )
@@ -303,5 +302,16 @@ class _LiveListPageState extends State<LiveListPage>
         content: Text(msg ?? ''),
       ),
     );
+  }
+
+  void _gotoRoomPage(NEVoiceRoomInfo item) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      ToastUtils.showToast(context, S.of(context).noInternet);
+      return;
+    }
+    NavUtils.pushNamed(context, RouterName.roomPage,
+            arguments: {'roomInfo': item, 'isAnchor': false})
+        .then((value) => {loadData()});
   }
 }

@@ -64,7 +64,7 @@ abstract class NEVoiceRoomKit {
   /// @param pageNum 页码
   /// @param pageSize 页大小,一页包含多少条
   ///
-  Future<NEResult<NEVoiceRoomList>> getVoiceRoomList(
+  Future<NEResult<NEVoiceRoomList>> getRoomList(
     NEVoiceRoomLiveState liveState,
     int pageNum,
     int pageSize,
@@ -121,6 +121,12 @@ abstract class NEVoiceRoomKit {
   /// <br>相关回调：邀请上麦后，观众同意后（组件默认自动接收邀请），房间内所有成员会触发[NEVoiceRoomEventCallback.seatInvitationAcceptedCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
   Future<VoidResult> sendSeatInvitation(int seatIndex, String account);
 
+  ///管理员取消成员[user]的上麦邀请，非管理员执行该操作会失败。
+  ///@param user 麦上的用户ID。
+  /// @param callback 回调。
+  ///<br>相关回调：取消邀请上麦后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatInvitationCancelledCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
+  Future<VoidResult> cancelSeatInvitation(String account);
+
   /// 成员申请指定位置为[seatIndex]的麦位，位置从**1**开始。
   /// 如果当前成员为管理员，则会自动通过申请。
   /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
@@ -161,6 +167,16 @@ abstract class NEVoiceRoomKit {
   /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
   /// <br>相关回调：房主踢麦后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatLeaveCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
   Future<VoidResult> leaveSeat();
+
+  /// 同意上麦
+  /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
+  /// <br>相关回调：成员同意后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatInvitationAcceptedCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
+  Future<VoidResult> acceptSeatInvitation();
+
+  /// 拒绝上麦
+  /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
+  /// <br>相关回调：成员同意后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatInvitationRejectedCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
+  Future<VoidResult> rejectSeatInvitation();
 
   /// 禁用指定成员音频
   /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
@@ -295,22 +311,18 @@ abstract class NEVoiceRoomKit {
 class NEVoiceRoomKitOptions {
   NEVoiceRoomKitOptions({
     required this.appKey,
-    this.reuseIM = false,
     Map<String, String>? extras,
   }) : extras = extras != null ? Map.from(extras) : const {};
 
   /// 应用 appKey
   final String appKey;
 
-  /// im 是否复用
-  final bool reuseIM;
-
   /// 额外参数
   final Map<String, String>? extras;
 
   @override
   String toString() {
-    return 'NEVoiceRoomKitOptions{appKey: $appKey,reuseIM:$reuseIM,extras: $extras}';
+    return 'NEVoiceRoomKitOptions{appKey: $appKey,extras: $extras}';
   }
 }
 
@@ -377,9 +389,10 @@ class NEStartVoiceRoomParams {
   final int seatCount;
   final int configId;
   final String? cover;
+  final String roomName;
   final int liveType;
-  final SeatRequestApprovalMode seatApplyMode;
-  final SeatInvitationConfirmMode seatInviteMode;
+  final NEVoiceRoomSeatRequestApprovalMode? seatApplyMode;
+  final NEVoiceRoomSeatInvitationConfirmMode? seatInviteMode;
 
   NEStartVoiceRoomParams({
     required this.title,
@@ -387,9 +400,10 @@ class NEStartVoiceRoomParams {
     required this.seatCount,
     required this.configId,
     required this.cover,
+    required this.roomName,
     required this.liveType,
-    this.seatApplyMode = SeatRequestApprovalMode.on,
-    this.seatInviteMode = SeatInvitationConfirmMode.off,
+    this.seatApplyMode,
+    this.seatInviteMode,
   });
 
   @override
@@ -399,10 +413,10 @@ class NEStartVoiceRoomParams {
 }
 
 /// 上麦申请是否需要管理员同意
-enum SeatRequestApprovalMode { off, on }
+enum NEVoiceRoomSeatRequestApprovalMode { off, on }
 
 /// 管理员抱麦是否需要成员同意
-enum SeatInvitationConfirmMode { off, on }
+enum NEVoiceRoomSeatInvitationConfirmMode { off, on }
 
 /// 创建房间选项
 class NECreateVoiceRoomOptions {}
@@ -422,7 +436,7 @@ class NEJoinVoiceRoomParams {
   final String avatar;
   final NEVoiceRoomRole role;
   final int liveRecordId;
-  final String? extraData;
+  final Map<String, String>? extraData;
 
   NEJoinVoiceRoomParams({
     required this.roomUuid,
@@ -440,7 +454,9 @@ class NEJoinVoiceRoomParams {
 }
 
 /// 加入房间选项
-class NEJoinVoiceRoomOptions {}
+class NEJoinVoiceRoomOptions {
+  final bool enableMyAudioDeviceOnJoinRtc = true;
+}
 
 /// 通用回调
 /// @param T 数据

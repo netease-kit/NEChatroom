@@ -3,11 +3,11 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:netease_auth/auth.dart';
-import 'package:netease_auth/provider/login_provider.dart';
+
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:provider/provider.dart';
 import 'package:voiceroomkit_ui/pages/welcome_page.dart';
+import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
 
 import '../base/base_state.dart';
@@ -22,6 +22,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends BaseState<SplashPage> {
+  bool hasLogin = false;
   @override
   void initState() {
     super.initState();
@@ -34,26 +35,15 @@ class _SplashPageState extends BaseState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginModel>(
-      builder: (context, loginModel, child) {
-        if (loginModel.loginState == LoginState.logined) {
-          return const HomePageRoute();
-        } else if (loginModel.loginState == LoginState.logout) {
-          return UnifyLogin.goLoginPage(context);
-        } else {
-          if (loginModel.loginState == LoginState.logining) {
-            NEVoiceRoomKit.instance
-                .login(loginModel.userInfo!.accountId!,
-                    loginModel.userInfo!.accessToken!)
-                .then((value) async {
-              var isLoggedIn = await NEVoiceRoomKit.instance.isLoggedIn;
-              UnifyLogin.setLoginResult(value.isSuccess() || isLoggedIn);
-            });
-          }
-          return const WelcomePage();
-        }
-      },
-    );
+    if(hasLogin){
+      return const HomePageRoute();
+    }else{
+      return const Scaffold(
+        body: Center(
+          child: Text("will go to homePage after login...",style: TextStyle(fontSize: 16),),
+        ),
+      );
+    }
   }
 
   void _doInit() {
@@ -61,6 +51,9 @@ class _SplashPageState extends BaseState<SplashPage> {
     if (AppConfig().isOverSea) {
       extras["serverUrl"] = "oversea";
     }
+    extras["baseUrl"] = AppConfig.baseurl;
+    // var options =
+    // NEVoiceRoomKitOptions(appKey: AppConfig().appKey, extras: extras);
     var options =
         NEVoiceRoomKitOptions(appKey: AppConfig().appKey, extras: extras);
     NEVoiceRoomKit.instance.initialize(options).then((value) {
@@ -71,15 +64,16 @@ class _SplashPageState extends BaseState<SplashPage> {
             content:
                 "voice room init failed code: ${value.code} message: ${value.msg}");
       }
-
-      UnifyLogin.initLoginConfig(AppConfig().appKey, AppConfig().parentScope,
-          AppConfig().scope, false);
-
-      /// 自动登录
-      var state = Provider.of<LoginModel>(context, listen: false).loginState;
-      if (state == LoginState.init) {
-        UnifyLogin.loginWithToken();
-      }
+      NEVoiceRoomKit.instance
+          .login(AppConfig.account, AppConfig.token)
+          .then((value) async {
+        bool isLoggedIn = await NEVoiceRoomKit.instance.isLoggedIn;
+        UserInfoManager.setUserInfo(AppConfig.account, AppConfig.token,
+            AppConfig.nickname, AppConfig.avatar);
+        setState(() {
+          hasLogin = isLoggedIn;
+        });
+      });
     }).catchError((e) {
       Alog.d(content: 'voice room init failed with error ${e.toString()}');
     });

@@ -22,7 +22,7 @@ class _NEVoiceRoomHttpRepository {
       'live': liveStatus.index,
       'liveType': 2,
     };
-    var ret = await manager._post(_path('list', 'ent/live', 'v1'), body);
+    var ret = await manager._post('/nemo/entertainmentLive/live/list', body);
     var response = NEVoiceRoomList.fromJson(ret.data);
     return NEResult(code: ret.code, msg: ret.msg, data: response);
   }
@@ -30,7 +30,8 @@ class _NEVoiceRoomHttpRepository {
   /// POST http://{host}/scene/apps/{appKey}/ent/live/v1/getDefaultLiveInfo HTTP/1.1
   static Future<NEResult<NEVoiceCreateRoomDefaultInfo>>
       getCreateRoomDefaultInfo() async {
-    var ret = await manager._get(_path('getDefaultLiveInfo', 'ent/live', 'v1'));
+    var ret =
+        await manager._get('/nemo/entertainmentLive/live/getDefaultLiveInfo');
     var response = NEVoiceCreateRoomDefaultInfo.fromJson(ret.data);
     return NEResult(code: ret.code, msg: ret.msg, data: response);
   }
@@ -40,7 +41,7 @@ class _NEVoiceRoomHttpRepository {
     var body = {
       'liveRecordId': liveRecordId,
     };
-    var ret = await manager._post(_path('info', 'ent/live', 'v1'), body);
+    var ret = await manager._post('/nemo/entertainmentLive/live/info', body);
     var response = NEVoiceRoomInfo.fromJson(ret.data);
     return NEResult(code: ret.code, msg: ret.msg, data: response);
   }
@@ -51,6 +52,7 @@ class _NEVoiceRoomHttpRepository {
       String? cover,
       int liveType,
       int configId,
+      String? roomName,
       int seatCount,
       int seatApplyMode,
       int seatInviteMode) async {
@@ -59,11 +61,13 @@ class _NEVoiceRoomHttpRepository {
       "cover": cover,
       "liveType": liveType,
       "configId": configId,
+      "roomName": roomName,
       "seatCount": seatCount,
       "seatApplyMode": seatApplyMode,
       "seatInviteMode": seatInviteMode
     };
-    var ret = await manager._post(_path('createLive', 'ent/live', 'v1'), body);
+    var ret =
+        await manager._post('/nemo/entertainmentLive/live/createLive', body);
     var response = NEVoiceRoomInfo.fromJson(ret.data);
     return NEResult(code: ret.code, msg: ret.msg, data: response);
   }
@@ -73,7 +77,8 @@ class _NEVoiceRoomHttpRepository {
     var body = {
       'liveRecordId': liveRecordId,
     };
-    var ret = await manager._post(_path('destroyLive', 'ent/live', 'v1'), body);
+    var ret =
+        await manager._post('/nemo/entertainmentLive/live/destroyLive', body);
     return NEResult(code: ret.code, msg: ret.msg);
   }
 }
