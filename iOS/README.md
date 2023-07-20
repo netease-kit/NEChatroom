@@ -68,9 +68,10 @@
 # 前提条件
 
 请确认您已完成以下操作：
-- [已创建应用并获取AppKey](https://doc.yunxin.163.com/jcyOTA0ODM/docs/jcwMDQ2MTg)
+- [已创建应用并获取AppKey](https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console)
 - [已开通相关能力](https://doc.yunxin.163.com/docs/TA3ODAzNjE/zQ4MTI0Njc?platformId=50616)
-- 已开通统一登录功能，具体请联系网易云信商务经理。
+- 已根据[跑通语聊房服务端源码](https://doc.yunxin.163.com/group-voice-room/docs/jA3NDY0MjA?platform=server)运行语聊房服务端
+
 
 # 运行示例项目
 
@@ -83,25 +84,32 @@
 1. 克隆示例项目源码仓库至您本地工程。
 2. 打开终端，在 Podfile 所在文件夹中执行如下命令进行安装：
 
-```
-pod install 
-```
+    ```
+    pod install 
+    ```
 
 4. 在 NEVoiceRoomExample/NEVoiceRoomExample/AppEnv/Define/AppKey.h 中 ，替换以下信息
 
-```
-/// 服务器host
-static NSString *const kApiHost = @"https://127.0.0.1:9981";
-static NSString *const APP_KEY_MAINLAND = @"your mainland appKey";  // 国内用户填写
-// AccountId
-static NSString *const accountId = @"";
-// accessToken
-static NSString *const accessToken = @"";
+    ```
+    /// 服务器host
+    static NSString *const kApiHost = @"https://127.0.0.1:9981";
+    static NSString *const APP_KEY_MAINLAND = @"your mainland appKey";  // 国内用户填写
+    // AccountId
+    static NSString *const accountId = @"";
+    // accessToken
+    static NSString *const accessToken = @"";
+    
+    如果需要配置海外环境，则修改以下内容
+    static BOOL isOverSea = NO;  // 是否是海外环境
+    static NSString *const APP_KEY_OVERSEA = @"your oversea appKey";  // 海外用户填写
+    ```
 
-如果需要配置海外环境，则修改以下内容
-static BOOL isOverSea = NO;  // 是否是海外环境
-static NSString *const APP_KEY_OVERSEA = @"your oversea appKey";  // 海外用户填写
-```
 
+   > 说明：
+   >
+   > 以下参数的值请填写[跑通语聊房服务端源码](https://doc.yunxin.163.com/group-voice-room/docs/jA3NDY0MjA?platform=server) 时返回的内容：
+   >  - `accountId`：服务端源码返回的 `userUuid` 的值
+   > - `accessToken`：服务端源码返回的`userToken`的值
+    
 5. 运行工程。
 建议在真机上运行，不支持模拟器调试。
