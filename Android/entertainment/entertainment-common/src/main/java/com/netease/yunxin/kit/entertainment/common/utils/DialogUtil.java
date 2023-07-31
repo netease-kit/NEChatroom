@@ -5,33 +5,32 @@
 package com.netease.yunxin.kit.entertainment.common.utils;
 
 import android.app.Activity;
-import android.text.TextUtils;
-import androidx.appcompat.app.AppCompatActivity;
-import com.netease.yunxin.kit.common.ui.dialog.AlertListener;
-import com.netease.yunxin.kit.common.ui.dialog.CommonAlertDialog;
 import com.netease.yunxin.kit.common.ui.dialog.CommonConfirmDialog;
-import com.netease.yunxin.kit.entertainment.common.R;
+import com.netease.yunxin.kit.entertainment.common.dialog.ECAlertDialog;
 import com.netease.yunxin.kit.entertainment.common.dialog.ECCommonConfirmDialog;
 
 public class DialogUtil {
-  public static void showAlertDialog(AppCompatActivity activity, String title) {
-    showAlertDialog(activity, title, null, () -> {});
+  public static void showAlertDialog(Activity activity, String content) {
+    showAlertDialog(activity, content, null);
+  }
+
+  public static void showAlertDialog(Activity activity, String content, String confirmText) {
+    showAlertDialog(activity, content, confirmText, null);
   }
 
   public static void showAlertDialog(
-      AppCompatActivity activity, String title, String content, AlertListener listener) {
-    if (activity.isFinishing() || activity.getSupportFragmentManager().isDestroyed()) {
+      Activity activity,
+      String content,
+      String confirmText,
+      ECAlertDialog.DialogCallback callback) {
+    if (activity.isFinishing()) {
       return;
     }
-    CommonAlertDialog commonDialog = new CommonAlertDialog();
-    commonDialog
-        .setTitleStr(title)
-        .setPositiveStr(activity.getString(R.string.confirm))
-        .setConfirmListener(listener);
-    if (!TextUtils.isEmpty(content)) {
-      commonDialog.setContent(content);
-    }
-    commonDialog.show(activity.getSupportFragmentManager());
+    ECAlertDialog dialog = new ECAlertDialog(activity);
+    dialog.setContent(content);
+    dialog.setConfirmText(confirmText);
+    dialog.setDialogCallback(callback);
+    dialog.show();
   }
 
   public static void showConfirmDialog(

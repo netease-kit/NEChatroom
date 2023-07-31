@@ -43,7 +43,7 @@
             android:layout_below="@id/tv_item_gift_name"
             android:layout_centerHorizontal="true"
             android:drawablePadding="3dp"
-            android:drawableLeft="@drawable/voiceroom_gift_coin"
+            android:drawableLeft="@drawable/gift_coin"
             tools:text="value"
             android:textColor="#FFC86B"
             android:textSize="12dp" />

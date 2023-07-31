@@ -14,11 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.netease.yunxin.kit.entertainment.common.R;
-import com.scwang.smart.refresh.layout.api.RefreshFooter;
-import com.scwang.smart.refresh.layout.api.RefreshKernel;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.constant.RefreshState;
-import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
+import com.netease.yunxin.kit.entertainment.common.smartrefresh.api.RefreshFooter;
+import com.netease.yunxin.kit.entertainment.common.smartrefresh.api.RefreshKernel;
+import com.netease.yunxin.kit.entertainment.common.smartrefresh.api.RefreshLayout;
+import com.netease.yunxin.kit.entertainment.common.smartrefresh.constant.RefreshState;
+import com.netease.yunxin.kit.entertainment.common.smartrefresh.constant.SpinnerStyle;
 
 public class FooterView extends LinearLayout implements RefreshFooter {
   private Context context;
@@ -104,6 +104,11 @@ public class FooterView extends LinearLayout implements RefreshFooter {
 
   @Override
   public boolean isSupportHorizontalDrag() {
+    return false;
+  }
+
+  @Override
+  public boolean autoOpen(int duration, float dragRate, boolean animationOnly) {
     return false;
   }
 

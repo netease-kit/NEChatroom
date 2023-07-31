@@ -152,8 +152,7 @@ public class SelectMemberSendGiftView extends RecyclerView {
         memberViewHolder.ivAvatar.loadAvatar(list.get(position).getMember().getAvatar());
       } else {
         Bitmap bitmap =
-            BitmapFactory.decodeResource(
-                Utils.getApp().getResources(), R.drawable.voiceroom_seat_holder);
+            BitmapFactory.decodeResource(Utils.getApp().getResources(), R.drawable.seat_holder);
         memberViewHolder.ivAvatar.setImageBitmap(bitmap);
       }
       memberViewHolder.itemView.setOnClickListener(

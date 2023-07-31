@@ -17,9 +17,9 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.annotation.NonNull;
-import com.blankj.utilcode.util.PermissionUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.common.ui.utils.Permission;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.common.utils.XKitUtils;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -108,30 +108,32 @@ public class BluetoothHeadsetUtil {
         == BluetoothProfile.STATE_CONNECTED;
   }
 
-  public static boolean hasBluetoothConnectPermission() {
+  public static boolean hasBluetoothConnectPermission(Context context) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
       return true;
     }
-    return PermissionUtils.isGranted(BLUETOOTH_CONNECT_PERMISSION);
+    return Permission.hasPermissions(context, BLUETOOTH_CONNECT_PERMISSION);
   }
 
-  public static void requestBluetoothConnectPermission() {
-    PermissionUtils.permission((BLUETOOTH_CONNECT_PERMISSION))
-        .callback(
-            new PermissionUtils.FullCallback() {
+  public static void requestBluetoothConnectPermission(Context context) {
+    Permission.requirePermissions(context, BLUETOOTH_CONNECT_PERMISSION)
+        .request(
+            new Permission.PermissionCallback() {
               @Override
               public void onGranted(@NonNull List<String> granted) {
                 ALog.i(TAG, "BLUETOOTH_CONNECT_PERMISSION onGranted");
               }
 
               @Override
-              public void onDenied(
-                  @NonNull List<String> deniedForever, @NonNull List<String> denied) {
+              public void onDenial(
+                  List<String> permissionsDenial, List<String> permissionDenialForever) {
                 ALog.e(TAG, "BLUETOOTH_CONNECT_PERMISSION onDenied");
-                ToastUtils.showShort("Bluetooth connect permission denied");
+                ToastX.showShortToast("Bluetooth connect permission denied");
               }
-            })
-        .request();
+
+              @Override
+              public void onException(Exception exception) {}
+            });
   }
 
   public interface BluetoothHeadsetStatusObserver {

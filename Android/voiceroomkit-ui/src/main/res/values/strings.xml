@@ -113,5 +113,14 @@
     <string name="voiceroom_room_not_exist">Room does not exist</string>
     <string name="voiceroom_people_online2">%d people</string>
     <string name="voiceroom_people_online_ten_thousand">s%w people</string>
+    <string name="voiceroom_authentication">Identity Verification</string>
+    <string name="voiceroom_authentication_content">Note: \n1. Please enter your authentic identity for verification. \n2. The personal information you submit will stay strictly confidential and will not be used for any other purposes. </string>
+    <string name="voiceroom_name_placeholder">Enter your full name</string>
+    <string name="voiceroom_id_placeholder">Enter ID number</string>
+    <string name="voiceroom_authentication_now">Verify</string>
+    <string name="voiceroom_authentication_check">By performing identity verification, you agree to allow CommsEase to collect your personal information, such as real name, ID number and other document information</string>
+    <string name="voiceroom_authentication_error">Incorrect ID number or name\n Identity Verification failed</string>
+    <string name="voiceroom_authentication_success">Identity Verification passed</string>
+    <string name="voiceroom_authentication_know">Got it</string>
 
 </resources>

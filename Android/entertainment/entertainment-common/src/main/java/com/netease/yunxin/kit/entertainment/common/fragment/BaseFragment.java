@@ -6,10 +6,10 @@ package com.netease.yunxin.kit.entertainment.common.fragment;
 
 import android.view.View;
 import androidx.fragment.app.Fragment;
-import com.netease.yunxin.kit.entertainment.common.statusbar.StatusBarConfig;
+import com.netease.yunxin.kit.entertainment.common.utils.ViewUtils;
 
 public class BaseFragment extends Fragment {
   protected void paddingStatusBarHeight(View view) {
-    StatusBarConfig.paddingStatusBarHeight(getActivity(), view);
+    ViewUtils.paddingStatusBarHeight(getActivity(), view);
   }
 }

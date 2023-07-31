@@ -7,13 +7,13 @@ package com.netease.yunxin.app.chatroom.activity;
 import android.text.TextUtils;
 import android.view.View;
 import androidx.annotation.Nullable;
-import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.adapter.MainPagerAdapter;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.app.chatroom.databinding.ActivityHomeBinding;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.copyrightedmedia.api.SongScene;
 import com.netease.yunxin.kit.entertainment.common.activity.BasePartyActivity;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
@@ -80,12 +80,12 @@ public class HomeActivity extends BasePartyActivity {
   private void login(String account, String token) {
     if (TextUtils.isEmpty(account)) {
       ALog.d(TAG, "login but account is empty");
-      ToastUtils.showShort(R.string.app_account);
+      ToastX.showShortToast(R.string.app_account);
       return;
     }
     if (TextUtils.isEmpty(token)) {
       ALog.d(TAG, "login but token is empty");
-      ToastUtils.showShort(R.string.app_token);
+      ToastX.showShortToast(R.string.app_token);
       return;
     }
     NEVoiceRoomKit.getInstance()
@@ -111,7 +111,7 @@ public class HomeActivity extends BasePartyActivity {
               @Override
               public void onFailure(int code, @Nullable String msg) {
                 ALog.e(TAG, "NEVoiceRoomKit login failed code = " + code + ", msg = " + msg);
-                ToastUtils.showShort(msg);
+                ToastX.showShortToast(msg);
               }
             });
   }

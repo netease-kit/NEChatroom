@@ -29,14 +29,11 @@ dependencies {
 
 
     implementation("com.airbnb.android:lottie:5.0.3")
-    implementation("com.netease.yunxin:nertc-base:4.6.50")
+    implementation("com.netease.yunxin:nertc-base:5.4.0")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
-    implementation("com.blankj:utilcodex:1.30.6")
-    api("com.scwang.smart:refresh-layout-kernel:2.0.3")
-    api("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
 
-    implementation("com.netease.yunxin.kit.common:common-ui:1.1.20")
+    implementation("com.netease.yunxin.kit.common:common-ui:1.3.0")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
     implementation(project(":voiceroomkit"))
     implementation("com.netease.yunxin.kit.auth:auth-yunxin-login:1.0.4")

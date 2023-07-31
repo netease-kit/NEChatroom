@@ -49,20 +49,22 @@
     <string name="has_open">Enabled</string>
     <string name="has_close">Disabled</string>
     <string name="float_permission_desc">By granting the floating window permission, you can also receive notifications for voice or video calls even when the app is running in the background or the screen is locked. \nTo ensure timely notification of incoming voice or video calls, please allow the following permissions: \n1. Allow background activity; 2. Show on lock screen; 3. Allow pop-up windows in the background.</string>
-    <string name="host">房主</string>
-    <string name="send_to">送给</string>
-    <string name="gift_send">赠送</string>
-    <string name="gift_send_memeber_empty">未选择送礼对象，无法送礼</string>
-    <string name="gift">礼物</string>
-    <string name="send_gift">送礼物</string>
-    <string name="glow_stick">荧光棒</string>
-    <string name="arrange">安排</string>
-    <string name="sports_car">跑车</string>
-    <string name="rockets">火箭</string>
-    <string name="send">发送</string>
-    <string name="send2">送给</string>
+    <string name="host">host</string>
+    <string name="send_to">send to</string>
+    <string name="gift_send">send</string>
+    <string name="gift_send_memeber_empty">No gift object selected, unable to send gifts</string>
+    <string name="gift">Gift</string>
+    <string name="send_gift">Send gift</string>
+    <string name="glow_stick">Glow stick</string>
+    <string name="arrange">Arrange</string>
+    <string name="sports_car">Sports car</string>
+    <string name="rockets">Rockets</string>
+    <string name="send">Send</string>
+    <string name="send2">Send</string>
     <string name="coin">coins</string>
-    <string name="reward_failed">打赏礼物失败</string>
-    <string name="donate">赠送了</string>
-    <string name="count">个</string>
+    <string name="reward_failed">Reward failed</string>
+    <string name="donate">donate</string>
+    <string name="count">count</string>
+    <string name="srl_content_empty">The content view in SmartRefreshLayout is empty. Do you forget to add it in xml layout file?</string>
+    <string name="srl_component_falsify" formatted="false">%s falsify area,\n Represents the height[%.1fdp] of drag at run time,\n It does not show anything.</string>
 </resources>

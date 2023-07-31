@@ -18,11 +18,11 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import com.blankj.utilcode.util.PermissionUtils;
+import com.netease.yunxin.kit.common.ui.utils.Permission;
 import com.netease.yunxin.kit.entertainment.common.R;
 import java.util.List;
 
-public class PhoneConsultBottomDialog extends Dialog implements PermissionUtils.FullCallback {
+public class PhoneConsultBottomDialog extends Dialog implements Permission.PermissionCallback {
   private final String PHONE_NUMBER_SHOW = "4009-000-123";
   private final String PHONE_NUMBER = "4009000123";
   private final String[] permissions = {Manifest.permission.CALL_PHONE};
@@ -77,7 +77,7 @@ public class PhoneConsultBottomDialog extends Dialog implements PermissionUtils.
 
   /** 权限检查 */
   private void requestPermissionsIfNeeded() {
-    PermissionUtils.permission(permissions).callback(this).request();
+    Permission.requirePermissions(getContext(), permissions).request(this);
   }
 
   @Override
@@ -89,5 +89,8 @@ public class PhoneConsultBottomDialog extends Dialog implements PermissionUtils.
   }
 
   @Override
-  public void onDenied(@NonNull List<String> deniedForever, @NonNull List<String> denied) {}
+  public void onDenial(List<String> permissionsDenial, List<String> permissionDenialForever) {}
+
+  @Override
+  public void onException(Exception exception) {}
 }

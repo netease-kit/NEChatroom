@@ -113,4 +113,14 @@ class VoiceRoomRepository {
         )
         voiceRoomApi.batchReward(params)
     }
+
+    suspend fun realNameAuthentication(name: String, cardNo: String): Response<Unit> = withContext(
+        Dispatchers.IO
+    ) {
+        val params = mapOf(
+            "name" to name,
+            "cardNo" to cardNo
+        )
+        voiceRoomApi.realNameAuthentication(params)
+    }
 }

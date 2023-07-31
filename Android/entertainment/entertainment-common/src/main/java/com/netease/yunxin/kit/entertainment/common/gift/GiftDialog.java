@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.text.TextPaint;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -60,6 +61,8 @@ public class GiftDialog extends BottomBaseDialog {
     titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f);
     titleView.setGravity(Gravity.CENTER);
     titleView.setTextColor(Color.parseColor("#ff333333"));
+    TextPaint paint = titleView.getPaint();
+    paint.setFakeBoldText(true);
     FrameLayout.LayoutParams layoutParams =
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

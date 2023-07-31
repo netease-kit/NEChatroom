@@ -36,6 +36,12 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
+        <activity android:name=".activity.AuthenticateActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
         <service
             android:name=".service.KeepAliveService"
             android:foregroundServiceType="mediaProjection"/>

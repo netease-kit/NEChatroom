@@ -150,7 +150,6 @@ public class BackgroundMusicPanel extends AppCompatTextView {
         currentSong = song;
         setText(song.getSongName());
         setVisibility(View.VISIBLE);
-        songPlayManager.stop();
         songPlayManager.start(songURI, 0);
       } else {
         ALog.i(TAG, "startPlay but songURI is empty");

@@ -31,13 +31,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
-import com.gyf.immersionbar.ImmersionBar;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.common.utils.DeviceUtils;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.common.utils.PermissionUtils;
@@ -63,6 +64,7 @@ import com.netease.yunxin.kit.entertainment.common.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.entertainment.common.widget.HeadImageView;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.ordersong.ui.OrderSongDialog;
+import com.netease.yunxin.kit.ordersong.ui.viewmodel.OrderSongViewModel;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomEndReason;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
@@ -80,12 +82,11 @@ import com.netease.yunxin.kit.voiceroomkit.ui.chatroom.ChatRoomMsgCreator;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomAudioDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomMixerDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChatRoomMoreDialog;
-import com.netease.yunxin.kit.voiceroomkit.ui.dialog.ChoiceDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NoticeDialog;
-import com.netease.yunxin.kit.voiceroomkit.ui.dialog.NotificationDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.dialog.TopTipsDialog;
 import com.netease.yunxin.kit.voiceroomkit.ui.helper.EffectPlayHelper;
 import com.netease.yunxin.kit.voiceroomkit.ui.service.KeepAliveService;
+import com.netease.yunxin.kit.voiceroomkit.ui.service.SongPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager;
 import com.netease.yunxin.kit.voiceroomkit.ui.viewmodel.VoiceRoomViewModel;
 import com.netease.yunxin.kit.voiceroomkit.ui.widget.BackgroundMusicPanel;
@@ -195,7 +196,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private boolean isOverSeaEnv = false;
   private boolean needJoinRoom = true;
   private boolean prepareFloatPlay = false;
-
+  private OrderSongViewModel orderSongViewModel;
   private final BaseAdapter.ItemClickListener<RoomSeat> itemClickListener = this::onSeatItemClick;
 
   private final BaseAdapter.ItemLongClickListener<RoomSeat> itemLongClickListener =
@@ -208,8 +209,8 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           new BluetoothHeadsetUtil.BluetoothHeadsetStatusObserver() {
             @Override
             public void connect() {
-              if (!BluetoothHeadsetUtil.hasBluetoothConnectPermission()) {
-                BluetoothHeadsetUtil.requestBluetoothConnectPermission();
+              if (!BluetoothHeadsetUtil.hasBluetoothConnectPermission(VoiceRoomBaseActivity.this)) {
+                BluetoothHeadsetUtil.requestBluetoothConnectPermission(VoiceRoomBaseActivity.this);
               }
             }
 
@@ -292,8 +293,8 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     if (voiceRoomInfo == null) {
       return;
     }
-    ImmersionBar.with(this).statusBarDarkFont(false).init();
     roomViewModel = getRoomViewModel();
+    orderSongViewModel = new ViewModelProvider(this).get(OrderSongViewModel.class);
     initRoomViewModel();
     setContentView(getContentViewID());
     initViews();
@@ -305,8 +306,8 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     BluetoothHeadsetUtil.registerBluetoothHeadsetStatusObserver(
         bluetoothHeadsetStatusChangeListener);
     if (BluetoothHeadsetUtil.isBluetoothHeadsetConnected()
-        && !BluetoothHeadsetUtil.hasBluetoothConnectPermission()) {
-      BluetoothHeadsetUtil.requestBluetoothConnectPermission();
+        && !BluetoothHeadsetUtil.hasBluetoothConnectPermission(VoiceRoomBaseActivity.this)) {
+      BluetoothHeadsetUtil.requestBluetoothConnectPermission(VoiceRoomBaseActivity.this);
     }
     GiftHelper.getInstance().init();
   }
@@ -394,12 +395,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     if (baseAudioView == null) {
       throw new IllegalStateException("xml layout must include base_audio_ui.xml layout");
     }
-    int barHeight = ImmersionBar.getStatusBarHeight(this);
-    baseAudioView.setPadding(
-        baseAudioView.getPaddingLeft(),
-        baseAudioView.getPaddingTop() + barHeight,
-        baseAudioView.getPaddingRight(),
-        baseAudioView.getPaddingBottom());
+    paddingStatusBarHeight(baseAudioView);
     clyAnchorView = baseAudioView.findViewById(R.id.cly_anchor_layout);
     ivAnchorAvatar = baseAudioView.findViewById(R.id.iv_liver_avatar);
     lavAnchorAvatar = baseAudioView.findViewById(R.id.lav_avatar_lottie_view);
@@ -551,7 +547,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         return;
       }
 
-      OrderSongDialog dialog = new OrderSongDialog(NEVoiceRoomKit.getInstance().getEffectVolume());
+      OrderSongDialog dialog = new OrderSongDialog(SongPlayManager.getInstance().getVolume());
       dialog.show(getSupportFragmentManager(), TAG);
     }
   }
@@ -794,17 +790,11 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
             } else if (!roomViewModel.isMute()) {
               roomViewModel.unmuteMyAudio(false);
             }
-            ChoiceDialog dialog =
-                new NotificationDialog(VoiceRoomBaseActivity.this)
-                    .setTitle(getString(R.string.voiceroom_notify))
-                    .setContent(
-                        getString(
-                            memberAudioBannedModel.isBanned()
-                                ? R.string.voiceroom_seat_muted
-                                : R.string.voiceroom_unmute_seat_tips))
-                    .setPositive(getString(R.string.voiceroom_get_it), v -> {});
-            dialog.setCancelable(false);
-            dialog.show();
+            ToastX.showShortToast(
+                getString(
+                    memberAudioBannedModel.isBanned()
+                        ? R.string.voiceroom_seat_muted
+                        : R.string.voiceroom_unmute_seat_tips));
           }
           seatAdapter.notifyDataSetChanged();
         });
@@ -877,6 +867,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
           moreItems.get(MORE_ITEM_EAR_BACK).setEnable(isOpen);
           chatRoomMoreDialog.updateData();
         });
+    orderSongViewModel
+        .getVolumeChangedEvent()
+        .observe(
+            this,
+            volume -> {
+              SongPlayManager.getInstance().setVolume(volume);
+            });
   }
 
   protected final void leaveRoom() {
@@ -1061,5 +1058,15 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
       charSequenceList.clear();
     }
     super.finish();
+  }
+
+  @Override
+  protected boolean needTransparentStatusBar() {
+    return true;
+  }
+
+  @Override
+  protected ViewUtils.ModeType getStatusBarTextModeType() {
+    return ViewUtils.ModeType.NIGHT;
   }
 }

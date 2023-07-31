@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import com.netease.yunxin.kit.entertainment.common.Constants;
 import com.netease.yunxin.kit.entertainment.common.R;
 import com.netease.yunxin.kit.entertainment.common.databinding.ActivityWebviewBinding;
-import com.netease.yunxin.kit.entertainment.common.statusbar.StatusBarConfig;
 
 public class WebViewActivity extends BasePartyActivity {
 
@@ -34,6 +33,7 @@ public class WebViewActivity extends BasePartyActivity {
   protected void init() {
     title = getIntent().getStringExtra(Constants.INTENT_KEY_TITLE);
     url = getIntent().getStringExtra(Constants.INTENT_KEY_URL);
+    paddingStatusBarHeight(binding.getRoot());
     initViews();
   }
 
@@ -114,14 +114,5 @@ public class WebViewActivity extends BasePartyActivity {
       return;
     }
     super.onBackPressed();
-  }
-
-  @Override
-  protected StatusBarConfig provideStatusBarConfig() {
-    return new StatusBarConfig.Builder()
-        .statusBarDarkFont(true)
-        .statusBarColor(android.R.color.white)
-        .fitsSystemWindow(true)
-        .build();
   }
 }

@@ -156,7 +156,12 @@ public class VoiceRoomCreateActivity extends CreateRoomActivity {
               }
 
               @Override
-              public void onFailure(int code, @Nullable String msg) {}
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "createRoom failed code:" + code + ",msg:" + msg);
+                if (code == 2001) {
+                  NavUtils.toAuthenticateActivity(VoiceRoomCreateActivity.this);
+                }
+              }
             });
   }
 }

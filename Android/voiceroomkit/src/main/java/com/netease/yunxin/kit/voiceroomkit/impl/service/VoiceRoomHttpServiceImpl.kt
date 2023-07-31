@@ -174,6 +174,21 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
         }
     }
 
+    override fun realNameAuthentication(name: String, cardNo: String, callback: NetRequestCallback<Unit>) {
+        voiceRoomScope?.launch {
+            Request.request(
+                { voiceRoomRepository.realNameAuthentication(name, cardNo) },
+                success = {
+                    callback.success(it)
+                },
+                error = { code: Int, msg: String ->
+                    reportHttpErrorEvent(HttpErrorReporter.ErrorEvent(code, msg, ""))
+                    callback.error(code, msg)
+                }
+            )
+        }
+    }
+
     override fun reportHttpErrorEvent(error: HttpErrorReporter.ErrorEvent) {
         if (error.code != NEErrorCode.SUCCESS) {
             VoiceRoomLog.e(TAG, "report http error: $error")

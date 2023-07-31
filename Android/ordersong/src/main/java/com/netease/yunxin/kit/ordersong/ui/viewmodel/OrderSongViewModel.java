@@ -14,9 +14,11 @@ import com.netease.yunxin.kit.copyrightedmedia.api.NEErrorCode;
 import com.netease.yunxin.kit.copyrightedmedia.api.NESongPreloadCallback;
 import com.netease.yunxin.kit.copyrightedmedia.api.model.NECopyrightedSong;
 import com.netease.yunxin.kit.copyrightedmedia.impl.NECopyrightedEventHandler;
+import com.netease.yunxin.kit.ordersong.core.NEOrderSongListener;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSong;
 import com.netease.yunxin.kit.ordersong.core.model.OrderSongModel;
+import com.netease.yunxin.kit.ordersong.core.model.Song;
 import com.netease.yunxin.kit.ordersong.ui.util.SingleLiveEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,41 @@ public class OrderSongViewModel extends ViewModel {
   {
     copyrightedMedia.setEventHandler(handler);
     ALog.i("setEventHandler");
+  }
+
+  private final NEOrderSongListener orderSongListener =
+      new NEOrderSongListener() {
+
+        @Override
+        public void onSongOrdered(Song song) {}
+
+        @Override
+        public void onSongDeleted(Song song) {}
+
+        @Override
+        public void onOrderedSongListChanged() {}
+
+        @Override
+        public void onSongSwitched(Song song) {}
+
+        @Override
+        public void onSongStarted(Song song) {
+          orderedSongOptionRefreshEvent.postValue(false);
+        }
+
+        @Override
+        public void onSongPaused(Song song) {
+          orderedSongOptionRefreshEvent.postValue(true);
+        }
+
+        @Override
+        public void onSongResumed(Song song) {
+          orderedSongOptionRefreshEvent.postValue(false);
+        }
+      };
+
+  public OrderSongViewModel() {
+    NEOrderSongService.INSTANCE.addListener(orderSongListener);
   }
 
   public void refreshSongList(
@@ -239,5 +276,11 @@ public class OrderSongViewModel extends ViewModel {
 
   public void refreshOrderedSongs() {
     refreshOrderedListEvent.postValue(true);
+  }
+
+  @Override
+  protected void onCleared() {
+    NEOrderSongService.INSTANCE.removeListener(orderSongListener);
+    super.onCleared();
   }
 }

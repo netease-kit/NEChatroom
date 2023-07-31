@@ -11,13 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.blankj.utilcode.util.ToastUtils;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.databinding.FragmentUserCenterBinding;
 import com.netease.yunxin.app.chatroom.utils.AppUtils;
 import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.dialog.LoadingDialog;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.dialog.NetworkInfoDialog;
 import com.netease.yunxin.kit.entertainment.common.dialog.PhoneConsultBottomDialog;
 import com.netease.yunxin.kit.entertainment.common.fragment.BaseFragment;
@@ -83,7 +83,7 @@ public class UserCenterFragment extends BaseFragment {
     binding.logUpload.setOnClickListener(
         v -> {
           NEVoiceRoomKit.getInstance().uploadLog();
-          ToastUtils.showLong(R.string.please_wait_five_second_upload);
+          ToastX.showLongToast(R.string.please_wait_five_second_upload);
         });
     binding.networkDetect.setOnClickListener(
         v -> {

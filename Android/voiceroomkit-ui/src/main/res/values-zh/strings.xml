@@ -75,7 +75,7 @@
     <string name="voiceroom_capture_volume">采集音量</string>
     <string name="voiceroom_confirm_to_cancel">确认取消申请上麦</string>
     <string name="voiceroom_dowmseat">下麦</string>
-    <string name="voiceroom_net_disconnected">网络断开</string>
+    <string name="voiceroom_net_disconnected">网络异常，请稍后重试</string>
     <string name="voiceroom_host_close_room_success">房间解散成功</string>
 
     <string name="voiceroom_end_live_title">确认结束直播？</string>
@@ -113,5 +113,14 @@
     <string name="voiceroom_room_not_exist">房间不存在</string>
     <string name="voiceroom_people_online2">%d 人</string>
     <string name="voiceroom_people_online_ten_thousand">%dw 人</string>
+    <string name="voiceroom_authentication">实名认证</string>
+    <string name="voiceroom_authentication_content">温馨提示：\n1.请您填写准确、真实的身份信息，实名信息将被作为身份识别\n2.您所提交的身份信息将被严格保密，不会被用于其他用途</string>
+    <string name="voiceroom_name_placeholder">请输入真实姓名</string>
+    <string name="voiceroom_id_placeholder">请输入身份证号</string>
+    <string name="voiceroom_authentication_now">立即认证</string>
+    <string name="voiceroom_authentication_check">经慎重考虑，同意平台收集真实姓名、身份证号码及证件信息(均属于个人敏感信息)，以核实本人身份，保障账号安全</string>
+    <string name="voiceroom_authentication_error">身份证号或真实姓名有误\n未通过认证</string>
+    <string name="voiceroom_authentication_success">实名认证通过</string>
+    <string name="voiceroom_authentication_know">知道了</string>
 
 </resources>

@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.network.NetRequestCallback;
+import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.entertainment.common.livedata.SingleLiveEvent;
 import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
 import com.netease.yunxin.kit.entertainment.common.utils.NetUtils;
@@ -318,16 +318,8 @@ public class VoiceRoomViewModel extends ViewModel {
     memberCountData.postValue(NEVoiceRoomKit.getInstance().getAllMemberList().size());
   }
 
-  private final NetworkUtils.OnNetworkStatusChangedListener networkStateListener =
-      new NetworkUtils.OnNetworkStatusChangedListener() {
-        private boolean isFirst = true;
-
-        @Override
-        public void onDisconnected() {
-          ALog.i(TAG, "onNetworkUnavailable");
-          isFirst = false;
-          netData.postValue(NEVoiceRoomUIConstants.NET_LOST);
-        }
+  private final NetworkUtils.NetworkStateListener networkStateListener =
+      new NetworkUtils.NetworkStateListener() {
 
         @Override
         public void onConnected(NetworkUtils.NetworkType networkType) {
@@ -338,6 +330,15 @@ public class VoiceRoomViewModel extends ViewModel {
           isFirst = false;
           netData.postValue(NEVoiceRoomUIConstants.NET_AVAILABLE);
         }
+
+        @Override
+        public void onDisconnected() {
+          ALog.i(TAG, "onNetworkUnavailable");
+          isFirst = false;
+          netData.postValue(NEVoiceRoomUIConstants.NET_LOST);
+        }
+
+        private boolean isFirst = true;
       };
 
   public void initDataOnJoinRoom() {

@@ -107,11 +107,11 @@ public class GiftNumSelectView extends RecyclerView {
       GiftNumberSelectHolder giftNumberSelectHolder = (GiftNumberSelectHolder) holder;
       giftNumberSelectHolder.tv.setText(list.get(position) + "");
       if (selectedPosition == position) {
-        giftNumberSelectHolder.tv.setTextColor(Color.parseColor("#337EFF"));
-        giftNumberSelectHolder.tv.setBackgroundResource(R.drawable.voiceroom_gift_num_selected);
+        giftNumberSelectHolder.tv.setTextColor(Color.parseColor("#F9657C"));
+        giftNumberSelectHolder.tv.setBackgroundResource(R.drawable.gift_num_selected);
       } else {
         giftNumberSelectHolder.tv.setTextColor(Color.parseColor("#333333"));
-        giftNumberSelectHolder.tv.setBackgroundResource(R.drawable.voiceroom_gift_num_unselected);
+        giftNumberSelectHolder.tv.setBackgroundResource(R.drawable.gift_num_unselected);
       }
       giftNumberSelectHolder.itemView.setOnClickListener(
           v -> {

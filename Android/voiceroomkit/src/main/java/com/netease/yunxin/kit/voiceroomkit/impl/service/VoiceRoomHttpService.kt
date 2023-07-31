@@ -77,4 +77,6 @@ interface VoiceRoomHttpService : HttpErrorReporter {
         userUuids: List<String>,
         callback: NetRequestCallback<Unit>
     )
+
+    fun realNameAuthentication(name: String, cardNo: String, callback: NetRequestCallback<Unit>)
 }

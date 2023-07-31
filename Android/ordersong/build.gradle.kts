@@ -24,14 +24,13 @@ dependencies {
     // third party dependencies
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.gyf.immersionbar:immersionbar:3.0.0")
-
+    implementation("com.google.code.gson:gson:2.9.0")
     // xkit dependencies
-    implementation("com.blankj:utilcodex:1.30.6")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.8")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
-    implementation("com.netease.yunxin.kit.common:common-ui:1.1.20")
+    implementation("com.netease.yunxin.kit.common:common-ui:1.3.0")
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.6.0")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.15.0")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.18.0")
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

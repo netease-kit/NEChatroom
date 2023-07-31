@@ -7,6 +7,7 @@ package com.netease.yunxin.kit.voiceroomkit.ui.service;
 import android.text.TextUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListenerAdapter;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcAudioStreamType;
 
@@ -14,9 +15,25 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcAudioStreamTy
 public class SongPlayManager {
   public static final int EFFECT_ID = 1000;
   private static final String TAG = "SongPlayManager";
+  private int volume = 100;
   private boolean isPlaying = true;
-
   private String playingFilePath;
+
+  private final NEVoiceRoomListenerAdapter roomListener =
+      new NEVoiceRoomListenerAdapter() {
+
+        @Override
+        public void onAudioEffectFinished(int effectId) {
+          ALog.i(TAG, "onAudioEffectFinished effectId = " + effectId);
+          if (effectId == EFFECT_ID) {
+            isPlaying = false;
+          }
+        }
+      };
+
+  private SongPlayManager() {
+    NEVoiceRoomKit.getInstance().addVoiceRoomListener(roomListener);
+  }
 
   private static class Inner {
     private static final SongPlayManager sInstance = new SongPlayManager();
@@ -39,9 +56,9 @@ public class SongPlayManager {
             filePath,
             1,
             true,
-            100,
+            volume,
             true,
-            100,
+            volume,
             0,
             100,
             NEVoiceRoomRtcAudioStreamType.NERtcAudioStreamTypeMain);
@@ -75,6 +92,11 @@ public class SongPlayManager {
 
   public void setVolume(int volume) {
     ALog.i(TAG, "setVolume,volume:" + volume);
+    this.volume = volume;
     NEVoiceRoomKit.getInstance().setEffectVolume(EFFECT_ID, volume);
+  }
+
+  public int getVolume() {
+    return volume;
   }
 }

@@ -4,7 +4,7 @@
 
 package com.netease.yunxin.kit.entertainment.common.utils;
 
-import com.blankj.utilcode.util.SPUtils;
+import com.netease.yunxin.kit.common.utils.SPUtils;
 
 public class SpUtils {
 

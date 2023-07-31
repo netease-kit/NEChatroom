@@ -6,7 +6,6 @@
 
 package com.netease.yunxin.kit.voiceroomkit.impl.service
 
-import android.net.NetworkInfo
 import android.net.Uri
 import android.text.TextUtils
 import com.google.gson.JsonObject
@@ -30,7 +29,6 @@ import com.netease.yunxin.kit.roomkit.api.model.NEMemberVolumeInfo
 import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioEffectOption
 import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioMixingOption
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcAudioStreamType
-import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcChannelProfile
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcClientRole
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcLastmileProbeResult
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcParameters
@@ -75,9 +73,9 @@ internal class VoiceRoomService {
     private val networkStateListener: NetworkUtils.NetworkStateListener =
         object : NetworkUtils.NetworkStateListener {
             private var isFirst = true
-            override fun onAvailable(networkInfo: NetworkInfo?) {
+            override fun onConnected(networkType: NetworkUtils.NetworkType?) {
+                VoiceRoomLog.d(TAG, "onNetwork available isFirst = $isFirst")
                 if (!isFirst) {
-                    VoiceRoomLog.d(TAG, "onNetworkAvailable")
                     getSeatInfo(object : NECallback2<NESeatInfo>() {
                         override fun onSuccess(data: NESeatInfo?) {
                             super.onSuccess(data)
@@ -98,8 +96,9 @@ internal class VoiceRoomService {
                 }
                 isFirst = false
             }
-            override fun onLost(networkInfo: NetworkInfo?) {
-                VoiceRoomLog.e(TAG, "onNetworkUnavailable")
+
+            override fun onDisconnected() {
+                VoiceRoomLog.d(TAG, "onNetwork unavailable")
                 isFirst = false
             }
         }
@@ -127,12 +126,6 @@ internal class VoiceRoomService {
     }
 
     fun isEarBackEnable() = isEarBackEnable
-
-    private fun setAudioProfile() {
-        currentRoomContext?.rtcController?.setChannelProfile(
-            NERoomRtcChannelProfile.liveBroadcasting
-        )
-    }
 
     fun joinRoom(
         roomUuid: String,
@@ -165,7 +158,6 @@ internal class VoiceRoomService {
             object : NECallback2<NERoomContext>() {
                 override fun onSuccess(data: NERoomContext?) {
                     currentRoomContext = data!!
-                    setAudioProfile()
                     addRoomListener()
                     addSeatListener()
                     NetworkUtils.registerNetworkStatusChangedListener(networkStateListener)

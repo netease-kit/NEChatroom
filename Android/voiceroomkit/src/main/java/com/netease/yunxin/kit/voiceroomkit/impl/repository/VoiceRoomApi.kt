@@ -54,4 +54,12 @@ interface VoiceRoomApi {
     suspend fun batchReward(
         @Body params: Map<String, @JvmSuppressWildcards Any>
     ): Response<Unit>
+
+    /**
+     * 实名认证
+     */
+    @POST("nemo/entertainmentLive/real-name-authentication")
+    suspend fun realNameAuthentication(
+        @Body params: Map<String, @JvmSuppressWildcards Any>
+    ): Response<Unit>
 }
