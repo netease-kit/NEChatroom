@@ -26,9 +26,9 @@ dependencies {
 
     // xkit
     implementation("com.netease.yunxin.kit:alog:1.0.9")
-    implementation("com.netease.yunxin.kit.common:common:1.1.18")
+    implementation("com.netease.yunxin.kit.common:common:1.3.0")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.8")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.15.0")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.18.0")
 
     implementation("com.google.code.gson:gson:2.9.0")
 }

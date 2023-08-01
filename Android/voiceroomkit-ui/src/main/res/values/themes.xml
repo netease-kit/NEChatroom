@@ -1,3 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="CheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_e6e7eb</item>
+        <item name="colorControlActivated">@color/color_0888ff</item>
+    </style>
 
 </resources>

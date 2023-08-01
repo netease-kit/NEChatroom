@@ -23,7 +23,7 @@
         android:paddingVertical="10dp"
         />
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+    <com.netease.yunxin.kit.entertainment.common.smartrefresh.SmartRefreshLayout
         android:layout_marginTop="4dp"
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </com.netease.yunxin.kit.entertainment.common.smartrefresh.SmartRefreshLayout>
 
     <LinearLayout
         android:id="@+id/empty_view"

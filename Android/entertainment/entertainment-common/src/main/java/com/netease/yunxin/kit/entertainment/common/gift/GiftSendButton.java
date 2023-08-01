@@ -39,30 +39,29 @@ public class GiftSendButton extends ConstraintLayout {
     iv = findViewById(R.id.iv);
     tvNumber = findViewById(R.id.tv_number);
     tvSend = findViewById(R.id.tv_send);
-    iv.setImageResource(R.drawable.voiceroom_arrow_up);
+    iv.setImageResource(R.drawable.arrow_up);
     tvNumber.setText("1");
     GiftNumSelectDialog giftNumberSelectDialog =
         new GiftNumSelectDialog(getContext(), giftCount -> tvNumber.setText(giftCount + ""));
-    giftNumberSelectDialog.setOnDismissListener(
-        dialog -> iv.setImageResource(R.drawable.voiceroom_arrow_up));
+    giftNumberSelectDialog.setOnDismissListener(dialog -> iv.setImageResource(R.drawable.arrow_up));
     iv.setOnClickListener(
         v -> {
           if (giftNumberSelectDialog.isShowing()) {
             giftNumberSelectDialog.dismiss();
-            iv.setImageResource(R.drawable.voiceroom_arrow_up);
+            iv.setImageResource(R.drawable.arrow_up);
           } else {
             giftNumberSelectDialog.show();
-            iv.setImageResource(R.drawable.voiceroom_arrow_down);
+            iv.setImageResource(R.drawable.arrow_down);
           }
         });
     tvNumber.setOnClickListener(
         v -> {
           if (giftNumberSelectDialog.isShowing()) {
             giftNumberSelectDialog.dismiss();
-            iv.setImageResource(R.drawable.voiceroom_arrow_up);
+            iv.setImageResource(R.drawable.arrow_up);
           } else {
             giftNumberSelectDialog.show();
-            iv.setImageResource(R.drawable.voiceroom_arrow_down);
+            iv.setImageResource(R.drawable.arrow_down);
           }
         });
     tvSend.setOnClickListener(

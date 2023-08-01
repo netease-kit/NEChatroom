@@ -14,7 +14,6 @@ import com.netease.yunxin.kit.entertainment.common.AppStatusManager;
 import com.netease.yunxin.kit.entertainment.common.Constants;
 import com.netease.yunxin.kit.entertainment.common.R;
 import com.netease.yunxin.kit.entertainment.common.activity.BaseActivity;
-import com.netease.yunxin.kit.entertainment.common.statusbar.StatusBarConfig;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends BaseActivity {
@@ -44,11 +43,6 @@ public class SplashActivity extends BaseActivity {
     super.onNewIntent(intent);
     ALog.d(TAG, "onNewIntent: intent -> " + intent.getData());
     setIntent(intent);
-  }
-
-  @Override
-  protected StatusBarConfig provideStatusBarConfig() {
-    return new StatusBarConfig.Builder().statusBarDarkFont(true).fullScreen(true).build();
   }
 
   private void gotoHomePage() {

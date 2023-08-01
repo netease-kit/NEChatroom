@@ -8,55 +8,13 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_ear_back_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/voiceroom_earback"
-        android:textColor="#ff222222"
-        android:textSize="14dp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_ear_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_999999"
-        android:textSize="12dp"
-        android:text="@string/voiceroom_earback_tip"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ear_back_text" />
-
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/ear_back"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_alignParentTop="true"
-        android:checked="false"
-        app:trackTint="@color/color_8f8f8f"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_ear_comment"
-        app:layout_constraintTop_toTopOf="@id/tv_ear_back_text" />
-
-    <View
-        android:id="@+id/view_line"
-        app:layout_constraintTop_toBottomOf="@id/tv_ear_comment"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="12dp"
-        android:background="#ffe6e7eb" />
-
-    <TextView
         android:id="@+id/tv_volume_text"
         android:layout_width="50dp"
         android:text="@string/voiceroom_voice"
         android:gravity="center_vertical"
         android:textColor="#ff222222"
-        android:textSize="14dp"
-        app:layout_constraintTop_toBottomOf="@id/view_line"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_height="46dp"/>
 
@@ -77,11 +35,4 @@
         android:progressDrawable="@drawable/background_music_control_seekbar_bg"
         android:saveEnabled="true"
         android:thumb="@drawable/shape_music_control_seekbar_thumb" />
-
-    <View
-        app:layout_constraintTop_toBottomOf="@id/tv_volume_text"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#ffe6e7eb" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

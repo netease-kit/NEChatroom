@@ -195,6 +195,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
             ) { code, message, _ ->
                 if (code == NEErrorCode.SUCCESS) {
                     voiceRoomHttpService.initialize(context, baseUrl)
+                    voiceRoomHttpService.addHeader("appkey", config.appKey)
                     NERoomKit.getInstance().roomService.previewRoom(
                         NEPreviewRoomParams(),
                         NEPreviewRoomOptions(),
@@ -1219,6 +1220,25 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         )
     }
 
+    override fun authenticate(name: String, cardNo: String, callback: NEVoiceRoomCallback<Unit>?) {
+        VoiceRoomLog.logApi("realNameAuthentication name:$name,cardNo:$cardNo")
+        voiceRoomHttpService.realNameAuthentication(
+            name,
+            cardNo,
+            object : NetRequestCallback<Unit> {
+                override fun success(info: Unit?) {
+                    VoiceRoomLog.i(tag, "realNameAuthentication success")
+                    callback?.onSuccess(info)
+                }
+
+                override fun error(code: Int, msg: String?) {
+                    VoiceRoomLog.e(tag, "realNameAuthentication error: code = $code message = $msg")
+                    callback?.onFailure(code, msg)
+                }
+            }
+        )
+    }
+
     override fun startLastmileProbeTest(config: NEVoiceRoomRtcLastmileProbeConfig): Int {
         if (previewRoomContext == null || previewRoomContext?.previewController == null) {
             VoiceRoomLog.e(tag, "startLastmileProbeTest failed,config:$config")
@@ -1254,9 +1274,9 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         previewRoomListeners.remove(listener)
     }
 
-    override fun uploadLog(): Int {
+    override fun uploadLog() {
         VoiceRoomLog.i(tag, "uploadLog")
-        return NERoomKit.getInstance().uploadLog()
+        return NERoomKit.getInstance().uploadLog(null)
     }
 
     override fun switchLanguage(language: NEVoiceRoomLanguage): Int {

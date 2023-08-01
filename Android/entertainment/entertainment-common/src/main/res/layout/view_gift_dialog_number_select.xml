@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/voiceroom_gift_num_selecet_bg">
+    android:background="@drawable/gift_num_selecet_bg">
 
     <com.netease.yunxin.kit.entertainment.common.gift.GiftNumSelectView
         android:id="@+id/gift_number_select"

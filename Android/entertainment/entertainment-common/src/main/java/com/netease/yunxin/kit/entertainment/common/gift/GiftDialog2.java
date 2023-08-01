@@ -8,6 +8,7 @@ import android.annotation.*;
 import android.app.*;
 import android.content.*;
 import android.graphics.*;
+import android.text.TextPaint;
 import android.util.*;
 import android.view.*;
 import android.widget.*;
@@ -49,6 +50,8 @@ public class GiftDialog2 extends BottomBaseDialog {
   protected void renderTopView(FrameLayout parent) {
     TextView titleView = new TextView(getContext());
     titleView.setText(R.string.send_gift);
+    TextPaint paint = titleView.getPaint();
+    paint.setFakeBoldText(true);
     titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f);
     titleView.setGravity(Gravity.CENTER);
     titleView.setTextColor(Color.parseColor("#ff333333"));
@@ -61,7 +64,7 @@ public class GiftDialog2 extends BottomBaseDialog {
   @Override
   protected void renderBottomView(FrameLayout parent) {
     View bottomView =
-        LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_bottom_gift, parent);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_bottom_gift2, parent);
     SelectMemberSendGiftView selectMemberSendGiftView =
         bottomView.findViewById(R.id.select_member_view);
     selectMemberSendGiftView.setActivityContext(activity);
@@ -75,7 +78,7 @@ public class GiftDialog2 extends BottomBaseDialog {
     rvGiftList.setAdapter(adapter);
 
     // 发送礼物
-    GiftSendButton sendButton = bottomView.findViewById(R.id.send_button);
+    GiftSendButton2 sendButton = bottomView.findViewById(R.id.send_button);
     sendButton.setSendCallback(
         giftCount -> {
           if (sendListener != null) {
@@ -143,7 +146,7 @@ public class GiftDialog2 extends BottomBaseDialog {
       tvValue.setText(formatValue(itemData.getCoinCount()));
       View border = holder.getView(R.id.rl_item_border);
       if (itemData == focusedInfo) {
-        border.setBackgroundResource(R.drawable.layer_dialog_gift_chosen_bg);
+        border.setBackgroundResource(R.drawable.layer_dialog_gift_chosen_bg2);
       } else {
         border.setBackgroundColor(Color.TRANSPARENT);
       }

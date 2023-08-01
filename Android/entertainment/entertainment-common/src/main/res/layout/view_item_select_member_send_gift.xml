@@ -19,7 +19,7 @@
             android:id="@+id/iv_selected_bg"
             tools:visibility="gone"
             android:visibility="visible"
-            android:background="@drawable/voiceroom_seat_selected"
+            android:background="@drawable/gift_seat_selected"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

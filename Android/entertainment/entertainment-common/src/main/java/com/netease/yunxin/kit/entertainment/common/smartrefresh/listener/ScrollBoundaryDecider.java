@@ -1,0 +1,25 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
+package com.netease.yunxin.kit.entertainment.common.smartrefresh.listener;
+
+import android.view.View;
+
+/** 滚动边界 Created by scwang on 2017/7/8. */
+public interface ScrollBoundaryDecider {
+  /**
+   * 根据内容视图状态判断是否可以开始下拉刷新
+   *
+   * @param content 内容视图
+   * @return true 将会触发下拉刷新
+   */
+  boolean canRefresh(View content);
+  /**
+   * 根据内容视图状态判断是否可以开始上拉加载
+   *
+   * @param content 内容视图
+   * @return true 将会触发加载更多
+   */
+  boolean canLoadMore(View content);
+}

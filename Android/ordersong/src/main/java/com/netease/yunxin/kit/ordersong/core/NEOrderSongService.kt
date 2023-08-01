@@ -152,6 +152,7 @@ object NEOrderSongService {
         NEOrderSongService.appKey = appKey
         TimerTaskUtil.init()
         orderSongRepository.initialize(context, orderSongServerUrl)
+        orderSongRepository.addHeader("appKey", appKey)
         getSongDynamicTokenUntilSuccess(object :
             NetRequestCallback<NEOrderSongDynamicToken> {
             override fun success(info: NEOrderSongDynamicToken?) {

@@ -12,7 +12,6 @@ import com.netease.yunxin.kit.common.network.ServiceCreator
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSong
 import com.netease.yunxin.kit.ordersong.core.model.NEOrderSongDynamicToken
 import com.netease.yunxin.kit.ordersong.core.model.OrderSong
-import com.netease.yunxin.kit.ordersong.ui.BuildConfig
 import com.netease.yunxin.kit.roomkit.api.NERoomKit
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +32,8 @@ class OrderSongRepository {
         serviceCreator.init(
             context,
             orderSongServerUrl,
-            if (BuildConfig.DEBUG) ServiceCreator.LOG_LEVEL_BODY else ServiceCreator.LOG_LEVEL_BASIC,
+//            if (BuildConfig.DEBUG) ServiceCreator.LOG_LEVEL_BODY else ServiceCreator.LOG_LEVEL_BASIC,
+            ServiceCreator.LOG_LEVEL_BODY, // todo 目前测试包打的都是release包，新临时改下网络日志等级，方便排查问题
             NERoomKit.getInstance().deviceId
         )
         serviceCreator.addHeader(ServiceCreator.ACCEPT_LANGUAGE_KEY, Locale.getDefault().language)

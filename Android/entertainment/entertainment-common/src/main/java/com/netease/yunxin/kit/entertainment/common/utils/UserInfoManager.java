@@ -10,6 +10,7 @@ public class UserInfoManager {
   private static String selfImNickname = "";
   private static String selfImAvatar = "";
   private static String selfPhoneNumber = "";
+  private static String selfUserToken = "";
 
   public static String getSelfImAvatar() {
     return selfImAvatar;
@@ -33,6 +34,14 @@ public class UserInfoManager {
 
   public static void setSelfNickname(String nickname) {
     selfImNickname = nickname;
+  }
+
+  public static String getSelfUserToken() {
+    return selfUserToken;
+  }
+
+  public static void setSelfUserToken(String selfUserToken) {
+    UserInfoManager.selfUserToken = selfUserToken;
   }
 
   // 设置云信IM用户信息

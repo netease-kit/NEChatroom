@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
@@ -453,12 +454,13 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
               @Override
               public void onSuccess(@Nullable Unit unit) {
                 ALog.e(TAG, "kickSeat onSuccess");
-                ToastUtils.INSTANCE.showShortToast(AnchorActivity.this, text);
+                ToastX.showShortToast(text);
               }
 
               @Override
               public void onFailure(int code, @Nullable String msg) {
                 ALog.e(TAG, "kickSeat onFailure code:" + code);
+                ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
               }
             });
   }

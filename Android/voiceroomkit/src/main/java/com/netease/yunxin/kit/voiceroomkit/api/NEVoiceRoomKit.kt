@@ -527,6 +527,13 @@ interface NEVoiceRoomKit {
     fun sendBatchGift(giftId: Int, giftCount: Int, userUuids: List<String>, callback: NEVoiceRoomCallback<Unit>?)
 
     /**
+     * 实名认证
+     * @param name 用户真实姓名，以身份证上姓名为准，最大长度32
+     * @param cardNo 用户身份证号码，目前支持一代/二代身份证，号码必须为18位或15位，末尾为x的需要大写为X，最大长度18
+     */
+    fun authenticate(name: String, cardNo: String, callback: NEVoiceRoomCallback<Unit>? = null)
+
+    /**
      * 开始网络质量探测。
      * @param config 	Last mile 网络探测配置
      * 开始通话前网络质量探测。 启用该方法后，SDK 会通过回调方式反馈上下行网络的质量状态与质量探测报告，包括带宽、丢包率、网络抖动和往返时延等数据。
@@ -557,9 +564,10 @@ interface NEVoiceRoomKit {
 
     /**
      * 上传日志
+     * @param callback 上传结果的回调,返回产物下载地址
      * @return Int
      */
-    fun uploadLog(): Int
+    fun uploadLog()
 
     /**
      * 切换语言，组件不会缓存该设置。
@@ -599,7 +607,7 @@ data class NECreateVoiceRoomParams(
     val seatCount: Int = 8,
     val configId: Int = 0,
     val cover: String?,
-    val liveType: Int = 2,
+    val liveType: Int = NELiveType.LIVE_TYPE_VOICE,
     val extraData: String? = null
 ) {
     override fun toString(): String {

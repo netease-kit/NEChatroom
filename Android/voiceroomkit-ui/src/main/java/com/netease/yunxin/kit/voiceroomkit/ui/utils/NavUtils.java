@@ -12,6 +12,7 @@ import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.AnchorActivity;
 import com.netease.yunxin.kit.voiceroomkit.ui.activity.AudienceActivity;
+import com.netease.yunxin.kit.voiceroomkit.ui.activity.AuthenticateActivity;
 
 public class NavUtils {
 
@@ -50,6 +51,11 @@ public class NavUtils {
     Intent intent = new Intent(context, AudienceActivity.class);
     intent.putExtra(RoomConstants.INTENT_ROOM_MODEL, roomModel);
     intent.putExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, needJoinRoom);
+    context.startActivity(intent);
+  }
+
+  public static void toAuthenticateActivity(Context context) {
+    Intent intent = new Intent(context, AuthenticateActivity.class);
     context.startActivity(intent);
   }
 }

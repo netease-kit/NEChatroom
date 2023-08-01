@@ -5,9 +5,9 @@
 package com.netease.yunxin.kit.entertainment.common.utils;
 
 import android.content.Context;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.entertainment.common.R;
 
 public class NetUtils {
@@ -28,11 +28,11 @@ public class NetUtils {
     }
   }
 
-  public static void registerStateListener(NetworkUtils.OnNetworkStatusChangedListener listener) {
+  public static void registerStateListener(NetworkUtils.NetworkStateListener listener) {
     NetworkUtils.registerNetworkStatusChangedListener(listener);
   }
 
-  public static void unregisterStateListener(NetworkUtils.OnNetworkStatusChangedListener listener) {
+  public static void unregisterStateListener(NetworkUtils.NetworkStateListener listener) {
     NetworkUtils.unregisterNetworkStatusChangedListener(listener);
   }
 

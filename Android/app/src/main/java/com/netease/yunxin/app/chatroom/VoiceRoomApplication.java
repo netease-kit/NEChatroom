@@ -7,9 +7,9 @@ package com.netease.yunxin.app.chatroom;
 import android.app.Application;
 import android.content.Context;
 import androidx.annotation.Nullable;
-import com.blankj.utilcode.util.ToastUtils;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.AppStatusManager;
 import com.netease.yunxin.kit.entertainment.common.utils.IconFontUtil;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthEvent;
@@ -73,7 +73,7 @@ public class VoiceRoomApplication extends Application {
             evt -> {
               ALog.i(TAG, "onVoiceRoomAuthEvent evt = " + evt);
               if (evt == NEVoiceRoomAuthEvent.KICK_OUT) {
-                ToastUtils.showShort(R.string.app_kick_out);
+                ToastX.showShortToast(R.string.app_kick_out);
               }
               if (evt != NEVoiceRoomAuthEvent.LOGGED_IN) {}
             });

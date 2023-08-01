@@ -182,7 +182,7 @@
             android:layout_marginTop="4dp"
             android:textSize="11sp"
             android:textColor="@color/color_ffc86b"
-            app:drawableLeftCompat="@drawable/voiceroom_gift_coin"
+            app:drawableLeftCompat="@drawable/gift_coin"
             android:drawablePadding="4dp"
             android:visibility="invisible"/>
 
