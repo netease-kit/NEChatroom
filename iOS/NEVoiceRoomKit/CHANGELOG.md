@@ -1,3 +1,34 @@
+## v1.5.0(July 31, 2023)
+### New Features
+### 接口改动
+  * NEVoiceRoomRoomService 新增方法 
+      - authenticate 实名认证
+  * NEVoiceRoomKit+Seat 接口改动
+      - muteSeat 变私有方法
+      - unmuteSeat 变私有方法
+    
+### 内部改动
+  * mute 逻辑下沉
+  * 多租户适配：头部信息新增`appKey` 字段
+  * 加入房间 _joinRoom 接口新增`role`字段
+
+
+## v1.4.0(Jun 19, 2023)
+### API Changes
+* `NEVoiceRoomKitConfig.extras` 新增baseUrl参数,支持业务层传入语聊房Server baseUrl。
+* 删除`NEVoiceRoomKit.sendGift`和`NEVoiceRoomListener.onReceiveGift`。
+
+### Compatibility
+* 兼容 `NIM` 9.10.0 版本
+* 兼容 `NERtc` 4.6.50 版本
+* 兼容 `NERoom` 1.15.0 版本
+
+## v1.3.0(May 4, 2023)
+### New Features
+### API Changes
+* `NEVoiceRoomKit.getVoiceRoomList` 重命名为 `NEVoiceRoomKit.getRoomList`， 并且不需要再填写liveType。
+* `NEVoiceRoomKitConfig`新增reuseIM参数，是否复用IM
+
 ## v1.2.0(Mar 15, 2023)
 ### New Features
 * NEVoiceRoomKit 新增 getCurrentRoomInfo，用于获取当前所在的房间信息，如果没在房间则获取到nil

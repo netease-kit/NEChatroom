@@ -155,6 +155,10 @@ public class NEVoiceRoomKit: NSObject {
   internal var preloadProtocolListeners = NSPointerArray.weakObjects()
   // 版权接口过期监听对象
   internal var copyrightedEventMediaHandler: AnyObject?
+  // 自己操作后的mute状态，区别于ban之后的mute
+  internal var isSelfMuted: Bool = true
+  // 上次收到服务器下发的麦位列表
+  internal var localSeats: [NESeatItem]?
 
   // 直播信息
   var liveInfo: _NECreateLiveResponse?

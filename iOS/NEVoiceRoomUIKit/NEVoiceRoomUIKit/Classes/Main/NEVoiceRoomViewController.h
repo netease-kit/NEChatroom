@@ -6,7 +6,6 @@
 #import <NEOrderSong/NEOrderSong-Swift.h>
 #import <NEUIKit/NEUICommon.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEUIChatroomContext.h"
 #import "NEUIConnectListView.h"
 #import "NEUIKeyboardToolbarView.h"
@@ -57,8 +56,6 @@ typedef enum : NSUInteger {
 @property(nonatomic, assign) NEVoiceRoomSeatItemStatus selfStatus;
 @property(nonatomic, strong) NEVoiceRoomAnimationView *giftAnimation;  // 礼物动画
 @property(nonatomic, strong) NSMutableArray *connectorArray;
-@property(nonatomic, strong) NEVoiceRoomSeatItem *_Nullable lastSelfItem;  /// 上次记录麦位角色信息
-@property(nonatomic, assign) bool mute;  /// 上次是否进行了Mute操作
 
 @property(nonatomic, assign) PlayingStatus playingStatus;
 

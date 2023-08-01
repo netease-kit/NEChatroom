@@ -81,4 +81,25 @@
          }];
 }
 
+- (void)setDatas:(NSArray<NEVoiceRoomInfo *> *)datas {
+  _datas = datas;
+  if (_datasChanged) {
+    _datasChanged(datas);
+  }
+}
+
+- (void)setIsLoading:(BOOL)isLoading {
+  _isLoading = isLoading;
+  if (_isLoadingChanged) {
+    _isLoadingChanged(isLoading);
+  }
+}
+
+- (void)setError:(NSError *)error {
+  _error = error;
+  if (_errorChanged) {
+    _errorChanged(error);
+  }
+}
+
 @end
