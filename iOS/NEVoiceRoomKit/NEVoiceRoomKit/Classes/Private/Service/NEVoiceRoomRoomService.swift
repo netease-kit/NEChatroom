@@ -71,6 +71,27 @@ class NEVoiceRoomRoomService {
     )
   }
 
+  func authenticate(name: String,
+                    cardNo: String,
+                    success: ((Bool) -> Void)? = nil,
+                    failure: ((NSError) -> Void)? = nil) {
+    let param: [String: String] = [
+      "name": name,
+      "cardNo": cardNo,
+    ]
+    NEAPI.Room.auth.request(param) { res in
+      if let res = res,
+         let ret = res["data"] as? Int,
+         ret == 1 {
+        success?(true)
+      } else {
+        success?(false)
+      }
+    } failed: { error in
+      failure?(error)
+    }
+  }
+
   /// 创建房间
   /// - Parameters:
   ///   - params: 创建房间参数

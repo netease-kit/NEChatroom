@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '10.0'
   s.dependency 'SnapKit'
-  s.swift_version = '5.0'
+  s.dependency 'NECommonUIKit'
 
   s.source_files = 'NESocialUIKit/Classes/**/*'
   s.resource = 'NESocialUIKit/Assets/**/*'

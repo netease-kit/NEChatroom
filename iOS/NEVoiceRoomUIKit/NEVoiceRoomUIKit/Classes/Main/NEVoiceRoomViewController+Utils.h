@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 加入房间
 - (void)joinRoom;
 /// 开启麦克风
-- (void)unmuteAudio:(BOOL)showToast;
+- (void)unmuteAudio;
 /// 关闭麦克风
-- (void)muteAudio:(BOOL)showToast;
+- (void)muteAudio;
 /// 网络状态监听
 - (void)addNetworkObserver;
 /// 销毁网络监听

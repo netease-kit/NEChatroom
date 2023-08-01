@@ -7,7 +7,6 @@
 #import <Masonry/Masonry.h>
 #import <NEUIKit/UIImage+NEUIExtension.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEChatroomListViewModel.h"
 #import "NEOpenRoomViewController.h"
 #import "NEUIDeviceSizeInfo.h"
@@ -84,33 +83,31 @@
   [self.roomListViewModel requestNewDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
 }
 - (void)bindViewModel {
-  @weakify(self);
-  [RACObserve(self.roomListViewModel, datas) subscribeNext:^(NSArray *array) {
-    @strongify(self);
+  __weak typeof(self) weakSelf = self;
+  self.roomListViewModel.datasChanged = ^(NSArray<NEVoiceRoomInfo *> *_Nonnull datas) {
     ntes_main_sync_safe(^{
-      [self.collectionView reloadData];
-      self.emptyView.hidden = [array count] > 0;
+      [weakSelf.collectionView reloadData];
+      weakSelf.emptyView.hidden = [datas count] > 0;
     });
-  }];
+  };
 
-  [RACObserve(self.roomListViewModel, isLoading) subscribeNext:^(id _Nullable x) {
-    @strongify(self);
-    if (self.roomListViewModel.isLoading == NO) {
-      [self.collectionView.mj_header endRefreshing];
-      [self.collectionView.mj_footer endRefreshing];
+  self.roomListViewModel.isLoadingChanged = ^(BOOL isLoading) {
+    if (!isLoading) {
+      [weakSelf.collectionView.mj_header endRefreshing];
+      [weakSelf.collectionView.mj_footer endRefreshing];
     }
-  }];
+  };
 
-  [RACObserve(self.roomListViewModel, error) subscribeNext:^(NSError *_Nullable err) {
-    if (!err || ![err isKindOfClass:[NSError class]]) return;
-    if (err.code == 1003) {
+  self.roomListViewModel.errorChanged = ^(NSError *_Nonnull error) {
+    if (!error || ![error isKindOfClass:[NSError class]]) return;
+    if (error.code == 1003) {
       [NEVoiceRoomToast showToast:NELocalizedString(@"直播列表为空")];
     } else {
       NSString *msg =
-          err.userInfo[NSLocalizedDescriptionKey] ?: NELocalizedString(@"请求直播列表错误");
+          error.userInfo[NSLocalizedDescriptionKey] ?: NELocalizedString(@"请求直播列表错误");
       [NEVoiceRoomToast showToast:msg];
     }
-  }];
+  };
 }
 - (void)setupSubviews {
   [self.view addSubview:self.collectionView];
@@ -132,10 +129,9 @@
     make.bottom.equalTo(self.view).offset(-25);
   }];
 
-  @weakify(self);
+  __weak typeof(self) weakSelf = self;
   MJRefreshGifHeader *mjHeader = [MJRefreshGifHeader headerWithRefreshingBlock:^{
-    @strongify(self);
-    [self.roomListViewModel requestNewDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
+    [weakSelf.roomListViewModel requestNewDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
   }];
   [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStateIdle];
   [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStatePulling];
@@ -145,12 +141,11 @@
   self.collectionView.mj_header = mjHeader;
 
   self.collectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-    @strongify(self);
-    if (self.roomListViewModel.isEnd) {
+    if (weakSelf.roomListViewModel.isEnd) {
       [NEVoiceRoomToast showToast:NELocalizedString(@"无更多内容")];
-      [self.collectionView.mj_footer endRefreshing];
+      [weakSelf.collectionView.mj_footer endRefreshing];
     } else {
-      [self.roomListViewModel requestMoreDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
+      [weakSelf.roomListViewModel requestMoreDataWithLiveType:NEVoiceRoomLiveRoomTypeMultiAudio];
     }
   }];
 }

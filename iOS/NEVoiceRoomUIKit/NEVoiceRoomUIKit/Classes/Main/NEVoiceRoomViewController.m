@@ -66,7 +66,6 @@
   [[NEVoiceRoomPickSongEngine sharedInstance] removeObserve:self];
   [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel = nil;
   [[NEOrderSong getInstance] removeOrderSongListener:self];
-  self.lastSelfItem = nil;
   [[NEVoiceRoomGiftEngine getInstance] reInitData];
 }
 - (BOOL)prefersNavigationBarHidden {
@@ -111,27 +110,27 @@
 }
 
 - (void)closeRoom:(void (^)(void))complete {
+  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_main_queue(), ^{
-    if (self.role == NEVoiceRoomRoleHost) {
-      @weakify(self) UIAlertController *alert =
+    if (weakSelf.role == NEVoiceRoomRoleHost) {
+      UIAlertController *alert =
           [UIAlertController alertControllerWithTitle:NELocalizedString(@"确认结束直播？")
                                               message:NELocalizedString(@"请确认是否结束直播")
                                        preferredStyle:UIAlertControllerStyleAlert];
-      [alert
-          addAction:[UIAlertAction
-                        actionWithTitle:NELocalizedString(@"确认")
-                                  style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction *_Nonnull action) {
-                                  @strongify(self)[self closeRoomWithViewPop:YES callback:complete];
-                                }]];
+      [alert addAction:[UIAlertAction actionWithTitle:NELocalizedString(@"确认")
+                                                style:UIAlertActionStyleDefault
+                                              handler:^(UIAlertAction *_Nonnull action) {
+                                                [weakSelf closeRoomWithViewPop:YES
+                                                                      callback:complete];
+                                              }]];
       [alert addAction:[UIAlertAction actionWithTitle:NELocalizedString(@"取消")
                                                 style:UIAlertActionStyleCancel
                                               handler:^(UIAlertAction *_Nonnull action) {
                                                 complete();
                                               }]];
-      [self presentViewController:alert animated:true completion:nil];
+      [weakSelf presentViewController:alert animated:true completion:nil];
     } else {
-      [self closeRoomWithViewPop:YES callback:complete];
+      [weakSelf closeRoomWithViewPop:YES callback:complete];
     }
   });
 }
@@ -146,51 +145,52 @@
           respondsToSelector:@selector(onVoiceRoomLeaveRoom)]) {
     [[NEVoiceRoomUIManager sharedInstance].delegate onVoiceRoomLeaveRoom];
   }
+  __weak typeof(self) weakSelf = self;
   if (self.role == NEVoiceRoomRoleHost) {  // 主播
-    @weakify(self)[NEVoiceRoomKit.getInstance
-        endRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-          [NEVoiceRoomToast showToast:NELocalizedString(@"房间解散成功")];
-          if (changeView) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              @strongify(self) if (self.presentedViewController) {
-                [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
-              }
-              [self backToListViewController];
-              if (callabck) {
-                callabck();
-              }
-              [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
-              [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
-            });
-          } else {
-            if (callabck) {
-              callabck();
-            }
-            [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+    [NEVoiceRoomKit.getInstance endRoom:^(NSInteger code, NSString *_Nullable msg,
+                                          id _Nullable obj) {
+      [NEVoiceRoomToast showToast:NELocalizedString(@"房间解散成功")];
+      if (changeView) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (weakSelf.presentedViewController) {
+            [weakSelf.presentedViewController dismissViewControllerAnimated:false completion:nil];
           }
-        }];
+          [weakSelf backToListViewController];
+          if (callabck) {
+            callabck();
+          }
+          [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
+          [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+        });
+      } else {
+        if (callabck) {
+          callabck();
+        }
+        [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+      }
+    }];
   } else {  // 观众
-    @weakify(self)[NEVoiceRoomKit.getInstance
-        leaveRoom:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-          if (changeView) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              @strongify(self) if (self.presentedViewController) {
-                [self.presentedViewController dismissViewControllerAnimated:false completion:nil];
-              }
-              [self.navigationController popViewControllerAnimated:YES];
-              if (callabck) {
-                callabck();
-              }
-              [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
-              [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
-            });
-          } else {
-            if (callabck) {
-              callabck();
-            }
-            [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+    [NEVoiceRoomKit.getInstance leaveRoom:^(NSInteger code, NSString *_Nullable msg,
+                                            id _Nullable obj) {
+      if (changeView) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (weakSelf.presentedViewController) {
+            [weakSelf.presentedViewController dismissViewControllerAnimated:false completion:nil];
           }
-        }];
+          [weakSelf.navigationController popViewControllerAnimated:YES];
+          if (callabck) {
+            callabck();
+          }
+          [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
+          [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+        });
+      } else {
+        if (callabck) {
+          callabck();
+        }
+        [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+      }
+    }];
   }
 }
 
@@ -340,10 +340,9 @@
 - (void)didSetMicOn:(BOOL)micOn {
   [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
   if (micOn) {
-    [self unmuteAudio:YES];
+    [self unmuteAudio];
   } else {
-    self.mute = true;
-    [self muteAudio:YES];
+    [self muteAudio];
   }
 }
 - (void)endLive {
@@ -398,20 +397,20 @@
     [NEVoiceRoomToast showToast:NELocalizedString(@"发送内容为空")];
     return;
   }
-  @weakify(self)[NEVoiceRoomKit.getInstance
+  __weak typeof(self) weakSelf = self;
+  [NEVoiceRoomKit.getInstance
       sendTextMessage:text
              callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                dispatch_async(dispatch_get_main_queue(), ^{
                  NESocialChatroomTextMessage *model = [[NESocialChatroomTextMessage alloc] init];
                  model.sender = NEVoiceRoomUIManager.sharedInstance.nickname;
                  model.text = text;
-                 @strongify(self) if (self.role == NEVoiceRoomRoleHost) {
+                 if (weakSelf.role == NEVoiceRoomRoleHost) {
                    model.icon = [NEVoiceRoomUI ne_voice_imageName:@"anthor_ico"];
-                 }
-                 else {
+                 } else {
                    model.icon = nil;
                  }
-                 [self.chatView addMessages:@[ model ]];
+                 [weakSelf.chatView addMessages:@[ model ]];
                });
              }];
 }
@@ -587,13 +586,15 @@
 #pragma mark------------------------ NEUIConnectListViewDelegate ------------------------
 - (void)connectListView:(NEUIConnectListView *)connectListView
     onAcceptWithSeatItem:(NEVoiceRoomSeatItem *)seatItem {
-  @weakify(self)[NEVoiceRoomKit.getInstance
+  __weak typeof(self) weakSelf = self;
+  [NEVoiceRoomKit.getInstance
       approveSeatRequestWithAccount:seatItem.user
                            callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                              if (code == 0) {
                                dispatch_async(dispatch_get_main_queue(), ^{
-                                 @strongify(self)[self.connectorArray removeObject:seatItem];
-                                 [self.connectListView refreshWithDataArray:self.connectorArray];
+                                 [weakSelf.connectorArray removeObject:seatItem];
+                                 [weakSelf.connectListView
+                                     refreshWithDataArray:weakSelf.connectorArray];
                                });
                              }
                            }];
@@ -603,13 +604,15 @@
   if (!self.isInChatRoom) {
     return;
   }
-  @weakify(self)[NEVoiceRoomKit.getInstance
+  __weak typeof(self) weakSelf = self;
+  [NEVoiceRoomKit.getInstance
       rejectSeatRequestWithAccount:seatItem.user
                           callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                             if (code == 0) {
                               dispatch_async(dispatch_get_main_queue(), ^{
-                                @strongify(self)[self.connectorArray removeObject:seatItem];
-                                [self.connectListView refreshWithDataArray:self.connectorArray];
+                                [weakSelf.connectorArray removeObject:seatItem];
+                                [weakSelf.connectListView
+                                    refreshWithDataArray:weakSelf.connectorArray];
                               });
                             }
                           }];
@@ -819,21 +822,21 @@
   if (songModel) {
     // 点歌成功
     /// 获取房间播放信息，如果存在则不处理
-    @weakify(self)[[NEOrderSong getInstance]
-        queryPlayingSongInfo:^(NSInteger code, NSString *_Nullable msg,
-                               NEOrderSongPlayMusicInfo *_Nullable model) {
-          if (code == NEVoiceRoomErrorCode.success) {
-            if (model) {
-              // 有播放中歌曲
-            } else {
-              // 无播放中歌曲
-              if ([songModel.orderSongUser.userUuid
-                      isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
-                @strongify(self)[self readySongModel:songModel.orderSong.orderId];
-              }
-            }
+    __weak typeof(self) weakSelf = self;
+    [[NEOrderSong getInstance] queryPlayingSongInfo:^(NSInteger code, NSString *_Nullable msg,
+                                                      NEOrderSongPlayMusicInfo *_Nullable model) {
+      if (code == NEVoiceRoomErrorCode.success) {
+        if (model) {
+          // 有播放中歌曲
+        } else {
+          // 无播放中歌曲
+          if ([songModel.orderSongUser.userUuid
+                  isEqualToString:[NEVoiceRoomKit getInstance].localMember.account]) {
+            [weakSelf readySongModel:songModel.orderSong.orderId];
           }
-        }];
+        }
+      }
+    }];
 
   } else {
     // 点歌失败 , View 层error已处理

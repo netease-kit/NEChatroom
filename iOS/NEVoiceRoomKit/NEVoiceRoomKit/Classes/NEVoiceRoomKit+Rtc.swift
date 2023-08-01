@@ -12,6 +12,14 @@ public extension NEVoiceRoomKit {
   /// 使用前提：该方法仅在调用[login]方法登录成功且上麦成功后调用有效
   /// - Parameter callback: 回调
   func muteMyAudio(_ callback: NEVoiceRoomCallback<AnyObject>? = nil) {
+    internalMute(callback: callback)
+  }
+
+  /// 关闭自己的麦克风
+  /// - Parameters:
+  ///   - bySelf: 是否是主观操作，为了区分ban之后的关闭操作
+  ///   - callback: 回调
+  internal func internalMute(bySelf: Bool = true, callback: NEVoiceRoomCallback<AnyObject>? = nil) {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Mute mu audio.")
     Judge.preCondition({
       guard let local = self.localMember?.account else {
@@ -31,6 +39,9 @@ public extension NEVoiceRoomKit {
         if res == 0 {
           res = Int(self.roomContext?.rtcController.setRecordDeviceMute(muted: true) ?? -1)
           if res == 0 {
+            if bySelf {
+              self.isSelfMuted = true
+            }
             NEVoiceRoomLog.successLog(kitTag, desc: "Successfully mute my audio.")
           } else {
             NEVoiceRoomLog.errorLog(
@@ -54,7 +65,7 @@ public extension NEVoiceRoomKit {
   /// 使用前提：该方法仅在调用[login]方法登录成功且上麦成功后调用有效
   /// - Parameter callback: 回调
   func unmuteMyAudio(_ callback: NEVoiceRoomCallback<AnyObject>? = nil) {
-    NEVoiceRoomLog.apiLog(kitTag, desc: "Unmute mu audio.")
+    NEVoiceRoomLog.apiLog(kitTag, desc: "Unmute my audio.")
     Judge.preCondition({
       guard let local = self.localMember?.account else {
         NEVoiceRoomLog.errorLog(
@@ -82,9 +93,7 @@ public extension NEVoiceRoomKit {
         if res == 0 {
           res = Int(self.roomContext?.rtcController.setRecordDeviceMute(muted: false) ?? -1)
           if res == 0 {
-            // TODO:
-            /// 临时解决方案，umute的时候，设置角色身份，因为NERoom 销毁房间再创建网络监听失效
-            self.roomContext?.rtcController.setClientRole(.broadcaster)
+            self.isSelfMuted = false
             NEVoiceRoomLog.successLog(kitTag, desc: "Successfully unmute my audio.")
           } else {
             NEVoiceRoomLog.errorLog(

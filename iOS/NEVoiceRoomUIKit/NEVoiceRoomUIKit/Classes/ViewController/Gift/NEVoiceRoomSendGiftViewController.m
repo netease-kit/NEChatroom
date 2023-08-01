@@ -5,7 +5,6 @@
 #import "NEVoiceRoomSendGiftViewController.h"
 #import <Masonry/Masonry.h>
 #import <NEUIKit/UIImage+NEUIExtension.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEInnerSingleton.h"
 #import "NEUIActionSheetNavigationController.h"
 #import "NEVoiceRoomGiftEngine.h"
@@ -124,24 +123,9 @@
 
   [self setupSubView];
 
-  @weakify(self);
-  [RACObserve(self, datas) subscribeNext:^(id _Nullable x) {
-    @strongify(self) ntes_main_async_safe(^{
-      for (NEVoiceRoomSeatItem *item in self->_datas) {
-        //            NSLog(@"麦位信息 --- index = %ld,status = %ld,icon =
-        //            %@",(long)item.index,(long)item.status,item.icon);
-      }
-      [self.giftToCollectionView reloadData];
-    });
-  }];
-
-  [RACObserve(self, anchorMicInfo) subscribeNext:^(id _Nullable x) {
-    @strongify(self) ntes_main_async_safe(^{
-      [self.giftToCollectionView reloadData];
-    });
-  }];
+  __weak typeof(self) weakSelf = self;
   self.btnPopover.willDismissHandler = ^{
-    @strongify(self) self.bottomSendGiftIcon.selected = !self.bottomSendGiftIcon.selected;
+    weakSelf.bottomSendGiftIcon.selected = !weakSelf.bottomSendGiftIcon.selected;
   };
 
   [NEVoiceRoomUILog infoLog:@"GetSeatInfo" desc:[NSString stringWithFormat:@"%s", __FUNCTION__]];
@@ -149,6 +133,20 @@
 
   [self collectionView:self.collectionView
       didSelectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+}
+
+- (void)setDatas:(NSArray<NEVoiceRoomSeatItem *> *)datas {
+  _datas = datas;
+  ntes_main_async_safe(^{
+    [self.giftToCollectionView reloadData];
+  });
+}
+
+- (void)setAnchorMicInfo:(NEVoiceRoomSeatItem *)anchorMicInfo {
+  _anchorMicInfo = anchorMicInfo;
+  ntes_main_async_safe(^{
+    [self.giftToCollectionView reloadData];
+  });
 }
 
 - (void)setupSubView {
