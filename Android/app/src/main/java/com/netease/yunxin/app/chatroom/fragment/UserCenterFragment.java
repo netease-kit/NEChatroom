@@ -74,12 +74,17 @@ public class UserCenterFragment extends BaseFragment {
     return rootView;
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    initUser();
+  }
+
   private void listenNetworkProbInfo() {
     NEVoiceRoomKit.getInstance().addPreviewListener(listener);
   }
 
   private void initViews() {
-    initUser();
     binding.logUpload.setOnClickListener(
         v -> {
           NEVoiceRoomKit.getInstance().uploadLog();

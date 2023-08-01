@@ -39,6 +39,9 @@ android {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("com.google.android.material:material:1.5.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation(project(":ordersong"))
     implementation(project(":voiceroomkit-ui"))
     implementation(project(":entertainment:entertainment-common"))
@@ -47,6 +50,6 @@ dependencies {
      implementation("com.netease.yunxin.kit.auth:auth-yunxin-login:1.0.4-rc01")
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation(project(":voiceroomkit"))
-    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.6.0")
+    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.7.0")
 
 }

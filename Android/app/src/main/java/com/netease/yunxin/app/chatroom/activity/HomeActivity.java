@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
+import com.netease.yunxin.app.chatroom.BuildConfig;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.adapter.MainPagerAdapter;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
@@ -16,11 +17,16 @@ import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.copyrightedmedia.api.SongScene;
 import com.netease.yunxin.kit.entertainment.common.activity.BasePartyActivity;
+import com.netease.yunxin.kit.entertainment.common.http.ECHttpService;
+import com.netease.yunxin.kit.entertainment.common.model.ECModelResponse;
+import com.netease.yunxin.kit.entertainment.common.model.NemoAccount;
+import com.netease.yunxin.kit.entertainment.common.utils.UserInfoManager;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
-import java.util.Objects;
 import kotlin.Unit;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class HomeActivity extends BasePartyActivity {
   private static final String TAG = "HomeActivity";
@@ -36,7 +42,34 @@ public class HomeActivity extends BasePartyActivity {
   @Override
   protected void init() {
     curTabIndex = -1;
-    login(AppConfig.ACCOUNT, AppConfig.TOKEN);
+    // 先创建账号再登录
+    createAccountThenLogin(
+        AppConfig.getAppKey(),
+        AppConfig.APP_SECRET,
+        2,
+        BuildConfig.VERSION_NAME,
+        new Callback<ECModelResponse<NemoAccount>>() {
+          @Override
+          public void onResponse(
+              Call<ECModelResponse<NemoAccount>> call,
+              retrofit2.Response<ECModelResponse<NemoAccount>> response) {
+            if (response.body() != null) {
+              NemoAccount account = response.body().data;
+              if (account != null) {
+                login(account);
+              } else {
+                ToastX.showShortToast("createAccountThenLogin failed,account is null");
+                ALog.e(TAG, "createAccountThenLogin failed,account is null");
+              }
+            }
+          }
+
+          @Override
+          public void onFailure(Call<ECModelResponse<NemoAccount>> call, Throwable t) {
+            ToastX.showShortToast("createAccountThenLogin failed,t:" + t);
+            ALog.e(TAG, "createAccountThenLogin failed,exception:" + t);
+          }
+        });
     initViews();
   }
 
@@ -77,21 +110,23 @@ public class HomeActivity extends BasePartyActivity {
     ALog.flush(true);
   }
 
-  private void login(String account, String token) {
-    if (TextUtils.isEmpty(account)) {
+  private void login(NemoAccount nemoAccount) {
+    if (TextUtils.isEmpty(nemoAccount.userUuid)) {
       ALog.d(TAG, "login but account is empty");
       ToastX.showShortToast(R.string.app_account);
       return;
     }
-    if (TextUtils.isEmpty(token)) {
+    if (TextUtils.isEmpty(nemoAccount.userToken)) {
       ALog.d(TAG, "login but token is empty");
       ToastX.showShortToast(R.string.app_token);
       return;
     }
+    UserInfoManager.setIMUserInfo(
+        nemoAccount.userUuid, nemoAccount.imToken, nemoAccount.userName, nemoAccount.icon, "");
     NEVoiceRoomKit.getInstance()
         .login(
-            Objects.requireNonNull(account),
-            Objects.requireNonNull(token),
+            nemoAccount.userUuid,
+            nemoAccount.userToken,
             new NEVoiceRoomCallback<Unit>() {
 
               @Override
@@ -102,10 +137,10 @@ public class HomeActivity extends BasePartyActivity {
                     AppConfig.getAppKey(),
                     AppConfig.getBaseUrl(),
                     AppConfig.getNERoomServerUrl(),
-                    account);
+                    nemoAccount.userUuid);
                 NEOrderSongService.INSTANCE.setSongScene(SongScene.TYPE_LISTENING_TO_MUSIC);
-                NEOrderSongService.INSTANCE.addHeader("user", account);
-                NEOrderSongService.INSTANCE.addHeader("token", token);
+                NEOrderSongService.INSTANCE.addHeader("user", nemoAccount.userUuid);
+                NEOrderSongService.INSTANCE.addHeader("token", nemoAccount.userToken);
               }
 
               @Override
@@ -114,5 +149,18 @@ public class HomeActivity extends BasePartyActivity {
                 ToastX.showShortToast(msg);
               }
             });
+  }
+
+  private void createAccountThenLogin(
+      String appKey,
+      String appSecret,
+      int sceneType,
+      String versionCode,
+      Callback<ECModelResponse<NemoAccount>> callback) {
+    ECHttpService.getInstance().initialize(this, AppConfig.BASE_URL);
+    ECHttpService.getInstance().addHeader("appkey", appKey);
+    ECHttpService.getInstance().addHeader("AppSecret", appSecret);
+    ECHttpService.getInstance().addHeader("versionCode", versionCode);
+    ECHttpService.getInstance().createAccount(sceneType, callback);
   }
 }

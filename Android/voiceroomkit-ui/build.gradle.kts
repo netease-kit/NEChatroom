@@ -27,7 +27,7 @@ dependencies {
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
     implementation("com.netease.yunxin.kit.core:corekit:1.3.6")
     implementation(project(":voiceroomkit"))
-    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.6.0")
+    implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.7.0")
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation(project(":ordersong"))
     implementation(project(":entertainment:entertainment-common"))
