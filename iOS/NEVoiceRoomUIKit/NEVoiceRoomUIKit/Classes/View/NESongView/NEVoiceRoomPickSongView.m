@@ -6,7 +6,6 @@
 #import <MJRefresh/MJRefresh.h>
 #import <Masonry/Masonry.h>
 #import <SDWebImage/SDWebImage.h>
-#import <libextobjc/extobjc.h>
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPickSongColorDefine.h"
 #import "NEVoiceRoomPickSongEngine.h"
@@ -82,34 +81,33 @@
 
 - (void)refreshData {
   [[NEVoiceRoomPickSongEngine sharedInstance] updateSongArray];
-  @weakify(self)
-      [[NEVoiceRoomPickSongEngine sharedInstance] getKaraokeSongList:^(NSError *_Nullable error) {
-        if (error) {
-          [NEVoiceRoomToast showToast:NELocalizedString(@"获取歌曲列表失败")];
-        } else {
-          @strongify(self) @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
-            @strongify(self)[self.pickSongsTableView reloadData];
-            [[NEVoiceRoomPickSongEngine sharedInstance] updatePageNumber:NO];
-          });
-        }
-      }];
+  __weak typeof(self) weakSelf = self;
+  [[NEVoiceRoomPickSongEngine sharedInstance] getKaraokeSongList:^(NSError *_Nullable error) {
+    if (error) {
+      [NEVoiceRoomToast showToast:NELocalizedString(@"获取歌曲列表失败")];
+    } else {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf.pickSongsTableView reloadData];
+        [[NEVoiceRoomPickSongEngine sharedInstance] updatePageNumber:NO];
+      });
+    }
+  }];
   [[NEVoiceRoomPickSongEngine sharedInstance]
       getKaraokeSongOrderedList:^(NSError *_Nullable error) {
-        @strongify(self) @weakify(self) if (error) {
+        if (error) {
           [NEVoiceRoomToast showToast:NELocalizedString(@"获取已点列表失败")];
-        }
-        else {
-          @strongify(self) @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
-            @strongify(self)[self.pickedSongButton
+        } else {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.pickedSongButton
                 setTitle:[NSString stringWithFormat:@"%@(%lu)", NELocalizedString(@"歌曲列表"),
                                                     [NEVoiceRoomPickSongEngine sharedInstance]
                                                         .pickedSongArray.count]
                 forState:UIControlStateNormal];
-            if (!self.pointButtonSelected) {
-              self.emptyView.hidden =
+            if (!weakSelf.pointButtonSelected) {
+              weakSelf.emptyView.hidden =
                   [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray.count;
             }
-            [self.pickedSongsTableView reloadData];
+            [weakSelf.pickedSongsTableView reloadData];
           });
         }
       }];
@@ -332,10 +330,9 @@
 
   self.emptyView.hidden = YES;
 
-  @weakify(self);
+  __weak typeof(self) weakSelf = self;
   MJRefreshGifHeader *mjHeader = [MJRefreshGifHeader headerWithRefreshingBlock:^{
-    @strongify(self);
-    [self refreshList];
+    [weakSelf refreshList];
   }];
   [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStateIdle];
   [mjHeader setTitle:NELocalizedString(@"下拉更新") forState:MJRefreshStatePulling];
@@ -345,12 +342,11 @@
   self.pickSongsTableView.mj_header = mjHeader;
 
   self.pickSongsTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-    @strongify(self);
     if ([NEVoiceRoomPickSongEngine sharedInstance].noMore) {
       [NEVoiceRoomToast showToast:NELocalizedString(@"无更多内容")];
-      [self.pickSongsTableView.mj_footer endRefreshing];
+      [weakSelf.pickSongsTableView.mj_footer endRefreshing];
     } else {
-      [self loadMore];
+      [weakSelf loadMore];
     }
   }];
 }
@@ -375,36 +371,32 @@
 }
 
 - (void)getKaraokeSongsList {
-  @weakify(self);
+  __weak typeof(self) weakSelf = self;
   [[NEVoiceRoomPickSongEngine sharedInstance] getKaraokeSongList:^(NSError *_Nullable error) {
     if (error) {
       dispatch_async(dispatch_get_main_queue(), ^{
-        @strongify(self);
-        [self.pickSongsTableView.mj_header endRefreshing];
-        [self.pickSongsTableView.mj_footer endRefreshing];
+        [weakSelf.pickSongsTableView.mj_header endRefreshing];
+        [weakSelf.pickSongsTableView.mj_footer endRefreshing];
         [NEVoiceRoomToast showToast:NELocalizedString(@"获取歌曲列表失败")];
-        if ([self.pickSongsTableView.refreshControl isRefreshing]) {
-          [self.pickSongsTableView.refreshControl endRefreshing];
+        if ([weakSelf.pickSongsTableView.refreshControl isRefreshing]) {
+          [weakSelf.pickSongsTableView.refreshControl endRefreshing];
         }
       });
     } else {
-      @strongify(self);
-      @weakify(self);
       dispatch_async(dispatch_get_main_queue(), ^{
-        @strongify(self);
-        [self.pickSongsTableView.mj_header endRefreshing];
-        [self.pickSongsTableView.mj_footer endRefreshing];
+        [weakSelf.pickSongsTableView.mj_header endRefreshing];
+        [weakSelf.pickSongsTableView.mj_footer endRefreshing];
         {
-          if (self.pointButtonSelected) {
-            self.emptyView.hidden = YES;
+          if (weakSelf.pointButtonSelected) {
+            weakSelf.emptyView.hidden = YES;
           } else {
-            self.emptyView.hidden =
+            weakSelf.emptyView.hidden =
                 [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray.count;
           }
           [[NEVoiceRoomPickSongEngine sharedInstance] updatePageNumber:NO];
-          [self.pickSongsTableView reloadData];
-          if ([self.pickSongsTableView.refreshControl isRefreshing]) {
-            [self.pickSongsTableView.refreshControl endRefreshing];
+          [weakSelf.pickSongsTableView reloadData];
+          if ([weakSelf.pickSongsTableView.refreshControl isRefreshing]) {
+            [weakSelf.pickSongsTableView.refreshControl endRefreshing];
           }
         }
       });
@@ -505,19 +497,18 @@
       cell.downloadingLabel.hidden = NO;
       cell.pointButton.hidden = YES;
     }
-    @weakify(cell);
+    __weak typeof(cell) weakCell = cell;
     cell.clickPointButton = ^{
-      @strongify(cell);
       NSString *logInfo = [NSString stringWithFormat:@"点击开始下载文件:%@", item.songId];
       [NEVoiceRoomUILog successLog:voiceRoomUILog desc:logInfo];
       {
         [[NEVoiceRoomPickSongEngine sharedInstance].pickSongDownloadingArray
             replaceObjectAtIndex:indexPath.row
                       withObject:@"1"];
-        cell.statueBottomLabel.hidden = NO;
-        cell.statueTopLabel.hidden = NO;
-        cell.downloadingLabel.hidden = NO;
-        cell.pointButton.hidden = YES;
+        weakCell.statueBottomLabel.hidden = NO;
+        weakCell.statueTopLabel.hidden = NO;
+        weakCell.downloadingLabel.hidden = NO;
+        weakCell.pointButton.hidden = YES;
         NSString *viewLogInfo =
             [NSString stringWithFormat:@"点击开始下载文件,界面变更为下载中:%@", item.songId];
         [NEVoiceRoomUILog successLog:voiceRoomUILog desc:viewLogInfo];
@@ -625,25 +616,25 @@
 
 #pragma mark NEVoiceRoomSongProtocol
 - (void)onOrderSongRefresh {
-  @weakify(self)[[NEVoiceRoomPickSongEngine sharedInstance]
+  __weak typeof(self) weakSelf = self;
+  [[NEVoiceRoomPickSongEngine sharedInstance]
       getKaraokeSongOrderedList:^(NSError *_Nullable error) {
-        @strongify(self) @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
-          @strongify(self) if (error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (error) {
             [NEVoiceRoomToast showToast:NELocalizedString(@"获取已点列表失败")];
-          }
-          else {
-            [self.pickedSongButton
+          } else {
+            [weakSelf.pickedSongButton
                 setTitle:[NSString stringWithFormat:@"%@(%lu)", NELocalizedString(@"歌曲列表"),
                                                     [NEVoiceRoomPickSongEngine sharedInstance]
                                                         .pickedSongArray.count]
                 forState:UIControlStateNormal];
-            if (!self.pointButtonSelected) {
-              self.emptyView.hidden =
+            if (!weakSelf.pointButtonSelected) {
+              weakSelf.emptyView.hidden =
                   [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray.count;
-              self.playControlView.hidden =
+              weakSelf.playControlView.hidden =
                   ![NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray.count;
             }
-            [self.pickedSongsTableView reloadData];
+            [weakSelf.pickedSongsTableView reloadData];
           }
         });
       }];
@@ -728,27 +719,24 @@
   return YES;
 }
 - (void)getKaraokeSearchSongsList {
-  @weakify(self);
+  __weak typeof(self) weakSelf = self;
   [[NEVoiceRoomPickSongEngine sharedInstance]
       getKaraokeSearchSongList:self.searchTextField.text
                       callback:^(NSError *_Nullable error) {
-                        @strongify(self);
-                        @weakify(self);
                         dispatch_async(dispatch_get_main_queue(), ^{
-                          @strongify(self);
-                          [self.pickSongsTableView.mj_header endRefreshing];
-                          [self.pickSongsTableView.mj_footer endRefreshing];
+                          [weakSelf.pickSongsTableView.mj_header endRefreshing];
+                          [weakSelf.pickSongsTableView.mj_footer endRefreshing];
                           if (error) {
-                            if ([self.pickSongsTableView.refreshControl isRefreshing]) {
-                              [self.pickSongsTableView.refreshControl endRefreshing];
+                            if ([weakSelf.pickSongsTableView.refreshControl isRefreshing]) {
+                              [weakSelf.pickSongsTableView.refreshControl endRefreshing];
                             }
-                            [self.pickSongsTableView reloadData];
+                            [weakSelf.pickSongsTableView reloadData];
                             [NEVoiceRoomToast showToast:NELocalizedString(@"没有找到合适的结果")];
                           } else {
                             [[NEVoiceRoomPickSongEngine sharedInstance] updatePageNumber:YES];
-                            [self.pickSongsTableView reloadData];
-                            if ([self.pickSongsTableView.refreshControl isRefreshing]) {
-                              [self.pickSongsTableView.refreshControl endRefreshing];
+                            [weakSelf.pickSongsTableView reloadData];
+                            if ([weakSelf.pickSongsTableView.refreshControl isRefreshing]) {
+                              [weakSelf.pickSongsTableView.refreshControl endRefreshing];
                             }
                             if ([[NEVoiceRoomPickSongEngine sharedInstance] pickSongArray].count <=
                                 0) {

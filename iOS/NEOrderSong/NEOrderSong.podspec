@@ -28,23 +28,11 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/969901329@qq.com/NEOrderSong.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
   s.swift_version = '5.0'
 
   s.source_files = 'NEOrderSong/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'NEOrderSong' => ['NEOrderSong/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  
-    s.dependency 'NERoomKit/Base_Special'
-    s.dependency 'NERoomKit/Beauty_Special'
-    s.dependency 'NERoomKit/Segment_Special'
-    s.dependency 'NERoomKit/Audio_Special'
-  
+  s.dependency 'NERoomKit/Special_All'
   s.dependency 'NECopyrightedMedia'
   
   s.pod_target_xcconfig = {

@@ -24,19 +24,16 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/gingerjin1993@gmail.com/NEVoiceRoomUIKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
   
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
   
   s.source_files = 'NEVoiceRoomUIKit/Classes/**/*'
+  s.resource = 'NEVoiceRoomUIKit/Assets/**/*'
   
-    s.resource = 'NEVoiceRoomUIKit/Assets/**/*'
   s.dependency 'NEVoiceRoomKit'
   s.dependency 'NEOrderSong'
   s.dependency 'Masonry'
-  s.dependency 'ReactiveObjC'
-  s.dependency 'libextobjc'
   s.dependency 'YYModel'
   s.dependency 'MJRefresh'
-  s.dependency 'M80AttributedLabel'
   s.dependency 'lottie-ios', '~> 2.5.3'
   s.dependency 'NEUIKit'
   s.dependency 'SDWebImage'
@@ -46,7 +43,6 @@ Pod::Spec.new do |s|
   s.dependency 'NECoreKit'
   s.dependency 'LottieSwift'
   s.dependency 'NESocialUIKit'
-  
   s.frameworks = 'UIKit'
   
   s.pod_target_xcconfig = {

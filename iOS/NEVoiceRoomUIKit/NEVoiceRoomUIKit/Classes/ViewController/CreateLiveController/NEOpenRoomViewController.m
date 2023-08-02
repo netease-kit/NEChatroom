@@ -6,7 +6,6 @@
 #import <Masonry/Masonry.h>
 #import <NEUIKit/NEUIBaseNavigationController.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
-#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEUICreateRoomNameView.h"
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIPlanChooseAlertView.h"
@@ -24,6 +23,7 @@
 #import "UIView+Gradient.h"
 #import "UIView+Toast.h"
 #import "UIView+VoiceRoom.h"
+@import NESocialUIKit;
 
 @interface NEOpenRoomViewController () <NEUICreateRoomDelegate,
                                         NTESPlanChooseDelegate,
@@ -51,43 +51,7 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.ne_UINavigationItem.navigationBarHidden = YES;
-  [self bindViewModel];
   [self setupSubviews];
-}
-
-// 监听点击事件 代理方法
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  NSString *btnTitle = [alertView buttonTitleAtIndex:buttonIndex];
-  if ([btnTitle isEqualToString:NELocalizedString(@"取消")]) {
-  } else if ([btnTitle isEqualToString:NELocalizedString(@"确认")]) {
-    [[NEVoiceRoomFloatWindowSingleton Ins]
-        clickCloseButton:[NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView ? NO : YES
-                callback:^{
-                  dispatch_async(dispatch_get_main_queue(), ^{
-                    [self openRoomAction];
-                  });
-                }];
-  }
-}
-
-- (void)bindViewModel {
-  @weakify(self);
-  [[self.openLiveButton rac_signalForControlEvents:UIControlEventTouchUpInside]
-      subscribeNext:^(__kindof UIControl *_Nullable x) {
-        @strongify(self);
-        if ([NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView) {
-          UIAlertView *alertView = [[UIAlertView alloc]
-                  initWithTitle:NELocalizedString(@"提示")
-                        message:NELocalizedString(@"是否退出当前房间，并创建新房间")
-                       delegate:self
-              cancelButtonTitle:NELocalizedString(@"取消")
-              otherButtonTitles:NELocalizedString(@"确认"), nil];  // 一般在if判断中加入
-          [alertView show];
-
-        } else {
-          [self openRoomAction];
-        }
-      }];
 }
 
 - (void)setupSubviews {
@@ -151,7 +115,11 @@
   params.liveTopic = self.createRoomNameView.getRoomName;
   params.seatCount = 9;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
+#ifdef DEBUG
+  params.configId = 76;
+#else
   params.configId = 569;
+#endif
   if ([[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
           isEqualToString:@"https://roomkit-sg.netease.im"]) {
     params.configId = 75;
@@ -174,13 +142,35 @@
                 showToast:[NSString stringWithFormat:@"%@ %zd %@",
                                                      NELocalizedString(@"加入直播间失败"), code,
                                                      msg]];
+            if (code == 2001) {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                NESocialAuthenticationViewController *view =
+                    [[NESocialAuthenticationViewController alloc] init];
+                __weak typeof(view) weakView = view;
+                view.authenticateAction = ^(NSString *_Nonnull name, NSString *_Nonnull cardNo) {
+                  [[NEVoiceRoomKit getInstance]
+                      authenticateWithName:name
+                                    cardNo:cardNo
+                                  callback:^(NSInteger code, NSString *_Nullable msg,
+                                             NSNumber *_Nullable ret) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                      if (code == 0) {
+                                        if (ret.boolValue) {
+                                          [weakView showSuccWithSucc:nil];
+                                        } else {
+                                          [weakView showErrorWithError:nil];
+                                        }
+                                      } else {
+                                        [weakView showErrorWithError:msg];
+                                      }
+                                    });
+                                  }];
+                };
+                [self.navigationController pushViewController:view animated:true];
+              });
+            }
           }
         }];
-
-  //    NTESPlanChooseAlertView *chooseAlertView = [[NTESPlanChooseAlertView alloc]
-  //        initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
-  //    chooseAlertView.delegate = self;
-  //    [[UIApplication sharedApplication].keyWindow addSubview:chooseAlertView];
 }
 
 /// 是否是合法字符
@@ -270,7 +260,40 @@
                                            locations:nil
                                           startPoint:CGPointMake(0, 0)
                                             endPoint:CGPointMake(1, 0)];
+    [_openLiveButton addTarget:self
+                        action:@selector(openLiveButtonClicked)
+              forControlEvents:UIControlEventTouchUpInside];
   }
   return _openLiveButton;
 }
+
+- (void)openLiveButtonClicked {
+  if ([NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView) {
+    UIAlertView *alertView =
+        [[UIAlertView alloc] initWithTitle:NELocalizedString(@"提示")
+                                   message:NELocalizedString(@"是否退出当前房间，并创建新房间")
+                                  delegate:self
+                         cancelButtonTitle:NELocalizedString(@"取消")
+                         otherButtonTitles:NELocalizedString(@"确认"), nil];  // 一般在if判断中加入
+    [alertView show];
+  } else {
+    [self openRoomAction];
+  }
+}
+
+// 监听点击事件 代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSString *btnTitle = [alertView buttonTitleAtIndex:buttonIndex];
+  if ([btnTitle isEqualToString:NELocalizedString(@"取消")]) {
+  } else if ([btnTitle isEqualToString:NELocalizedString(@"确认")]) {
+    [[NEVoiceRoomFloatWindowSingleton Ins]
+        clickCloseButton:[NEVoiceRoomFloatWindowSingleton Ins].hasFloatingView ? NO : YES
+                callback:^{
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                    [self openRoomAction];
+                  });
+                }];
+  }
+}
+
 @end

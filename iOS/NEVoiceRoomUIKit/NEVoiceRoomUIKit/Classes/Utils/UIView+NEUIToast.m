@@ -28,6 +28,18 @@
 - (void)showToastWithMessage:(NSString *)message
                        state:(NEUIToastState)state
                       cancel:(nullable dispatch_block_t)cancel {
+  [self showToastWithMessage:message state:state cancel:cancel dismissToast:YES];
+}
+- (void)showToastWithMessage:(NSString *)message
+                       state:(NEUIToastState)state
+                      cancel:(nullable dispatch_block_t)cancel
+                dismissToast:(BOOL)dismissToast {
+  if (!dismissToast) {
+    UIView *bar = [self viewWithTag:KNEVoiceRoomToastBarTag];
+    if (bar) {
+      return;
+    }
+  }
   [self dismissToast];
 
   NEUIToastBar *bar = [[NEUIToastBar alloc] initWithState:state];

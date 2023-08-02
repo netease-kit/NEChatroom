@@ -1,0 +1,10 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
+"CFBundleDisplayName" = "云信语聊房";
+"NSCameraUsageDescription" = "用于体验音视频聊天功能";
+"NSMicrophoneUsageDescription" = "用于体验音视频聊天功能";
+"NSLocationWhenInUseUsageDescription" = "与您的朋友分享您的位置";
+"NSLocationAlwaysUsageDescription" = "与您的朋友分享您的位置";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "与您的朋友分享您的位置";

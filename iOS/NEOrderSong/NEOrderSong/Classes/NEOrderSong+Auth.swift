@@ -28,6 +28,7 @@ public extension NEOrderSong {
     NE.addHeader([
       "user": account,
       "token": token,
+      "appKey": config?.appKey ?? "",
     ])
     NEOrderSong.getInstance().copyrightedMediaService?
       .getSongDynamicTokenUntilSuccess(success: { dynamicToken in

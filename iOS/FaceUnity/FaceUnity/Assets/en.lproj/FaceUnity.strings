@@ -1,0 +1,90 @@
+/* 
+  FaceUnity.strings
+  XPYCamera
+
+  Created by 项林平 on 2021/6/15.
+  
+*/
+
+/// Modules
+"美肤" = "Skin";
+"美型" = "Reshape";
+"滤镜" = "Filter";
+"贴纸" = "Sticker";
+"美体" = "Body Shape";
+"游戏" = "Game";
+"人像分割" = "Portrait Segmentation";
+
+/// Skin
+"精细磨皮" = "Fine Smooth";
+"美白" = "Whiten";
+"红润" = "Ruddy";
+"锐化" = "Sharpen";
+"亮眼" = "Eye Brighten";
+"美牙" = "Tooth Whiten";
+"去黑眼圈" = "Circles";
+"去法令纹" = "Wrinkles";
+
+/// Reshape
+"瘦脸" = "Cheek Thin";
+"v脸" =  "V face";
+"窄脸" = "Narrow Face";
+"短脸" = "Short Face";
+"小脸" = "Small Face";
+"瘦颧骨"  = "Cheekbone";
+"瘦下颌骨" = "Jawbone";
+"大眼" = "Eye Enlarge";
+"圆眼" =  "Round eye";
+"下巴" = "Chin";
+"额头" = "Forehead";
+"瘦鼻" = "Nose";
+"嘴型" = "Mouth";
+"开眼角" = "Canthus";
+"眼距" = "Eye distance";
+"眼睛角度" = "Eye tilt";
+"长鼻" = " Length";
+"缩人中" = "Philtrum";
+"微笑嘴角" = "Smile";
+"眉毛上下"  = "Brow height";
+"眉间距"  = "Brow space";
+
+/// Body
+"瘦身" = "Slim";
+"长腿" = "Long leg";
+"细腰" = "Thin waist";
+"美肩" = "Shoulder";
+"美臀" = "Buttock";
+"小头" = "Head";
+"瘦腿" = "Thin leg";
+
+/// Filter
+"原图" = "Origin";
+"自然1" = "Nature1";
+"自然2" = "Nature2";
+"质感灰1" = "Texture grey1";
+"质感灰2" = "Texture grey2";
+"蜜桃1" = "Peach1";
+"蜜桃2" = "Peach2";
+"白亮1" = "Bright1";
+"白亮2" = "Bright2";
+"粉嫩1" = "Pink1";
+"粉嫩2" = "Pink2";
+"冷色调1" = "Cold tone1";
+"冷色调2" = "Cold tone2";
+"暖色调1" = "Warm tone1";
+"暖色调2" = "Warm tone2";
+"个性1" = "Personal1";
+"个性2" = "Personal2";
+"小清新1" = "Fresh1";
+"小清新2" = "Fresh2";
+"黑白1" = "Black and white1";
+"黑白2" = "Black and white2";
+
+"卸妆" = "Remove";
+"恢复" = "Recover";
+
+"是否将所有参数恢复到默认值" = "Reset all to default?";
+"取消" = "No";
+"确定" = "Yes";
+
+"未检测到人脸" = "No human face";

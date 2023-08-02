@@ -31,6 +31,7 @@ enum NEAPI {
     static let destroy = NEAPIItem("/nemo/entertainmentLive/live/destroyLive", desc: "结束房间")
     static let batchReward = NEAPIItem("/nemo/entertainmentLive/live/batch/reward", desc: "批量打赏功能")
     static let info = NEAPIItem("/nemo/entertainmentLive/live/info", desc: "获取房间详情")
+    static let auth = NEAPIItem("/nemo/entertainmentLive/real-name-authentication", desc: "实名认证")
     static let liveInfo = NEAPIItem(
       "/nemo/entertainmentLive/live/getDefaultLiveInfo",
       desc: "获取直播主题及背景图",

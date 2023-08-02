@@ -40,6 +40,11 @@ static NSInteger KNEVoiceRoomToastBarTag = 111;
                        state:(NEUIToastState)state
                       cancel:(nullable dispatch_block_t)cancel;
 
+- (void)showToastWithMessage:(NSString *)message
+                       state:(NEUIToastState)state
+                      cancel:(nullable dispatch_block_t)cancel
+                dismissToast:(BOOL)dismissToast;
+
 - (void)dismissToast;
 
 @end

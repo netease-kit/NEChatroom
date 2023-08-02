@@ -116,19 +116,22 @@ static int NEPageSize = 20;
                }
                for (NECopyrightedSong *songItem in songList) {
                  NEVoiceRoomSongItem *item = [self changeCopyrightedToKaraokeSongItem:songItem];
-                 if (item.hasAccompany) {
-                   BOOL isDownloading = NO;
-                   if ([tempCurrentOrderingArray containsObject:item.songId]) {
-                     isDownloading = YES;
-                   }
+                 // 语聊房不需要伴奏判断
+                 //                 if (item.hasAccompany) {
+                 BOOL isDownloading = NO;
+                 if ([tempCurrentOrderingArray containsObject:item.songId]) {
+                   isDownloading = YES;
+                 }
 
-                   if (isDownloading) {
-                     [tempLoading addObject:@"1"];
-                   } else {
-                     [tempLoading addObject:@"0"];
-                   }
+                 if (isDownloading) {
+                   [tempLoading addObject:@"1"];
+                 } else {
+                   [tempLoading addObject:@"0"];
+                 }
+                 if (item) {
                    [tempItems addObject:item];
                  }
+                 //                 }
                }
                dispatch_async(dispatch_get_main_queue(), ^{
                  [self.pickSongArray addObjectsFromArray:tempItems];
@@ -180,19 +183,24 @@ static int NEPageSize = 20;
               }
               for (NECopyrightedSong *songItem in songList) {
                 NEVoiceRoomSongItem *item = [self changeCopyrightedToKaraokeSongItem:songItem];
-                if (item.hasAccompany) {
+                /// 语聊房不需要伴奏判断.
+                //                if (item.hasAccompany) {
+                if (item) {
                   [tempItems addObject:item];
-                  BOOL isDownloading = NO;
-                  if ([tempCurrentOrderingArray containsObject:item.songId]) {
-                    isDownloading = YES;
-                  }
-
-                  if (isDownloading) {
-                    [tempLoading addObject:@"1"];
-                  } else {
-                    [tempLoading addObject:@"0"];
-                  }
+                } else {
+                  continue;
                 }
+                BOOL isDownloading = NO;
+                if ([tempCurrentOrderingArray containsObject:item.songId]) {
+                  isDownloading = YES;
+                }
+
+                if (isDownloading) {
+                  [tempLoading addObject:@"1"];
+                } else {
+                  [tempLoading addObject:@"0"];
+                }
+                //                }
               }
               dispatch_async(dispatch_get_main_queue(), ^{
                 [self.pickSongArray addObjectsFromArray:tempItems];

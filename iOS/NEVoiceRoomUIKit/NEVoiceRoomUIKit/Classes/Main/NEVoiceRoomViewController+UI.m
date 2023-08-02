@@ -96,16 +96,17 @@
 - (NSMutableArray<NEVoiceRoomUIAlertAction *> *)setupAlertActions {
   NSMutableArray<NEVoiceRoomUIAlertAction *> *actions = @[].mutableCopy;
   // 抱麦操作
-  @weakify(self) NEVoiceRoomUIAlertAction *inviteAction = [NEVoiceRoomUIAlertAction
+  __weak typeof(self) weakSelf = self;
+  NEVoiceRoomUIAlertAction *inviteAction = [NEVoiceRoomUIAlertAction
       actionWithTitle:NELocalizedString(@"将成员抱上麦")
                  type:NEUIAlertActionTypeInviteMic
               handler:^(id _Nonnull info) {
-                @strongify(self) NEVoiceRoomSeatItem *seatItem = (NEVoiceRoomSeatItem *)info;
+                NEVoiceRoomSeatItem *seatItem = (NEVoiceRoomSeatItem *)info;
                 NEUIMicInviteeListVC *inviteeVC = [[NEUIMicInviteeListVC alloc] init];
                 inviteeVC.seatIndex = seatItem.index;
                 NEUIBackNavigationController *navigationVC =
                     [[NEUIBackNavigationController alloc] initWithRootViewController:inviteeVC];
-                [self presentViewController:navigationVC animated:YES completion:nil];
+                [weakSelf presentViewController:navigationVC animated:YES completion:nil];
               }];
   [actions addObject:inviteAction];
 
@@ -217,7 +218,7 @@
                     cancelSeatRequest:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
                       if (code == 0) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                          @strongify(self)[self.view dismissToast];
+                          [weakSelf.view dismissToast];
                         });
                       }
                     }];
@@ -243,7 +244,7 @@
       [NEVoiceRoomUIAlertAction actionWithTitle:NELocalizedString(@"退出并解散房间")
                                            type:NEUIAlertActionTypeExistRoom
                                         handler:^(id _Nonnull info) {
-                                          @strongify(self)[self closeRoom];
+                                          [weakSelf closeRoom];
                                         }];
   [actions addObject:exitAction];
   return actions;

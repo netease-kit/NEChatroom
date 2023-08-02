@@ -226,9 +226,18 @@ extension NEVoiceRoomKit: NERoomListener {
         let ban: Bool = properties[MemberPropertyConstants.CanOpenMic.key] ==
           MemberPropertyConstants.CanOpenMic.no
         let mem = NEVoiceRoomMember(member)
+        // 如果是自己被ban或者解除ban
+        if member.uuid == self.localMember?.account {
+          if ban {
+            self.internalMute(bySelf: false)
+          } else {
+            if !self.isSelfMuted {
+              self.unmuteMyAudio()
+            }
+          }
+        }
         for pointListener in self.listeners.allObjects {
           guard pointListener is NEVoiceRoomListener, let listener = pointListener as? NEVoiceRoomListener else { continue }
-
           if listener
             .responds(to: #selector(NEVoiceRoomListener.onMemberAudioBanned(_:banned:))) {
             listener.onMemberAudioBanned?(mem, banned: ban)
@@ -350,7 +359,7 @@ extension NEVoiceRoomKit: NERoomListener {
 
         case .image: break
         case .file: break
-        @unknown default: break
+        default: break
         }
       }
     }
@@ -457,21 +466,38 @@ extension NEVoiceRoomKit: NERoomListener {
       }
       guard let context = self.roomContext else { return }
       var isOnSeat = false
-      for item in items {
-        if item.user == context.localMember.uuid,
-           item.status == .taken {
-          isOnSeat = true
-        }
+      if let item = items.first(where: { $0.user == context.localMember.uuid }),
+         item.status == .taken {
+        // 新状态自己在麦上
+        isOnSeat = true
       }
-      // 不在麦位，且属性 被ban, 删除属性
-      if !isOnSeat, context.localMember.properties[MemberPropertyConstants.CanOpenMic.key] ==
-        MemberPropertyConstants.CanOpenMic.no {
-        context.deleteMemberProperty(
-          userUuid: context.localMember.uuid,
-          key: MemberPropertyConstants.CanOpenMic.key
-        )
-      }
+      // 当前自己在麦上，则要切换RTC的clientRole
       context.rtcController.setClientRole(isOnSeat ? .broadcaster : .audience)
+
+      var localIsOnSeat = false
+      if let localItem = self.localSeats?.first(where: { $0.user == context.localMember.uuid }),
+         localItem.status == .taken {
+        // 老状态自己在麦上
+        localIsOnSeat = true
+      }
+      if !isOnSeat {
+        // 新状态不在麦上，但是老状态在麦上，说明有下麦行为，下麦默认关闭音频
+        if localIsOnSeat {
+          self.muteMyAudio()
+        }
+        // 不在麦位，且属性 被ban, 删除属性
+        if context.localMember.properties[MemberPropertyConstants.CanOpenMic.key] ==
+          MemberPropertyConstants.CanOpenMic.no {
+          context.deleteMemberProperty(
+            userUuid: context.localMember.uuid,
+            key: MemberPropertyConstants.CanOpenMic.key
+          )
+        }
+      } else if !localIsOnSeat {
+        // 新状态自己在麦上，但是老状态自己不在麦上，说明是有上麦行为，上麦默认打开音频
+        self.unmuteMyAudio()
+      }
+      self.localSeats = seatItems
     }
   }
 
