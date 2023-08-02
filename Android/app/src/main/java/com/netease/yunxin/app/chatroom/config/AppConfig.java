@@ -19,16 +19,16 @@ public class AppConfig {
   public static final String BASE_URL = "http://yiyong.netease.im/";
 
   /**
-   * 云信IM账号
+   * 云信IM账号，说明：账号信息为空，则默认自动生成一个账号
    */
   public static String userUuid = "";
   /**
-   * 用户Token
+   * 用户Token，说明：账号信息为空，则默认自动生成一个账号
    */
   public static String userToken = "";
 
   /**
-   * 云信IM账号 token
+   * 云信IM账号 token，说明：账号信息为空，则默认自动生成一个账号
    */
   public  static String imToken = "";
 
