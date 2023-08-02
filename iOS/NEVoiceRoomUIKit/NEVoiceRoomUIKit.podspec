@@ -43,7 +43,6 @@ Pod::Spec.new do |s|
   s.dependency 'NECoreKit'
   s.dependency 'LottieSwift'
   s.dependency 'NESocialUIKit'
-  s.dependency 'SudMGPWrapper','~> 1.5.8'
   s.frameworks = 'UIKit'
   
   s.pod_target_xcconfig = {
