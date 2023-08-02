@@ -42,34 +42,46 @@ public class HomeActivity extends BasePartyActivity {
   @Override
   protected void init() {
     curTabIndex = -1;
-    // 先创建账号再登录
-    createAccountThenLogin(
-        AppConfig.getAppKey(),
-        AppConfig.APP_SECRET,
-        2,
-        BuildConfig.VERSION_NAME,
-        new Callback<ECModelResponse<NemoAccount>>() {
-          @Override
-          public void onResponse(
-              Call<ECModelResponse<NemoAccount>> call,
-              retrofit2.Response<ECModelResponse<NemoAccount>> response) {
-            if (response.body() != null) {
-              NemoAccount account = response.body().data;
-              if (account != null) {
-                login(account);
-              } else {
-                ToastX.showShortToast("createAccountThenLogin failed,account is null");
-                ALog.e(TAG, "createAccountThenLogin failed,account is null");
-              }
-            }
-          }
+    if (!TextUtils.isEmpty(AppConfig.userUuid)&&!TextUtils.isEmpty(AppConfig.userToken)&&!TextUtils.isEmpty(AppConfig.imToken)){
+      // 如果有账号，则直接登录账号
+      NemoAccount nemoAccount = new NemoAccount();
+      nemoAccount.userUuid= AppConfig.userUuid;
+      nemoAccount.userToken= AppConfig.userToken;
+      nemoAccount.imToken= AppConfig.imToken;
+      nemoAccount.userName= AppConfig.userName;
+      nemoAccount.icon= AppConfig.icon;
+      login(nemoAccount);
+    }else {
+      // 如果没有账号，则先创建账号再登录账号
+      // 先创建账号再登录
+      createAccountThenLogin(
+              AppConfig.getAppKey(),
+              AppConfig.APP_SECRET,
+              2,
+              BuildConfig.VERSION_NAME,
+              new Callback<ECModelResponse<NemoAccount>>() {
+                @Override
+                public void onResponse(
+                        Call<ECModelResponse<NemoAccount>> call,
+                        retrofit2.Response<ECModelResponse<NemoAccount>> response) {
+                  if (response.body() != null) {
+                    NemoAccount account = response.body().data;
+                    if (account != null) {
+                      login(account);
+                    } else {
+                      ToastX.showShortToast("createAccountThenLogin failed,account is null");
+                      ALog.e(TAG, "createAccountThenLogin failed,account is null");
+                    }
+                  }
+                }
 
-          @Override
-          public void onFailure(Call<ECModelResponse<NemoAccount>> call, Throwable t) {
-            ToastX.showShortToast("createAccountThenLogin failed,t:" + t);
-            ALog.e(TAG, "createAccountThenLogin failed,exception:" + t);
-          }
-        });
+                @Override
+                public void onFailure(Call<ECModelResponse<NemoAccount>> call, Throwable t) {
+                  ToastX.showShortToast("createAccountThenLogin failed,t:" + t);
+                  ALog.e(TAG, "createAccountThenLogin failed,exception:" + t);
+                }
+              });
+    }
     initViews();
   }
 
