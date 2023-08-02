@@ -47,7 +47,6 @@ dependencies {
     implementation(project(":entertainment:entertainment-common"))
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
     implementation("com.netease.yunxin.kit.common:common-ui:1.3.0")
-     implementation("com.netease.yunxin.kit.auth:auth-yunxin-login:1.0.4-rc01")
     implementation("com.netease.yunxin.kit:alog:1.0.9")
     implementation(project(":voiceroomkit"))
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.7.0")
