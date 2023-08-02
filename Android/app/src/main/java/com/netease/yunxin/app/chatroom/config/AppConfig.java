@@ -18,6 +18,30 @@ public class AppConfig {
    */
   public static final String BASE_URL = "http://yiyong.netease.im/";
 
+  /**
+   * 云信IM账号
+   */
+  public static String userUuid = "";
+  /**
+   * 用户Token
+   */
+  public static String userToken = "";
+
+  /**
+   * 云信IM账号 token
+   */
+  public  static String imToken = "";
+
+  // 以下内容选填
+  /**
+   * 用户名
+   */
+  public static String userName = "";
+  /**
+   * 头像
+   */
+  public static String icon = "";
+
   private static final int ONLINE_CONFIG_ID = 569;
   private static final int OVERSEA_CONFIG_ID = 75;
 
