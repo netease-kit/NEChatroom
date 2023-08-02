@@ -50,6 +50,7 @@ public extension NEVoiceRoomKit {
         NE.addHeader([
           "user": account,
           "token": token,
+          "appkey": self.config?.appKey ?? "",
         ])
       } else {
         NEVoiceRoomLog.errorLog(kitTag, desc: "Failed to login. Code: \(code)")

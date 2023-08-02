@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEUIMicQueueView.h"
-#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEInnerSingleton.h"
 #import "NEUIChatroomMicCell.h"
 #import "NTESGlobalMacro.h"
@@ -32,24 +31,23 @@
   if (self) {
     [self addSubview:self.anchorCell];
     [self addSubview:self.collectionView];
-
-    @weakify(self);
-    [RACObserve(self, datas) subscribeNext:^(id _Nullable x) {
-      @strongify(self);
-      ntes_main_sync_safe(^{
-        [self.collectionView reloadData];
-      });
-    }];
-    [RACObserve(self, giftDatas) subscribeNext:^(id _Nullable x) {
-      @weakify(self);
-      @strongify(self);
-      ntes_main_sync_safe(^{
-        [self updateAnchorGift];
-        [self.collectionView reloadData];
-      });
-    }];
   }
   return self;
+}
+
+- (void)setDatas:(NSArray<NEVoiceRoomSeatItem *> *)datas {
+  _datas = datas;
+  ntes_main_sync_safe(^{
+    [self.collectionView reloadData];
+  });
+}
+
+- (void)setGiftDatas:(NSMutableArray<NEVoiceRoomBatchSeatUserReward *> *)giftDatas {
+  _giftDatas = giftDatas;
+  ntes_main_sync_safe(^{
+    [self updateAnchorGift];
+    [self.collectionView reloadData];
+  });
 }
 
 - (void)updateWithLocalVolume:(NSInteger)volume {

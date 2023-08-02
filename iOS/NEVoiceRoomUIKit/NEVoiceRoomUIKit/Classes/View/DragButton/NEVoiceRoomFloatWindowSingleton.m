@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomFloatWindowSingleton.h"
-#import <ReactiveObjC/ReactiveObjC.h>
 #import "NEVoiceRoomDraggableButton.h"
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomUI.h"
@@ -43,9 +42,10 @@
 }
 
 - (void)addViewControllerTarget:(NEVoiceRoomViewController *)controller {
-  @weakify(self) dispatch_async(dispatch_get_main_queue(), ^{
-    @strongify(self) self.target = controller;
-    self.button.rootView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+  __weak typeof(self) weakSelf = self;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    weakSelf.target = controller;
+    weakSelf.button.rootView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
   });
 }
 

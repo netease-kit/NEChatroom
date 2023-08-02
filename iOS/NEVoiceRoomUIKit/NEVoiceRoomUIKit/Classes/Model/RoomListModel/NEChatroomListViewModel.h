@@ -17,6 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 加载error
 @property(nonatomic, strong, readonly) NSError *error;
 
+@property(nonatomic, copy) void (^datasChanged)(NSArray<NEVoiceRoomInfo *> *datas);
+
+@property(nonatomic, copy) void (^isLoadingChanged)(BOOL isLoading);
+
+@property(nonatomic, copy) void (^errorChanged)(NSError *error);
+
 // 麦位组件
 // 加载新数据
 - (void)requestNewDataWithLiveType:(NEVoiceRoomLiveRoomType)roomType;

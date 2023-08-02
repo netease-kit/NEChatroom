@@ -270,7 +270,7 @@ public extension NEVoiceRoomKit {
   /// - Parameters:
   ///   - seatIndex: 麦位位置
   ///   - callback: 回调
-  func muteSeat(seatIndex: Int, callback: NEVoiceRoomCallback<AnyObject>? = nil) {
+  private func muteSeat(seatIndex: Int, callback: NEVoiceRoomCallback<AnyObject>? = nil) {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Mute seat. SeatIndex: \(seatIndex)")
   }
 
@@ -278,7 +278,7 @@ public extension NEVoiceRoomKit {
   /// - Parameters:
   ///   - seatIndex: 麦位位置
   ///   - callback: 回调
-  func unmuteSeat(seatIndex: Int, callback: NEVoiceRoomCallback<AnyObject>? = nil) {}
+  private func unmuteSeat(seatIndex: Int, callback: NEVoiceRoomCallback<AnyObject>? = nil) {}
 
   /// 打开麦位
   /// - Parameters:
