@@ -20,7 +20,6 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.airbnb.android:lottie:5.0.3")
-    implementation("com.gyf.immersionbar:immersionbar:3.0.0")
     implementation("com.netease.yunxin.kit.room:roomkit:1.18.0")
     implementation("com.netease.yunxin.kit.common:common-ui:1.3.0")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.8")
