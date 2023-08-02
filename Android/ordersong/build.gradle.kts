@@ -20,10 +20,8 @@ dependencies {
     // jetpack dependencies
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     // third party dependencies
     implementation("com.airbnb.android:lottie:5.0.3")
-    implementation("com.gyf.immersionbar:immersionbar:3.0.0")
     implementation("com.google.code.gson:gson:2.9.0")
     // xkit dependencies
     implementation("com.netease.yunxin.kit.common:common-network:1.1.8")

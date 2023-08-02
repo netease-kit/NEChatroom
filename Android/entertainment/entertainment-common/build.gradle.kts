@@ -30,7 +30,6 @@ dependencies {
 
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.netease.yunxin:nertc-base:5.4.0")
-    implementation("com.gyf.immersionbar:immersionbar:3.0.0")
 
 
     implementation("com.netease.yunxin.kit.common:common-ui:1.3.0")
