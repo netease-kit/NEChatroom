@@ -84,26 +84,25 @@
 > - 以下源码跑通无须部署服务端即可体验，请按照以下步骤设置客户端源码配置。
 
 1. 克隆示例项目源码仓库至您本地工程。
-2. 打开终端，在 Podfile 所在文件夹中执行如下命令进行安装：
+2. 打开终端，在 `Podfile` 所在文件夹中执行如下命令进行安装：
 
     ```
     pod install 
     ```
 
-4. 在 NEVoiceRoomExample/NEVoiceRoomExample/AppEnv/Define/AppKey.h 中 ，替换以下信息
+4. 在 `LiveAudioRoom/LiveAudioRoom/AppKey.swift` 中 ，替换以下信息
 
     ```
-    /// 服务器host
-    static NSString *const kApiHost = @"https://127.0.0.1:9981";
-    static NSString *const APP_KEY_MAINLAND = @"your mainland appKey";  // 国内用户填写
-    // AccountId
-    static NSString *const accountId = @"";
-    // accessToken
-    static NSString *const accessToken = @"";
+    请填写您的 AppKey，中国国内环境请填写APP_KEY_MAINLAND，中国境外环境请填写APP_KEY_OVERSEA
     
-    如果需要配置海外环境，则修改以下内容
-    static BOOL isOverSea = NO;  // 是否是海外环境
-    static NSString *const APP_KEY_OVERSEA = @"your oversea appKey";  // 海外用户填写
+    let APP_KEY_MAINLAND: String = "your mainland appKey" // 请填写您的应用对应的AppKey，如果您的应用是中国国内环境，请填写该字段
+    
+    let APP_SECRET_MAINLAND: String = "your mainland appSecret" // 请填写您的应用对应的AppSecret，如果您的应用是中国国内环境，请填写该字段
+    
+    let APP_KEY_OVERSEA: String = "your oversea appKey" // 请填写您的应用对应的AppKey，如果您的应用是中国境外环境，请填写该字段
+    
+    let APP_SECRET_OVERSEA: String = "your oversea appSecret" // 请填写您的应用对应的AppSecret，如果您的应用是中国境外环境，请填写该字段
+
     ```
 
 
