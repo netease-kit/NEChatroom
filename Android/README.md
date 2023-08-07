@@ -1,3 +1,4 @@
+网易云信为您提供开源的示例项目，您可以参考本文档快速跑通示例项目，体验语聊房效果。
 # 目录结构
 
 
@@ -27,7 +28,7 @@ VoiceRoomViewModel.java     # 语聊房ViewModel
 在开始运行示例项目之前，请确保您已完成以下操作：
 - <a href="https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console" target="_blank">已创建应用并获取 App Key</a>
 - <a href="https://doc.yunxin.163.com/docs/TA3ODAzNjE/DcyNzA2NTA?platformId=50612" target="_blank">已开通IM 即时通讯、聊天室、音视频通话2.0 和 NERoom 房间组件</a>
-- 已根据[跑通语聊房服务端源码](https://doc.yunxin.163.com/group-voice-room/docs/jA3NDY0MjA?platform=server)运行语聊房服务端
+- 已配置 NERoom 的消息抄送地址（http://yiyong.netease.im/nemo/entertainmentLive/nim/notify），具体请联系网易云信技术支持
 
 # 运行示例项目
 
@@ -41,42 +42,85 @@ VoiceRoomViewModel.java     # 语聊房ViewModel
 2. 开启 Android 设备的开发者选项，通过 USB 连接线将 Android 设备接入电脑。
 3. 通过 Android Studio 打开项目，在 ` app\src\main\java\com\netease\yunxin\app\voiceroom\config\AppConfig.java ` 文件中配置应用的 App Key。    
 
+    
+
     ```
-   // 请填写您的AppKey和AppSecret
-   private static final String APP_KEY = "your AppKey"; // 填入您的AppKey,可在云信控制台AppKey管理处获取
-   public static final String APP_SECRET = "your AppSecret"; // 填入您的AppSecret,可在云信控制台AppKey管理处获取
-   public static final boolean IS_OVERSEA = false; // 海外用户填ture,国内用户填false
-   /**
-   * BASE_URL为服务端地址,请在跑通Server Demo(https://github.com/netease-kit/nemo)后，替换为您自己实际的服务端地址
-   * "http://yiyong.netease.im/"仅用于跑通体验Demo,请勿用于正式产品上线
-     */
-     public static final String BASE_URL = "http://yiyong.netease.im/";
+    // 请填写您的AppKey和AppSecret
+    private static final String APP_KEY = "your AppKey"; // 填入您的AppKey,可在云信控制台AppKey管理处获取
+    public static final String APP_SECRET = "your AppSecret"; // 填入您的AppSecret,可在云信控制台AppKey管理处获取
+    public static final boolean IS_OVERSEA = false; // 如果您的AppKey为海外，请设置为true；默认为中国国内环境
 
-   /**
-   * 云信IM账号，说明：账号信息为空，则默认自动生成一个账号
-     */
-     public static String userUuid = "";
-     /**
-   * 用户Token，说明：账号信息为空，则默认自动生成一个账号
-     */
-     public static String userToken = "";
+    public static final String BASE_URL = "http://yiyong.netease.im/"; //如果您的AppKey为海外，BASE_URL 地址请填写`http://yiyong-sg.netease.im`
+     ```
 
-   /**
-   * 云信IM账号 token，说明：账号信息为空，则默认自动生成一个账号
-     */
-     public  static String imToken = "";
+    > **注意**：
+    >- 获取 App Key 和 App Secret 的方法请参见<a href="https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console#获取-appkey" target="_blank">获取 App Key</a>。
+    >- BASE_URL 地址 `http://yiyong.netease.im`为云信派对服务端体验地址，该地址仅用于体验 Demo，请勿用于生产环境。 您可以使用云信派对 Demo 体验 1 小时音视频通话。
+    >- 如果您的应用是海外环境，BASE_URL 地址请填写`http://yiyong-sg.netease.im`。
+    >- 如果您想和自己的服务端联调时，客户端源码的配置请参见[常见问题处理](#常见问题处理)。
+    
 
-   // 以下内容选填
-   /**
-   * 用户名
-     */
-     public static String userName = "";
-     /**
-   * 头像
-     */
-     public static String icon = "";
-   
-       ```
 
 4. 在 Android Studio 中，单击 Sync Project with Gradle Files 按钮，同步工程依赖。
 5. 选中设备直接运行，即可体验 Demo。
+
+   
+
+## 常见问题处理
+
+
+
+**和服务端联调时，客户端源码需要修改哪些配置？**
+
+在开发调试阶段，开发者集成语聊房服务端 nemo 后，在[语聊房客户端源码](https://github.com/netease-kit/NEChatroom/tree/master/)上需要修改如下配置，才能和服务器调通， 使用服务端下发的账号和 Token 进行登录。
+
+在 `app\src\main\java\com\netease\yunxin\app\voiceroom\config\AppConfig.java ` 文件中，配置如下参数：
+
+
+参数 | 描述
+---- | -------------- |
+APP_KEY| 请填写您应用对应的 AppKey。获取 AppKey 和 AppSecret 的方法请参见<a href="https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console#获取-appkey" target="_blank">获取 App Key</a>| 
+APP_SECRET | 请填写您应用对应的 AppSecret。 |
+BASE_URL | 请填写1 对 1 娱乐社交服务端域名地址，并确保客户端能访问该地址 | 
+userUuid |账号 ID。 请填写1 对 1 娱乐社交服务端工程返回的`userUuid` 的值 |
+userToken | 请填写1 对 1 娱乐社交服务端工程返回的`userToken`的值|
+userName |用户昵称。请填写1 对 1 娱乐社交服务端工程返回的`userName`的值 |
+icon  |用户头像。请填写1 对 1 娱乐社交服务端工程返回的`icon`的值
+
+```
+// 请填写您的AppKey和AppSecret
+private static final String APP_KEY = "your AppKey"; // 填入您的AppKey,可在云信控制台AppKey管理处获取
+public static final String APP_SECRET = "your AppSecret"; // 填入您的AppSecret,可在云信控制台AppKey管理处获取
+public static final boolean IS_OVERSEA = false; // 海外用户填ture,国内用户填false
+/**
+  * BASE_URL为服务端地址,请在跑通Server Demo(https://github.com/netease-kit/nemo)后，替换为您自己实际的服务端地址
+* "http://yiyong.netease.im/"仅用于跑通体验Demo,请勿用于正式产品上线
+*/
+public static final String BASE_URL = "http://yiyong.netease.im/";
+
+/**
+  * 云信IM账号，说明：账号信息为空，则默认自动生成一个账号
+*/
+public static String userUuid = "";
+/**
+  * 用户Token，说明：账号信息为空，则默认自动生成一个账号
+*/
+public static String userToken = "";
+
+/**
+  * 云信IM账号 token，说明：账号信息为空，则默认自动生成一个账号
+*/
+public  static String imToken = "";
+
+// 以下内容选填
+/**
+  * 用户名
+*/
+public static String userName = "";
+/**
+  * 头像
+*/
+public static String icon = "";
+
+```
+
