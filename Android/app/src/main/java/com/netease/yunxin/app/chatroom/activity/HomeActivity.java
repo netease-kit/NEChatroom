@@ -42,19 +42,8 @@ public class HomeActivity extends BasePartyActivity {
   @Override
   protected void init() {
     curTabIndex = -1;
-    if (!TextUtils.isEmpty(AppConfig.userUuid)&&!TextUtils.isEmpty(AppConfig.userToken)&&!TextUtils.isEmpty(AppConfig.imToken)){
-      // 如果有账号，则直接登录账号
-      NemoAccount nemoAccount = new NemoAccount();
-      nemoAccount.userUuid= AppConfig.userUuid;
-      nemoAccount.userToken= AppConfig.userToken;
-      nemoAccount.imToken= AppConfig.imToken;
-      nemoAccount.userName= AppConfig.userName;
-      nemoAccount.icon= AppConfig.icon;
-      login(nemoAccount);
-    }else {
-      // 如果没有账号，则先创建账号再登录账号
-      // 先创建账号再登录
-      createAccountThenLogin(
+    // 通过调用Http请求从业务服务器获取新账号，然后再调用登录方法。 注意：在实际项目中时，开发者需要根据实际的业务逻辑调用登录方法。
+    createAccountThenLogin(
               AppConfig.getAppKey(),
               AppConfig.APP_SECRET,
               2,
@@ -81,7 +70,6 @@ public class HomeActivity extends BasePartyActivity {
                   ALog.e(TAG, "createAccountThenLogin failed,exception:" + t);
                 }
               });
-    }
     initViews();
   }
 
