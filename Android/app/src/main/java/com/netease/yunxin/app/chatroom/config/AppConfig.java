@@ -18,6 +18,8 @@ public class AppConfig {
    */
   public static final String BASE_URL = "http://yiyong.netease.im/";//如果您的AppKey为海外，填http://yiyong.netease.im/；如果您的AppKey为国内，填http://yiyong-sg.netease.im/
 
+  // 说明： 云信IM账号（userUuid）和 用户Token（userToken） 默认为空，如果未填写或者只填写了个别数据， 则自动生成一个账号。如果填写完整则会使用填写的账号。
+  // 注意： 通过ECServerApi.createAccount可以生成账号，必须在成功生成账号后才可填入您对应账号的userUuid、userToken、imToken、userName、icon，随意填入无效。
   /**
    * 云信IM账号，说明：账号信息为空，则默认自动生成一个账号
    */
