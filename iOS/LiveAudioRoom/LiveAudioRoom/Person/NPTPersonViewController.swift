@@ -21,8 +21,8 @@ class NPTSettingItem: NSObject {
 
 class NPTPersonViewController: UIViewController {
   // 先隐藏美颜设置
-  let icons = ["setting_nickname", "setting_network", "setting_beauty", "setting_data", "setting_call", "setting_ai", "setting_normal"]
-  let titles = ["Setting_Nickname".localized, "Setting_Network".localized, "Setting_Beauty".localized, "Setting_Data".localized, "Setting_Call".localized, "Setting_AI".localized, "Setting_Normal".localized]
+  let icons = ["setting_network", "setting_call", "setting_normal"]
+  let titles = ["Setting_Network".localized, "Setting_Call".localized, "Setting_Normal".localized]
   var items: [NPTSettingItem] = []
 
   // 两个回调的结果同时满足
@@ -150,72 +150,6 @@ class NPTPersonViewController: UIViewController {
     return view
   }()
 
-  lazy var configView: UIView = {
-    let view = UIView(frame: CGRect(x: 0, y: 0, width: 180, height: 20))
-    view.addSubview(configChina)
-    view.addSubview(configOthers)
-    return view
-  }()
-
-  lazy var configChina: NPTCheckBox = {
-    var china: NPTCheckBox
-    if let checkImage = UIImage(named: "setting_checked"),
-       let uncheckImage = UIImage(named: "setting_uncheck") {
-      china = NPTCheckBox(frame: CGRect(x: 0, y: 0, width: 90, height: 20), title: "China_Config".localized, checkImage: checkImage, uncheckImage: uncheckImage)
-    } else {
-      china = NPTCheckBox(frame: CGRect(x: 0, y: 0, width: 90, height: 20), title: "China_Config".localized)
-    }
-    china.isSelected = true
-    china.addTarget(self, action: #selector(switchConfig(checkBox:)), for: .touchUpInside)
-    china.accessibilityIdentifier = "party.NPTPersonViewController.configChina"
-    return china
-  }()
-
-  lazy var configOthers: NPTCheckBox = {
-    var others: NPTCheckBox
-    if let checkImage = UIImage(named: "setting_checked"),
-       let uncheckImage = UIImage(named: "setting_uncheck") {
-      others = NPTCheckBox(frame: CGRect(x: 90, y: 0, width: 90, height: 20), title: "Others_Config".localized, checkImage: checkImage, uncheckImage: uncheckImage)
-    } else {
-      others = NPTCheckBox(frame: CGRect(x: 90, y: 0, width: 90, height: 20), title: "Others_Config".localized)
-    }
-    others.isSelected = false
-    others.addTarget(self, action: #selector(switchConfig(checkBox:)), for: .touchUpInside)
-    others.accessibilityIdentifier = "party.NPTPersonViewController.configOthers"
-    return others
-  }()
-
-  @objc func switchConfig(checkBox: NPTCheckBox) {
-    if checkBox.isSelected {
-      return
-    }
-    let alert = UIAlertController(title: "Confirm_Switch_Config".localized, message: "Need_Relogin".localized, preferredStyle: .alert)
-    alert.view.accessibilityIdentifier = "party.NPTPersonViewController.switchConfig"
-    let cancelAction = UIAlertAction(title: "No".localized, style: .cancel)
-    cancelAction.accessibilityIdentifier = "party.NPTPersonViewController.switchConfig.NO"
-    alert.addAction(cancelAction)
-    let comfirmAction = UIAlertAction(title: "Yes".localized, style: .default, handler: { action in
-      DispatchQueue.main.async {
-        checkBox.isSelected = !checkBox.isSelected
-        if checkBox.isSelected {
-          if checkBox == self.configChina {
-            Configs.config = .online
-            self.configOthers.isSelected = false
-          } else {
-            Configs.config = .worldwide
-            self.configChina.isSelected = false
-          }
-          DispatchQueue.main.async {
-            exit(0)
-          }
-        }
-      }
-    })
-    comfirmAction.accessibilityIdentifier = "party.NPTPersonViewController.switchConfig.YES"
-    alert.addAction(comfirmAction)
-    present(alert, animated: true)
-  }
-
   @objc func tapHUD() {
     IHProgressHUD.dismiss()
   }
@@ -248,10 +182,6 @@ extension NPTPersonViewController: UITableViewDelegate {
 
     let icon = icons[indexPath.row]
     switch icon {
-    case "setting_nickname":
-      let vc = NPTNicknameSettingViewController()
-      vc.hidesBottomBarWhenPushed = true
-      navigationController?.pushViewController(vc, animated: true)
     case "setting_network":
       probeCompleted = (false, false)
       NERoomKit.shared().roomService.previewRoom { code, msg, context in
@@ -259,16 +189,6 @@ extension NPTPersonViewController: UITableViewDelegate {
           self.probeNet(context: context)
         }
       }
-    case "setting_beauty":
-      if let _ = NEVoiceRoomKit.getInstance().getCurrentRoomInfo() {
-        // 当前在语聊房小窗里
-        IHProgressHUD.showError(withStatus: "Beauty_Error".localized)
-        return
-      }
-      let vc = NPTBeautySettingsViewController()
-      vc.hidesBottomBarWhenPushed = true
-      navigationController?.pushViewController(vc, animated: true)
-    case "setting_data": break
     case "setting_call":
       let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
       sheet.addAction(UIAlertAction(title: "4009-000-123", style: .default, handler: { action in
@@ -278,10 +198,6 @@ extension NPTPersonViewController: UITableViewDelegate {
       }))
       sheet.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel))
       present(sheet, animated: true)
-    case "setting_ai":
-      let vc = NPTAIGCViewController()
-      vc.hidesBottomBarWhenPushed = true
-      navigationController?.pushViewController(vc, animated: true)
     case "setting_normal":
       let vc = NPTNormalSettingViewController()
       vc.hidesBottomBarWhenPushed = true
@@ -302,20 +218,8 @@ extension NPTPersonViewController: UITableViewDataSource {
       cell.textLabel?.text = item.title
       cell.textLabel?.textColor = UIColor.partyBlack
       cell.imageView?.image = item.icon
-      if item.title == "Setting_Data".localized {
-        cell.accessoryType = .none
-        cell.accessoryView = configView
-        if Configs.config == .worldwide {
-          configOthers.isSelected = true
-          configChina.isSelected = false
-        } else {
-          configOthers.isSelected = false
-          configChina.isSelected = true
-        }
-      } else {
-        cell.accessoryType = .disclosureIndicator
-        cell.accessoryView = nil
-      }
+      cell.accessoryType = .disclosureIndicator
+      cell.accessoryView = nil
     }
     return cell ?? UITableViewCell()
   }

@@ -13,7 +13,6 @@
 		5E29F84829BF08990009E0EA /* NPTReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E29F84729BF08990009E0EA /* NPTReachability.swift */; };
 		5E38407F29DAA88E00B4A1E6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E38407D29DAA88E00B4A1E6 /* InfoPlist.strings */; };
 		5E38408229DAF7F600B4A1E6 /* NPTAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E38408129DAF7F600B4A1E6 /* NPTAboutViewController.swift */; };
-		5E49C07F2A124AD100200D95 /* NPTAIGCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E49C07E2A124AD100200D95 /* NPTAIGCViewController.swift */; };
 		5E5E55F329C89366008838C6 /* NPTUserAgreementWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E55F229C89366008838C6 /* NPTUserAgreementWindow.swift */; };
 		5E67E66C29B57E55003D6AC2 /* NPTWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E67E66B29B57E55003D6AC2 /* NPTWebViewController.swift */; };
 		5E67E67429B5FE71003D6AC2 /* Device+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E67E67329B5FE71003D6AC2 /* Device+Extension.swift */; };
@@ -25,12 +24,10 @@
 		5E73C2CD29AE01B200868D97 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E73C2CC29AE01B200868D97 /* Assets.xcassets */; };
 		5E73C2D029AE01B200868D97 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E73C2CE29AE01B200868D97 /* LaunchScreen.storyboard */; };
 		5E73C2D829AE0D2700868D97 /* NPTFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E73C2D729AE0D2700868D97 /* NPTFeedbackViewController.swift */; };
-		5EE0CEA32A497FC10068FAB0 /* NPTBeautySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE0CEA22A497FC10068FAB0 /* NPTBeautySettingsViewController.swift */; };
 		5EE29FA329B038BF008EF538 /* NPTCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29FA229B038BF008EF538 /* NPTCheckBox.swift */; };
 		5EE29FA629B06E19008EF538 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29FA529B06E19008EF538 /* String+Extension.swift */; };
 		5EE29FA929B06EB4008EF538 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EE29FAB29B06EB4008EF538 /* Localizable.strings */; };
 		5EE29FB029B07B47008EF538 /* NPTPersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29FAF29B07B47008EF538 /* NPTPersonViewController.swift */; };
-		5EE29FB329B09E77008EF538 /* NPTNicknameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29FB229B09E77008EF538 /* NPTNicknameSettingViewController.swift */; };
 		5EE29FB529B0A524008EF538 /* NPTNormalSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29FB429B0A524008EF538 /* NPTNormalSettingViewController.swift */; };
 		5EE29FB729B0AA74008EF538 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE29FB629B0AA74008EF538 /* Color+Extension.swift */; };
 		EDCBACA22A6E207600589F75 /* AppKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCBACA12A6E207600589F75 /* AppKey.swift */; };
@@ -54,7 +51,6 @@
 		5E38407E29DAA88E00B4A1E6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		5E38408029DAA89A00B4A1E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5E38408129DAF7F600B4A1E6 /* NPTAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTAboutViewController.swift; sourceTree = "<group>"; };
-		5E49C07E2A124AD100200D95 /* NPTAIGCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTAIGCViewController.swift; sourceTree = "<group>"; };
 		5E560EC029D3DEFB00193879 /* LiveAudioRoom-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LiveAudioRoom-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E5E55F229C89366008838C6 /* NPTUserAgreementWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTUserAgreementWindow.swift; sourceTree = "<group>"; };
 		5E67E66B29B57E55003D6AC2 /* NPTWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTWebViewController.swift; sourceTree = "<group>"; };
@@ -70,14 +66,12 @@
 		5E73C2CF29AE01B200868D97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5E73C2D129AE01B200868D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E73C2D729AE0D2700868D97 /* NPTFeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTFeedbackViewController.swift; sourceTree = "<group>"; };
-		5EE0CEA22A497FC10068FAB0 /* NPTBeautySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTBeautySettingsViewController.swift; sourceTree = "<group>"; };
 		5EE29FA229B038BF008EF538 /* NPTCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTCheckBox.swift; sourceTree = "<group>"; };
 		5EE29FA529B06E19008EF538 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		5EE29FAA29B06EB4008EF538 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5EE29FAD29B06F08008EF538 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		5EE29FAE29B06F08008EF538 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5EE29FAF29B07B47008EF538 /* NPTPersonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTPersonViewController.swift; sourceTree = "<group>"; };
-		5EE29FB229B09E77008EF538 /* NPTNicknameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTNicknameSettingViewController.swift; sourceTree = "<group>"; };
 		5EE29FB429B0A524008EF538 /* NPTNormalSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTNormalSettingViewController.swift; sourceTree = "<group>"; };
 		5EE29FB629B0AA74008EF538 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		82276D255B993A4C9566E58C /* Pods-LiveAudioRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveAudioRoom.debug.xcconfig"; path = "Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom.debug.xcconfig"; sourceTree = "<group>"; };
@@ -114,7 +108,6 @@
 				82276D255B993A4C9566E58C /* Pods-LiveAudioRoom.debug.xcconfig */,
 				E069689C0C6FB810219FE19C /* Pods-LiveAudioRoom.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -201,14 +194,11 @@
 			isa = PBXGroup;
 			children = (
 				5EE29FAF29B07B47008EF538 /* NPTPersonViewController.swift */,
-				5EE29FB229B09E77008EF538 /* NPTNicknameSettingViewController.swift */,
 				5EE29FB429B0A524008EF538 /* NPTNormalSettingViewController.swift */,
 				5E67E66B29B57E55003D6AC2 /* NPTWebViewController.swift */,
 				5E29F84529BEED170009E0EA /* NPTNetworkDetailView.swift */,
 				5E38408129DAF7F600B4A1E6 /* NPTAboutViewController.swift */,
 				5E6D1F742A09F97B003AA115 /* NPTBlackListViewController.swift */,
-				5E49C07E2A124AD100200D95 /* NPTAIGCViewController.swift */,
-				5EE0CEA22A497FC10068FAB0 /* NPTBeautySettingsViewController.swift */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -262,7 +252,6 @@
 				5E73C2BE29AE01AF00868D97 /* Resources */,
 				5EF1DDC22A15C5380059AF7C /* ShellScript */,
 				8C397D7632C6597884C3C650 /* [CP] Embed Pods Frameworks */,
-				A49E326A64C79B5F5BA321D1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -392,23 +381,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A49E326A64C79B5F5BA321D1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LiveAudioRoom/Pods-LiveAudioRoom-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -438,12 +410,9 @@
 				5E38408229DAF7F600B4A1E6 /* NPTAboutViewController.swift in Sources */,
 				5E29F84629BEED170009E0EA /* NPTNetworkDetailView.swift in Sources */,
 				5E73C2C429AE01AF00868D97 /* AppDelegate.swift in Sources */,
-				5E49C07F2A124AD100200D95 /* NPTAIGCViewController.swift in Sources */,
-				5EE29FB329B09E77008EF538 /* NPTNicknameSettingViewController.swift in Sources */,
 				5E67E67429B5FE71003D6AC2 /* Device+Extension.swift in Sources */,
 				5E29F84829BF08990009E0EA /* NPTReachability.swift in Sources */,
 				5EE29FB529B0A524008EF538 /* NPTNormalSettingViewController.swift in Sources */,
-				5EE0CEA32A497FC10068FAB0 /* NPTBeautySettingsViewController.swift in Sources */,
 				EDCBACA42A6E4D1B00589F75 /* Configs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -656,7 +625,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7C9A6NRV5L;
+				DEVELOPMENT_TEAM = 569GNZ5392;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LiveAudioRoom/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "云信语聊房";
@@ -702,7 +671,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7C9A6NRV5L;
+				DEVELOPMENT_TEAM = 569GNZ5392;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LiveAudioRoom/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "云信语聊房";

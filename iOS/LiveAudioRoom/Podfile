@@ -47,12 +47,10 @@ pod 'NESocialUIKit', :path => '../NESocialUIKit/NESocialUIKit.podspec'
 
 #登录
 pod 'NELoginSample',:path => '../NELoginSample/NELoginSample.podspec'
-#设置
-pod 'FaceUnity', :path => '../FaceUnity/FaceUnity.podspec'
 
 #远端依赖
 pod 'NERoomKit/Special_All', '1.18.0'
-  pod 'NECopyrightedMedia', '1.7.0'
+pod 'NECopyrightedMedia', '1.7.0'
 pod 'NEAudioEffectKit', '1.4.0'
 pod 'NECommonKit','9.6.0'
 pod 'IHProgressHUD'

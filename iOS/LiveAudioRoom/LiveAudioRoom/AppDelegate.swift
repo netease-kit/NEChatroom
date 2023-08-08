@@ -9,7 +9,6 @@ import IHProgressHUD
 import NEUIKit
 import NIMSDK
 import NECoreKit
-import FaceUnity
 import NELoginSample
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -196,10 +195,7 @@ extension AppDelegate {
               // 刷新头像与昵称
               IHProgressHUD.dismiss()
               NotificationCenter.default.post(name: NSNotification.Name("Logined"), object: nil, userInfo: ["nickname": nickName, "avatar": avatar ])
-              // 初始化美颜模块
-              FUDemoManager.share()
             }
-//          }
         } else {
           DispatchQueue.main.async {
             IHProgressHUD.dismiss()

@@ -4,37 +4,13 @@
 
 import Foundation
 
-// 国内服务器地址
-let kApiHost: String = "https://yiyong.netease.im"
+// MARK: 请填写您的AppKey和AppSecret
+let APP_KEY: String = "your appkey" // 请填写应用对应的AppKey，可在云信控制台的”AppKey管理“页面获取
+let APP_SECRET: String = "your secret" // 请填写应用对应的AppSecret，可在云信控制台的”AppKey管理“页面获取
 
-// 国内服务器地址
-let kOverSeaApiHost: String = "https://yiyong-sg.netease.im"
+// MARK: 如果您的AppKey为海外，填ture；如果您的AppKey为中国国内，填false
+let IS_OVERSEA = false
 
-// 数据收集
-let kApiDataHost: String = "https://statistic.live.126.net"
-
-// MARK: 海外环境与国内环境的切换可以在我的页面中进行修改
-
-// 请填写您的appKey,国内环境请填写APP_KEY_MAINLAND，海外环境请填写APP_KEY_OVERSEA
-let APP_KEY_MAINLAND: String = "your mainland appKey" // 国内用户填写AppKey
-
-let APP_SECRET_MAINLAND: String = "your mainland appSecret" // 国内用户填写AppSecret
-
-let APP_KEY_OVERSEA: String = "your oversea appKey" // 海外用户填写AppKey
-
-let APP_SECRET_OVERSEA: String = "your oversea appSecret" // 海外用户填写AppSecret
-
-// 获取userUuid和对应的userToken，请参考https://doc.yunxin.163.com/neroom/docs/TY1NzM5MjQ?platform=server
-
-// AccountId
-var accountId: String = ""
-// accessToken
-var accessToken: String = ""
-
-// MARK: 以下内容选填
-
-// nickName
-var nickName: String = "nickName"
-
-// avatar
-var avatar: String = "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/default/g2-demo-avatar-imgs/86117910480687104.jpg"
+// MARK: 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
+let BASE_URL: String = "https://yiyong.netease.im"
+let BASE_URL_OVERSEA: String = "http://yiyong-sg.netease.im"
