@@ -14,8 +14,8 @@ public class AppConfig {
   /**
    * 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
    */
-  public static final String BASE_URL = "http://yiyong.netease.im/";   //云信派对服务端国内的体验地址
-  public static final String BASE_URL_OVERSEA = "http://yiyong-sg.netease.im/";   //云信派对服务端海外的体验地址
+  public static final String BASE_URL = "https://yiyong.netease.im/";   //云信派对服务端国内的体验地址
+  public static final String BASE_URL_OVERSEA = "https://yiyong-sg.netease.im/";   //云信派对服务端海外的体验地址
 
 
   private static final int ONLINE_CONFIG_ID = 569;
