@@ -13,4 +13,4 @@ let IS_OVERSEA = false
 
 // MARK: 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
 let BASE_URL: String = "https://yiyong.netease.im"
-let BASE_URL_OVERSEA: String = "http://yiyong-sg.netease.im"
+let BASE_URL_OVERSEA: String = "https://yiyong-sg.netease.im"
