@@ -90,7 +90,7 @@
     pod install 
     ```
 
-4. 在 `LiveAudioRoom/LiveAudioRoom/AppKey.swift` 中 ，替换以下信息
+4. 在 `LiveAudioRoom/LiveAudioRoom/AppKey.swift` 中 ，替换您的应用的 AppKey 和 AppSecret ，并设置您的应用的环境是国内还是海外。
 
     ```
     // MARK: 请填写您的AppKey和AppSecret
@@ -100,7 +100,7 @@
     // MARK: 如果您的AppKey为海外，填ture；如果您的AppKey为中国国内，填false
     let IS_OVERSEA = false
     
-    // MARK: 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
+    // MARK: BASE_URL的默认地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
     let BASE_URL: String = "https://yiyong.netease.im" //云信派对服务端中国国内的体验地址
     let BASE_URL_OVERSEA: String = "http://yiyong-sg.netease.im"  //云信派对服务端海外的体验地址
     ```
@@ -109,7 +109,7 @@
    > 说明：
    >
    > - 获取 AppKey 和 AppSecret 的方法请参见<a href="https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console#获取-appkey" target="_blank">创建应用并获取 AppKey</a>。
-   >- 配置文件中的 kApiHost 地址 `http://yiyong.netease.im`为云信派对服务端体验地址，该地址仅用于体验 Demo，请勿用于生产环境。 您可以使用云信派对 Demo 体验 1 小时音视频通话。
+   >- 配置文件中的 BASE_URL 地址 `http://yiyong.netease.im`为云信派对服务端体验地址，该地址仅用于体验 Demo，请勿用于生产环境。 您可以使用云信派对 Demo 体验 1 小时音视频通话。
    > - 如果您的应用的 AppKey 为海外，`IS_OVERSEA` 的值请设置为 `ture`。
     
 5. 运行工程。
