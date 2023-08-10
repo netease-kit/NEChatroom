@@ -71,7 +71,7 @@
 请确认您已完成以下操作：
 - [已创建应用并获取AppKey](https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console)
 - [已开通相关能力](https://doc.yunxin.163.com/docs/TA3ODAzNjE/zQ4MTI0Njc?platformId=50616)
-- 已配置 NERoom 的消息抄送地址（http://yiyong.netease.im/nemo/entertainmentLive/nim/notify），具体请联系网易云信技术支持
+- 已配置 NERoom 的消息抄送地址（http://yiyong.netease.im/nemo/entertainmentLive/nim/notify ），具体请联系网易云信技术支持
 
 
 # 运行示例项目
@@ -93,16 +93,16 @@
 4. 在 `LiveAudioRoom/LiveAudioRoom/AppKey.swift` 中 ，替换以下信息
 
     ```
-    请填写您的 AppKey，中国国内环境请填写APP_KEY_MAINLAND，中国境外环境请填写APP_KEY_OVERSEA
+    // MARK: 请填写您的AppKey和AppSecret
+    let APP_KEY: String = "your appkey" // 请填写应用对应的AppKey，可在云信控制台的“AppKey管理”页面获取
+    let APP_SECRET: String = "your secret" // 请填写应用对应的AppSecret，可在云信控制台的“AppKey管理”页面获取
     
-    let APP_KEY_MAINLAND: String = "your mainland appKey" // 请填写您的应用对应的AppKey，如果您的应用是中国国内环境，请填写该字段
+    // MARK: 如果您的AppKey为海外，填ture；如果您的AppKey为中国国内，填false
+    let IS_OVERSEA = false
     
-    let APP_SECRET_MAINLAND: String = "your mainland appSecret" // 请填写您的应用对应的AppSecret，如果您的应用是中国国内环境，请填写该字段
-    
-    let APP_KEY_OVERSEA: String = "your oversea appKey" // 请填写您的应用对应的AppKey，如果您的应用是中国境外环境，请填写该字段
-    
-    let APP_SECRET_OVERSEA: String = "your oversea appSecret" // 请填写您的应用对应的AppSecret，如果您的应用是中国境外环境，请填写该字段
-
+    // MARK: 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
+    let BASE_URL: String = "https://yiyong.netease.im" //云信派对服务端中国国内的体验地址
+    let BASE_URL_OVERSEA: String = "http://yiyong-sg.netease.im"  //云信派对服务端海外的体验地址
     ```
 
 
@@ -110,66 +110,10 @@
    >
    > - 获取 AppKey 和 AppSecret 的方法请参见<a href="https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console#获取-appkey" target="_blank">创建应用并获取 AppKey</a>。
    >- 配置文件中的 kApiHost 地址 `http://yiyong.netease.im`为云信派对服务端体验地址，该地址仅用于体验 Demo，请勿用于生产环境。 您可以使用云信派对 Demo 体验 1 小时音视频通话。
-   > - 和服务端联调时，客户端源码的配置请参见[常见问题处理](#常见问题处理)。
+   > - 如果您的应用的 AppKey 为海外，`IS_OVERSEA` 的值请设置为 `ture`。
     
 5. 运行工程。
 
     建议在真机上运行，不支持模拟器调试。
 
 
-## 常见问题处理
-
-**和服务端联调时，客户端源码需要修改哪些配置？**
-
-在开发调试阶段，开发者集成语聊房服务端 nemo 后，在[语聊房客户端源码](https://github.com/netease-kit/NEChatroom/tree/master/iOS)上需要修改如下配置，才能和服务器调通， 使用服务端下发的账号和 Token 进行登录。
-
-在 `OneOnOneSample/OneOnOneSample/AppKey.swift` 文件中，配置如下参数：
-
-
-参数 | 描述
----- | -------------- |
-APP_KEY_MAINLAND| 请填写您应用对应的 AppKey。获取 AppKey 和 AppSecret 的方法请参见<a href="https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console#获取-appkey" target="_blank">获取 App Key</a>| 
-APP_SECRET_MAINLAND | 请填写您应用对应的 AppSecret。 |
-kApiHost | 请填写1 对 1 娱乐社交服务端域名地址，并确保客户端能访问该地址 | 
-accountId |账号 ID。 请填写1 对 1 娱乐社交服务端工程返回的`userUuid` 的值 |
-accessToken | 请填写1 对 1 娱乐社交服务端工程返回的`userToken`的值|
-nickName |用户昵称。请填写1 对 1 娱乐社交服务端工程返回的`userName`的值 |
-avatar  |用户头像。请填写1 对 1 娱乐社交服务端工程返回的`icon`的值
-
-```
-// 国内服务器地址
-let kApiHost: String = "https://yiyong.netease.im"
-
-// 国外服务器地址
-let kOverSeaApiHost: String = "https://yiyong-sg.netease.im"
-
-// 数据收集
-let kApiDataHost: String = "https://statistic.live.126.net"
-
-// MARK: 海外环境与国内环境的切换可以在我的页面中进行修改
-
-// 请填写您的appKey,国内环境请填写APP_KEY_MAINLAND，海外环境请填写APP_KEY_OVERSEA
-let APP_KEY_MAINLAND: String = "your mainland appKey" // 国内用户填写AppKey
-
-let APP_SECRET_MAINLAND: String = "your mainland appSecret" // 国内用户填写AppSecret
-
-let APP_KEY_OVERSEA: String = "your oversea appKey" // 海外用户填写AppKey
-
-let APP_SECRET_OVERSEA: String = "your oversea appSecret" // 海外用户填写AppSecret
-
-// 获取userUuid和对应的userToken，请参考https://doc.yunxin.163.com/neroom/docs/TY1NzM5MjQ?platform=server
-
-// AccountId
-var accountId: String = ""
-// accessToken
-var accessToken: String = ""
-
-// MARK: 以下内容选填
-
-// nickName
-var nickName: String = "nickName"
-
-// avatar
-var avatar: String = "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/default/g2-demo-avatar-imgs/86117910480687104.jpg"
-
-```
