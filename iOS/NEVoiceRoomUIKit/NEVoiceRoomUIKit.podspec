@@ -37,7 +37,6 @@ Pod::Spec.new do |s|
   s.dependency 'lottie-ios', '~> 2.5.3'
   s.dependency 'NEUIKit'
   s.dependency 'SDWebImage'
-  s.dependency 'Toast'
   s.dependency 'NECopyrightedMedia'
   s.dependency 'NEAudioEffectKit'
   s.dependency 'NECoreKit'

@@ -21,7 +21,6 @@
 #import "UIImage+NEUIExtension.h"
 #import "UIImage+VoiceRoom.h"
 #import "UIView+Gradient.h"
-#import "UIView+Toast.h"
 #import "UIView+VoiceRoom.h"
 @import NESocialUIKit;
 
