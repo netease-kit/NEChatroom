@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomToast.h"
-#import <Toast/UIView+Toast.h>
+#import <NECommonUIKit/UIView+YXToast.h>
 #import <UIKit/UIKit.h>
 
 @interface NETopmostView : UIView
@@ -186,27 +186,27 @@
 
 + (void)showToast:(NSString *)toast {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [[NETopmostView viewForApplicationWindow] makeToast:toast
-                                               duration:3.0
-                                               position:CSToastPositionCenter];
+    [[NETopmostView viewForApplicationWindow] ne_makeToast:toast
+                                                  duration:3.0
+                                                  position:YXToastPositionCenter];
   });
 }
 
 + (void)showToast:(NSString *)toast pos:(id)pos {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [[NETopmostView viewForApplicationWindow] makeToast:toast duration:3.0 position:pos];
+    [[NETopmostView viewForApplicationWindow] ne_makeToast:toast duration:3.0 position:pos];
   });
 }
 
 + (void)showLoading {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [[NETopmostView viewForApplicationWindow] makeToastActivity:CSToastPositionCenter];
+    [[NETopmostView viewForApplicationWindow] makeToastActivity:YXToastPositionCenter];
   });
 }
 
 + (void)hideLoading {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [[NETopmostView viewForApplicationWindow] hideToastActivity];
+    [[NETopmostView viewForApplicationWindow] ne_hideToastActivity];
   });
 }
 
