@@ -6,14 +6,6 @@
 
 @implementation UIImage (NEUIExtension)
 
-+ (UIImage *_Nullable)ne_imageNamed:(NSString *)name bundle:(NSString *)path {
-  NSBundle *bundle = [NSBundle bundleWithPath:path];
-  if (!bundle) {
-    bundle = [NSBundle mainBundle];
-  }
-  return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
-}
-
 - (UIImage *)ne_imageWithTintColor:(UIColor *)tintColor {
   return [self ne_imageWithTintColor:tintColor blendMode:kCGBlendModeDestinationIn];
 }
@@ -51,11 +43,6 @@
   UIGraphicsEndImageContext();
 
   return tintedImage;
-}
-
-+ (UIImage *_Nullable)ne_imageWithUrl:(NSString *)url {
-  NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-  return [UIImage imageWithData:data];
 }
 
 @end

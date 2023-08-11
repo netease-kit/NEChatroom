@@ -130,7 +130,7 @@ internal class NEVoiceRoomNetwork {
           failed(error)
           return
         }
-        failed(makeError(NEVoiceRoomErrorCode.failed, "网络连接失败，请检查你的网络连接！"))
+        failed(makeError(NSURLErrorNotConnectedToInternet, "网络连接失败，请检查你的网络连接！"))
         return
       }
 

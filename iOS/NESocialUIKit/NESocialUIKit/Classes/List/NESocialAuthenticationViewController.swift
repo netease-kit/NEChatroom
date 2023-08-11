@@ -61,6 +61,10 @@ import NECommonUIKit
       make.top.equalTo(checkButton)
       make.right.equalTo(authenticationLabel)
     }
+
+    idTextField.delegate = self
+    idTextField.keyboardType = .numbersAndPunctuation
+    nameTextField.keyboardType = .default
   }
 
   public func showError(error: String?) {
@@ -103,13 +107,16 @@ import NECommonUIKit
   }
 
   func textFieldDidChange(_ textField: UITextField) {
+    if textField == idTextField {
+      textField.text = textField.text?.uppercased()
+    }
     checkAuthenticationButtonIsEnable()
   }
 
   lazy var authenticationButton: UIButton = {
     let view = UIButton(type: .custom)
     view.setTitle(NESocialBundle.localized("Authentication_Now"), for: .normal)
-    view.layer.cornerRadius = 8
+    view.layer.cornerRadius = 20
     view.backgroundColor = UIColor(red: 0.2, green: 0.494, blue: 1, alpha: 0.5)
     view.addTarget(self, action: #selector(authenticationButtonClicked), for: .touchUpInside)
     view.isEnabled = false
@@ -156,5 +163,16 @@ import NECommonUIKit
 
   override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     view.endEditing(true)
+  }
+}
+
+extension NESocialAuthenticationViewController: UITextFieldDelegate {
+  public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let currentText = textField.text ?? ""
+    let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+    // 使用正则表达式来限制用户输入
+    let regex = "^[a-zA-Z0-9]{0,18}$"
+    let isValid = NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: newText)
+    return isValid
   }
 }

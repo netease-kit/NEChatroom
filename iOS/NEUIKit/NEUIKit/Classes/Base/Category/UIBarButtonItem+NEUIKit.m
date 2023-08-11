@@ -7,11 +7,16 @@
 @implementation UIBarButtonItem (NEUIKit)
 + (UIBarButtonItem *)ne_backItemWithTarget:(id)target action:(SEL)action {
   UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+  UIImage *image;
+  NSBundle *bundle = [NSBundle bundleForClass:[NEUICommon class]];
+  if (@available(iOS 13.0, *)) {
+    image = [UIImage imageNamed:@"NEUI_Common_BlackBack" inBundle:bundle withConfiguration:nil];
+  }
+  image = [UIImage imageNamed:@"NEUI_Common_BlackBack"
+                           inBundle:bundle
+      compatibleWithTraitCollection:nil];
 
-  [btn setImage:[NEUICommon ne_imageName:@"NEUI_Common_BlackBack" bundleName:@"NEUIKitBase"]
-       forState:UIControlStateNormal];
-  [btn setImage:[NEUICommon ne_imageName:@"NEUI_Common_BlackBack" bundleName:@"NEUIKitBase"]
-       forState:UIControlStateHighlighted];
+  [btn setImage:image forState:UIControlStateNormal];
   btn.frame = CGRectMake(0, 0, 30, 30);
   btn.contentEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
   [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];

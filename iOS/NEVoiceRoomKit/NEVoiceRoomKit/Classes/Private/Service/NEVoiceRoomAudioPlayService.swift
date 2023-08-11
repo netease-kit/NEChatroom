@@ -59,10 +59,6 @@ internal class NEVoiceRoomAudioPlayService: NSObject, NERoomListener {
   func defaultConfig() {
     roomContext = NERoomKit.shared().roomService.getRoomContext(roomUuid: roomUuid)
     roomContext?.addRoomListener(listener: self)
-    // 会前 设置场景
-    roomContext?.rtcController.setChannelProfile(.liveBroadcasting)
-    /// 设置音频编码属性
-    roomContext?.rtcController.setAudioProfile(.highQuality, scenario: .music)
     // 设置录制和播放声音混音后的数据格式
     let format = NERoomRtcAudioFrameRequestFormat()
     format.channels = 2

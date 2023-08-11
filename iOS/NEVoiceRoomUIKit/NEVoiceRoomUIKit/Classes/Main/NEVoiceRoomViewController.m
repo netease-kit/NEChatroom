@@ -383,7 +383,7 @@
 - (BOOL)checkNetwork {
   NEVoiceRoomNetworkStatus status = [self.reachability currentReachabilityStatus];
   if (status == NotReachable) {
-    [NEVoiceRoomToast showToast:NELocalizedString(@"网络连接断开，请稍后重试")];
+    [NEVoiceRoomToast showToast:NELocalizedString(@"网络异常，请稍后重试")];
     return false;
   }
   return true;
