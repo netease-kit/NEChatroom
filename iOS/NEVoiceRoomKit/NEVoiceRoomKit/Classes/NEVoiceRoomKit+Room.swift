@@ -92,18 +92,18 @@ public extension NEVoiceRoomKit {
 
   /// 实名认证
   /// - Parameters:
-  ///   - name: 姓名
-  ///   - cardNo: 身份证号码
+  ///   - name: 用户真实姓名，以身份证上姓名为准，最大长度32
+  ///   - cardNo: 用户身份证号码，目前支持一代/二代身份证，号码必须为18位或15位，末尾为x的需要大写为X，最大长度18
   ///   - callback: 认证结果
-  func authenticate(name: String, cardNo: String, callback: NEVoiceRoomCallback<NSNumber>? = nil) {
+  func authenticate(name: String, cardNo: String, callback: NEVoiceRoomCallback<AnyObject>? = nil) {
     NEVoiceRoomLog.apiLog(kitTag, desc: "authenticate.")
     Judge.initCondition({
-      self.roomService.authenticate(name: name, cardNo: cardNo) { ret in
+      self.roomService.authenticate(name: name, cardNo: cardNo) {
         NEVoiceRoomLog.successLog(
           kitTag,
           desc: "Successfully authenticate."
         )
-        callback?(NEVoiceRoomErrorCode.success, nil, NSNumber(booleanLiteral: ret))
+        callback?(NEVoiceRoomErrorCode.success, nil, nil)
       } failure: { error in
         NEVoiceRoomLog.errorLog(
           kitTag,

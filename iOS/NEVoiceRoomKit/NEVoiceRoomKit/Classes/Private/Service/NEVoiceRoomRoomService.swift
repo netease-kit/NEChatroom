@@ -73,20 +73,14 @@ class NEVoiceRoomRoomService {
 
   func authenticate(name: String,
                     cardNo: String,
-                    success: ((Bool) -> Void)? = nil,
+                    success: (() -> Void)? = nil,
                     failure: ((NSError) -> Void)? = nil) {
     let param: [String: String] = [
       "name": name,
       "cardNo": cardNo,
     ]
-    NEAPI.Room.auth.request(param) { res in
-      if let res = res,
-         let ret = res["data"] as? Int,
-         ret == 1 {
-        success?(true)
-      } else {
-        success?(false)
-      }
+    NEAPI.Room.auth.request(param) { _ in
+      success?()
     } failed: { error in
       failure?(error)
     }

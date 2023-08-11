@@ -103,6 +103,7 @@
 "\"麦位%d\"已关闭" = "\"Seat %d\" is closed";
 "该麦位已\"解除语音屏蔽\"" = "The seat was\"unmuted\"";
 "加入直播间失败" = "Failed to join the room";
+"加入房间失败，请重试！" = "Failed to join the room";
 "随机" = "Random";
 "送给" = "Send";
 "房主" = "Host";
@@ -146,7 +147,7 @@
 "已切歌" = "switched to a song";
 "暂停了歌曲" = "paused a song";
 "正在播放歌曲" = "is playing a song";
-"网络连接断开，请稍后重试" = "You are disconnected, try again later";
+"网络异常，请稍后重试" = "You are disconnected, try again later";
 "发送礼物失败" = "Failed to send the gift";
 "置顶" = "Pinned";
 "点了" = "picked";

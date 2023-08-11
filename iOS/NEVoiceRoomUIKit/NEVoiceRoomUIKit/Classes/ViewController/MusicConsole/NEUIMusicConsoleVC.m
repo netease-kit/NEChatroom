@@ -102,8 +102,8 @@
   //    self.heights = @[ @64, @49 ];
   //  }
 
-  self.cells = @[ self.earbackCell, self.recordVolumeCell ];
-  self.heights = @[ @64, @49 ];
+  self.cells = @[ self.recordVolumeCell ];
+  self.heights = @[ @49 ];
 }
 - (void)viewDidLoad {
   [super viewDidLoad];

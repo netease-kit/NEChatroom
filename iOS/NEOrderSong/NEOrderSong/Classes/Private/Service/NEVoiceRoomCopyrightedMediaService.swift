@@ -13,6 +13,8 @@ class NEOrderSongCopyrightedMediaService: NSObject {
   private var retryLater = 2
   /// 请求线程队列
   private var getTokenRetryQueue = DispatchQueue(label: "getTokenRetryQueue")
+  /// 定时器线程
+  private let timerQueue: DispatchQueue = .init(label: "voiceroom.copyrightedMedia.timer.queue", qos: .default, attributes: .concurrent)
 
   /// 过期定时器
   private var expiredTimer: Timer?
@@ -60,16 +62,21 @@ class NEOrderSongCopyrightedMediaService: NSObject {
     if timeExpired > 0 {
       if timeExpired > expiredSeconds {
         // 大于用户设定过期提醒时间
-        expiredTimer = Timer.scheduledTimer(
-          timeInterval: TimeInterval(timeExpired - expiredSeconds),
-          target: self,
-          selector: #selector(timeEvent),
-          userInfo: nil,
-          repeats: false
-        )
-        if let curTimer = expiredTimer {
-          RunLoop.current.run()
-          RunLoop.current.add(curTimer, forMode: .common)
+        timerQueue.async { [weak self] in
+          guard let self = self else {
+            return
+          }
+          self.expiredTimer = Timer.scheduledTimer(
+            timeInterval: TimeInterval(timeExpired - self.expiredSeconds),
+            target: self,
+            selector: #selector(self.timeEvent),
+            userInfo: nil,
+            repeats: false
+          )
+          if let curTimer = self.expiredTimer {
+            RunLoop.current.run()
+            RunLoop.current.add(curTimer, forMode: .common)
+          }
         }
       } else {
         // 直接提示

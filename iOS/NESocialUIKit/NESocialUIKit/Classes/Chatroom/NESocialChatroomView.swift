@@ -24,22 +24,12 @@ import UIKit
   /// 根据富文本内容来计算cell的size
   /// - Parameter maxWidth: 最大宽度，即整个NESocialChatroomView的宽度
   internal func caculateCellSize(maxWidth: CGFloat) {
-    let work = DispatchWorkItem {
+    DispatchQueue.main.sync(execute: DispatchWorkItem { [weak self] in
       let label = UILabel(frame: CGRect.zero)
-      label.attributedText = self.attributedContent
+      label.attributedText = self?.attributedContent
       label.numberOfLines = 0
-      self.size = label.sizeThatFits(CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
-    }
-    if #available(iOS 12.0, *) {
-      DispatchQueue.main.asyncAndWait(execute: work)
-    } else {
-      let semaphore = DispatchSemaphore(value: 0)
-      DispatchQueue.main.async {
-        work.perform()
-        semaphore.signal()
-      }
-      semaphore.wait()
-    }
+      self?.size = label.sizeThatFits(CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
+    })
   }
 
   /// 添加头像

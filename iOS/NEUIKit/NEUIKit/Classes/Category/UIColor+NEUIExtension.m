@@ -5,23 +5,6 @@
 #import "UIColor+NEUIExtension.h"
 
 @implementation UIColor (NEUIExtension)
-+ (UIColor *)ne_randomColor {
-  return [self ne_r:arc4random_uniform(255) g:arc4random_uniform(255) b:arc4random_uniform(255)];
-}
-/// RGB
-+ (UIColor *)ne_r:(CGFloat)red g:(CGFloat)green b:(CGFloat)blue {
-  return [self ne_r:red g:green b:blue a:1.0];
-}
-/// RGBA
-+ (UIColor *)ne_r:(CGFloat)red g:(CGFloat)green b:(CGFloat)blue a:(CGFloat)alpha {
-  return [UIColor colorWithRed:(red) / 255.0 green:(green) / 255.0 blue:(blue) / 255.0 alpha:alpha];
-}
-+ (UIColor *)ne_t:(CGFloat)t {
-  return [self ne_r:t g:t b:t];
-}
-+ (UIColor *)ne_t:(CGFloat)t alpha:(CGFloat)alpha {
-  return [self ne_r:t g:t b:t a:alpha];
-}
 
 + (UIColor *)ne_colorWithHex:(NSInteger)rgbValue alpha:(float)alpha {
   return [UIColor ne_colorWithHex:rgbValue alpha:alpha darkHex:rgbValue alpha:alpha];

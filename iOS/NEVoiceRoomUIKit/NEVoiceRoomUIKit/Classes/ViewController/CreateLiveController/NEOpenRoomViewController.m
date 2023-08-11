@@ -137,38 +137,33 @@
                   [[NEVoiceRoomViewController alloc] initWithRole:NEVoiceRoomRoleHost detail:obj];
               [self.navigationController pushViewController:vc animated:true];
             });
+          } else if (code == 2001) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              NESocialAuthenticationViewController *view =
+                  [[NESocialAuthenticationViewController alloc] init];
+              __weak typeof(view) weakView = view;
+              view.authenticateAction = ^(NSString *_Nonnull name, NSString *_Nonnull cardNo) {
+                [[NEVoiceRoomKit getInstance]
+                    authenticateWithName:name
+                                  cardNo:cardNo
+                                callback:^(NSInteger code, NSString *_Nullable msg,
+                                           id _Nullable obj) {
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                    if (code == 0) {
+                                      [weakView showSuccWithSucc:nil];
+                                    } else if (code == NSURLErrorNotConnectedToInternet) {
+                                      [NEVoiceRoomToast
+                                          showToast:NELocalizedString(@"网络异常，请稍后重试")];
+                                    } else {
+                                      [weakView showErrorWithError:nil];
+                                    }
+                                  });
+                                }];
+              };
+              [self.navigationController pushViewController:view animated:true];
+            });
           } else {
-            [NEVoiceRoomToast
-                showToast:[NSString stringWithFormat:@"%@ %zd %@",
-                                                     NELocalizedString(@"加入直播间失败"), code,
-                                                     msg]];
-            if (code == 2001) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                NESocialAuthenticationViewController *view =
-                    [[NESocialAuthenticationViewController alloc] init];
-                __weak typeof(view) weakView = view;
-                view.authenticateAction = ^(NSString *_Nonnull name, NSString *_Nonnull cardNo) {
-                  [[NEVoiceRoomKit getInstance]
-                      authenticateWithName:name
-                                    cardNo:cardNo
-                                  callback:^(NSInteger code, NSString *_Nullable msg,
-                                             NSNumber *_Nullable ret) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                      if (code == 0) {
-                                        if (ret.boolValue) {
-                                          [weakView showSuccWithSucc:nil];
-                                        } else {
-                                          [weakView showErrorWithError:nil];
-                                        }
-                                      } else {
-                                        [weakView showErrorWithError:msg];
-                                      }
-                                    });
-                                  }];
-                };
-                [self.navigationController pushViewController:view animated:true];
-              });
-            }
+            [NEVoiceRoomToast showToast:NELocalizedString(@"加入房间失败，请重试！")];
           }
         }];
 }
