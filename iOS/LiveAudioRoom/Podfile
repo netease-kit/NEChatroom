@@ -28,9 +28,7 @@ target 'LiveAudioRoom' do
 
 def thirdPartyLibraryPod
   pod 'SDWebImage', '5.7.1'
-  pod 'AFNetworking', '4.0'
   pod 'Masonry'
-  pod 'Toast'
 end
 
   imSDKPod
