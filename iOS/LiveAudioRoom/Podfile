@@ -51,6 +51,7 @@ pod 'NERoomKit/Special_All', '1.18.0'
 pod 'NECopyrightedMedia', '1.7.0'
 pod 'NEAudioEffectKit', '1.4.0'
 pod 'NECommonKit','9.6.0'
+pod 'NECoreKit','9.6.0'
 pod 'IHProgressHUD'
   
 
