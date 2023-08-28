@@ -14,7 +14,7 @@
 
 请确认您已完成以下操作：
 - [已创建应用并获取AppKey](https://doc.yunxin.163.com/console/docs/TIzMDE4NTA?platform=console)
-- [已开通相关能力](https://doc.yunxin.163.com/docs/TA3ODAzNjE/zQ4MTI0Njc?platformId=50616)
+- [已开通IM 即时通讯、聊天室、音视频通话2.0 和 NERoom 房间组件](https://doc.yunxin.163.com/group-voice-room/docs/DM4NzM1Mzk?platform=iOS)
 - [已配置 NERoom 的消息抄送地址（http://yiyong.netease.im/nemo/entertainmentLive/nim/notify）](https://doc.yunxin.163.com/docs/zU3Mjk0MTk/zYxNzIzMTE?platformId=121094)
 
     ![neroom消息抄送地址.png](https://yx-web-nosdn.netease.im/common/8cd222db079b0bbe16b3b246be350268/neroom消息抄送地址.png)
