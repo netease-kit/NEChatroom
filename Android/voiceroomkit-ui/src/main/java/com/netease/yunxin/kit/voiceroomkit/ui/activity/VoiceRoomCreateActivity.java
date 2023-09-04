@@ -151,7 +151,7 @@ public class VoiceRoomCreateActivity extends CreateRoomActivity {
               @Override
               public void onSuccess(@Nullable NEVoiceRoomInfo roomInfo) {
                 NavUtils.toVoiceRoomPage(
-                    VoiceRoomCreateActivity.this, configId == 75, username, avatar, roomInfo);
+                    VoiceRoomCreateActivity.this, isOversea, username, avatar, roomInfo);
                 finish();
               }
 

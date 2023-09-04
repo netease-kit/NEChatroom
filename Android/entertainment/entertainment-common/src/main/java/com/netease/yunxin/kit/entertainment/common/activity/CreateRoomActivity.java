@@ -14,6 +14,7 @@ public class CreateRoomActivity extends BaseActivity {
   protected ActivityCreatRoomBinding binding;
   protected static final int COUNT_SEAT = 9;
   protected static final int LISTEN_TOGETHER_COUNT_SEAT = 2;
+  protected boolean isOversea = false;
   protected String cover = "";
   protected int configId;
 
@@ -27,6 +28,7 @@ public class CreateRoomActivity extends BaseActivity {
     binding = ActivityCreatRoomBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     paddingStatusBarHeight(binding.getRoot());
+    isOversea = getIntent().getBooleanExtra(RoomConstants.INTENT_IS_OVERSEA, false);
     configId = getIntent().getIntExtra(RoomConstants.INTENT_KEY_CONFIG_ID, 0);
     username = getIntent().getStringExtra(RoomConstants.INTENT_USER_NAME);
     avatar = getIntent().getStringExtra(RoomConstants.INTENT_AVATAR);

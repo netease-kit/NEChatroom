@@ -88,7 +88,6 @@
             android:exported="false"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="https://netease.yunxin.party.home"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -97,6 +96,10 @@
             android:name=".activity.CommonSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".activity.SampleLoginActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     </application>
 

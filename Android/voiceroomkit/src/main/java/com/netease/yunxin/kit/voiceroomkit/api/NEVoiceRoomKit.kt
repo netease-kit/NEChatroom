@@ -140,6 +140,7 @@ interface NEVoiceRoomKit {
      */
     fun getRoomList(
         liveState: NEVoiceRoomLiveState,
+        type: Int,
         pageNum: Int,
         pageSize: Int,
         callback: NEVoiceRoomCallback<NEVoiceRoomList>? = null

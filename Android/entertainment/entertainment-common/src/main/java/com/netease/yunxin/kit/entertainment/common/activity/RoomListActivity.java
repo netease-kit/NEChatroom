@@ -32,7 +32,7 @@ public abstract class RoomListActivity extends BaseActivity
   protected int tempPageNum = 1;
   protected RoomListAdapter adapter;
   private GridLayoutManager layoutManager;
-
+  protected boolean isOversea = false;
   protected int configId;
 
   protected String userName;
@@ -45,6 +45,7 @@ public abstract class RoomListActivity extends BaseActivity
     binding = ActivityRoomListBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     paddingStatusBarHeight(binding.getRoot());
+    isOversea = getIntent().getBooleanExtra(RoomConstants.INTENT_IS_OVERSEA, false);
     configId = getIntent().getIntExtra(RoomConstants.INTENT_KEY_CONFIG_ID, 0);
     userName = getIntent().getStringExtra(RoomConstants.INTENT_USER_NAME);
     avatar = getIntent().getStringExtra(RoomConstants.INTENT_AVATAR);

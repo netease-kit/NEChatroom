@@ -55,9 +55,10 @@ public class NavUtils {
       return;
     }
     Intent intent = new Intent(context, VoiceRoomListActivity.class);
+    intent.putExtra(RoomConstants.INTENT_IS_OVERSEA, AppConfig.isOversea());
+    intent.putExtra(RoomConstants.INTENT_KEY_CONFIG_ID, AppConfig.getVoiceRoomConfigId());
     intent.putExtra(RoomConstants.INTENT_USER_NAME, AppUtils.getUserName());
     intent.putExtra(RoomConstants.INTENT_AVATAR, AppUtils.getAvatar());
-    intent.putExtra(RoomConstants.INTENT_KEY_CONFIG_ID, AppConfig.getVoiceRoomConfigId());
     context.startActivity(intent);
   }
 }

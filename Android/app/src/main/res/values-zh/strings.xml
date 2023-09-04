@@ -70,4 +70,7 @@
     <string name="app_kick_out">您的账号已在另一台设备登录，已退出此设备</string>
     <string name="app_account">请填写account</string>
     <string name="app_token">请填写token</string>
+    <string name="sample_login_desc">云信派对-语聊房业务\n源码跑通示例</string>
+    <string name="start_exploring">开始体验</string>
+    <string name="logining">登录中...</string>
 </resources>

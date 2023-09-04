@@ -19,6 +19,7 @@ import com.netease.yunxin.kit.roomkit.api.NERoomContext
 import com.netease.yunxin.kit.roomkit.api.NERoomEndReason
 import com.netease.yunxin.kit.roomkit.api.NERoomKit
 import com.netease.yunxin.kit.roomkit.api.NERoomListener
+import com.netease.yunxin.kit.roomkit.api.NERoomListenerAdapter
 import com.netease.yunxin.kit.roomkit.api.NERoomLiveState
 import com.netease.yunxin.kit.roomkit.api.NERoomMember
 import com.netease.yunxin.kit.roomkit.api.NERoomRole
@@ -26,6 +27,7 @@ import com.netease.yunxin.kit.roomkit.api.NEUnitCallback
 import com.netease.yunxin.kit.roomkit.api.NEValueCallback
 import com.netease.yunxin.kit.roomkit.api.model.NEAudioOutputDevice
 import com.netease.yunxin.kit.roomkit.api.model.NEMemberVolumeInfo
+import com.netease.yunxin.kit.roomkit.api.model.NERoomConnectType
 import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioEffectOption
 import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioMixingOption
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcAudioStreamType
@@ -797,6 +799,9 @@ internal class VoiceRoomService {
             ) {
             }
 
+            override fun onRoomConnectStateChanged(state: NERoomConnectType) {
+            }
+
             override fun onAudioMixingStateChanged(reason: Int) {
                 VoiceRoomLog.d(TAG, "onAudioMixingStateChanged,reason:$reason")
                 listeners.forEach {
@@ -1012,7 +1017,7 @@ internal class VoiceRoomService {
     }
 }
 
-internal open class RoomListenerWrapper : NERoomListener {
+internal open class RoomListenerWrapper : NERoomListenerAdapter() {
     override fun onRoomPropertiesChanged(properties: Map<String, String>) {
     }
 
@@ -1125,6 +1130,12 @@ internal open class RoomListenerWrapper : NERoomListener {
         types: Array<String>,
         callback: NEValueCallback<Array<Uri>?>
     ) {
+    }
+
+    override fun onRoomRemainingSecondsRenewed(remainingSeconds: Long) {
+    }
+
+    override fun onRoomConnectStateChanged(state: NERoomConnectType) {
     }
 
     override fun onWhiteboardError(code: Int, message: String) {

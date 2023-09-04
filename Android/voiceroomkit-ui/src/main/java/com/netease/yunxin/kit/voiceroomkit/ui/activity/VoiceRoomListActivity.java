@@ -17,6 +17,7 @@ import com.netease.yunxin.kit.entertainment.common.adapter.RoomListAdapter;
 import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.ReportUtils;
+import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState;
@@ -47,6 +48,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
           ReportUtils.report(
               VoiceRoomListActivity.this, TAG_REPORT_PAGE_VOICE_ROOM, "chatroom_start_live");
           Intent intent = new Intent(this, VoiceRoomCreateActivity.class);
+          intent.putExtra(RoomConstants.INTENT_IS_OVERSEA, isOversea);
           intent.putExtra(RoomConstants.INTENT_KEY_CONFIG_ID, configId);
           intent.putExtra(RoomConstants.INTENT_USER_NAME, userName);
           intent.putExtra(RoomConstants.INTENT_AVATAR, avatar);
@@ -79,6 +81,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
     NEVoiceRoomKit.getInstance()
         .getRoomList(
             NEVoiceRoomLiveState.Live,
+            NELiveType.LIVE_TYPE_VOICE,
             tempPageNum,
             PAGE_SIZE,
             new NEVoiceRoomCallback<NEVoiceRoomList>() {
@@ -117,6 +120,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
     NEVoiceRoomKit.getInstance()
         .getRoomList(
             NEVoiceRoomLiveState.Live,
+            NELiveType.LIVE_TYPE_VOICE,
             tempPageNum,
             PAGE_SIZE,
             new NEVoiceRoomCallback<NEVoiceRoomList>() {

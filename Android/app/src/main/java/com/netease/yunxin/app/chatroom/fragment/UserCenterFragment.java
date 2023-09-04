@@ -17,13 +17,10 @@ import com.netease.yunxin.app.chatroom.utils.AppUtils;
 import com.netease.yunxin.app.chatroom.utils.NavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.dialog.LoadingDialog;
-import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.dialog.NetworkInfoDialog;
-import com.netease.yunxin.kit.entertainment.common.dialog.PhoneConsultBottomDialog;
 import com.netease.yunxin.kit.entertainment.common.fragment.BaseFragment;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomPreviewListener;
-import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeConfig;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeResult;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcLastmileProbeResultState;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomRtcNetworkStatusType;
@@ -85,23 +82,7 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   private void initViews() {
-    binding.logUpload.setOnClickListener(
-        v -> {
-          NEVoiceRoomKit.getInstance().uploadLog();
-          ToastX.showLongToast(R.string.please_wait_five_second_upload);
-        });
-    binding.networkDetect.setOnClickListener(
-        v -> {
-          NEVoiceRoomKit.getInstance()
-              .startLastmileProbeTest(new NEVoiceRoomRtcLastmileProbeConfig());
-          toggleLoading(true);
-        });
     binding.commonSetting.setOnClickListener(v -> NavUtils.toCommonSettingPage(requireActivity()));
-    binding.phoneConsult.setOnClickListener(
-        v -> {
-          PhoneConsultBottomDialog dialog = new PhoneConsultBottomDialog(requireActivity());
-          dialog.show();
-        });
   }
 
   private void initUser() {

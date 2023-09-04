@@ -34,7 +34,6 @@ import com.netease.yunxin.kit.voiceroomkit.api.NECreateVoiceRoomOptions
 import com.netease.yunxin.kit.voiceroomkit.api.NECreateVoiceRoomParams
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomOptions
 import com.netease.yunxin.kit.voiceroomkit.api.NEJoinVoiceRoomParams
-import com.netease.yunxin.kit.voiceroomkit.api.NELiveType
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAudioOutputDevice
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthEvent
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthListener
@@ -499,6 +498,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
      */
     override fun getRoomList(
         liveState: NEVoiceRoomLiveState,
+        type: Int,
         pageNum: Int,
         pageSize: Int,
         callback: NEVoiceRoomCallback<NEVoiceRoomList>?
@@ -507,7 +507,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
             "getVoiceRoomRoomList: liveState=$liveState, pageNum=$pageNum, pageSize=$pageSize"
         )
         voiceRoomHttpService.getVoiceRoomList(
-            NELiveType.LIVE_TYPE_VOICE,
+            type,
             liveState.value,
             pageNum,
             pageSize,

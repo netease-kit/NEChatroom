@@ -70,4 +70,7 @@
     <string name="app_kick_out">This account is already logged in on another device. You are logged out of the device</string>
     <string name="app_account">Please fill in account</string>
     <string name="app_token">Please fill in token</string>
+    <string name="sample_login_desc">CommsEase Party - Live Audio Room\nSample App</string>
+    <string name="start_exploring">Start exploring</string>
+    <string name="logining">logining...</string>
 </resources>

@@ -27,7 +27,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     api("com.netease.yunxin.kit.common:common-network:1.1.8")
-
+    implementation("com.google.code.gson:gson:2.9.0")
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.netease.yunxin:nertc-base:5.4.0")
 

@@ -47,7 +47,7 @@ public class AppConfig {
   }
 
   public static String getBaseUrl() {
-    if (isOversea()){
+    if (isOversea()) {
       return BASE_URL_OVERSEA;
     }
     return BASE_URL;

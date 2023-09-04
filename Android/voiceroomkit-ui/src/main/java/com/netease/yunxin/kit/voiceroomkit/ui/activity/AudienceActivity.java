@@ -75,7 +75,11 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
             new ChatRoomMoreDialog.MoreItem(
                 MORE_ITEM_MIXER,
                 R.drawable.icon_room_more_mixer,
-                getString(R.string.voiceroom_mixer)));
+                getString(R.string.voiceroom_mixer)),
+            new ChatRoomMoreDialog.MoreItem(
+                MORE_ITEM_REPORT,
+                R.drawable.icon_room_more_report,
+                getString(R.string.voiceroom_report)));
   }
 
   @Override
@@ -175,7 +179,6 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
 
   @Override
   protected void setupBaseView() {
-    more.setVisibility(View.GONE);
     updateAudioSwitchVisible(false);
   }
 
@@ -402,7 +405,6 @@ public class AudienceActivity extends VoiceRoomBaseActivity {
 
   private void updateAudioSwitchVisible(boolean visible) {
     ivLocalAudioSwitch.setVisibility(visible ? View.VISIBLE : View.GONE);
-    more.setVisibility(visible ? View.VISIBLE : View.GONE);
     moreItems.get(MORE_ITEM_MICRO_PHONE).setVisible(visible);
     moreItems.get(MORE_ITEM_EAR_BACK).setVisible(visible);
     moreItems.get(MORE_ITEM_MIXER).setVisible(visible);
