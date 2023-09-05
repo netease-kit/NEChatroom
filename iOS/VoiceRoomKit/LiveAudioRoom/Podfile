@@ -1,0 +1,62 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+# 引入配置文件
+require_relative '../../PodConfigs/config_third.rb'
+require_relative '../../PodConfigs/config_local_common.rb'
+require_relative '../../PodConfigs/config_local_core.rb'
+require_relative '../../PodConfigs/config_local_im.rb'
+require_relative '../../PodConfigs/config_local_room.rb'
+require_relative '../../PodConfigs/config_local_social.rb'
+
+target 'LiveAudioRoom' do
+# Comment the next line if you don't want to use dynamic frameworks
+use_frameworks!
+
+# 工程的podspec引用采用源码的环境变量
+ENV['USE_SOURCE_FILES'] = 'true'
+
+pod NIMSDK.name, NIMSDK.version
+pod NERtcSDK.RtcBasic, NERtcSDK.version
+pod SDWebImage.name, SDWebImage.version
+pod Masonry.name, Masonry.version
+
+
+#源码依赖
+pod 'NEUIKit', :path => '../../UIKit/NEUIKit/NEUIKit.podspec'
+pod 'NEVoiceRoomKit', :path => '../NEVoiceRoomKit/NEVoiceRoomKit.podspec'
+pod 'NEVoiceRoomUIKit', :path => '../NEVoiceRoomUIKit/NEVoiceRoomUIKit.podspec'
+pod 'NEOrderSong', :path => '../NEOrderSong/NEOrderSong.podspec'
+pod 'LottieSwift', :path => '../../third_party/lottie/LottieSwift.podspec'
+pod 'NESocialUIKit', :path => '../../Party/NESocialUIKit/NESocialUIKit.podspec'
+
+
+#登录
+pod 'NELoginSample',:path => '../../OneOnOne/NELoginSample/NELoginSample.podspec'
+
+#发布需要打开
+#远端依赖
+#GitPushStart
+pod NERoomKit.Special_All , NERoomKit.version
+pod NECopyrightedMedia.name , NECopyrightedMedia.version
+pod NECommonKit.name , NECommonKit.version
+pod NECoreKit.name , NECoreKit.version
+pod IHProgressHUD.name
+pod NECommonUIKit.name , NECommonUIKit.version
+#GitPushEnd
+#发布需要删除
+
+
+
+
+
+
+end
+
+post_install do |installer|
+installer.pods_project.targets.each do |target|
+target.build_configurations.each do |config|
+config.build_settings['ENABLE_BITCODE'] = 'NO'
+end
+end
+end
