@@ -31,6 +31,7 @@ class _HttpExecutor with _AloggerMixin {
     Map<String, dynamic>? _baseHeaders = {
       'deviceId': _serversConfig.deviceId,
       'clientType': 'aos',
+      'appkey': _serversConfig.appKey,
       'user': _serversConfig.userUuid,
       'token': _serversConfig.token,
       'Accept-Language': _getLanguage(),

@@ -350,6 +350,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
       var baseUrl = options.extras?[BASE_URL_KEY];
       ServersConfig().serverUrl = baseUrl ?? '';
     }
+    ServersConfig().appKey = options.appKey;
     _NEVoiceRoomHttpRepository.appKey = options.appKey;
     commonLogger.i(
         "ServersConfig().baseUrl:${ServersConfig().baseUrl},realRoomServerUrl:$realRoomServerUrl,isOversea:$isOversea,realExtras:$realExtras");
