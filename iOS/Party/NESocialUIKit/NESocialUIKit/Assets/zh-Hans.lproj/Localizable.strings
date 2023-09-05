@@ -1,0 +1,9 @@
+Authentication = "实名认证";
+Authentication_Content = "温馨提示：\n1.请您填写准确、真实的身份信息，实名信息将被作为身份识别\n2.您所提交的身份信息将被严格保密，不会被用于其他用途";
+Name_Placeholder = "请输入真实姓名";
+ID_Placeholder = "请输入身份证号";
+Authentication_Now = "立即认证";
+Authentication_Check = "经慎重考虑，同意平台收集真实姓名、身份证号码及证件信息(均属于个人敏感信息)，以核实本人身份，保障账号安全";
+Authentication_Error = "身份证号或真实姓名有误\n未通过认证";
+Authentication_Succ = "实名认证通过";
+Know = "知道了";

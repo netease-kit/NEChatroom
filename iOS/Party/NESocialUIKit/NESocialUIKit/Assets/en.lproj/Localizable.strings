@@ -1,0 +1,9 @@
+Authentication = "Identity Verification";
+Authentication_Content = "Note: \n1. Please enter your authentic identity for verification. \n2. The personal information you submit will stay strictly confidential and will not be used for any other purposes. ";
+Name_Placeholder = "Enter your full name";
+ID_Placeholder = "Enter ID number";
+Authentication_Now = "Verify";
+Authentication_Check = "By performing identity verification, you agree to allow CommsEase to collect your personal information, such as real name, ID number and other document information";
+Authentication_Error = "Incorrect ID number or name\n Identity Verification failed";
+Authentication_Succ = "Identity Verification passed";
+Know = "Got it";
