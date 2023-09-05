@@ -5,21 +5,11 @@
 package com.netease.yunxin.app.chatroom;
 
 import android.app.Application;
-import android.content.Context;
-import androidx.annotation.Nullable;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.kit.alog.ALog;
-import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.AppStatusManager;
 import com.netease.yunxin.kit.entertainment.common.utils.IconFontUtil;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthEvent;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKitConfig;
 import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
-import java.util.HashMap;
-import java.util.Map;
-import kotlin.Unit;
 
 public class VoiceRoomApplication extends Application {
 
@@ -33,22 +23,6 @@ public class VoiceRoomApplication extends Application {
     AppStatusManager.init(this);
     initAuth();
     initVoiceRoomUI();
-    initVoiceRoomKit(
-        this,
-        AppConfig.getAppKey(),
-        new NEVoiceRoomCallback<Unit>() {
-
-          @Override
-          public void onSuccess(@Nullable Unit unit) {
-            ALog.i(TAG, "initVoiceRoomKit success");
-          }
-
-          @Override
-          public void onFailure(int code, @Nullable String msg) {
-            ALog.i(TAG, "initVoiceRoomKit failed code = " + code + ", msg = " + msg);
-          }
-        });
-
     IconFontUtil.getInstance().init(this);
   }
 
@@ -58,24 +32,5 @@ public class VoiceRoomApplication extends Application {
 
   private void initVoiceRoomUI() {
     NEVoiceRoomUI.getInstance().init(this);
-  }
-
-  private void initVoiceRoomKit(
-      Context context, String appKey, NEVoiceRoomCallback<Unit> callback) {
-    ALog.i(TAG, "initVoiceRoomKit");
-    Map<String, String> extras = new HashMap<>();
-    extras.put("serverUrl", AppConfig.getNERoomServerUrl());
-    extras.put("baseUrl", AppConfig.getBaseUrl());
-    NEVoiceRoomKit.getInstance()
-        .initialize(context, new NEVoiceRoomKitConfig(appKey, extras), callback);
-    NEVoiceRoomKit.getInstance()
-        .addAuthListener(
-            evt -> {
-              ALog.i(TAG, "onVoiceRoomAuthEvent evt = " + evt);
-              if (evt == NEVoiceRoomAuthEvent.KICK_OUT) {
-                ToastX.showShortToast(R.string.app_kick_out);
-              }
-              if (evt != NEVoiceRoomAuthEvent.LOGGED_IN) {}
-            });
   }
 }

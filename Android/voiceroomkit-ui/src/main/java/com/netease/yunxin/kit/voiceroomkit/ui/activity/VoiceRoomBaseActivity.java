@@ -45,6 +45,7 @@ import com.netease.yunxin.kit.common.utils.PermissionUtils;
 import com.netease.yunxin.kit.common.utils.SizeUtils;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
 import com.netease.yunxin.kit.entertainment.common.activity.BaseActivity;
+import com.netease.yunxin.kit.entertainment.common.dialog.ReportDialog;
 import com.netease.yunxin.kit.entertainment.common.floatplay.FloatWindowPermissionManager;
 import com.netease.yunxin.kit.entertainment.common.gift.GifAnimationView;
 import com.netease.yunxin.kit.entertainment.common.gift.GiftCache;
@@ -116,7 +117,10 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   protected static final int MORE_ITEM_AUDIO = 3; // 伴音
 
-  protected static final int MORE_ITEM_FINISH = 4; // 更多菜单 结束房间
+  protected static final int MORE_ITEM_REPORT = 4; // 举报
+
+  protected static final int MORE_ITEM_FINISH = 5; // 更多菜单 结束房间
+
   protected List<ChatRoomMoreDialog.MoreItem> moreItems;
   protected ConstraintLayout clyAnchorView;
 
@@ -272,6 +276,12 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
               new ChatRoomAudioDialog(VoiceRoomBaseActivity.this, audioPlay).show();
               break;
             }
+          case MORE_ITEM_REPORT:
+            if (dialog != null && dialog.isShowing()) {
+              dialog.dismiss();
+            }
+            new ReportDialog().show(getSupportFragmentManager(), TAG);
+            break;
           case MORE_ITEM_FINISH:
             {
               if (dialog != null && dialog.isShowing()) {
@@ -865,7 +875,9 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         isOpen -> {
           enableEarBack(isOpen);
           moreItems.get(MORE_ITEM_EAR_BACK).setEnable(isOpen);
-          chatRoomMoreDialog.updateData();
+          if (chatRoomMoreDialog != null) {
+            chatRoomMoreDialog.updateData();
+          }
         });
     orderSongViewModel
         .getVolumeChangedEvent()

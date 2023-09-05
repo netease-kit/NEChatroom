@@ -65,4 +65,12 @@
     <string name="count">个</string>
     <string name="srl_content_empty">SmartRefreshLayout中没有找到内容视图。您是否忘记在xml布局文件中添加？</string>
     <string name="srl_component_falsify" formatted="false">%s 虚假区域\n代表运行时拖动的高度【%.1fdp】 \n而不会显示任何东西</string>
+    <string name="one_one_one_report_success">举报成功</string>
+
+    <string-array name="report_content">
+        <item>政治造谣</item>
+        <item>色情低俗</item>
+        <item>广告营销</item>
+        <item>欺诈信息</item>
+    </string-array>
 </resources>

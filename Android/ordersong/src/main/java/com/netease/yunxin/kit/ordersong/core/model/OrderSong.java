@@ -18,7 +18,7 @@ public class OrderSong implements Serializable {
   public String singer;
   public long songTime;
   public int channel; //版权渠道 1 云音乐 2 咪咕
-  public int songStatus; //点歌状态状态 -2 已唱  -1 删除 0:等待唱 1 唱歌中或则播放中  2、暂停中 3、ready中
+  public int musicStatus; //点歌状态状态 -2 已唱  -1 删除 0:等待唱 1 唱歌中或则播放中  2、暂停中 3、ready中
   public int setTop; //是否置顶（1 置顶 0 否）
   public long createTime;
   public long updateTime;
@@ -56,7 +56,7 @@ public class OrderSong implements Serializable {
         + ", channel="
         + channel
         + ", songStatus="
-        + songStatus
+        + musicStatus
         + ", setTop="
         + setTop
         + ", createTime='"

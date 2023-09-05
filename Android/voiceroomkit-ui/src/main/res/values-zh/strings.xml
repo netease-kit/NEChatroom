@@ -85,6 +85,7 @@
     <string name="voiceroom_join_live_error">加入语聊房失败</string>
     <string name="voiceroom_setting">设置</string>
     <string name="voiceroom_audio_effect">音效</string>
+    <string name="voiceroom_report">举报</string>
 
     <string name="glow_stick">荧光棒</string>
     <string name="arrange">安排</string>

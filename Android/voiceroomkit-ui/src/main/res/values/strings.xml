@@ -85,6 +85,7 @@
     <string name="voiceroom_join_live_error">Failed to join the audio room</string>
     <string name="voiceroom_setting">setting</string>
     <string name="voiceroom_audio_effect">effect</string>
+    <string name="voiceroom_report">report</string>
 
     <string name="glow_stick">Glow stick</string>
     <string name="arrange">Arrange</string>

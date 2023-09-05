@@ -67,4 +67,12 @@
     <string name="count">count</string>
     <string name="srl_content_empty">The content view in SmartRefreshLayout is empty. Do you forget to add it in xml layout file?</string>
     <string name="srl_component_falsify" formatted="false">%s falsify area,\n Represents the height[%.1fdp] of drag at run time,\n It does not show anything.</string>
+    <string name="one_one_one_report_success">Reported successfully</string>
+
+    <string-array name="report_content">
+        <item>Political bias</item>
+        <item>Pornographic vulgarity</item>
+        <item>Ad and marketing</item>
+        <item>Fraudulent information</item>
+    </string-array>
 </resources>

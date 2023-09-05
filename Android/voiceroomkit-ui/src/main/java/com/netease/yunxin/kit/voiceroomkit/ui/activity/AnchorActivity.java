@@ -87,6 +87,10 @@ public class AnchorActivity extends VoiceRoomBaseActivity {
                 R.drawable.icon_room_more_audio,
                 getString(R.string.voiceroom_audio_effect)),
             new ChatRoomMoreDialog.MoreItem(
+                VoiceRoomBaseActivity.MORE_ITEM_REPORT,
+                R.drawable.icon_room_more_report,
+                getString(R.string.voiceroom_report)),
+            new ChatRoomMoreDialog.MoreItem(
                 VoiceRoomBaseActivity.MORE_ITEM_FINISH,
                 R.drawable.icon_room_more_finish,
                 getString(R.string.voiceroom_end)));
