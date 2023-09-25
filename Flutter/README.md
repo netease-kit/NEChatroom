@@ -52,28 +52,20 @@
 
 2. 配置应用的 App Key。
 
-    在 `voiceroomkit-ui/lib/app_config.dart ` 文件中配置应用的 App Key。
+    在 `lib/app_config.dart ` 文件中配置应用的 App Key 与 App Secret
 
     ```
-    // 请填写您的appKey,如果您的APP是国内环境，请填写onlineAppKey，如果是海外环境，请填写overSeaAppKey
-    static const String onlineAppKey = "your mainland appKey";// 国内用户填写
+    // 请填写应用对应的AppKey，可在云信控制台的”AppKey管理“页面获取
+    static const String _appKey = "your appKey";
+    // 请填写应用对应的AppSecret，可在云信控制台的”AppKey管理“页面获取
+    static const String _appSecret = "your sercet";
+    // 如果您的AppKey为海外，填ture；如果您的AppKey为中国国内，填false
+    static bool _isOverSea = false;
 
-    static const String overSeaAppKey = "your oversea appKey";// 海外用户填写
-
-    static const String account = "your account"; // 请填写您的账号
-    static const String token = "your token"; // 请填写您的token
-    static const String nickname = "your nickname"; // 请填写您的昵称
-    static const String avatar = "your avatar"; // 请填写您的头像
-    // 跑通Server Demo(https://github.com/netease-kit/nemo)后，替换为实际的host
-    static const String baseurl = 'your host';
+    // 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
+    static const String _baseUrl = 'https://yiyong.netease.im';
+    static const String _baseUrlOversea = 'https://yiyong-sg.netease.im';
     ```
-    说明：
-   
-    以下参数的值请填写[跑通语聊房服务端源码](https://doc.yunxin.163.com/group-voice-room/docs/jA3NDY0MjA?platform=server) 时返回的内容：
-    - `account`：服务端源码返回的 `userUuid` 的值
-    - `token`：服务端源码返回的`userToken`的值
-    - `avatar`：服务端源码返回的`icon`的值
-    - `nickname`：服务端源码返回的`userName`的值
     
 4. 在工程根目录执行如下命令引入依赖。
     ```
