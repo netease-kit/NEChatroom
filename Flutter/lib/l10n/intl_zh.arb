@@ -121,5 +121,8 @@
   "voiceRoomLive": "语聊房",
   "topAndCoverEmptyHint": "主题和封面不能为空",
   "startLiveFailed": "创建房间失败",
-  "noInternet": "当前网络不可用，请检查你当网络设置。"
+  "noInternet": "当前网络不可用，请检查你当网络设置。",
+  "sampleLoginDesc": "语聊房",
+  "startExploring": "开始探索",
+  "loginSuccess": "登录成功"
 }

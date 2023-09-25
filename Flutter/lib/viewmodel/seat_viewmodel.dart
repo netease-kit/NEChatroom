@@ -9,11 +9,11 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
+import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/model/voiceroom_seat.dart';
 import 'package:voiceroomkit_ui/model/voiceroom_seat_event.dart';
 import 'package:voiceroomkit_ui/utils/seat_util.dart';
-import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 import 'package:voiceroomkit_ui/widgets/chatroom_list_view.dart';
 
@@ -219,7 +219,7 @@ class SeatViewModel extends ChangeNotifier {
       for (var requestItem in list) {
         if (isAnchor) {
           ///获取当前信息判断是否和主播信息一致，如果一致则过滤
-          if (requestItem.user == UserInfoManager.getAccount()) {
+          if (requestItem.user == AuthManager().accountId) {
             continue;
           }
         }

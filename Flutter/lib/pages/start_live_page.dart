@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/app_config.dart';
-import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:voiceroomkit_ui/widgets/live_info_view.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
 
@@ -134,7 +134,7 @@ class _StartLivePageRouteState extends LifecycleBaseState<StartLivePageRoute> {
           title: _topic!,
           cover: _cover!,
           seatCount: 9,
-          nick: UserInfoManager.getNickname(),
+          nick: AuthManager().nickName ?? '',
           configId: AppConfig().configId);
 
       NEVoiceRoomKit.instance

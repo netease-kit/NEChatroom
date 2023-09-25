@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loadFailed": MessageLookupByLibrary.simpleMessage("加载失败"),
         "loaded": MessageLookupByLibrary.simpleMessage("加载完成"),
         "loading": MessageLookupByLibrary.simpleMessage("加载中..."),
+        "loginSuccess": MessageLookupByLibrary.simpleMessage("登录成功"),
         "logoutEn": MessageLookupByLibrary.simpleMessage("登出"),
         "micOff": MessageLookupByLibrary.simpleMessage("话筒已关闭"),
         "micOn": MessageLookupByLibrary.simpleMessage("话筒已打开"),
@@ -122,6 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "releaseToRefresh": MessageLookupByLibrary.simpleMessage("松开刷新"),
         "requestRejected": MessageLookupByLibrary.simpleMessage("申请麦位已被拒绝"),
         "roomName": MessageLookupByLibrary.simpleMessage("房间名称"),
+        "sampleLoginDesc": MessageLookupByLibrary.simpleMessage("语聊房"),
         "seatAlreadyClosed": MessageLookupByLibrary.simpleMessage("该麦位已被关闭"),
         "seatAlreadyTaken": MessageLookupByLibrary.simpleMessage("当前麦位有人"),
         "seatApplied":
@@ -136,6 +138,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("发送"),
         "settingTitle": MessageLookupByLibrary.simpleMessage("个人信息"),
         "space": MessageLookupByLibrary.simpleMessage(" "),
+        "startExploring": MessageLookupByLibrary.simpleMessage("开始探索"),
         "startLive": MessageLookupByLibrary.simpleMessage("开播"),
         "startLiveFailed": MessageLookupByLibrary.simpleMessage("创建房间失败"),
         "sure": MessageLookupByLibrary.simpleMessage("确定"),
