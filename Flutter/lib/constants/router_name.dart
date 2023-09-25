@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 class RouterName {
+  static const String loginPage = "loginPage";
   static const String homePage = "homePage";
   static const String liveAudiencePage = "liveAudiencePage";
   static const String liveListPage = "liveListPage";

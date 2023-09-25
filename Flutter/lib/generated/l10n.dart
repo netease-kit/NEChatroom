@@ -1261,6 +1261,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Audio Room`
+  String get sampleLoginDesc {
+    return Intl.message(
+      'Audio Room',
+      name: 'sampleLoginDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start exploring`
+  String get startExploring {
+    return Intl.message(
+      'Start exploring',
+      name: 'startExploring',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login successfully`
+  String get loginSuccess {
+    return Intl.message(
+      'Login successfully',
+      name: 'loginSuccess',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

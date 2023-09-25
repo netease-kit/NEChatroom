@@ -103,6 +103,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loadFailed": MessageLookupByLibrary.simpleMessage("Load failed"),
         "loaded": MessageLookupByLibrary.simpleMessage("Loaded"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "loginSuccess":
+            MessageLookupByLibrary.simpleMessage("Login successfully"),
         "logoutEn": MessageLookupByLibrary.simpleMessage("Log out"),
         "micOff": MessageLookupByLibrary.simpleMessage("Microphone Off"),
         "micOn": MessageLookupByLibrary.simpleMessage("Microphone On"),
@@ -148,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestRejected":
             MessageLookupByLibrary.simpleMessage("Your request was rejected"),
         "roomName": MessageLookupByLibrary.simpleMessage("Room Name"),
+        "sampleLoginDesc": MessageLookupByLibrary.simpleMessage("Audio Room"),
         "seatAlreadyClosed":
             MessageLookupByLibrary.simpleMessage("The seat is closed"),
         "seatAlreadyTaken":
@@ -166,6 +169,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "settingTitle": MessageLookupByLibrary.simpleMessage("User Profile"),
         "space": MessageLookupByLibrary.simpleMessage(" "),
+        "startExploring":
+            MessageLookupByLibrary.simpleMessage("Start exploring"),
         "startLive": MessageLookupByLibrary.simpleMessage("Start Live"),
         "startLiveFailed":
             MessageLookupByLibrary.simpleMessage("start live failed"),

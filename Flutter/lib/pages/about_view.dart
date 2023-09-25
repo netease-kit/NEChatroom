@@ -2,7 +2,6 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/utils/nav_utils.dart';

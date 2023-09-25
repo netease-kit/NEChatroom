@@ -5,7 +5,6 @@
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 import 'package:voiceroomkit_ui/base/data_center.dart';
-import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 
 import 'base/device_manager.dart';
 import 'base/global_preferences.dart';
@@ -17,43 +16,28 @@ class AppConfig {
 
   AppConfig._internal();
 
-  // 请填写您的appKey,如果您的APP是国内环境，请填写onlineAppKey，如果是海外环境，请填写overSeaAppKey
-  static const String onlineAppKey =
-      "your mainland appKey"; // 国内用户填写
+  // 请填写应用对应的AppKey，可在云信控制台的”AppKey管理“页面获取
+  static const String _appKey = "your appKey";
+  // 请填写应用对应的AppSecret，可在云信控制台的”AppKey管理“页面获取
+  static const String _appSecret = "your sercet";
+  // 如果您的AppKey为海外，填ture；如果您的AppKey为中国国内，填false
+  static bool _isOverSea = false;
 
-  static const String overSeaAppKey =
-      "your oversea appKey"; // 海外用户填写
+  // 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
+  static const String _baseUrl = 'https://yiyong.netease.im';
+  static const String _baseUrlOversea = 'https://yiyong-sg.netease.im';
 
-  static const String account = "your account"; // 请填写您的账号
-  static const String token = "your token"; // 请填写您的token
-  static const String nickname = "your nickname"; // 请填写您的昵称
-  static const String avatar = "your avatar"; // 请填写您的头像
-  // 跑通Server Demo(https://github.com/netease-kit/nemo)后，替换为实际的host
-  static const String baseurl = 'your base url';
-
-  late int onlineScope = 4;
-
-  late int sgScope = 4;
-
-  late int onlineParentScope = 5;
-
-  late int sgParentScope = 5;
+  String get appKey => _appKey;
+  String get appSecret => _appSecret;
+  String get baseUrl => _isOverSea ? _baseUrlOversea : _baseUrl;
+  int get configId => _isOverSea ? 75 : 569;
+  Map<String, String> get extras => _isOverSea ? {'serverUrl':'oversea', 'baseUrl':baseUrl}: {'baseUrl':baseUrl};
 
   late String versionName;
 
   late String versionCode;
 
-  String appKey = "";
-
-  int scope = 11;
-
-  int parentScope = 7;
-
-  int configId = 569;
-
   String language = languageCodeZh;
-
-  bool isOverSea = false;
 
   bool get isZh => language == languageCodeZh;
 
@@ -65,19 +49,9 @@ class AppConfig {
   }
 
   Future<void> initVoiceRoomConfig() async {
-    isOverSea =
+    AppConfig._isOverSea =
         await GlobalPreferences().dataCenter == DataCenter.oversea.index;
-    if (isOverSea) {
-      appKey = overSeaAppKey;
-      configId = 75;
-    } else {
-      appKey = onlineAppKey;
-      configId = 569;
-    }
-    VoiceRoomKitLog.i(tag,
-        "initVoiceRoomConfig,isOverSea:$isOverSea,appKey:$appKey,configId:$configId");
   }
-
 
   Future<void> loadPackageInfo() async {
     var info = await PackageInfo.fromPlatform();

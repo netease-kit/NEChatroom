@@ -5,6 +5,7 @@
 class AssetName {
   static const String tabSetting = "assets/images/icon_tab_setting.png";
 
+  static const String appIcon = "assets/images/app_icon.png";
   //Home
   static const String iconHomePageLogoEN =
       "assets/images/icon_app_top_logo.png";

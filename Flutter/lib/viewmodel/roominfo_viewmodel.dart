@@ -8,7 +8,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
-import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
+import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 
 /// 房间数据
@@ -27,10 +27,10 @@ class RoomInfoViewModel extends ChangeNotifier {
   void joinRoom(void Function(int) callback) {
     NEJoinVoiceRoomParams params = NEJoinVoiceRoomParams(
         roomUuid: roomInfo.liveModel?.roomUuid ?? '',
-        avatar: UserInfoManager.getAvatar(),
+        avatar: AuthManager().avatar ?? '',
         role: isAnchor ? NEVoiceRoomRole.host : NEVoiceRoomRole.audience,
         liveRecordId: roomInfo.liveModel?.liveRecordId as int,
-        nick: UserInfoManager.getNickname(),
+        nick: AuthManager().nickName ?? '',
         extraData: null);
 
     NEJoinVoiceRoomOptions options = NEJoinVoiceRoomOptions();

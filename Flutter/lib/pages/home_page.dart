@@ -5,19 +5,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
-import 'package:restart_app/restart_app.dart';
+import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
 
 import 'package:voiceroomkit_ui/base/data_center.dart';
 import 'package:voiceroomkit_ui/base/global_preferences.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/app_config.dart';
 import 'package:voiceroomkit_ui/constants/servers.dart';
-import 'package:voiceroomkit_ui/utils/dialog_utils.dart';
-import 'package:voiceroomkit_ui/utils/userinfo_manager.dart';
 import 'package:voiceroomkit_ui/utils/web_view_utils.dart';
 import 'package:voiceroomkit_ui/constants/ValueKeys.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
@@ -44,10 +40,17 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
   final List<int> _list = [];
   int _currentIndex = 0;
   DataCenter _dataCenter = DataCenter.mainland;
+  late NEVoiceRoomAuthEventCallback _callback;
 
   @override
   void initState() {
     super.initState();
+    _callback = NEVoiceRoomAuthEventCallback((NEVoiceRoomAuthEvent evt) {
+      if (evt == NEVoiceRoomAuthEvent.kickOut) {
+        NavUtils.pushNamedAndRemoveUntil(context, RouterName.loginPage);
+      }
+    });
+    NEVoiceRoomKit.instance.addAuthListener(_callback);
     for (var i = 0; i < 1; i++) {
       _list.add(i);
     }
@@ -180,7 +183,6 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
             ? ValueKeys.buildListViewDetail0
             : ValueKeys.buildListViewDetail,
         onTap: () {
-          // todo NELiveKit.instance.nickname = AuthManager().nickName;
           NavUtils.pushNamed(context, RouterName.liveListPage);
         });
   }
@@ -283,10 +285,10 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
 
   Widget buildSettingPage() {
     /// name
-    var personalName = UserInfoManager.getNickname();
+    var personalName = AuthManager().nickName;
 
     ///iconImage
-    var personalIconUrl = UserInfoManager.getAvatar();
+    var personalIconUrl = AuthManager().avatar;
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -324,7 +326,6 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
                   () => {NavUtils.pushNamed(context, RouterName.aboutView)},
                   needBottomLine: false),
               buildSettingItemPadding(),
-              buildDataCenterItem(),
             ],
           ),
         ),
@@ -438,62 +439,6 @@ class _HomePageRouteState extends LifecycleBaseState<HomePageRoute> {
           )),
       onTap: voidCallback,
     );
-  }
-
-  Widget buildDataCenterItem() {
-    return Theme(
-        data: ThemeData(unselectedWidgetColor: AppColors.white),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(S.of(context).dataCenterTitle,
-                style: const TextStyle(fontSize: 16, color: AppColors.white)),
-            Radio<DataCenter>(
-                activeColor: AppColors.white,
-                value: DataCenter.mainland,
-                groupValue: _dataCenter,
-                onChanged: (value) {
-                  _switchDataCenter(value);
-                }),
-            Text(S.of(context).dataCenterCN,
-                style: const TextStyle(fontSize: 16, color: AppColors.white)),
-            Radio<DataCenter>(
-                hoverColor: AppColors.white,
-                value: DataCenter.oversea,
-                groupValue: _dataCenter,
-                onChanged: (value) {
-                  _switchDataCenter(value);
-                }),
-            Text(S.of(context).dataCenterOverSea,
-                style: const TextStyle(fontSize: 16, color: AppColors.white)),
-          ],
-        ));
-  }
-
-  _switchDataCenter(DataCenter? value) async {
-    if (value != null && _dataCenter != value) {
-      if (await _switchDataCenterDialog()) {
-        setState(() {
-          _dataCenter = value;
-        });
-        await GlobalPreferences().setDataCenter(value.index);
-        await NEVoiceRoomKit.instance.logout();
-        if (Platform.isAndroid) {
-          Restart.restartApp();
-        } else {
-          exit(0);
-        }
-      }
-    }
-  }
-
-  Future<bool> _switchDataCenterDialog() async {
-    var ret = false;
-    await DialogUtils.showCommonDialog(context, S.of(context).tip,
-        S.of(context).dataCenterSwitchConfirmMessage, () {}, () {
-      ret = true;
-    }, cancelText: S.of(context).no, acceptText: S.of(context).yes);
-    return ret;
   }
 
   Widget buildPersonItem(String title, VoidCallback voidCallback,

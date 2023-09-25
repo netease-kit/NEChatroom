@@ -9,18 +9,21 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
+import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:voiceroomkit_ui/constants/style/app_style_util.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
-import 'package:voiceroomkit_ui/pages/splash_page.dart';
 import 'package:voiceroomkit_ui/app_config.dart';
 import 'package:voiceroomkit_ui/utils/audio_helper.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
 
+import 'auth/service/auth_manager.dart';
+import 'base/base_state.dart';
+import 'constants/router_name.dart';
 import 'utils/application.dart';
 import 'base/net_util.dart';
 import 'utils/nav_register.dart';
+import 'utils/nav_utils.dart';
 
 void main() {
   AppStyle.setStatusBarTextBlackColor();
@@ -31,17 +34,22 @@ void main() {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
       AppConfig().init().then((value) {
-        // _initializeFlutterFire();
-        runApp(NEVoiceRoomApp());
-        if (Platform.isAndroid) {
-          var systemUiOverlayStyle = const SystemUiOverlayStyle(
-              systemNavigationBarColor: Colors.black,
-              statusBarColor: Colors.transparent,
-              statusBarBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light);
-          SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-        }
-        NetUtil().addListener();
+        var options =
+        NEVoiceRoomKitOptions(appKey: AppConfig().appKey, extras: AppConfig().extras);
+        NEVoiceRoomKit.instance.initialize(options).then((value) {
+          AuthManager().init().then((e) {
+          runApp(NEVoiceRoomApp());
+          if (Platform.isAndroid) {
+            var systemUiOverlayStyle = const SystemUiOverlayStyle(
+                systemNavigationBarColor: Colors.black,
+                statusBarColor: Colors.transparent,
+                statusBarBrightness: Brightness.light,
+                statusBarIconBrightness: Brightness.light);
+            SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+          }
+          NetUtil().addListener();
+          });
+        });
       });
     });
   }, (Object error, StackTrace stack) {
@@ -72,13 +80,12 @@ class NEVoiceRoomApp extends StatelessWidget {
                 systemOverlayStyle: SystemUiOverlayStyle.light)),
         themeMode: ThemeMode.light,
         // navigatorKey: NavUtils.navigatorKey,
-        home: const SplashPage(),
+        home: const WelcomePage(),
         navigatorObservers: [BotToastNavigatorObserver(), routeObserver],
         // routes: RoutesRegister.routes,
         onGenerateRoute: (settings) {
           WidgetBuilder builder =
-          RoutesRegister.routes(settings)[settings.name]
-          as WidgetBuilder;
+              RoutesRegister.routes(settings)[settings.name] as WidgetBuilder;
           return MaterialPageRoute(
               builder: (ctx) => builder(ctx),
               settings: RouteSettings(name: settings.name));
@@ -102,5 +109,39 @@ class NEVoiceRoomApp extends StatelessWidget {
           Locale('en', 'US'),
           Locale('zh', 'CN'),
         ]);
+  }
+}
+
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends BaseState<WelcomePage> {
+  @override
+  void initState() {
+    super.initState();
+    var config = AppConfig();
+    Alog.i(
+        tag: 'appInit',
+        content: 'vName=${config.versionName} vCode=${config.versionCode}');
+    loadLoginInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(color: Colors.black);
+  }
+
+  void loadLoginInfo() {
+    AuthManager().autoLogin().then((value) {
+      if (value) {
+        NavUtils.pushNamedAndRemoveUntil(context, RouterName.homePage);
+      } else {
+        NavUtils.pushNamedAndRemoveUntil(context, RouterName.loginPage);
+      }
+    });
   }
 }
