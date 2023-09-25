@@ -21,7 +21,7 @@ class AppConfig {
   // 请填写应用对应的AppSecret，可在云信控制台的”AppKey管理“页面获取
   static const String _appSecret = "your sercet";
   // 如果您的AppKey为海外，填ture；如果您的AppKey为中国国内，填false
-  static bool _isOverSea = false;
+  static const bool _isOverSea = false;
 
   // 默认的BASE_URL地址仅用于跑通体验Demo，请勿用于正式产品上线。在产品上线前，请换为您自己实际的服务端地址
   static const String _baseUrl = 'https://yiyong.netease.im';
@@ -42,15 +42,9 @@ class AppConfig {
   bool get isZh => language == languageCodeZh;
 
   Future init() async {
-    await initVoiceRoomConfig();
     await DeviceManager().init();
     await loadPackageInfo();
     return Future.value();
-  }
-
-  Future<void> initVoiceRoomConfig() async {
-    AppConfig._isOverSea =
-        await GlobalPreferences().dataCenter == DataCenter.oversea.index;
   }
 
   Future<void> loadPackageInfo() async {
