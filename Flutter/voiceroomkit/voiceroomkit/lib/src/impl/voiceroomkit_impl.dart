@@ -1216,10 +1216,10 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
 
   void _reset() {
     commonLogger.i("_reset");
+    _removeListener();
     _voiceRoomInfo = null;
     _currentRoomContext = null;
     currentSeatItems = null;
-    _removeListener();
   }
 
   @override
