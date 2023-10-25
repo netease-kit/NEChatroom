@@ -114,16 +114,7 @@
   params.liveTopic = self.createRoomNameView.getRoomName;
   params.seatCount = 9;
   params.cover = self.createRoomNameView.getRoomBgImageUrl;
-#ifdef DEBUG
-  params.configId = 1059;
-#else
-  params.configId = 1067;
-#endif
-  if ([[[NEVoiceRoomUIManager sharedInstance].config.extras objectForKey:@"serverUrl"]
-          isEqualToString:@"https://roomkit-sg.netease.im"]) {
-    params.configId = 1068;
-  }
-
+  params.configId = [NEVoiceRoomUIManager sharedInstance].configId;
   [[NEVoiceRoomKit getInstance]
       createRoom:params
          options:[[NECreateVoiceRoomOptions alloc] init]

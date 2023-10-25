@@ -22,8 +22,10 @@
   return instance;
 }
 - (void)initializeWithConfig:(NEVoiceRoomKitConfig *)config
+                    configId:(NSInteger)configId
                     callback:(void (^)(NSInteger, NSString *_Nullable, id _Nullable))callback {
   self.config = config;
+  self.configId = configId;
   [NEVoiceRoomKit.getInstance initializeWithConfig:config callback:callback];
   [NEVoiceRoomLog setUp:config.appKey];
   [NEVoiceRoomUILog setUp:config.appKey];
