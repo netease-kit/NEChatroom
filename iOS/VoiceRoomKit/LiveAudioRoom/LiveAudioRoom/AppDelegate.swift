@@ -217,7 +217,7 @@ extension AppDelegate {
     var voiceRoomExtras = extras
       voiceRoomExtras["baseUrl"] = Configs.voiceRoomBaseUrl
     config.extras = voiceRoomExtras
-    NEVoiceRoomUIManager.sharedInstance().initialize(with: config, callback: callback)
+    NEVoiceRoomUIManager.sharedInstance().initialize(with: config, configId: Configs.voiceRoomConfigId, callback: callback)
     NEVoiceRoomUIManager.sharedInstance().delegate = self
   }
   

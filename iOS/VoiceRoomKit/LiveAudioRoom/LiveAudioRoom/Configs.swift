@@ -29,6 +29,10 @@ enum Configs {
   static var loginSampleBaseUrl: String {
     IS_OVERSEA ? BASE_URL_OVERSEA : BASE_URL
   }
+  
+  static var voiceRoomConfigId: Int {
+    IS_OVERSEA ? 75 : 1067
+  }
 
   static var privacyUrl: String {
     UIDevice.isChinese ? "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/protocol/clauses.html" : "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/protocol/policy.html"
