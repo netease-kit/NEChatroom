@@ -31,7 +31,7 @@ enum Configs {
   }
   
   static var voiceRoomConfigId: Int {
-    IS_OVERSEA ? 75 : 1067
+    IS_OVERSEA ? 75 : 569
   }
 
   static var privacyUrl: String {
