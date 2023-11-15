@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEUIConnectListView.h"
-#import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEUIConnectAlertView.h"
@@ -70,7 +69,7 @@ static CGFloat foldBtnHeight = 38;
   self.foldBtn.hidden = YES;
   [UIView animateWithDuration:0.25
                    animations:^{
-                     self.bottom = [NEUICommon ne_statusBarHeight] + connectAlertViewHeight;
+                     self.bottom = [NEVoiceRoomUI ne_statusBarHeight] + connectAlertViewHeight;
                    }];
   self.listViewPushed = NO;
   [self.connectAlertView refreshAlertView:self.listViewPushed];
@@ -112,7 +111,7 @@ static CGFloat foldBtnHeight = 38;
         self.titleLable.hidden = YES;
         self.foldBtn.hidden = YES;
         self.listViewPushed = NO;
-        self.bottom = [NEUICommon ne_statusBarHeight] + connectAlertViewHeight;
+        self.bottom = [NEVoiceRoomUI ne_statusBarHeight] + connectAlertViewHeight;
         [self layoutIfNeeded];
         //      NSLog(@"frame --- %@",NSStringFromCGRect(self.frame));
         [self.connectAlertView refreshAlertView:self.listViewPushed];
@@ -182,7 +181,7 @@ static CGFloat foldBtnHeight = 38;
 
 - (CGFloat)barHeight {
   return self.listViewHeight + connectAlertViewHeight + titleLabelHeight +
-         [NEUICommon ne_statusBarHeight];
+         [NEVoiceRoomUI ne_statusBarHeight];
 }
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>

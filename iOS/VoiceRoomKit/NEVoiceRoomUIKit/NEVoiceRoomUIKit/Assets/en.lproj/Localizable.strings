@@ -112,6 +112,7 @@
 "聊天室" = "Chat room";
 "未选择送礼对象，无法送礼" = "No recipient is selected, unable to send gifts";
 "是否退出当前房间进入其他房间" = "Exit the current room and join another room";
+"是否退出当前房间，并创建新房间" = "Exit the current room and create a new room";
 "点歌" = "Pick";
 "歌曲列表" = "Song List";
 "搜索" = "Search";

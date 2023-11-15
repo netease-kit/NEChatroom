@@ -15,19 +15,7 @@
 @end
 
 @implementation NEUINavigationItem
-- (void)setNavigationBarHidden:(BOOL)navigationBarHidden {
-  [self setNavigationBarHidden:navigationBarHidden animated:NO];
-}
-- (void)setNavigationBarHidden:(BOOL)navigationBarHidden animated:(BOOL)animated {
-  _navigationBarHidden = navigationBarHidden;
-  [self updateNavigationBarHiddenAnimated:animated];
-}
-- (void)updateNavigationBarHiddenAnimated:(BOOL)animated {
-  if (self.navigationController &&
-      self.navigationController.navigationBarHidden != _navigationBarHidden) {
-    [self.navigationController setNavigationBarHidden:_navigationBarHidden animated:animated];
-  }
-}
+
 @end
 
 static char kNEUINavigationItemKey;
@@ -41,36 +29,6 @@ static char kNEUINavigationItemKey;
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   }
   return item;
-}
-+ (void)load {
-  NEUIKitSwizzling(self, @selector(viewWillAppear:), @selector(ne_viewWillAppear:));
-  NEUIKitSwizzling(self, @selector(viewDidAppear:), @selector(ne_viewDidAppear:));
-  NEUIKitSwizzling(self, @selector(viewWillDisappear:), @selector(ne_viewWillDisappear:));
-  NEUIKitSwizzling(self, @selector(viewDidDisappear:), @selector(ne_viewDidDisappear:));
-}
-- (void)ne_viewWillAppear:(BOOL)animated {
-  self.ne_UINavigationItem.isViewAppearing = YES;
-  [self ne_viewWillAppear:animated];
-}
-- (void)ne_viewDidAppear:(BOOL)animated {
-  if (self.ne_UINavigationItem) {
-    self.ne_UINavigationItem.isViewAppearing = NO;
-    // 正在消失
-    if (self.ne_UINavigationItem.isViewDisappearing) {
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [self.ne_UINavigationItem updateNavigationBarHiddenAnimated:NO];
-      });
-    }
-  }
-  [self ne_viewDidAppear:animated];
-}
-- (void)ne_viewWillDisappear:(BOOL)animated {
-  self.ne_UINavigationItem.isViewDisappearing = YES;
-  [self ne_viewWillDisappear:animated];
-}
-- (void)ne_viewDidDisappear:(BOOL)animated {
-  self.ne_UINavigationItem.isViewDisappearing = NO;
-  [self ne_viewDidDisappear:animated];
 }
 @end
 
@@ -112,12 +70,6 @@ static char kNEUINavigationItemKey;
   return YES;
 }
 #pragma mark ==================  UINavigationControllerDelegate   ==================
-- (void)navigationController:(UINavigationController *)navigationController
-      willShowViewController:(nonnull UIViewController *)viewController
-                    animated:(BOOL)animated {
-  viewController.ne_UINavigationItem.navigationController = self;
-  [viewController.ne_UINavigationItem updateNavigationBarHiddenAnimated:animated];
-}
 - (void)navigationController:(UINavigationController *)navigationController
        didShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated {

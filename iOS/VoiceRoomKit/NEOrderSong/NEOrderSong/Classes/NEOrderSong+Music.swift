@@ -160,14 +160,17 @@ public extension NEOrderSong {
   func deleteSong(orderId: Int64, callback: NEOrderSongCallback<AnyObject>? = nil) {
     NEOrderSongLog.apiLog(kitTag, desc: "Delete Song")
     Judge.preCondition({
+      self.deletingSongs.append(orderId)
       self.musicService?.deleteSong(orderId, {
         NEOrderSongLog.successLog(kitTag, desc: "Successfully deleteSong")
+        self.deletingSongs.removeAll(where: { $0 == orderId })
         callback?(NEOrderSongErrorCode.success, nil, nil)
       }, failure: { error in
         NEOrderSongLog.errorLog(
           kitTag,
           desc: "Failed to deleteSong. Code: \(error.code). Msg: \(error.localizedDescription)"
         )
+        self.deletingSongs.removeAll(where: { $0 == orderId })
         callback?(error.code, error.localizedDescription, nil)
 
       })

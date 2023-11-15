@@ -9,7 +9,7 @@ module NERtcCallKit
   end
 
   def self.version
-    "2.1.0"
+    "2.1.0-alpha02"
   end
 
   def self.path
@@ -99,7 +99,7 @@ module NERtcCallUIKit
   end
 
   def self.version
-    "2.1.0"
+    "2.1.0-alpha02"
   end
 
   def self.path
@@ -157,7 +157,7 @@ module NEConversationUIKit
   end
 
   def self.version
-    "9.6.1"
+    "9.6.3-alpha01"
   end
 
   def self.path
@@ -244,7 +244,7 @@ module NEChatKit
   end
 
   def self.version
-    "9.6.0"
+    "9.6.3-alpha01"
   end
 
   def self.path
@@ -289,7 +289,7 @@ module NEChatUIKit
   end
 
   def self.version
-    "9.6.1"
+    "9.6.3-alpha01"
   end
 
   def self.path

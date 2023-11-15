@@ -68,12 +68,11 @@ public extension NEVoiceRoomKit {
     NEVoiceRoomLog.infoLog(kitTag, desc: "Receive custom message.")
     guard let dic = message.attachStr?.toDictionary() else { return }
     NEVoiceRoomLog.infoLog(kitTag, desc: "custom message:\(dic)")
-    if let content = message.attachStr,
+    if let _ = message.attachStr,
        let data = dic["data"] as? [String: Any],
        let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []),
        let jsonString = String(data: jsonData, encoding: .utf8),
        let type = dic["type"] as? Int,
-//              subCmd == 4,
        type == 1005,
        let obj = NEVoiceRoomDecoder.decode(
          _NEVoiceRoomBatchRewardMessage.self,
@@ -83,34 +82,12 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  /// 发送礼物
+  /// 打赏麦上的主播或者观众
   /// - Parameters:
-  ///   - giftId: 礼物Id
-  func sendGift(_ giftId: Int,
-                callback: NEVoiceRoomCallback<AnyObject>? = nil) {
-    NEVoiceRoomLog.apiLog(kitTag, desc: "Send gift. GiftId: \(giftId)")
-    guard NEVoiceRoomKit.getInstance().isInitialized else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "Failed to send Gift. Uninitialized.")
-      callback?(NEVoiceRoomErrorCode.failed, "Failed to send Gift. Uninitialized.", nil)
-      return
-    }
-    guard let liveRecordId = liveInfo?.live?.liveRecordId
-    else {
-      NEVoiceRoomLog.errorLog(kitTag, desc: "Failed to send Gift. liveRecordId not exist.")
-      callback?(
-        NEVoiceRoomErrorCode.failed,
-        "Failed to send Gift. liveRecordId not exist.",
-        nil
-      )
-      return
-    }
-    roomService.reward(liveRecordId, giftId: giftId) {
-      callback?(NEVoiceRoomErrorCode.success, "Successfully send gift.", nil)
-    } failure: { error in
-      callback?(error.code, error.localizedDescription, nil)
-    }
-  }
-
+  ///   - giftId: 礼物编号
+  ///   - giftCount: 礼物数量
+  ///   - userUuids: 要打赏的目标用户
+  ///   - callback: 结果回调
   func sendBatchGift(_ giftId: Int,
                      giftCount: Int,
                      userUuids: [String],
@@ -482,18 +459,34 @@ extension NEVoiceRoomKit: NERoomListener {
       }
       guard let context = self.roomContext else { return }
       var isOnSeat = false
-      if let item = items.first(where: { $0.user == context.localMember.uuid }),
-         item.status == .taken {
-        // 新状态自己在麦上
-        isOnSeat = true
+      var newState = NEVoiceRoomSeatItemStatus.initial
+      if let item = items.first(where: { $0.user == context.localMember.uuid }) {
+        if item.status == .taken {
+          // 新状态自己在麦上
+          isOnSeat = true
+        }
+        newState = item.status
       }
 
       var localIsOnSeat = false
-      if let localItem = self.localSeats?.first(where: { $0.user == context.localMember.uuid }),
-         localItem.status == .taken {
-        // 老状态自己在麦上
-        localIsOnSeat = true
+      var oldState = NEVoiceRoomSeatItemStatus.initial
+      if let localItem = self.localSeats?.first(where: { $0.user == context.localMember.uuid }) {
+        if localItem.status == .taken {
+          // 老状态自己在麦上
+          localIsOnSeat = true
+        }
+        oldState = NEVoiceRoomSeatItemStatus(rawValue: localItem.status.rawValue) ?? .initial
       }
+      // 上报自己麦位状态的变更
+      if newState != oldState {
+        for pointListener in self.listeners.allObjects {
+          if let listener = pointListener as? NEVoiceRoomListener,
+             listener.responds(to: #selector(NEVoiceRoomListener.onSelfSeatStatusChanged(new:old:))) {
+            listener.onSelfSeatStatusChanged?(new: newState, old: oldState)
+          }
+        }
+      }
+
       if !isOnSeat {
         // 新状态不在麦上，但是老状态在麦上，说明有下麦行为，下麦默认关闭音频
         if localIsOnSeat {

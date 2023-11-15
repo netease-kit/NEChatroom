@@ -9,8 +9,8 @@
 
 #define UIScreenWidth ([UIScreen mainScreen].bounds.size.width)
 #define UIScreenHeight ([UIScreen mainScreen].bounds.size.height)
-#define UIWidthAdapter(x) ((x)*UIScreenWidth / 375.0)
-#define UIHeightAdapter(x) ((x)*UIScreenHeight / 667.0)
+#define UIWidthAdapter(x) ((x) * UIScreenWidth / 375.0)
+#define UIHeightAdapter(x) ((x) * UIScreenHeight / 667.0)
 
 #pragma mark - UIColor宏定义
 #define UIColorFromRGBA(rgbValue, alphaValue)                          \

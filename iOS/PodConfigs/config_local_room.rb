@@ -9,7 +9,7 @@ module NERoomKit
   end
 
   def self.version
-    "1.20.0"
+    "1.22.0"
   end
 
   def self.path
@@ -35,7 +35,9 @@ module NERoomKit
   def self.Audio_Special
     "NERoomKit/Audio_Special"
   end
-
+  def self.Video_Special
+      "NERoomKit/Video_Special"
+  end
   def self.ShareScreen_Special
     "NERoomKit/ShareScreen_Special"
   end
@@ -59,7 +61,9 @@ module NERoomKit
   def self.Audio
     "NERoomKit/Audio"
   end
-
+  def self.Video
+    "NERoomKit/Video"
+  end
   def self.ShareScreen
     "NERoomKit/ShareScreen"
   end

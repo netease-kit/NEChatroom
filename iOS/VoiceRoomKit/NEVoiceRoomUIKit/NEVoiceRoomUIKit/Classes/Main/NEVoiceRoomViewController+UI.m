@@ -9,6 +9,7 @@
 #import "NEUIMicInviteeListVC.h"
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
+#import "NEVoiceRoomUI.h"
 #import "NEVoiceRoomViewController+UI.h"
 #import "UIImage+VoiceRoom.h"
 #import "UIView+NEUIToast.h"
@@ -29,7 +30,7 @@
     make.height.mas_equalTo(54);
     make.left.equalTo(self.view).offset(8);
     make.right.equalTo(self.view).offset(-8);
-    make.top.mas_equalTo([NEUICommon ne_statusBarHeight] + 8);
+    make.top.mas_equalTo([NEVoiceRoomUI ne_statusBarHeight] + 8);
   }];
 
   [self.roomFooterView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -75,15 +76,16 @@
   [UIView animateWithDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]
                    animations:^{
                      self.keyboardView.frame =
-                         CGRectMake(0, [NEUICommon ne_screenHeight] - keyboardHeight - 50,
-                                    [NEUICommon ne_screenWidth], 50);
+                         CGRectMake(0, UIScreen.mainScreen.bounds.size.height - keyboardHeight - 50,
+                                    UIScreen.mainScreen.bounds.size.width, 50);
                    }];
 }
 - (void)keyboardWillHide:(NSNotification *)aNotification {
   [UIView animateWithDuration:0.1
                    animations:^{
-                     self.keyboardView.frame = CGRectMake(0, [NEUICommon ne_screenHeight] + 50,
-                                                          [NEUICommon ne_screenWidth], 50);
+                     self.keyboardView.frame =
+                         CGRectMake(0, UIScreen.mainScreen.bounds.size.height + 50,
+                                    UIScreen.mainScreen.bounds.size.width, 50);
                    }];
 }
 /// 点击屏幕收起键盘

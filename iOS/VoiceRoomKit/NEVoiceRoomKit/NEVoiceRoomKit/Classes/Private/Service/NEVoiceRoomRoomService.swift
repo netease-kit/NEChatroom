@@ -97,14 +97,14 @@ class NEVoiceRoomRoomService {
                       success: ((_NECreateLiveResponse?) -> Void)? = nil,
                       failure: ((NSError) -> Void)? = nil) {
     let param: [String: Any] = [
-      "userUuid": params.userUuid,
+      //      "userUuid": "",
       "liveType": params.liveType.rawValue,
       "liveTopic": params.liveTopic ?? "",
       "cover": params.cover ?? "",
       "configId": params.configId,
       "roomName": params.roomName ?? "",
       "seatCount": params.seatCount,
-      "seatApplyMode": params.seatApplyMode,
+      "seatApplyMode": params.seatApplyMode.rawValue,
       "seatInviteMode": params.seatInviteMode,
     ]
     NEAPI.Room.create.request(param,
@@ -131,25 +131,6 @@ class NEVoiceRoomRoomService {
                                success: { _ in
                                  success?()
                                }, failed: failure)
-  }
-
-  /// 打赏主播
-  /// - Parameters:
-  ///   - liveRecordId: 直播记录编号
-  ///   - giftId: 礼物编号
-  ///   - success: 成功回调
-  ///   - failure: 失败回调
-  func reward(_ liveRecordId: Int,
-              giftId: Int,
-              success: (() -> Void)? = nil,
-              failure: ((NSError) -> Void)? = nil) {
-    let param = [
-      "liveRecordId": liveRecordId,
-      "giftId": giftId,
-    ] as [String: Any]
-    NEAPI.Room.reward.request(param, success: { _ in
-      success?()
-    }, failed: failure)
   }
 
   /// 批量礼物打赏

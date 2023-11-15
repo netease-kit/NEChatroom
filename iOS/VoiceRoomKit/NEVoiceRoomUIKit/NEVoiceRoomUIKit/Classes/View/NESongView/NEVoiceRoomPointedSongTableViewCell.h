@@ -29,9 +29,6 @@ typedef void (^ClickButton)(void);
 // cancel
 @property(nonatomic, strong) UIButton *cancelButton;
 @property(nonatomic, copy) ClickButton clickCancel;
-// top
-//@property(nonatomic, strong) UIButton *topButton;
-//@property(nonatomic, copy) ClickButton clickTop;
 
 @end
 

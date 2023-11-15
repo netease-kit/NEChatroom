@@ -134,15 +134,7 @@
   }];
 }
 - (void)initPickSongView {
-  UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-  UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-  effectView.backgroundColor = [UIColor colorWithRed:0.192 green:0.239 blue:0.235 alpha:0.5];
-  //  [self addSubview:effectView];
-  //  [effectView mas_makeConstraints:^(MASConstraintMaker *make) {
-  //    make.left.right.top.bottom.equalTo(self);
-  //  }];
   self.backgroundColor = [UIColor whiteColor];
-  //    [UIColor karaoke_colorWithHex:color_313D3C];
   // 顶部视图
   self.mainTopView = [[UIButton alloc] init];
   [self addSubview:self.mainTopView];
@@ -478,6 +470,8 @@
     if (singer) {
       cell.anchorLabel.text =
           [NSString stringWithFormat:@"%@:%@", NELocalizedString(@"歌手"), singer.singerName];
+    } else {
+      cell.anchorLabel.text = nil;
     }
     if (item.channel == CLOUD_MUSIC) {
       cell.resourceImageView.image = [NEVoiceRoomUI ne_voice_imageName:@"pointsong_clouldmusic"];
@@ -523,14 +517,13 @@
     return cell;
 
   } else {
-    NEOrderSongResponse *item =
-        [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray[indexPath.row];
     NEVoiceRoomPointedSongTableViewCell *cell =
         [tableView dequeueReusableCellWithIdentifier:@"Identifier2" forIndexPath:indexPath];
     if ([NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray.count <= indexPath.row) {
       return cell;
     }
-
+    NEOrderSongResponse *item =
+        [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray[indexPath.row];
     if ([[NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.songId
             isEqualToString:item.orderSong.songId] &&
         [NEVoiceRoomPickSongEngine sharedInstance].currrentSongModel.playMusicInfo.oc_channel ==
@@ -559,17 +552,14 @@
       };
     }
     cell.clickCancel = ^{
+      // 正在删除就不允许选中
+      if ([[NEOrderSong getInstance] isSongDeleting:item.orderSong.orderId]) {
+        return;
+      }
       // 点击取消
       [[NEOrderSong getInstance]
           deleteSongWithOrderId:item.orderSong.orderId
-                       callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-                         if (code != 0) {
-                           //                           [NEVoiceRoomToast
-                           //                               showToast:[NSString
-                           //                                             stringWithFormat:@"%@ %@",
-                           //                                                              NELocalizedString(@"删除歌曲失败"),
-                           //                                                              msg]];
-                         }
+                       callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj){
                        }];
     };
     cell.songNumberLabel.text = [NSString stringWithFormat:@"%02d", (int)indexPath.row + 1];
@@ -602,6 +592,10 @@
     /// 已点列表
     NEOrderSongResponse *item =
         [NEVoiceRoomPickSongEngine sharedInstance].pickedSongArray[indexPath.row];
+    // 正在删除就不允许选中
+    if ([[NEOrderSong getInstance] isSongDeleting:item.orderSong.orderId]) {
+      return;
+    }
     if (self.delegate && [self.delegate respondsToSelector:@selector(nextSong:)]) {
       [self.delegate nextSong:item.orderSong];
     }

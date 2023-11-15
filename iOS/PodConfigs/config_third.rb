@@ -31,43 +31,55 @@ end
 # ---------- NERtcSDK ----------
 module NERtcSDK
   def self.name
-    "NERtcSDK"
+    "NERtcSDK_Special"
   end
 
   def self.version
-    "5.4.8"
+    "5.5.203"
   end
 
   def self.RtcBasic
-    "NERtcSDK/RtcBasic"
+    "NERtcSDK_Special/RtcBasic"
   end
 
   def self.Nenn
-    "NERtcSDK/Nenn"
+    "NERtcSDK_Special/Nenn"
   end
 
   def self.Beauty
-    "NERtcSDK/Beauty"
+    "NERtcSDK_Special/Beauty"
   end
 
   def self.FaceDetect
-    "NERtcSDK/FaceDetect"
+    "NERtcSDK_Special/FaceDetect"
   end
 
   def self.Segment
-    "NERtcSDK/Segment"
+    "NERtcSDK_Special/Segment"
   end
 
   def self.AiDenoise
-    "NERtcSDK/AiDenoise"
+    "NERtcSDK_Special/AiDenoise"
   end
 
   def self.AiHowling
-    "NERtcSDK/AiHowling"
+    "NERtcSDK_Special/AiHowling"
   end
 
   def self.ScreenShare
-    "NERtcSDK/ScreenShare"
+    "NERtcSDK_Special/ScreenShare"
+  end
+  def self.FaceEnhance
+      "NERtcSDK_Special/FaceEnhance"
+  end
+  def self.VideoDenoise
+      "NERtcSDK_Special/VideoDenoise"
+  end
+  def self.SuperResolution
+      "NERtcSDK_Special/SuperResolution"
+  end
+  def self.SpatialSound
+      "NERtcSDK_Special/SpatialSound"
   end
 end
 
@@ -278,5 +290,20 @@ module YXAlog
 
   def self.install(pod)
     pod.pod YXAlog.name, YXAlog.version
+  end
+end
+
+# ---------- SudMGPWrapper ----------
+module SudMGPWrapper
+  def self.name
+    "SudMGPWrapper"
+  end
+
+  def self.version
+    "1.3.5"
+  end
+
+  def self.install(pod)
+    pod.pod SudMGPWrapper.name, SudMGPWrapper.version
   end
 end

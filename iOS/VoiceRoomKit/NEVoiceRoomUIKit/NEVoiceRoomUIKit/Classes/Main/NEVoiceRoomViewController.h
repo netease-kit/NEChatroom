@@ -4,7 +4,6 @@
 
 #import <NEAudioEffectKit/NEAudioEffectManager.h>
 #import <NEOrderSong/NEOrderSong-Swift.h>
-#import <NEUIKit/NEUICommon.h>
 #import <NEVoiceRoomKit/NEVoiceRoomKit-Swift.h>
 #import "NEUIChatroomContext.h"
 #import "NEUIConnectListView.h"
@@ -75,6 +74,10 @@ typedef enum : NSUInteger {
 /// 离开或关闭房间
 - (void)closeRoom;
 - (void)closeRoomWithViewPop:(BOOL)changeView callback:(void (^)(void))callabck;
+
+/// 是否返回到列表页
+@property(nonatomic, assign) BOOL isBackToList;
+
 @end
 
 NS_ASSUME_NONNULL_END

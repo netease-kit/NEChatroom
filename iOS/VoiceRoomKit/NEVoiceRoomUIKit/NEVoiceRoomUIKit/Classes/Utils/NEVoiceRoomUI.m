@@ -18,6 +18,18 @@
   return bundle;
 }
 
+/// 状态栏 高度
++ (CGFloat)ne_statusBarHeight {
+  CGFloat statusBarHeight = 0.0;
+  if (@available(iOS 13.0, *)) {
+    UIWindow *window = UIApplication.sharedApplication.windows.firstObject;
+    statusBarHeight = window.windowScene.statusBarManager.statusBarFrame.size.height;
+  } else {
+    statusBarHeight = UIApplication.sharedApplication.statusBarFrame.size.height;
+  }
+  return statusBarHeight;
+}
+
 /// 边距
 + (CGFloat)margin {
   return 30.0;

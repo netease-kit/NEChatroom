@@ -139,4 +139,7 @@ public protocol NEVoiceRoomListener: NSObjectProtocol {
   /// 麦位变更通知
   /// - Parameter seatItems: 麦位列表
   @objc optional func onSeatListChanged(_ seatItems: [NEVoiceRoomSeatItem])
+
+  /// 自己的麦位状态发生变更，只处理未上麦、申请中、已上麦
+  @objc optional func onSelfSeatStatusChanged(new: NEVoiceRoomSeatItemStatus, old: NEVoiceRoomSeatItemStatus)
 }

@@ -8,11 +8,11 @@
 #import <NEOrderSong/NEOrderSong-Swift.h>
 #import <NEUIKit/NEUIBaseNavigationController.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
+#import <SDWebImage/SDWebImage.h>
 #import "NEChatRoomListViewController.h"
 #import "NEUIActionSheetNavigationController.h"
 #import "NEUIDeviceSizeInfo.h"
 #import "NEUIMoreFunctionVC.h"
-#import "NEVoiceRoomFloatWindowSingleton.h"
 #import "NEVoiceRoomGiftEngine.h"
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomPickSongEngine.h"
@@ -27,6 +27,7 @@
 #import "NTESGlobalMacro.h"
 #import "UIColor+NEUIExtension.h"
 #import "UIImage+VoiceRoom.h"
+@import NEVoiceRoomBaseUIKit;
 
 @interface NEVoiceRoomViewController () <NEVoiceRoomHeaderDelegate,
                                          NEVoiceRoomFooterFunctionAreaDelegate,
@@ -74,19 +75,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  self.navigationController.navigationBar.hidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-  [super viewWillDisappear:animated];
-  self.navigationController.navigationBar.hidden = NO;
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  self.ne_UINavigationItem.navigationBarHidden = YES;
-  //    [self.navigationController setNavigationBarHidden:YES];
-
+  if (self.role == NEVoiceRoomRoleHost) {
+    self.isBackToList = YES;
+  }
   [NEVoiceRoomKit.getInstance addVoiceRoomListener:self];
   [NEOrderSong.getInstance addOrderSongListener:self];
   [self addSubviews];
@@ -107,6 +103,9 @@
   UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:traget action:nil];
   [self.view addGestureRecognizer:pan];
   [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+
+  [self.bgImageView sd_setImageWithURL:[NSURL URLWithString:self.detail.liveModel.cover]
+                      placeholderImage:[NEVoiceRoomUI ne_voice_imageName:@"chatRoom_bgImage_icon"]];
 }
 
 - (void)closeRoom:(void (^)(void))complete {
@@ -159,14 +158,14 @@
           if (callabck) {
             callabck();
           }
-          [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
-          [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+          NESocialFloatWindow.instance.floatingView.hidden = YES;
+          NESocialFloatWindow.instance.target = nil;
         });
       } else {
         if (callabck) {
           callabck();
         }
-        [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+        NESocialFloatWindow.instance.target = nil;
       }
     }];
   } else {  // 观众
@@ -181,14 +180,14 @@
           if (callabck) {
             callabck();
           }
-          [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
-          [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+          NESocialFloatWindow.instance.floatingView.hidden = YES;
+          NESocialFloatWindow.instance.target = nil;
         });
       } else {
         if (callabck) {
           callabck();
         }
-        [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+        NESocialFloatWindow.instance.target = nil;
       }
     }];
   }
@@ -242,7 +241,8 @@
                         chorusId:nil
                              ext:nil
                         callback:^(NSInteger code, NSString *_Nullable msg, id _Nullable obj) {
-                          if (code != 0) {
+                          // 1007表示歌曲不存在
+                          if (code != 0 && code != 1007) {
                             [NEVoiceRoomToast
                                 showToast:[NSString stringWithFormat:@"歌曲开始播放失败：%@", msg]];
                           }
@@ -286,11 +286,25 @@
 }
 
 - (void)smallWindowAction {
-  [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:self];
-  [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:NO];
-  [[NEVoiceRoomFloatWindowSingleton Ins] setNetImage:self.detail.anchor.icon title:@""];
+  NESocialFloatWindow.instance.floatingView.hidden = NO;
+  [NESocialFloatWindow.instance setupUIWithIcon:self.detail.anchor.icon title:@""];
+  __weak typeof(self) weakSelf = self;
+  [NESocialFloatWindow.instance
+      addViewControllerTarget:self
+                     roomUuid:self.detail.liveModel.roomUuid
+                  closeAction:^(void (^callback)(void)) {
+                    NESocialFloatWindow.instance.floatingView.hidden = YES;
+                    [weakSelf closeRoomWithViewPop:!NESocialFloatWindow.instance.hasFloatWindow
+                                          callback:callback];
+                  }];
   if (self.role == NEVoiceRoomRoleHost) {  // 主播
-    [self backToListViewController];
+    if (self.isBackToList) {
+      [self backToListViewController];
+      self.isBackToList = NO;
+    } else {
+      [self.navigationController popViewControllerAnimated:YES];
+    }
+
   } else {  // 观众
     [self.navigationController popViewControllerAnimated:YES];
   }
@@ -406,7 +420,9 @@
                  model.sender = NEVoiceRoomUIManager.sharedInstance.nickname;
                  model.text = text;
                  if (weakSelf.role == NEVoiceRoomRoleHost) {
-                   model.icon = [NEVoiceRoomUI ne_voice_imageName:@"anthor_ico"];
+                   model.iconSize = CGSizeMake(32, 16);
+                   model.icon = [NEVRBaseBundle loadImage:[NEVRBaseBundle localized:@"Owner_Icon"
+                                                                              value:nil]];
                  } else {
                    model.icon = nil;
                  }
@@ -484,7 +500,8 @@
     model.sender = message.fromNick;
     model.text = message.text;
     if ([message.fromUserUuid isEqualToString:self.detail.liveModel.userUuid]) {
-      model.icon = [NEVoiceRoomUI ne_voice_imageName:@"anthor_ico"];
+      model.iconSize = CGSizeMake(32, 16);
+      model.icon = [NEVRBaseBundle loadImage:[NEVRBaseBundle localized:@"Owner_Icon" value:nil]];
     } else {
       model.icon = nil;
     }
@@ -539,8 +556,8 @@
       [self.navigationController popViewControllerAnimated:YES];
     }
   });
-  [[NEVoiceRoomFloatWindowSingleton Ins] setHideWindow:YES];
-  [[NEVoiceRoomFloatWindowSingleton Ins] addViewControllerTarget:nil];
+  NESocialFloatWindow.instance.floatingView.hidden = YES;
+  NESocialFloatWindow.instance.target = nil;
 }
 
 - (void)onRtcLocalAudioVolumeIndicationWithVolume:(NSInteger)volume enableVad:(BOOL)enableVad {
@@ -652,7 +669,8 @@
 - (NEUIKeyboardToolbarView *)keyboardView {
   if (!_keyboardView) {
     _keyboardView = [[NEUIKeyboardToolbarView alloc]
-        initWithFrame:CGRectMake(0, [NEUICommon ne_screenHeight], [NEUICommon ne_screenWidth], 50)];
+        initWithFrame:CGRectMake(0, UIScreen.mainScreen.bounds.size.height,
+                                 UIScreen.mainScreen.bounds.size.width, 50)];
     _keyboardView.backgroundColor = UIColor.whiteColor;
     _keyboardView.cusDelegate = self;
   }

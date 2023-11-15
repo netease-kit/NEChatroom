@@ -4,11 +4,11 @@
 
 #import "NEUISelectViewController.h"
 #import <NEUIKit/NEUIBackNavigationController.h>
-#import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEUIEmptyView.h"
 #import "NEUIUserInfoCell.h"
 #import "NEVoiceRoomLocalized.h"
+#import "NEVoiceRoomUI.h"
 #import "NTESGlobalMacro.h"
 
 @interface NEUISelectViewController ()
@@ -19,15 +19,20 @@
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  self.navigationController.navigationBar.hidden = YES;
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  self.ne_UINavigationItem.navigationBarHidden = YES;
   [self didSetUpUI];
 }
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
-  CGFloat top = [NEUICommon ne_statusBarHeight];
+  CGFloat top = [NEVoiceRoomUI ne_statusBarHeight];
 
   _navBar.frame = CGRectMake(0, top, self.view.width, 40.0);
   [_navBar ne_cornerRadii:CGSizeMake(5, 5)

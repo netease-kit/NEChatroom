@@ -9,7 +9,7 @@ module NECoreKit
   end
 
   def self.version
-    "9.6.2"
+    "9.6.3"
   end
 
   def self.path
@@ -38,7 +38,7 @@ module NECoreIMKit
   end
 
   def self.version
-    "9.6.1"
+    "9.6.3-alpha01"
   end
 
   def self.path

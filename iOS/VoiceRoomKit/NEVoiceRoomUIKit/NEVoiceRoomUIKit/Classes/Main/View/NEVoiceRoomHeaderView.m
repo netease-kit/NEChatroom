@@ -4,7 +4,6 @@
 
 #import "NEVoiceRoomHeaderView.h"
 #import <Masonry/Masonry.h>
-#import "NEUICreateRoomTitleButton.h"
 #import "NEUINoticePopView.h"
 #import "NEUIViewFactory.h"
 #import "NEVoiceRoomLocalized.h"
@@ -13,12 +12,13 @@
 #import "NTESGlobalMacro.h"
 #import "UIImage+VoiceRoom.h"
 #import "UIView+VoiceRoom.h"
+@import NESocialUIKit;
 
 @interface NEVoiceRoomHeaderView ()
 @property(nonatomic, strong) UILabel *roomNameLabel;
 @property(nonatomic, strong) UILabel *onlinePersonLabel;
 @property(nonatomic, strong) UIButton *closeRoomButton;
-@property(nonatomic, strong) NEUICreateRoomTitleButton *noticeButton;
+@property(nonatomic, strong) NESocialPaddingLabel *noticeButton;
 @property(nonatomic, strong) UIView *headerMusicView;
 @property(nonatomic, strong) UILabel *headerMusicLabel;
 @property(nonatomic, strong) UIImageView *headerMusicImageView;
@@ -66,9 +66,7 @@
 
   [self.noticeButton mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.bottom.equalTo(self);
-    make.height.mas_equalTo(CGSizeMake(54, 20));
-    make.width.mas_equalTo(
-        [NELocalizedString(@"公告") sizeWithFont:[UIFont systemFontOfSize:12] maxH:20].width + 30);
+    make.height.mas_equalTo(20);
   }];
 
   [self.smallButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -173,16 +171,34 @@
   return _onlinePersonLabel;
 }
 
-- (NEUICreateRoomTitleButton *)noticeButton {
+- (NESocialPaddingLabel *)noticeButton {
   if (!_noticeButton) {
-    _noticeButton = [[NEUICreateRoomTitleButton alloc] initWithImage:@"roomNotice_icon"
-                                                             content:NELocalizedString(@"公告")];
-    [_noticeButton addTarget:self
-                      action:@selector(noticeButtonClickAction)
-            forControlEvents:UIControlEventTouchUpInside];
-    [_noticeButton setLableFont:[UIFont systemFontOfSize:12]];
-    [_noticeButton setLeftMargin:8 imageSize:CGSizeMake(12, 12)];
+    _noticeButton = [[NESocialPaddingLabel alloc] init];
+    _noticeButton.edgeInsets = UIEdgeInsetsMake(0, 8, 0, 8);
     _noticeButton.backgroundColor = UIColorFromRGBA(0x000000, 0.5);
+    _noticeButton.layer.cornerRadius = 10;
+    _noticeButton.clipsToBounds = YES;
+    UIFont *font = [UIFont systemFontOfSize:12];
+    NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] init];
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [UIImage nevoiceRoom_imageNamed:@"roomNotice_icon"];
+    attachment.bounds = CGRectMake(0, (font.capHeight - 12) / 2, 12, 12);
+    [mutableString
+        appendAttributedString:[NSAttributedString attributedStringWithAttachment:attachment]];
+    [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+    [mutableString
+        appendAttributedString:[[NSAttributedString alloc]
+                                   initWithString:NELocalizedString(@"公告")
+                                       attributes:@{
+                                         NSFontAttributeName : font,
+                                         NSForegroundColorAttributeName : [UIColor whiteColor]
+                                       }]];
+    _noticeButton.attributedText = mutableString;
+    UITapGestureRecognizer *tap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(noticeButtonClickAction)];
+    [_noticeButton addGestureRecognizer:tap];
+    _noticeButton.userInteractionEnabled = YES;
   }
   return _noticeButton;
 }
@@ -190,7 +206,7 @@
 - (UIButton *)smallButton {
   if (!_smallButton) {
     _smallButton = [[UIButton alloc] init];
-    UIImage *image = [UIImage nevoiceRoom_imageNamed:@"small_icon"];
+    UIImage *image = [UIImage nevoiceRoom_imageNamed:@"small_window_icon"];
     [_smallButton setImage:image forState:UIControlStateNormal];
     [_smallButton addTarget:self
                      action:@selector(smallButtonClickAction)

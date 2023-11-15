@@ -137,7 +137,7 @@ public class NEVoiceRoomKit: NSObject {
   var authListeners = NSPointerArray.weakObjects()
   // preview监听器数组
   var previewListeners = NSPointerArray.weakObjects()
-  var config: NEVoiceRoomKitConfig?
+  public var config: NEVoiceRoomKitConfig?
   var isDebug: Bool = false
   /// 是否出海
   var isOversea: Bool = false
@@ -158,7 +158,7 @@ public class NEVoiceRoomKit: NSObject {
   // 自己操作后的mute状态，区别于ban之后的mute
   var isSelfMuted: Bool = true
   // 上次收到服务器下发的麦位列表
-  var localSeats: [NESeatItem]?
+  public var localSeats: [NESeatItem]?
   // 是否要在加入RTC之后设置clientRole
   var shouldSetClientRoleWhenJoin = false
 

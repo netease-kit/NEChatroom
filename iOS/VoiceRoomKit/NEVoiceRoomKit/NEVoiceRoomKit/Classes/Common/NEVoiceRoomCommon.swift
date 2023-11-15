@@ -11,6 +11,8 @@ public enum NEVoiceRoomLiveRoomType: Int {
   case multiAudio = 2
   /// 一起听
   case listenTogether = 5
+  /// 游戏房
+  case game = 6
 }
 
 @objc

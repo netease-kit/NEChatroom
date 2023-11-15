@@ -9,7 +9,7 @@ module NECommonKit
   end
 
   def self.version
-    "9.6.2"
+    "9.6.3-alpha01"
   end
 
   def self.path
@@ -38,7 +38,7 @@ module NECommonUIKit
   end
 
   def self.version
-    "9.6.3"
+    "9.6.3-alpha01"
   end
 
   def self.path

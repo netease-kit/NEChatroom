@@ -2,13 +2,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-#import "NEUICommon.h"
+#import "NEUIBackNavigationController.h"
 #import "UIBarButtonItem+NEUIKit.h"
 @implementation UIBarButtonItem (NEUIKit)
 + (UIBarButtonItem *)ne_backItemWithTarget:(id)target action:(SEL)action {
   UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
   UIImage *image;
-  NSBundle *bundle = [NSBundle bundleForClass:[NEUICommon class]];
+  NSBundle *bundle = [NSBundle bundleForClass:[NEUIBackNavigationController class]];
   if (@available(iOS 13.0, *)) {
     image = [UIImage imageNamed:@"NEUI_Common_BlackBack" inBundle:bundle withConfiguration:nil];
   }
