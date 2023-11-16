@@ -13,7 +13,7 @@ import com.netease.yunxin.kit.entertainment.common.model.NemoAccount;
 
 public class UserInfoManager {
   private static final String TAG = "UserInfoManager";
-  private static String selfImAccid = "";
+  private static String selfUserUuid = "";
   private static String selfImToken = "";
   private static String selfImNickname = "";
   private static String selfImAvatar = "";
@@ -29,12 +29,8 @@ public class UserInfoManager {
     return selfPhoneNumber;
   }
 
-  public static String getSelfImAccid() {
-    return selfImAccid;
-  }
-
-  public static String getSelfAccessToken() {
-    return selfImToken;
+  public static String getSelfUserUuid() {
+    return selfUserUuid;
   }
 
   public static String getSelfNickname() {
@@ -71,7 +67,7 @@ public class UserInfoManager {
             + icon
             + " mobile:"
             + mobile);
-    selfImAccid = userUuid;
+    selfUserUuid = userUuid;
     selfUserToken = userToken;
     selfImToken = imToken;
     selfImNickname = userName;
@@ -101,7 +97,7 @@ public class UserInfoManager {
   }
 
   public static void clearUserInfo() {
-    selfImAccid = "";
+    selfUserUuid = "";
     selfImToken = "";
     selfImNickname = "";
     selfImAvatar = "";

@@ -45,9 +45,9 @@ public class ECHttpService {
     serviceCreator.addHeader(key, value);
   }
 
-  public void createAccount(int sceneType, Callback<ECModelResponse<NemoAccount>> callback) {
+  public void createAccount(Callback<ECModelResponse<NemoAccount>> callback) {
     Map<String, Object> map = new HashMap<>();
-    map.put("sceneType", sceneType);
+    map.put("sceneType", 2);
     if (serverApi != null) {
       serverApi.createAccount(map).enqueue(callback);
     }

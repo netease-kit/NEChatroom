@@ -7,18 +7,18 @@ package com.netease.yunxin.kit.voiceroomkit.ui.utils;
 import android.content.Context;
 import android.content.Intent;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
+import com.netease.yunxin.kit.entertainment.common.activity.AuthenticateActivity;
 import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo;
-import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUIConstants;
-import com.netease.yunxin.kit.voiceroomkit.ui.activity.AnchorActivity;
-import com.netease.yunxin.kit.voiceroomkit.ui.activity.AudienceActivity;
-import com.netease.yunxin.kit.voiceroomkit.ui.activity.AuthenticateActivity;
+import com.netease.yunxin.kit.voiceroomkit.ui.activity.VoiceRoomAnchorActivity;
+import com.netease.yunxin.kit.voiceroomkit.ui.activity.VoiceRoomAudienceActivity;
+import com.netease.yunxin.kit.voiceroomkit.ui.base.NEVoiceRoomUIConstants;
 
 public class NavUtils {
 
   private static final String TAG = "NavUtil";
 
-  public static void toVoiceRoomPage(
+  public static void toVoiceRoomAnchorPage(
       Context context,
       boolean isOverSea,
       String username,
@@ -32,7 +32,9 @@ public class NavUtils {
     roomModel.setNick(username);
     roomModel.setAvatar(avatar);
     roomModel.setAnchorAvatar(roomInfo.getAnchor().getAvatar());
-    Intent intent = new Intent(context, AnchorActivity.class);
+    roomModel.setAnchorNick(roomInfo.getAnchor().getNick());
+    roomModel.setCover(roomInfo.getLiveModel().getCover());
+    Intent intent = new Intent(context, VoiceRoomAnchorActivity.class);
     intent.putExtra(RoomConstants.INTENT_ROOM_MODEL, roomModel);
     intent.putExtra(NEVoiceRoomUIConstants.ENV_KEY, isOverSea);
     context.startActivity(intent);
@@ -44,11 +46,12 @@ public class NavUtils {
     roomModel.setLiveRecordId(roomInfo.getLiveRecordId());
     roomModel.setRoomUuid(roomInfo.getRoomUuid());
     roomModel.setRole(RoomConstants.ROLE_AUDIENCE);
-    roomModel.setRoomName(roomInfo.getLiveTopic());
+    roomModel.setRoomName(roomInfo.getRoomName());
     roomModel.setNick(username);
     roomModel.setAvatar(avatar);
     roomModel.setAnchorAvatar(roomInfo.getAnchorAvatar());
-    Intent intent = new Intent(context, AudienceActivity.class);
+    roomModel.setAnchorNick(roomInfo.getAnchorNick());
+    Intent intent = new Intent(context, VoiceRoomAudienceActivity.class);
     intent.putExtra(RoomConstants.INTENT_ROOM_MODEL, roomModel);
     intent.putExtra(NEVoiceRoomUIConstants.NEED_JOIN_ROOM__KEY, needJoinRoom);
     context.startActivity(intent);

@@ -9,6 +9,10 @@ public class RoomConstants {
   public static final String INTENT_USER_NAME = "userName";
   public static final String INTENT_AVATAR = "avatar";
   public static final String INTENT_ROOM_MODEL = "intent_room_model";
+
+  public static final String INTENT_TARGET_ANCHOR_CLASS = "anchor_class";
+  public static final String INTENT_TARGET_AUDIENCE_CLASS = "audience_class";
+
   public static final String ROLE_HOST = "host";
   public static final String ROLE_AUDIENCE = "audience";
   public static final String INTENT_KEY_CONFIG_ID = "configId";

@@ -24,26 +24,20 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
 
-        <activity android:name=".activity.AnchorActivity"
+        <activity android:name=".activity.VoiceRoomAnchorActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
-        <activity android:name=".activity.AudienceActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            />
-        <activity android:name=".activity.AuthenticateActivity"
+        <activity android:name=".activity.VoiceRoomAudienceActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
         <service
-            android:name=".service.KeepAliveService"
+            android:name=".base.service.KeepAliveService"
             android:foregroundServiceType="mediaProjection"/>
     </application>
 

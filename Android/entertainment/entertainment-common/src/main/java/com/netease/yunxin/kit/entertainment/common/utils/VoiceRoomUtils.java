@@ -4,6 +4,7 @@
 package com.netease.yunxin.kit.entertainment.common.utils;
 
 import android.text.TextUtils;
+import com.netease.yunxin.kit.corekit.service.XKitServiceManager;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
 import com.netease.yunxin.kit.entertainment.common.model.RoomSeat;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VoiceRoomUtils {
+  private static final String VOICE_ROOM_SERVICE_NAME = "VoiceRoomKit";
 
   public static boolean isLocalAnchor() {
     return NEVoiceRoomKit.getInstance().getLocalMember() != null
@@ -71,7 +73,7 @@ public class VoiceRoomUtils {
   public static List<RoomSeat> createSeats() {
     int size = RoomSeat.SEAT_COUNT;
     List<RoomSeat> seats = new ArrayList<>(size);
-    for (int i = 1; i < size; i++) {
+    for (int i = 0; i < size; i++) {
       seats.add(new RoomSeat(i + 1));
     }
     return seats;
@@ -107,6 +109,21 @@ public class VoiceRoomUtils {
   }
 
   public static int getAnchorReward(NEVoiceRoomInfo roomInfo) {
+    if (getHost() == null) {
+      return 0;
+    }
     return getRewardFromRoomInfo(getHost().getAccount(), roomInfo);
+  }
+
+  public static boolean isShowFloatView() {
+    Object result =
+        XKitServiceManager.Companion.getInstance()
+            .callService(VOICE_ROOM_SERVICE_NAME, "isShowFloatView", null);
+    return result instanceof Boolean && (boolean) result;
+  }
+
+  public static void stopFloatPlay() {
+    XKitServiceManager.Companion.getInstance()
+        .callService(VOICE_ROOM_SERVICE_NAME, "stopFloatPlay", null);
   }
 }

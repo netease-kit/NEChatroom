@@ -22,7 +22,8 @@ data class VoiceRoomLiveModel(
     val audienceCount: Int?, // 	上麦人数
     val onSeatCount: Int?,
     var liveConfig: String?,
-    var seatUserReward: List<SeatUserReward>? // 麦上的打赏信息){}, val roomArchiveId: kotlin.String?){}){}
+    var seatUserReward: List<SeatUserReward>?,
+    val gameName: String? // 麦上的打赏信息){}, val roomArchiveId: kotlin.String?){}){}
 ) : Serializable
 
 data class SeatUserReward(

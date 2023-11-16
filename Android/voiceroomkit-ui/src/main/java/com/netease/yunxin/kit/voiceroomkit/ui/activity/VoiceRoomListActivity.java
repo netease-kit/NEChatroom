@@ -23,10 +23,10 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState;
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList;
 import com.netease.yunxin.kit.voiceroomkit.ui.R;
-import com.netease.yunxin.kit.voiceroomkit.ui.adapter.VoiceRoomListAdapter;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.FloatPlayManager;
+import com.netease.yunxin.kit.voiceroomkit.ui.base.adapter.VoiceRoomListAdapter;
+import com.netease.yunxin.kit.voiceroomkit.ui.base.utils.FloatPlayManager;
+import com.netease.yunxin.kit.voiceroomkit.ui.base.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.ui.utils.NavUtils;
-import com.netease.yunxin.kit.voiceroomkit.ui.utils.VoiceRoomUtils;
 import kotlin.Unit;
 
 public class VoiceRoomListActivity extends RoomListActivity {
@@ -107,9 +107,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
                 tempPageNum = pageNum;
                 binding.refreshLayout.finishRefresh(false);
                 ToastUtils.INSTANCE.showShortToast(
-                    VoiceRoomListActivity.this,
-                    getString(
-                        com.netease.yunxin.kit.entertainment.common.R.string.voiceroom_net_error));
+                    VoiceRoomListActivity.this, getString(R.string.network_error));
               }
             });
   }
@@ -154,7 +152,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
       } else {
         AlertDialog.Builder builder = new AlertDialog.Builder(VoiceRoomListActivity.this);
         builder.setTitle(getString(R.string.voiceroom_tip));
-        builder.setMessage(getString(R.string.voiceroom_click_roomlist_tips));
+        builder.setMessage(getString(R.string.click_roomlist_tips));
         builder.setCancelable(true);
         builder.setPositiveButton(
             getString(R.string.voiceroom_sure),

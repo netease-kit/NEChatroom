@@ -3,90 +3,120 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/cl_root"
-    android:background="@drawable/icon_create_room_chat_room_bg">
+    android:background="#E6171723">
 
     <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:src="@drawable/icon_create_room_back"
-        android:layout_height="44dp"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/top_bg"
+        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintTop_toBottomOf="@id/iv_back"
-        android:background="@drawable/shape_create_room_top_bg"
-        android:layout_height="120dp"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
 
-    <ImageView
-        android:id="@+id/iv_icon_chat_room"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginLeft="36dp"
-        android:src="@drawable/icon_create_room_chat_room"
-        app:layout_constraintBottom_toBottomOf="@id/tv_chat_room"
-        app:layout_constraintTop_toTopOf="@id/tv_chat_room" />
-
-    <TextView
-        android:id="@+id/tv_chat_room"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toEndOf="@id/iv_icon_chat_room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="4dp"
-        android:gravity="center_vertical"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_16"
-        app:layout_constraintTop_toTopOf="@id/top_bg" />
-
-
-    <ImageView
-        android:id="@+id/iv_random"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="12dp"
-        android:src="@drawable/icon_create_room_random_name"
-        app:layout_constraintEnd_toEndOf="@id/top_bg"
-        app:layout_constraintTop_toBottomOf="@id/tv_chat_room" />
-
-    <EditText
-        android:id="@+id/et_room_name"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="12dp"
-        android:background="@color/color_00000000"
-        android:ellipsize="end"
-        android:maxLength="20"
-        android:maxLines="2"
-        android:text="@string/voiceroom_random"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_14"
-        app:layout_constraintBottom_toBottomOf="@id/top_bg"
-        app:layout_constraintEnd_toStartOf="@id/iv_random"
-        app:layout_constraintStart_toStartOf="@id/top_bg"
-        app:layout_constraintTop_toBottomOf="@id/tv_chat_room" />
-
-    <TextView
-        android:id="@+id/tv_create_room"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_root"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:background="@drawable/shape_create_room_btn_chat_room_bg"
-        android:text="@string/voiceroom_start_live"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_16"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:src="@drawable/icon_create_room_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="@string/create_room"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_room_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="10dp"
+            android:text="@string/room_name"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <RelativeLayout
+            android:id="@+id/rl_room_name"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/entertainment_shape_create_room_edit_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_room_name_title">
+
+            <EditText
+                android:id="@+id/et_room_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="13dp"
+                android:layout_toLeftOf="@+id/iv_random"
+                android:background="@color/color_00000000"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:maxLength="20"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <ImageView
+                android:id="@+id/iv_random"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_create_room_random_name" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_bg_select_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="12dp"
+            android:text="@string/room_bg_select"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_room_name" />
+
+        <com.netease.yunxin.kit.entertainment.common.widget.SelectRoomBgView
+            android:id="@+id/select_room_bg_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bg_select_title" />
+
+        <TextView
+            android:id="@+id/tv_create_room"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_create_room_btn_chat_room_bg"
+            android:gravity="center"
+            android:text="@string/start_room"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

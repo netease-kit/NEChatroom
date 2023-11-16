@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.databinding.FragmentAppEntranceBinding;
-import com.netease.yunxin.app.chatroom.utils.NavUtils;
+import com.netease.yunxin.app.chatroom.utils.VoiceRoomNavUtils;
 import com.netease.yunxin.kit.entertainment.common.adapter.FunctionAdapter;
 import com.netease.yunxin.kit.entertainment.common.fragment.BaseFragment;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class AppEntranceFragment extends BaseFragment {
             R.drawable.home_item_bg_voice_room,
             R.raw.home_voice_room,
             () -> {
-              NavUtils.toVoiceRoomListPage(getContext());
+              VoiceRoomNavUtils.toVoiceRoomListPage(getContext());
             }));
     binding.rvFunctionList.setAdapter(new FunctionAdapter(getContext(), list));
   }

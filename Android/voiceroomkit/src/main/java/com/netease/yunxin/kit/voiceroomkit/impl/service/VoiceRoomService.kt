@@ -468,6 +468,13 @@ internal class VoiceRoomService {
         )
     }
 
+    fun submitSeatRequest(callback: NECallback2<Unit>) {
+        currentRoomContext?.seatController?.submitSeatRequest(callback) ?: callback.onError(
+            NEErrorCode.FAILURE,
+            "roomContext is null"
+        )
+    }
+
     fun cancelSeatRequest(callback: NECallback2<Unit>) {
         currentRoomContext?.seatController?.cancelSeatRequest(callback) ?: callback.onError(
             NEErrorCode.FAILURE,
@@ -884,7 +891,12 @@ internal class VoiceRoomService {
             }
 
             override fun onSeatLeave(seatIndex: Int, user: String) {
-                VoiceRoomLog.d(TAG, "onSeatLeave seatIndex = $seatIndex user = $user")
+                VoiceRoomLog.d(
+                    TAG,
+                    "onSeatLeave seatIndex = $seatIndex user = $user,member:${currentRoomContext?.getMember(
+                        user
+                    )}"
+                )
 
                 listeners.forEach {
                     it.onSeatLeave(seatIndex, user)

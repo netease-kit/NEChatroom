@@ -16,6 +16,12 @@
             android:name=".activity.WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name="com.netease.yunxin.kit.entertainment.common.activity.AuthenticateActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.entertainment.common.AppStatusManager;
 import com.netease.yunxin.kit.entertainment.common.utils.IconFontUtil;
-import com.netease.yunxin.kit.voiceroomkit.ui.NEVoiceRoomUI;
+import com.netease.yunxin.kit.voiceroomkit.ui.base.NEVoiceRoomUI;
 
 public class VoiceRoomApplication extends Application {
 

@@ -1,78 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="room_list_empty">No rooms available. Please create a room</string>
-    <string name="voiceroom_have_no_more">No more content</string>
-    <string name="voiceroom_pull_to_refresh">Swipe to refresh</string>
-    <string name="voiceroom_release_to_refresh">Release to refresh</string>
-    <string name="voiceroom_refreshing">Updating...</string>
-    <string name="voiceroom_load_more">Load more</string>
-    <string name="voiceroom_start_live">Start</string>
-    <string name="voiceroom_start_voiceroom">Start</string>
-    <string name="voiceroom_start_listen_together">Start</string>
-    <string name="voiceroom_random">Random</string>
-    <string name="voiceroom_chatroom">chatroom</string>
-    <string name="voiceroom_is_closed">Room closed</string>
-    <string name="voiceroom_host_close_room_success">Room was dismissed</string>
-    <string name="voiceroom_people_online2">%d people</string>
-    <string name="voiceroom_people_online_ten_thousand">s%w people</string>
-    <string name="voiceroom_net_error">Net error,try again</string>
-    <string name="voiceroom_tip">Tip</string>
-    <string name="voiceroom_click_roomlist_tips">Exit the current room and enter other rooms</string>
-    <string name="voiceroom_sure">OK</string>
-    <string name="voiceroom_cancel">Cancel</string>
-    <string name="voiceroom_room_not_exist">Room does not exist</string>
-    <string name="app_sure">OK</string>
-    <string name="app_cancel">Cancel</string>
-    <string name="app_pstn_item_text">PSTN</string>
-    <string name="app_pstn_setting_title">PSTN Connectivity Settings</string>
-    <string name="app_high_keep_alive_feature">PSTN Connectivity</string>
-    <string name="app_high_keep_alive_title_level1">PSTN Connectivity: </string>
-    <string name="app_high_keep_alive_title_level2">Level 2</string>
-    <string name="app_high_keep_alive_content2">1. Keep app running in the background: \nIf Keep app running in the background is enabled, a notification will be shown on the notification bar for testing purposes.\nThe feature allows the app to run in the background for a long time (depending on different brands) \n\n\n</string>
-    <string name="app_high_keep_alive_content3">The following articles also restrict and applies to the user of this website and is referenced herewith:</string>
-    <string name="app_tips">Tips</string>
-    <string name="app_dialog_protocol_tips_title">Terms of Service and Privacy Policy</string>
-    <string name="app_dialog_protocol_content_text">Thank you for using CommsEase Party. We value your personal information and privacy protection. To better protect your personal rights, make sure you read all the terms in the "Privacy Policy" and "Terms of Service" before using our products. Paricularly, 1. Our terms regarding the collection, storage, use, and protection of your personal information, as well as your user rights; 2. Our agreed limitations of liability and disclaimer clauses. If you have any questions about the previous terms, you can contact us through customer service. By clicking "Agree and Continue", you have read and agreed to all the terms of the previous agreements.</string>
-    <string name="app_dialog_protocol_agree">Agree</string>
-    <string name="app_dialog_protocol_disagree">Disagree</string>
-    <string name="app_notification_tips">The notification permission must be turned on before opening foreground services</string>
-    <string name="app_default_content_description">default_content_description</string>
-    <string name="app_privacy_policy">Privacy Policy</string>
-    <string name="app_user_agreement">Terms of Service</string>
-    <string name="app_data_center_switch_confirm_message">If you switch the service node, the app will restart and log in. Do you want to switch the service node?</string>
-    <string name="app_yes">Yes</string>
-    <string name="app_no">No</string>
-    <string name="app_network_situation">Network Status</string>
-    <string name="app_network_error">Net error,try again</string>
-    <string name="float_permission">Floating Window Permission</string>
-    <string name="has_open">Enabled</string>
-    <string name="has_close">Disabled</string>
-    <string name="float_permission_desc">By granting the floating window permission, you can also receive notifications for voice or video calls even when the app is running in the background or the screen is locked. \nTo ensure timely notification of incoming voice or video calls, please allow the following permissions: \n1. Allow background activity; 2. Show on lock screen; 3. Allow pop-up windows in the background.</string>
-    <string name="host">host</string>
-    <string name="send_to">send to</string>
-    <string name="gift_send">send</string>
-    <string name="gift_send_memeber_empty">No gift object selected, unable to send gifts</string>
-    <string name="gift">Gift</string>
-    <string name="send_gift">Send gift</string>
-    <string name="glow_stick">Glow stick</string>
-    <string name="arrange">Arrange</string>
-    <string name="sports_car">Sports car</string>
-    <string name="rockets">Rockets</string>
-    <string name="send">Send</string>
-    <string name="send2">Send</string>
+    <string name="room_list_empty">暂时没有房间，请创建房间</string>
+    <string name="voiceroom_have_no_more">没有更多了</string>
+    <string name="voiceroom_pull_to_refresh">下拉更新</string>
+    <string name="voiceroom_release_to_refresh">松开更新</string>
+    <string name="voiceroom_refreshing">更新中...</string>
+    <string name="voiceroom_load_more">上拉加载更多</string>
+    <string name="voiceroom_start_live">开始直播</string>
+    <string name="voiceroom_start_voiceroom">开始语聊</string>
+    <string name="voiceroom_start_listen_together">开始一起听</string>
+    <string name="voiceroom_random">随机</string>
+    <string name="voiceroom_chatroom">聊天室</string>
+    <string name="voiceroom_is_closed">房间已关闭</string>
+    <string name="voiceroom_host_close_room_success">房间解散成功</string>
+    <string name="voiceroom_people_online2">%d 人</string>
+    <string name="voiceroom_people_online_ten_thousand">%dw 人</string>
+    <string name="voiceroom_tip">提示</string>
+    <string name="voiceroom_sure">确认</string>
+    <string name="voiceroom_cancel">取消</string>
+    <string name="voiceroom_room_not_exist">房间不存在</string>
+    <string name="app_sure">确定</string>
+    <string name="app_cancel">取消</string>
+    <string name="app_pstn_item_text">高接通体验说明</string>
+    <string name="app_pstn_setting_title">高接通配置</string>
+    <string name="app_high_keep_alive_feature">应用保活功能</string>
+    <string name="app_high_keep_alive_title_level1">高接通功能说明：</string>
+    <string name="app_high_keep_alive_title_level2">二级标题</string>
+    <string name="app_high_keep_alive_content2">1、应用保活功能：\n打开应用保活功能后，通知栏会出现通知，该通知是为了测试展示。\n该功能能够使APP长时间保活（具体时间视不同品牌手机）\n\n\n</string>
+    <string name="app_high_keep_alive_content3">以下条款也约束并适用于本网站的使用，并且通过此处援引纳入本条款：</string>
+    <string name="app_tips">提示</string>
+    <string name="app_dialog_protocol_tips_title">用户协议与隐私政策</string>
+    <string name="app_dialog_protocol_content_text">感谢您使用云信派对APP，我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权益，在您使用我们的产品前，请务必阅读《隐私政策》和《用户协议》内的所有条款，尤其是：1.我们对您的个人信息的手机/保存/使用/保护等条款，以及您的用户权利等条款；2.约定我们的限制责任、免责条款。如您对以上协议有任何疑问，可通过人工客户与我们联系。您点击"同意并继续"的行为即表示您已阅读完毕并统一以上协议的全部内容。如您同意以上协议内容，请点击"同意并继续"，开始使用我们的产品和服务！</string>
+    <string name="app_dialog_protocol_agree">同意并继续</string>
+    <string name="app_dialog_protocol_disagree">不同意</string>
+    <string name="app_notification_tips">需要先打开通知权限,才能打开前台服务</string>
+    <string name="app_default_content_description">Description</string>
+    <string name="app_privacy_policy">隐私协议</string>
+    <string name="app_user_agreement">服务条款</string>
+    <string name="app_data_center_switch_confirm_message">确定切换数据中心吗？应用需要重新启动和登录。</string>
+    <string name="app_yes">是</string>
+    <string name="app_no">否</string>
+    <string name="app_network_situation">网络情况</string>
+    <string name="network_error">网络异常，请稍后重试</string>
+    <string name="float_permission">悬浮窗权限</string>
+    <string name="has_open">已开启</string>
+    <string name="has_close">未开启</string>
+    <string name="float_permission_desc">开启悬浮窗权限后，在锁屏状态或APP在后台运行状态下，也能收到语音或视频通话提醒。\n建议您再开启以下权限，以确保能及时通知到您语音或视频通话。\n1、允许后台活动；2、锁屏显示；3、后台弹出界面</string>
+    <string name="host">房主</string>
+    <string name="send_to">送给</string>
+    <string name="gift_send">赠送</string>
+    <string name="gift_send_memeber_empty">未选择送礼对象，无法送礼</string>
+    <string name="gift">礼物</string>
+    <string name="send_gift">送礼物</string>
+    <string name="glow_stick">荧光棒</string>
+    <string name="arrange">安排</string>
+    <string name="sports_car">跑车</string>
+    <string name="rockets">火箭</string>
+    <string name="send">发送</string>
+    <string name="send2">送给</string>
     <string name="coin">coins</string>
-    <string name="reward_failed">Reward failed</string>
-    <string name="donate">donate</string>
-    <string name="count">count</string>
-    <string name="srl_content_empty">The content view in SmartRefreshLayout is empty. Do you forget to add it in xml layout file?</string>
-    <string name="srl_component_falsify" formatted="false">%s falsify area,\n Represents the height[%.1fdp] of drag at run time,\n It does not show anything.</string>
-    <string name="one_one_one_report_success">Reported successfully</string>
+    <string name="reward_failed">打赏礼物失败</string>
+    <string name="donate">赠送了</string>
+    <string name="count">个</string>
+    <string name="srl_content_empty">SmartRefreshLayout中没有找到内容视图。您是否忘记在xml布局文件中添加？</string>
+    <string name="srl_component_falsify" formatted="false">%s 虚假区域\n代表运行时拖动的高度【%.1fdp】 \n而不会显示任何东西</string>
+    <string name="one_one_one_report_success">举报成功</string>
 
     <string-array name="report_content">
-        <item>Political bias</item>
-        <item>Pornographic vulgarity</item>
-        <item>Ad and marketing</item>
-        <item>Fraudulent information</item>
+        <item>政治造谣</item>
+        <item>色情低俗</item>
+        <item>广告营销</item>
+        <item>欺诈信息</item>
     </string-array>
+    <string name="create_room">创建房间</string>
+    <string name="room_name">房间名称</string>
+    <string name="room_bg_select">背景选择</string>
+    <string name="start_room">开启房间</string>
+    <string name="ec_tips">提示</string>
+    <string name="ec_sure">确认</string>
+    <string name="ec_cancel">取消</string>
+    <string name="sample_login_desc">云信派对-一起听业务\n源码跑通示例</string>
+    <string name="start_exploring">开始体验</string>
+    <string name="logining">登录中...</string>
+    <string name="need_permission_audio">需要相应的音频权限</string>
+    <string name="click_roomlist_tips">是否退出当前房间进入其他房间</string>
+    <string name="click_create_room_tips">是否退出当前房间，并创建新房间</string>
+    <string name="ec_join_failed_tips">加入房间失败，请重试！</string>
+    <string name="voiceroom_authentication">实名认证</string>
+    <string name="voiceroom_authentication_content">温馨提示：\n1.请您填写准确、真实的身份信息，实名信息将被作为身份识别\n2.您所提交的身份信息将被严格保密，不会被用于其他用途</string>
+    <string name="voiceroom_name_placeholder">请输入真实姓名</string>
+    <string name="voiceroom_id_placeholder">请输入身份证号</string>
+    <string name="voiceroom_authentication_now">立即认证</string>
+    <string name="voiceroom_authentication_check">经慎重考虑，同意平台收集真实姓名、身份证号码及证件信息(均属于个人敏感信息)，以核实本人身份，保障账号安全</string>
+    <string name="voiceroom_authentication_error">身份证号或真实姓名有误\n未通过认证</string>
+    <string name="voiceroom_authentication_success">实名认证通过</string>
+    <string name="voiceroom_authentication_know">知道了</string>
+    <string name="singer">歌手：%1$s</string>
 </resources>

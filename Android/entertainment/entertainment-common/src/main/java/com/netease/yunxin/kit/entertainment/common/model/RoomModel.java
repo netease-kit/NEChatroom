@@ -13,26 +13,13 @@ public class RoomModel implements Serializable {
   private String nick;
   private String avatar;
   private String roomName;
-
   private String cover;
-
-  private String liveTopic;
-
   private String anchorUserUuid;
-
   private String anchorNick;
   private String anchorAvatar;
-  private int onlineCount;
-
-  public int getOnlineUserCount() {
-    return onlineUserCount;
-  }
-
-  public void setOnlineUserCount(int onlineUserCount) {
-    this.onlineUserCount = onlineUserCount;
-  }
-
-  private int onlineUserCount;
+  private int audienceCount;
+  private int onSeatCount;
+  private String gameName;
 
   public long getLiveRecordId() {
     return liveRecordId;
@@ -98,20 +85,20 @@ public class RoomModel implements Serializable {
     this.cover = cover;
   }
 
-  public String getLiveTopic() {
-    return liveTopic;
+  public int getAudienceCount() {
+    return audienceCount;
   }
 
-  public void setLiveTopic(String liveTopic) {
-    this.liveTopic = liveTopic;
+  public void setAudienceCount(int onlineCount) {
+    this.audienceCount = onlineCount;
   }
 
-  public int getOnlineCount() {
-    return onlineCount;
+  public int getOnSeatCount() {
+    return onSeatCount;
   }
 
-  public void setOnlineCount(int onlineCount) {
-    this.onlineCount = onlineCount;
+  public void setOnSeatCount(int onSeatCount) {
+    this.onSeatCount = onSeatCount;
   }
 
   public String getAnchorUserUuid() {
@@ -128,5 +115,13 @@ public class RoomModel implements Serializable {
 
   public void setAnchorNick(String anchorNick) {
     this.anchorNick = anchorNick;
+  }
+
+  public void setGameName(String gameName) {
+    this.gameName = gameName;
+  }
+
+  public String getGameName() {
+    return gameName;
   }
 }

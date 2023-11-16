@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="room_list_empty">No rooms available. Please create a room</string>
+    <string name="voiceroom_have_no_more">No more content</string>
+    <string name="voiceroom_pull_to_refresh">Swipe to refresh</string>
+    <string name="voiceroom_release_to_refresh">Release to refresh</string>
+    <string name="voiceroom_refreshing">Updating...</string>
+    <string name="voiceroom_load_more">Load more</string>
+    <string name="voiceroom_start_live">Start</string>
+    <string name="voiceroom_start_voiceroom">Start</string>
+    <string name="voiceroom_start_listen_together">Start</string>
+    <string name="voiceroom_random">Random</string>
+    <string name="voiceroom_chatroom">chatroom</string>
+    <string name="voiceroom_is_closed">Room closed</string>
+    <string name="voiceroom_host_close_room_success">Room was dismissed</string>
+    <string name="voiceroom_people_online2">%d people</string>
+    <string name="voiceroom_people_online_ten_thousand">s%w people</string>
+    <string name="voiceroom_tip">Tip</string>
+    <string name="voiceroom_sure">OK</string>
+    <string name="voiceroom_cancel">Cancel</string>
+    <string name="voiceroom_room_not_exist">Room does not exist</string>
+    <string name="app_sure">OK</string>
+    <string name="app_cancel">Cancel</string>
+    <string name="app_pstn_item_text">PSTN</string>
+    <string name="app_pstn_setting_title">PSTN Connectivity Settings</string>
+    <string name="app_high_keep_alive_feature">PSTN Connectivity</string>
+    <string name="app_high_keep_alive_title_level1">PSTN Connectivity: </string>
+    <string name="app_high_keep_alive_title_level2">Level 2</string>
+    <string name="app_high_keep_alive_content2">1. Keep app running in the background: \nIf Keep app running in the background is enabled, a notification will be shown on the notification bar for testing purposes.\nThe feature allows the app to run in the background for a long time (depending on different brands) \n\n\n</string>
+    <string name="app_high_keep_alive_content3">The following articles also restrict and applies to the user of this website and is referenced herewith:</string>
+    <string name="app_tips">Tips</string>
+    <string name="app_dialog_protocol_tips_title">Terms of Service and Privacy Policy</string>
+    <string name="app_dialog_protocol_content_text">Thank you for using CommsEase Party. We value your personal information and privacy protection. To better protect your personal rights, make sure you read all the terms in the "Privacy Policy" and "Terms of Service" before using our products. Paricularly, 1. Our terms regarding the collection, storage, use, and protection of your personal information, as well as your user rights; 2. Our agreed limitations of liability and disclaimer clauses. If you have any questions about the previous terms, you can contact us through customer service. By clicking "Agree and Continue", you have read and agreed to all the terms of the previous agreements.</string>
+    <string name="app_dialog_protocol_agree">Agree</string>
+    <string name="app_dialog_protocol_disagree">Disagree</string>
+    <string name="app_notification_tips">The notification permission must be turned on before opening foreground services</string>
+    <string name="app_default_content_description">Description</string>
+    <string name="app_privacy_policy">Privacy Policy</string>
+    <string name="app_user_agreement">Terms of Service</string>
+    <string name="app_data_center_switch_confirm_message">If you switch the service node, the app will restart and log in. Do you want to switch the service node?</string>
+    <string name="app_yes">Yes</string>
+    <string name="app_no">No</string>
+    <string name="app_network_situation">Network Status</string>
+    <string name="network_error">Net error,try again</string>
+    <string name="float_permission">Floating Window Permission</string>
+    <string name="has_open">Enabled</string>
+    <string name="has_close">Disabled</string>
+    <string name="float_permission_desc">By granting the floating window permission, you can also receive notifications for voice or video calls even when the app is running in the background or the screen is locked. \nTo ensure timely notification of incoming voice or video calls, please allow the following permissions: \n1. Allow background activity; 2. Show on lock screen; 3. Allow pop-up windows in the background.</string>
+    <string name="host">host</string>
+    <string name="send_to">send to</string>
+    <string name="gift_send">send</string>
+    <string name="gift_send_memeber_empty">No gift object selected, unable to send gifts</string>
+    <string name="gift">Gift</string>
+    <string name="send_gift">Send gift</string>
+    <string name="glow_stick">Glow stick</string>
+    <string name="arrange">Arrange</string>
+    <string name="sports_car">Sports car</string>
+    <string name="rockets">Rockets</string>
+    <string name="send">Send</string>
+    <string name="send2">Send</string>
+    <string name="coin">coins</string>
+    <string name="reward_failed">Reward failed</string>
+    <string name="donate">donate</string>
+    <string name="count">count</string>
+    <string name="srl_content_empty">The content view in SmartRefreshLayout is empty. Do you forget to add it in xml layout file?</string>
+    <string name="srl_component_falsify" formatted="false">%s falsify area,\n Represents the height[%.1fdp] of drag at run time,\n It does not show anything.</string>
+    <string name="one_one_one_report_success">Reported successfully</string>
+
+    <string-array name="report_content">
+        <item>Political bias</item>
+        <item>Pornographic vulgarity</item>
+        <item>Ad and marketing</item>
+        <item>Fraudulent information</item>
+    </string-array>
+    <string name="create_room">Create Room</string>
+    <string name="room_name">Name</string>
+    <string name="room_bg_select">Select Background</string>
+    <string name="start_room">Start</string>
+    <string name="ec_tips">Tips</string>
+    <string name="ec_sure">Confirm</string>
+    <string name="ec_cancel">Cancel</string>
+    <string name="need_permission_audio">requires audio permissions</string>
+    <string name="click_roomlist_tips">Exit the current room and enter other rooms</string>
+    <string name="click_create_room_tips">Exit the current room and create a new room</string>
+    <string name="ec_join_failed_tips">"Failed to join the room！</string>
+
+    <string name="voiceroom_authentication">Identity Verification</string>
+    <string name="voiceroom_authentication_content">Note: \n1. Please enter your authentic identity for verification. \n2. The personal information you submit will stay strictly confidential and will not be used for any other purposes. </string>
+    <string name="voiceroom_name_placeholder">Enter your full name</string>
+    <string name="voiceroom_id_placeholder">Enter ID number</string>
+    <string name="voiceroom_authentication_now">Verify</string>
+    <string name="voiceroom_authentication_check">By performing identity verification, you agree to allow CommsEase to collect your personal information, such as real name, ID number and other document information</string>
+    <string name="voiceroom_authentication_error">Incorrect ID number or name\n Identity Verification failed</string>
+    <string name="voiceroom_authentication_success">Identity Verification passed</string>
+    <string name="voiceroom_authentication_know">Got it</string>
+    <string name="singer">singer:%1$s</string>
+</resources>

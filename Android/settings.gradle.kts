@@ -31,6 +31,7 @@ dependencyResolutionManagement {
 }
 
 include(":app")
+include(":voiceroomkit-ui-base")
 include(":voiceroomkit-ui")
 include(":voiceroomkit")
 include(":entertainment:entertainment-common")

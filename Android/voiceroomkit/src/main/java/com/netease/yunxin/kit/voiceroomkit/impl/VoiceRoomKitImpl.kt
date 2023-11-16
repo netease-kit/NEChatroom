@@ -27,6 +27,7 @@ import com.netease.yunxin.kit.roomkit.api.service.NEAuthService
 import com.netease.yunxin.kit.roomkit.api.service.NEPreviewRoomOptions
 import com.netease.yunxin.kit.roomkit.api.service.NEPreviewRoomParams
 import com.netease.yunxin.kit.roomkit.api.service.NESeatInfo
+import com.netease.yunxin.kit.roomkit.api.service.NESeatInvitationConfirmMode
 import com.netease.yunxin.kit.roomkit.api.service.NESeatRequestItem
 import com.netease.yunxin.kit.roomkit.impl.repository.ServerConfig
 import com.netease.yunxin.kit.roomkit.impl.utils.CoroutineRunner
@@ -45,8 +46,6 @@ import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKitConfig
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomListener
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomLiveState
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomPreviewListener
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatInvitationConfirmMode
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatRequestApprovalMode
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceCreateRoomDefaultInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchGiftModel
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomChatTextMessage
@@ -166,6 +165,8 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         val serverConfig =
             ServerConfig.selectServer(config.appKey, realRoomServerUrl)
         VoiceRoomRepository.serverConfig = serverConfig
+        voiceRoomHttpService.initialize(context, baseUrl)
+        voiceRoomHttpService.addHeader("appkey", config.appKey)
         NERoomKit.getInstance()
             .initialize(
                 context,
@@ -193,8 +194,6 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 )
             ) { code, message, _ ->
                 if (code == NEErrorCode.SUCCESS) {
-                    voiceRoomHttpService.initialize(context, baseUrl)
-                    voiceRoomHttpService.addHeader("appkey", config.appKey)
                     NERoomKit.getInstance().roomService.previewRoom(
                         NEPreviewRoomParams(),
                         NEPreviewRoomOptions(),
@@ -551,12 +550,13 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         val createRoomParam = StartVoiceRoomParam(
             roomTopic = params.title,
             roomName = params.title,
+            cover = params.cover ?: "",
             liveType = params.liveType,
             configId = params.configId,
-            cover = params.cover ?: "",
             seatCount = params.seatCount,
-            seatInviteMode = NEVoiceRoomSeatInvitationConfirmMode.OFF,
-            seatApplyMode = NEVoiceRoomSeatRequestApprovalMode.ON
+            seatApplyMode = params.seatApplyMode,
+            seatInviteMode = NESeatInvitationConfirmMode.OFF,
+            ext = params.extraData ?: ""
         )
         voiceRoomHttpService.startVoiceRoom(
             createRoomParam,
@@ -590,7 +590,7 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 VoiceRoomLog.i(tag, "getRoomDefault success info = $info")
                 callback.onSuccess(
                     info?.let {
-                        NEVoiceCreateRoomDefaultInfo(it.topic, it.livePicture)
+                        NEVoiceCreateRoomDefaultInfo(it.topic, it.livePicture, it.defaultPictures)
                     }
                 )
             }
@@ -815,6 +815,22 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         myRoomService.submitSeatRequest(
             seatIndex,
             exclusive,
+            object : NECallback2<Unit>() {
+                override fun onSuccess(data: Unit?) {
+                    callback?.onSuccess(data)
+                }
+
+                override fun onError(code: Int, message: String?) {
+                    VoiceRoomLog.e(tag, "submitSeatRequest onError code:$code")
+                    callback?.onFailure(code, message)
+                }
+            }
+        )
+    }
+
+    override fun submitSeatRequest(callback: NEVoiceRoomCallback<Unit>?) {
+        VoiceRoomLog.logApi("submitSeatRequest")
+        myRoomService.submitSeatRequest(
             object : NECallback2<Unit>() {
                 override fun onSuccess(data: Unit?) {
                     callback?.onSuccess(data)

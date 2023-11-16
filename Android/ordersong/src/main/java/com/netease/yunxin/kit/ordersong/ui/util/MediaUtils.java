@@ -5,9 +5,15 @@
 package com.netease.yunxin.kit.ordersong.ui.util;
 
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.io.IOException;
 
 public class MediaUtils {
 
+  @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD_MR1)
   public static long getDuration(String path) {
     MediaMetadataRetriever mmr = new MediaMetadataRetriever();
     long duration = 0;

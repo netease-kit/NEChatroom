@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="12dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_volume_text"
+        android:layout_width="50dp"
+        android:text="@string/voiceroom_voice"
+        android:gravity="center_vertical"
+        android:textColor="#ff222222"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="46dp"/>
+
+    <SeekBar
+        android:id="@+id/recording_volume_control"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_volume_text"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_volume_text"
+        app:layout_constraintStart_toEndOf="@id/tv_volume_text"
+        android:layout_weight="1"
+        android:max="200"
+        android:maxHeight="4dp"
+        android:paddingLeft="10dp"
+        android:progress="100"
+        android:progressDrawable="@drawable/background_music_control_seekbar_bg"
+        android:saveEnabled="true"
+        android:thumb="@drawable/shape_music_control_seekbar_thumb" />
+</androidx.constraintlayout.widget.ConstraintLayout>

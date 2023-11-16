@@ -62,7 +62,8 @@ data class NEVoiceRoomLiveModel(
     val audienceCount: Int?,
     val onSeatCount: Int?,
     var liveConfig: String?,
-    var seatUserReward: List<NEVoiceRoomBatchSeatUserReward>?
+    var seatUserReward: List<NEVoiceRoomBatchSeatUserReward>?,
+    val gameName: String?
 )
 
 /**

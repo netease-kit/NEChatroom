@@ -45,7 +45,8 @@ internal object VoiceRoomUtils {
                 voiceRoomInfo.liveModel.audienceCount,
                 voiceRoomInfo.liveModel.onSeatCount,
                 voiceRoomInfo.liveModel.liveConfig,
-                voiceRoomInfo.liveModel.seatUserReward?.map { seatUserReward2NESeatUserReward(it) }
+                voiceRoomInfo.liveModel.seatUserReward?.map { seatUserReward2NESeatUserReward(it) },
+                voiceRoomInfo.liveModel.gameName
             )
         )
     }

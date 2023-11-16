@@ -93,7 +93,7 @@ public class OrderListFragment extends BaseFragment {
     pageNum = 0;
     adapter.clear();
 
-    if ((String.valueOf(binding.etSearch.getText())).length() > 0) {
+    if (!(String.valueOf(binding.etSearch.getText())).isEmpty()) {
       binding.ivClear.setVisibility(View.VISIBLE);
       isSearching = true;
       searchMoreSong();

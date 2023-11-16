@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:background="@drawable/layer_room_member_item_bg"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
+        android:id="@+id/headview"
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
+
+    <TextView
+        android:id="@+id/chatroom_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_8_dp"
+        android:textColor="#ff222222"
+        android:textSize="14dp" />
+
+</LinearLayout>

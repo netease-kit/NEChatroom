@@ -76,15 +76,15 @@
 
     <TextView
         android:id="@+id/user_name"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_18_dp"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textColor="#999999"
+        android:textColor="@color/color_999999"
         android:textSize="@dimen/text_size_12"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:maxWidth="@dimen/dimen_100_dp"
+        android:maxWidth="120dp"
         android:layout_marginStart="@dimen/dimen_114_dp"
         android:layout_marginTop="@dimen/dimen_34_dp"
         android:layout_gravity="center_vertical" />

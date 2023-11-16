@@ -59,7 +59,6 @@
         app:layout_constraintStart_toEndOf="@id/song_name"
         android:layout_marginStart="@dimen/dimen_9_dp"
         android:layout_marginTop="@dimen/dimen_13_dp"
-        android:src="@drawable/icon_cloud_music"
         />
 
     <TextView
@@ -76,7 +75,7 @@
         android:text="@string/order_song"
         android:visibility="gone"
         android:textColor="@android:color/white"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:visibility="visible"
         android:background="@drawable/order_song_bg"
         />

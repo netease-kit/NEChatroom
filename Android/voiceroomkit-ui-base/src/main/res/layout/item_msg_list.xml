@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_chat_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_corner_14_bg"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_marginBottom="4dp"
+    android:textSize="13sp"
+    android:textColor="@color/white"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:includeFontPadding="false">
+</TextView>
