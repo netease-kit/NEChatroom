@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   
   if ENV["USE_SOURCE_FILES"] == "true"
     s.source = { :git => "https://github.com/netease-kit/" }
-    
+
     s.source_files = 'NEVoiceRoomUIKit/Classes/**/*'
     s.resource = 'NEVoiceRoomUIKit/Assets/**/*'
     s.dependency NEVoiceRoomKit.name
@@ -35,9 +35,10 @@ Pod::Spec.new do |s|
     s.dependency LottieSwift.name
     s.dependency NESocialUIKit.name
     s.dependency NECommonUIKit.name
+    s.dependency NEVoiceRoomBaseUIKit.name
   else
-    
+
   end
   YXConfig.pod_target_xcconfig(s)
-  
+
 end

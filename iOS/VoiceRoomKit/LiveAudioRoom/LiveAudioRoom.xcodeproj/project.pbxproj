@@ -32,16 +32,6 @@
 		EDCBACA42A6E4D1B00589F75 /* Configs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCBACA32A6E4D1B00589F75 /* Configs.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		5E6E71B329C198D000DB7A67 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5E73C2B829AE01AF00868D97 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5E73C2BF29AE01AF00868D97;
-			remoteInfo = NEParty;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		5E29361329B19FB100E61FA5 /* voiceRoom.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = voiceRoom.json; sourceTree = "<group>"; };
 		5E29F84529BEED170009E0EA /* NPTNetworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTNetworkDetailView.swift; sourceTree = "<group>"; };
@@ -54,7 +44,6 @@
 		5E67E66B29B57E55003D6AC2 /* NPTWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTWebViewController.swift; sourceTree = "<group>"; };
 		5E67E67329B5FE71003D6AC2 /* Device+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Device+Extension.swift"; sourceTree = "<group>"; };
 		5E6D1F742A09F97B003AA115 /* NPTBlackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTBlackListViewController.swift; sourceTree = "<group>"; };
-		5E6E71AD29C198D000DB7A67 /* LiveAudioRoomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveAudioRoomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E73C2C029AE01AF00868D97 /* LiveAudioRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveAudioRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E73C2C329AE01AF00868D97 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E73C2C729AE01AF00868D97 /* NPTHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPTHomeViewController.swift; sourceTree = "<group>"; };
@@ -80,13 +69,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5E6E71AA29C198D000DB7A67 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5E73C2BD29AE01AF00868D97 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -129,7 +111,6 @@
 			isa = PBXGroup;
 			children = (
 				5E73C2C029AE01AF00868D97 /* LiveAudioRoom.app */,
-				5E6E71AD29C198D000DB7A67 /* LiveAudioRoomUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,24 +191,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5E6E71AC29C198D000DB7A67 /* LiveAudioRoomUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5E6E71B729C198D000DB7A67 /* Build configuration list for PBXNativeTarget "LiveAudioRoomUITests" */;
-			buildPhases = (
-				5E6E71A929C198D000DB7A67 /* Sources */,
-				5E6E71AA29C198D000DB7A67 /* Frameworks */,
-				5E6E71AB29C198D000DB7A67 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5E6E71B429C198D000DB7A67 /* PBXTargetDependency */,
-			);
-			name = LiveAudioRoomUITests;
-			productName = NEPartyUITests;
-			productReference = 5E6E71AD29C198D000DB7A67 /* LiveAudioRoomUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		5E73C2BF29AE01AF00868D97 /* LiveAudioRoom */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E73C2D429AE01B200868D97 /* Build configuration list for PBXNativeTarget "LiveAudioRoom" */;
@@ -258,10 +221,6 @@
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
-					5E6E71AC29C198D000DB7A67 = {
-						CreatedOnToolsVersion = 14.2;
-						TestTargetID = 5E73C2BF29AE01AF00868D97;
-					};
 					5E73C2BF29AE01AF00868D97 = {
 						CreatedOnToolsVersion = 13.3.1;
 						LastSwiftMigration = 1420;
@@ -283,19 +242,11 @@
 			projectRoot = "";
 			targets = (
 				5E73C2BF29AE01AF00868D97 /* LiveAudioRoom */,
-				5E6E71AC29C198D000DB7A67 /* LiveAudioRoomUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5E6E71AB29C198D000DB7A67 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5E73C2BE29AE01AF00868D97 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -370,13 +321,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5E6E71A929C198D000DB7A67 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5E73C2BC29AE01AF00868D97 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -402,14 +346,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5E6E71B429C198D000DB7A67 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5E73C2BF29AE01AF00868D97 /* LiveAudioRoom */;
-			targetProxy = 5E6E71B329C198D000DB7A67 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5E38407D29DAA88E00B4A1E6 /* InfoPlist.strings */ = {
@@ -442,44 +378,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		5E6E71B529C198D000DB7A67 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 569GNZ5392;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.netease.LiveAudioRoomUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = LiveAudioRoom;
-			};
-			name = Debug;
-		};
-		5E6E71B629C198D000DB7A67 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 569GNZ5392;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.netease.LiveAudioRoomUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = LiveAudioRoom;
-			};
-			name = Release;
-		};
 		5E73C2D229AE01B200868D97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -691,15 +589,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5E6E71B729C198D000DB7A67 /* Build configuration list for PBXNativeTarget "LiveAudioRoomUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5E6E71B529C198D000DB7A67 /* Debug */,
-				5E6E71B629C198D000DB7A67 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		5E73C2BB29AE01AF00868D97 /* Build configuration list for PBXProject "LiveAudioRoom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

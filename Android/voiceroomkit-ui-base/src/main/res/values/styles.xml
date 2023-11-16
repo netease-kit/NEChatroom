@@ -1,0 +1,45 @@
+<resources>
+
+    <style name="BottomDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">#00000000</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowAnimationStyle">@style/BottomDialogAnimation</item>
+    </style>
+
+    <style name="request_dialog_fragment">
+        <item name="android:windowBackground">@color/color_00000000</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowSoftInputMode">adjustNothing</item>
+        <!--        <item name="android:windowAnimationStyle">@style/request_dialog_Animation</item>-->
+    </style>
+
+    <style name="TextStyle_Color_828282_Size_14sp">
+        <item name="android:textColor">@color/color_828282</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Base_Audio_UI_Switch">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="CommonDialog" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">#00000000</item>
+    </style>
+
+    <style name="GiftNumSelectDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+</resources>

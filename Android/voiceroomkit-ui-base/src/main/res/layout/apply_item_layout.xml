@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
+        android:id="@+id/item_requestlink_headicon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/item_requestlink_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:id="@+id/refuse"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:padding="2dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/close_icon" />
+
+    <ImageView
+        android:id="@+id/agree"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="16dp"
+        android:padding="2dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/right_icon" />
+
+
+</LinearLayout>

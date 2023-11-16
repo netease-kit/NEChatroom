@@ -9,6 +9,11 @@ import IHProgressHUD
 
 class NPTFeedbackViewController: UIViewController {
   var checkBoxs: [NPTCheckBox] = []
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(false, animated: true)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()

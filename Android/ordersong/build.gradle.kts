@@ -28,11 +28,11 @@ dependencies {
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
     implementation("com.netease.yunxin.kit.common:common-ui:1.3.1")
     implementation("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.7.0")
-    implementation("com.netease.yunxin.kit.room:roomkit:1.20.0")
+    implementation("com.netease.yunxin.kit.room:roomkit:1.21.0")
     implementation("com.netease.yunxin.kit:alog:1.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-
+    implementation(project(":entertainment:entertainment-common"))
 }

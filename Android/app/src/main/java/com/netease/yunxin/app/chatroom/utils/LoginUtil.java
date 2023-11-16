@@ -8,7 +8,6 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import com.netease.yunxin.app.chatroom.config.AppConfig;
 import com.netease.yunxin.kit.alog.ALog;
-import com.netease.yunxin.kit.copyrightedmedia.api.SongScene;
 import com.netease.yunxin.kit.entertainment.common.model.NemoAccount;
 import com.netease.yunxin.kit.entertainment.common.utils.UserInfoManager;
 import com.netease.yunxin.kit.ordersong.core.NEOrderSongService;
@@ -74,7 +73,6 @@ public class LoginUtil {
                     AppConfig.getBaseUrl(),
                     AppConfig.getNERoomServerUrl(),
                     nemoAccount.userUuid);
-                NEOrderSongService.INSTANCE.setSongScene(SongScene.TYPE_LISTENING_TO_MUSIC);
                 NEOrderSongService.INSTANCE.addHeader("user", nemoAccount.userUuid);
                 NEOrderSongService.INSTANCE.addHeader("token", nemoAccount.userToken);
                 if (callback != null) {

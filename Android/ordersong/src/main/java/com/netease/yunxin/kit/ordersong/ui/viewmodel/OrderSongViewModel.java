@@ -107,9 +107,7 @@ public class OrderSongViewModel extends ViewModel {
             List<OrderSongModel> songList = new ArrayList<>();
             if (info != null) {
               for (NECopyrightedSong copyrightedSong : info) {
-                if (copyrightedSong.getHasAccompany() != 0) {
-                  songList.add(new OrderSongModel(copyrightedSong));
-                }
+                songList.add(new OrderSongModel(copyrightedSong));
               }
             }
             callback.success(songList);
@@ -141,9 +139,7 @@ public class OrderSongViewModel extends ViewModel {
             List<OrderSongModel> songList = new ArrayList<>();
             if (info != null) {
               for (NECopyrightedSong copyrightedSong : info) {
-                if (copyrightedSong.getHasAccompany() != 0) {
-                  songList.add(new OrderSongModel(copyrightedSong));
-                }
+                songList.add(new OrderSongModel(copyrightedSong));
               }
             }
             callback.success(songList);

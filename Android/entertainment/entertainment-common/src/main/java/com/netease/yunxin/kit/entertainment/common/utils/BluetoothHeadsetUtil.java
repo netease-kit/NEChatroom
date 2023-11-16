@@ -34,7 +34,7 @@ public class BluetoothHeadsetUtil {
         new CopyOnWriteArrayList<>();
 
     private static BluetoothHeadsetStatusReceiver getInstance() {
-      return LazyHolder.INSTANCE;
+      return BluetoothHeadsetStatusReceiver.LazyHolder.INSTANCE;
     }
 
     @Override

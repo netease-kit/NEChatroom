@@ -101,6 +101,12 @@ extension NEOrderSong: NECopyrightedEventHandler, NESongPreloadProtocol {
       }
   }
 
+  /// 设置歌曲场景
+  /// - Parameter songScene: K歌场景或听歌场景
+  public func setSongScene(_ songScene: SongScene) {
+    NECopyrightedMedia.getInstance().setSongScene(songScene)
+  }
+
   /**
    * 预加载 Song 数据
    *

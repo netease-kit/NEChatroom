@@ -12,6 +12,7 @@ public extension NEOrderSong {
     _audioPlayService = NEOrderSongAudioPlayService(roomUuid: roomUuid)
     _audioPlayService?.callback = self
     musicService = NEOrderSongMusicService(liveRecordId)
+    deletingSongs.removeAll()
     NERoomKit.shared().roomService.getRoomContext(roomUuid: roomUuid)?.addRoomListener(listener: self)
   }
 

@@ -1,0 +1,127 @@
+Announcement = "announcement";
+Number_Of_Online = "%d members online";
+Message_Input = "Send a message";
+Mic = "Mic";
+Speaker = "Speaker";
+IEMs = "In-ear";
+Effects = "Effects";
+Mixer = "Mixer";
+End_Live = "End";
+More = "More";
+Send_Message = "Send";
+
+Announcement_Content = "The app is used for demo purpose only. Commercial use is not allowed.";
+
+Close_Room_Title = "Are you sure you want to end the stream?";
+Close_Room_Message = "End the live stream";
+Comfirm = "Yes";
+Cancel = "Cancel";
+
+Seat = "Seat";
+
+Join_Room = "join room";
+Leave_Room = "leave room";
+
+Seat_Leaved = "became audience";
+Seat_Kicked = "removed from the seat";
+Seat_Approved = "have taken a seat";
+Seat_Rejected = "Request was rejected";
+Seat_Canceled = "canceled the request to speak";
+Seat_Submitted = "Request to speak";
+Seat_Accepted = "have taken a seat";
+Seat_Request = "Request seat";
+
+Seat_Ban = "Mute";
+Seat_Unban = "Unmute";
+Seat_Invite = "Move a member to speaker";
+Seat_Kick = "Move TA to audience";
+Seat_Close = "Close";
+Seat_Open = "Open";
+Seat_Approve_Cancel = "Confirm to cancel the request to speak";
+Seat_Leave = "Move to audience";
+
+Seat_Ban_Failed = "Failed to mute the seat";
+Seat_Unban_Failed = "Failed to unmute the seat";
+Seat_Kick_Failed = "Operation failed";
+Seat_Close_Failed = "Failed to close the seat";
+Seat_Close_Succeed = "\"Seat %d\" is closed";
+Seat_Open_Failed = "Failed to open";
+Seat_Open_Succeed = "\"Seat %d\" is opened";
+Seat_Leave_Failed = "Failed to move to audience";
+Seat_Invite_Failed = "Operation failed";
+
+Seat_Kick_Other = "moved \"%@\" to audience";
+Seat_Self_Kicked = "You were removed from the seat";
+Seat_Moved_To_Seat = "You are moved to seat %d";
+Seat_Self_Leaved = "You are moved to audience";
+Seat_Approve_Rejected = "Your request was rejected";
+Seat_Invite_Accepted = "moved \"%@\" to seat %d";
+Seat_Request_Waiting = "Request to speak is submitted. Please wait...";
+Seat_Request_Approved = "Request approved";
+Seat_Request_Rejected = "Request rejected";
+Seat_Request_Cancel_Comfirm = "Confirm to cancel the request to speak";
+
+Invite_Title = "Select Member";
+No_Members = "No Members";
+
+Room_Deleted = "Room deleted";
+Room_Closed = "Room closed";
+
+Join_Room_Failed = "Failed to join the room";
+Message_Empty = "The content is empty";
+
+Unmute_Failed = "Failed to turn on the microphone";
+Unmute_Succeed = "Microphone turned on";
+Mute_Failed = "Muting failed";
+Mute_Succeed = "Microphone turned off";
+
+Seat_Busy = "The seat is busy";
+Seat_Waiting_Other = "The seat is being requested. Try to request for another seat.";
+Seat_Waiting_Self = "Requesting the seat";
+Seat_Closed = "The seat is closed";
+
+Hide = "Hide";
+
+Gift = "Gift";
+Send_Gift_To = "sent to";
+Send_Gift = "sent";
+Gift_Send = "Send";
+Glow_Stick = "Glow stick";
+Arrange = "Arrange";
+Sports_Car = "Sports car";
+Rockets = "Rockets";
+
+IEMs_Tips = "Plug in the earphones and you can use the in-ear monitor";
+Effects_Clap = "Applause";
+Effects_Laugh = "laughter";
+Voice = "Voice";
+
+Create_Room_Title = "Create Room";
+Create_Room = "Start";
+Create_Room_Name = "Name";
+Create_Room_Background = "Select Background";
+
+Send_To = "Send to";
+Host = "Host";
+Room_Name_Empty = "Room name is empty";
+Room_Name_Invalid = "Room name contains invalid characters";
+Room_Image_Empty = "The background image is unselected";
+
+Net_Error = "Network exception, please try again later";
+Net_Disconnect = "Disconnect";
+
+Online_Count = "people";
+
+Voice_Room = "Live Audio Room";
+Listen_Room = "Listen Together";
+Gaming_Room = "Gaming Room";
+Room_List_Empty = "The list of live streams is empty";
+Room_List_Error = "An error occurred while requesting the list of live streams";
+Room_List_Update = "Swipe to refresh";
+Room_List_Updating = "Updating...";
+Room_List_No_More = "No more content";
+Tips = "Tips";
+Leave_Room_Check = "Exit the current room and join another room";
+Join_Room_Failed = "Failed to join the room";
+
+Owner_Icon = "owner_ico_en";

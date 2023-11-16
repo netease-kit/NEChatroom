@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEInnerSingleton.h"
-#import "NEVoiceRoomFloatWindowSingleton.h"
 #import "NEVoiceRoomLocalized.h"
 #import "NEVoiceRoomToast.h"
 #import "NEVoiceRoomUILog.h"

@@ -80,9 +80,9 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
           .error(R.drawable.chat_room_default_bg)
           .roundedCornerCenterCrop(SizeUtils.dp2px(4))
           .into(binding.ivChatRoomBg);
-      binding.tvChatRoomName.setText(info.getLiveTopic());
+      binding.tvChatRoomName.setText(info.getRoomName());
       binding.tvChatRoomAnchorName.setText(info.getAnchorNick());
-      binding.tvChatRoomMemberNum.setText(getCurrentCount(info.getOnlineCount()));
+      binding.tvChatRoomMemberNum.setText(getCurrentCount(info.getAudienceCount()));
       binding
           .getRoot()
           .setOnClickListener(

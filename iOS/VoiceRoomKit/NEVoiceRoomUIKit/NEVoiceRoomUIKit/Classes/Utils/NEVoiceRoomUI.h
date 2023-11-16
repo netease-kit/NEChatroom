@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// bundle
 + (NSBundle *_Nullable)ne_voice_sourceBundle;
 
+/// 状态栏 高度
++ (CGFloat)ne_statusBarHeight;
+
 /// 边距
 + (CGFloat)margin;
 /// 麦位水平间距

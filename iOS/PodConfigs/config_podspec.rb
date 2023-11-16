@@ -1,6 +1,6 @@
 module YXConfig
   def self.deployment_target
-    "10.0"
+    "11.0"
   end
 
   def self.swift_version

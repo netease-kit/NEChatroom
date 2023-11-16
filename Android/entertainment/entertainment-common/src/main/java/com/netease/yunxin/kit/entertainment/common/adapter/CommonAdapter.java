@@ -62,7 +62,7 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<CommonAdapte
     }
   }
 
-  static class ItemViewHolder extends RecyclerView.ViewHolder {
+  public static class ItemViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> viewCache = new SparseArray<>();
 
     public ItemViewHolder(@NonNull View itemView) {

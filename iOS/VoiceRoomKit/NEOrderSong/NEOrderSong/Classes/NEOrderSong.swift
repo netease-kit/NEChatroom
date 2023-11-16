@@ -88,6 +88,13 @@ public class NEOrderSong: NSObject {
     listeners.removeWeakObject(listener)
   }
 
+  // 正在删除的歌曲
+  public var deletingSongs: [Int64] = []
+  // 歌曲是否在删除中
+  public func isSongDeleting(_ orderId: Int64) -> Bool {
+    deletingSongs.contains(orderId)
+  }
+
   // MARK: - ------------------------- Private method --------------------------
 
   private static let instance = NEOrderSong()

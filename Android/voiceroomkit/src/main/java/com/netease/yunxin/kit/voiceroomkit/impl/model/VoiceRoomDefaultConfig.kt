@@ -6,12 +6,11 @@
 package com.netease.yunxin.kit.voiceroomkit.impl.model
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
-class VoiceRoomDefaultConfig : Serializable {
+data class VoiceRoomDefaultConfig(
     @SerializedName("topic")
-    lateinit var topic: String // 主题
-
+    val topic: String?, // 主题
     @SerializedName("livePicture")
-    lateinit var livePicture: String // 背景图
-}
+    val livePicture: String?, // 背景图
+    val defaultPictures: List<String>? // 默认背景图列表
+)

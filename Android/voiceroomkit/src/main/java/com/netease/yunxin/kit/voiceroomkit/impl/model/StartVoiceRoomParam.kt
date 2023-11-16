@@ -6,9 +6,6 @@
 
 package com.netease.yunxin.kit.voiceroomkit.impl.model
 
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatInvitationConfirmMode
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomSeatRequestApprovalMode
-
 data class StartVoiceRoomParam(
     val roomTopic: String,
     val roomName: String,
@@ -16,6 +13,7 @@ data class StartVoiceRoomParam(
     val liveType: Int,
     val configId: Int = 0,
     val seatCount: Int = 7,
-    val seatApplyMode: NEVoiceRoomSeatRequestApprovalMode,
-    val seatInviteMode: NEVoiceRoomSeatInvitationConfirmMode
+    val seatApplyMode: Int,
+    val seatInviteMode: Int,
+    val ext: String?
 )

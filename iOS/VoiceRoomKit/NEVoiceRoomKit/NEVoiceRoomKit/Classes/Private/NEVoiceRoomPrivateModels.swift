@@ -32,6 +32,8 @@ class _NECreateRoomDefaultInfo: NSObject, Codable {
   var topic: String?
   /// 默认背景图
   var livePicture: String?
+  /// 可选背景图列表
+  var defaultPictures: [String]?
 }
 
 @objcMembers
@@ -63,6 +65,8 @@ class _NECreateLiveLive: NSObject, Codable {
   var roomName: String?
   /// 打赏信息
   var seatUserReward: [_NEVoiceRoomBatchSeatUserReward]?
+  /// 当前在玩的游戏
+  var gameName: String?
 }
 
 // MARK: 直播列表
@@ -128,24 +132,19 @@ enum _NEVoiceRoomMusicOperationType: Int {
 @objcMembers
 
 class _NEVoiceRoomBatchRewardMessage: NSObject, Codable {
-//  var subCmd: Int?
-//  var type: Int?
   /// 消息发送者用户编号
   var senderUserUuid: String?
   /// 发送消息时间
   var sendTime: Int?
-//  var rewarderUserUuid: String?
-  // 打赏者昵称
+  /// 打赏者昵称
   var userName: String?
-
+  /// 打赏者id
   var userUuid: String?
-//  // 被打赏者昵称
-//  var rewardeeUserName: String?
   /// 礼物编号
   var giftId: Int?
-//  var cloudCoin: Int?
   /// 礼物个数
   var giftCount: Int?
+  /// 麦上所有人的被打赏信息
   var seatUserReward: [_NEVoiceRoomBatchSeatUserReward]
   /// 被打赏者信息列表
   var targets: [_NEVoiceRoomBatchSeatUserRewardee]

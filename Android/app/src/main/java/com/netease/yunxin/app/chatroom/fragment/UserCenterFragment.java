@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.databinding.FragmentUserCenterBinding;
 import com.netease.yunxin.app.chatroom.utils.AppUtils;
-import com.netease.yunxin.app.chatroom.utils.NavUtils;
+import com.netease.yunxin.app.chatroom.utils.VoiceRoomNavUtils;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.dialog.LoadingDialog;
 import com.netease.yunxin.kit.entertainment.common.dialog.NetworkInfoDialog;
@@ -82,7 +82,8 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   private void initViews() {
-    binding.commonSetting.setOnClickListener(v -> NavUtils.toCommonSettingPage(requireActivity()));
+    binding.commonSetting.setOnClickListener(
+        v -> VoiceRoomNavUtils.toCommonSettingPage(requireActivity()));
   }
 
   private void initUser() {

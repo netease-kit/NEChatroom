@@ -85,8 +85,8 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
                         param.configId,
                         param.roomName,
                         param.seatCount,
-                        param.seatApplyMode.value,
-                        param.seatInviteMode.value
+                        param.seatApplyMode,
+                        param.seatInviteMode
                     )
                 },
                 success = {

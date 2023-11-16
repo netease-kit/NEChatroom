@@ -76,7 +76,6 @@ public class OrderSongModel {
     this.songCover = songCover;
   }
 
-  @NonNull
   public List<NECopyrightedSinger> getSingers() {
     return singers;
   }

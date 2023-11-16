@@ -63,6 +63,8 @@ public class RoomSeat implements Serializable, Parcelable {
 
   private boolean isSpeaking;
 
+  private String ext;
+
   public RoomSeat(int index) {
     this(index, Status.INIT, Reason.NONE, null);
   }
@@ -117,6 +119,14 @@ public class RoomSeat implements Serializable, Parcelable {
 
   public void setSpeaking(boolean isSpeaking) {
     this.isSpeaking = isSpeaking;
+  }
+
+  public String getExt() {
+    return ext;
+  }
+
+  public void setExt(String ext) {
+    this.ext = ext;
   }
 
   @Override

@@ -18,16 +18,17 @@ Pod::Spec.new do |s|
   s.author           = YXConfig.author
   s.ios.deployment_target = YXConfig.deployment_target
   s.swift_version = YXConfig.swift_version
-  
+
   if ENV["USE_SOURCE_FILES"] == "true"
     s.source = { :git => "https://github.com/netease-kit/" }
-    
+
     s.source_files = 'NESocialUIKit/Classes/**/*'
     s.resource = 'NESocialUIKit/Assets/**/*'
     s.dependency SnapKit.name
     s.dependency NECommonUIKit.name
+    s.dependency LottieSwift.name
   else
-    
+
   end
   YXConfig.pod_target_xcconfig(s)
   

@@ -10,12 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign, readonly) BOOL isViewAppearing;
 /// view正在消失中
 @property(nonatomic, assign, readonly) BOOL isViewDisappearing;
-/// 隐藏 navigationbar
-@property(nonatomic, assign) BOOL navigationBarHidden;
 /// 禁用 右滑返回
 @property(nonatomic, assign) BOOL disableInteractivePopGestureRecognizer;
-/// 动画隐藏navigationbar
-- (void)setNavigationBarHidden:(BOOL)navigationBarHidden animated:(BOOL)animated;
+
 @end
 
 @interface UIViewController (NEUINavigationItem)

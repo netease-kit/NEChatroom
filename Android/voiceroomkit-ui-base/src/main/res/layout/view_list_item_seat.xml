@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:paddingStart="3dp"
+    android:paddingEnd="3dp"
+    tools:background="@color/black">
+
+    <View
+        android:id="@+id/seat_avatar_bg"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_dialog_utils_icon_circle_bg"
+        android:src="@drawable/nim_avatar_default"
+        android:visibility="visible" />
+
+    <com.netease.yunxin.kit.entertainment.common.widget.HeadImageView
+        android:id="@+id/iv_seat_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/seat_avatar_bg"
+        android:layout_alignTop="@id/seat_avatar_bg"
+        android:layout_alignEnd="@id/seat_avatar_bg"
+        android:layout_alignBottom="@id/seat_avatar_bg"
+        android:layout_margin="1dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/iv_seat_status"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_alignStart="@id/seat_avatar_bg"
+        android:layout_alignTop="@id/seat_avatar_bg"
+        android:layout_alignEnd="@id/seat_avatar_bg"
+        android:layout_alignBottom="@id/seat_avatar_bg"
+        android:background="@drawable/seat_item_round_bg"
+        android:scaleType="center"
+        tools:src="@drawable/seat_list_add_member"
+        tools:ignore="ContentDescription" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_seat_apply"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_alignStart="@id/seat_avatar_bg"
+        android:layout_alignTop="@id/seat_avatar_bg"
+        android:layout_alignEnd="@id/seat_avatar_bg"
+        android:layout_alignBottom="@id/seat_avatar_bg"
+        android:padding="18dp"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/apply_seat" />
+
+    <TextView
+        android:id="@+id/tv_seat_name"
+        android:layout_width="38dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_seat_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        tools:text="麦位1"
+        tools:ignore="SmallSp" />
+
+    <ImageView
+        android:id="@+id/iv_seat_audio_status"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignEnd="@+id/iv_seat_avatar"
+        android:layout_alignBottom="@+id/iv_seat_avatar"
+        tools:visibility="visible"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_seat_ext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_corner_250_bg"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textSize="8sp"
+        android:textColor="@color/color_333333"
+        tools:text="ready"
+        tools:ignore="SmallSp" />
+</RelativeLayout>

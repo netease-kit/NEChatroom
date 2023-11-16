@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="singing_network_error"></string>
+    <string name="did_not_find_right_result">No matches</string>
+    <string name="copyright_token_has_expired">The copyright token expires. Try again later</string>
+    <string name="get_song_list_failed">Failed to load the song list</string>
+
+    <string name="preloading_failure">Loading failed: %d, %s</string>
+    <string name="order_song_failure">Failed to pick the song</string>
+    <string name="song_already_ordered">Picked</string>
+    <string name="err_order_song_count_exceed_limit">The number of picked songs per user reaches the upper limit</string>
+    <string name="err_room_order_song_count_exceed_limit">The number of picked songs per room reaches the upper limit</string>
+    <string name="global_search_hint">Search</string>
+    <string name="tab_to_order">Library</string>
+    <string name="tab_ordered">Playlist (%1$d)</string>
+    <string name="downloading">Downloading</string>
+    <string name="song_state_playing">Playing</string>
+    <string name="nobody_ordered">No songs are picked</string>
+    <string name="order_song">Pick</string>
+</resources>

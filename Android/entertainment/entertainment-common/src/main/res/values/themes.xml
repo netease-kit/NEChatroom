@@ -27,4 +27,14 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowAnimationStyle">@style/BottomDialogAnimation</item>
     </style>
+
+    <style name="ECCommonDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+    <style name="CheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_e6e7eb</item>
+        <item name="colorControlActivated">@color/color_0888ff</item>
+    </style>
 </resources>

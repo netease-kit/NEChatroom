@@ -111,6 +111,11 @@ public class SelectMemberSendGiftView extends RecyclerView {
   }
 
   public void setData(List<RoomSeat> seatList) {
+    for (RoomSeat roomSeat : seatList) {
+      if (!roomSeat.isOn()) {
+        GiftHelper.getInstance().remove(roomSeat.getSeatIndex() - 1);
+      }
+    }
     memberAdapter.setData(seatList);
   }
 

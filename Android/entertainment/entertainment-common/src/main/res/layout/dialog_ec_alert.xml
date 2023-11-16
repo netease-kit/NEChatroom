@@ -27,7 +27,7 @@
             android:paddingEnd="10dp"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_17"
-            tools:text="content"/>
+            tools:text="content" />
 
         <View
             android:id="@+id/line_bottom"

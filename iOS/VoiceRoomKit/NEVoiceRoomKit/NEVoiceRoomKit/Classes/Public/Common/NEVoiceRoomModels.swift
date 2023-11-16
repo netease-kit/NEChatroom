@@ -57,7 +57,6 @@ public class NEVoiceRoomLiveModel: NSObject {
   public var roomUuid: String?
   /// 创建人账号
   public var userUuid: String?
-
   /// 直播类型
   public var liveType: NEVoiceRoomLiveRoomType = .multiAudio
   /// 直播记录是否有效 1: 有效 -1 无效
@@ -74,12 +73,12 @@ public class NEVoiceRoomLiveModel: NSObject {
   public var audienceCount: Int = 0
   /// 麦位人数
   public var onSeatCount: Int = 0
-
   /// 打赏信息
   public var seatUserReward: [NEVoiceRoomBatchSeatUserReward]?
-
   /// 房间名称
-  var roomName: String?
+  public var roomName: String?
+  /// 当前在玩的游戏
+  public var gameName: String?
 
   init(_ live: _NECreateLiveLive?) {
     if let live = live {
@@ -98,6 +97,7 @@ public class NEVoiceRoomLiveModel: NSObject {
       if let infoSeatUserReward = live.seatUserReward {
         seatUserReward = infoSeatUserReward.map { NEVoiceRoomBatchSeatUserReward($0) }
       }
+      gameName = live.gameName
     }
   }
 }

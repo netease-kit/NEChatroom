@@ -205,22 +205,22 @@ class FloatView @JvmOverloads constructor(
             }
         }
         animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationStart(animation: Animator) {
             }
 
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 animator.removeAllUpdateListeners()
                 animator.removeAllListeners()
                 windowParamsX = endPosition
             }
 
-            override fun onAnimationCancel(animation: Animator?) {
+            override fun onAnimationCancel(animation: Animator) {
                 animator.removeAllUpdateListeners()
                 animator.removeAllListeners()
                 windowParamsX = endPosition
             }
 
-            override fun onAnimationRepeat(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {
             }
         })
         animator.start()

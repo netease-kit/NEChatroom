@@ -32,6 +32,7 @@ public class SplashActivity extends BaseActivity {
       String action = mainIntent.getAction();
       if (mainIntent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
         finish();
+        return;
       }
     }
     if (UserInfoManager.getUserInfoFromSp() != null) {

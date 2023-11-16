@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEUIChatroomMicCell.h"
-#import <NEUIKit/NEUICommon.h>
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEVoiceRoomLocalized.h"
@@ -74,7 +73,8 @@
 
 + (CGSize)size {
   CGFloat paddingW = [self cellPaddingW];
-  CGFloat width = ([NEUICommon ne_screenWidth] - [NEVoiceRoomUI margin] * 2 - 3 * paddingW) / 4;
+  CGFloat width =
+      (UIScreen.mainScreen.bounds.size.width - [NEVoiceRoomUI margin] * 2 - 3 * paddingW) / 4;
   // 最后的18是波谱加的collectionView contentInset
   CGFloat height = width + 6 + 18 + 20 + 18;
   return CGSizeMake(width, height);

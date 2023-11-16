@@ -5,12 +5,17 @@
 import Foundation
 import NERoomKit
 
-@objcMembers
+/// 上麦模式
+@objc public enum NEVoiceRoomSeatApplyMode: Int {
+  /// 自由上麦模式
+  case free = 0
+  /// 管理员审批上麦模式
+  case managerApproval = 1
+}
 
-/// 创建Karaoke房间参数
+@objcMembers
+/// 创建语聊房房间参数
 public class NECreateVoiceRoomParams: NSObject {
-  /// 用户账号Id（直播间创建者）
-  public var userUuid: String = ""
   /// 直播类型
   public var liveType: NEVoiceRoomLiveRoomType = .multiAudio
   /// 直播主题
@@ -26,7 +31,7 @@ public class NECreateVoiceRoomParams: NSObject {
 
   /// 麦位模式，0：自由模式，1：管理员控制模式，不传默认为自由模式
   /// 0申请上麦时不需要管理员同意，直接上麦；1:申请上麦时需要管理员同意
-  var seatApplyMode: Int = 1
+  public var seatApplyMode: NEVoiceRoomSeatApplyMode = .managerApproval
   /// 默认0）0抱麦时不需要对方同意；1:抱麦时需要对方同意
   var seatInviteMode: Int = 0
 }

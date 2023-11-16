@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #import "NEVoiceRoomLocalized.h"
-#import "NEChatRoomListViewController.h"
 @implementation NEVoiceRoomLocalized
 
 + (NSBundle *)ne_localBundle {

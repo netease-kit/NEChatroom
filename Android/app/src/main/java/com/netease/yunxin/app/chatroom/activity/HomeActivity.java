@@ -10,10 +10,7 @@ import com.netease.yunxin.app.chatroom.R;
 import com.netease.yunxin.app.chatroom.adapter.MainPagerAdapter;
 import com.netease.yunxin.app.chatroom.databinding.ActivityHomeBinding;
 import com.netease.yunxin.kit.alog.ALog;
-import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.activity.BasePartyActivity;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomAuthEvent;
-import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit;
 
 public class HomeActivity extends BasePartyActivity {
   private static final String TAG = "HomeActivity";
@@ -30,16 +27,6 @@ public class HomeActivity extends BasePartyActivity {
   protected void init() {
     curTabIndex = -1;
     initViews();
-    NEVoiceRoomKit.getInstance()
-        .addAuthListener(
-            evt -> {
-              ALog.i(TAG, "onVoiceRoomAuthEvent evt = " + evt);
-              if (evt == NEVoiceRoomAuthEvent.KICK_OUT) {
-                ToastX.showShortToast(R.string.app_kick_out);
-                SampleLoginActivity.startLoginActivity(HomeActivity.this);
-              }
-              if (evt != NEVoiceRoomAuthEvent.LOGGED_IN) {}
-            });
   }
 
   private void initViews() {

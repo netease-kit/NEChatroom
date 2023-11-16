@@ -256,6 +256,17 @@ interface NEVoiceRoomKit {
         callback: NEVoiceRoomCallback<Unit>? = null
     )
 
+    /**
+     * 成员申请麦位
+     * 如果当前成员为管理员，则会自动通过申请。
+     * <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
+     * @param callback 回调。
+     * <br>相关回调：申请上麦后，房间内所有成员会触发[NEVoiceRoomListener.onSeatRequestSubmitted]回调和[NEVoiceRoomListener.onSeatListChanged]回调
+     */
+    fun submitSeatRequest(
+        callback: NEVoiceRoomCallback<Unit>? = null
+    )
+
     /***
      * 取消申请上麦
      * <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
@@ -597,6 +608,7 @@ data class NEVoiceRoomKitConfig(val appKey: String, val extras: Map<String, Any?
  * @property title 房间名，支持中英文大小写、数字、特殊字符
  * @property nick 昵称
  * @property seatCount 麦位个数，默认8个,取值范围为1~20
+ * @property seatApplyMode 麦位模式，0：自由模式，1：管理员控制模式
  * @property configId 模版id
  * @property cover 封面，https链接
  * @property liveType 直播类型,参考[NELiveType]
@@ -606,13 +618,14 @@ data class NECreateVoiceRoomParams(
     val title: String,
     val nick: String,
     val seatCount: Int = 8,
+    val seatApplyMode: Int = NEVoiceRoomSeatApplyMode.managerApproval,
     val configId: Int = 0,
     val cover: String?,
     val liveType: Int = NELiveType.LIVE_TYPE_VOICE,
     val extraData: String? = null
 ) {
     override fun toString(): String {
-        return "NECreateVoiceRoomParams(title='$title', nick='$nick', seatCount=$seatCount, configId=$configId, cover=$cover, extraData=$extraData)"
+        return "NECreateVoiceRoomParams(title='$title', nick='$nick', seatCount=$seatCount，seatMode=$seatApplyMode, configId=$configId, cover=$cover, extraData=$extraData)"
     }
 }
 

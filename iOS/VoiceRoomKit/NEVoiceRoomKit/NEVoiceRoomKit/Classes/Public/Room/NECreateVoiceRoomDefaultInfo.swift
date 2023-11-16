@@ -11,6 +11,9 @@ public class NECreateVoiceRoomDefaultInfo: NSObject {
   public var topic: String?
   /// 背景图
   public var livePicture: String?
+  /// 可选背景图列表
+  public var defaultPictures: [String]?
+
   override public init() {
     super.init()
   }
@@ -19,5 +22,6 @@ public class NECreateVoiceRoomDefaultInfo: NSObject {
     self.init()
     topic = defaultInfo?.topic
     livePicture = defaultInfo?.livePicture
+    defaultPictures = defaultInfo?.defaultPictures
   }
 }

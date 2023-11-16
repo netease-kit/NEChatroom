@@ -7,3 +7,104 @@ Authentication_Check = "经慎重考虑，同意平台收集真实姓名、身�
 Authentication_Error = "身份证号或真实姓名有误\n未通过认证";
 Authentication_Succ = "实名认证通过";
 Know = "知道了";
+
+Announcement = "公告";
+Number_Of_Online = "在线%d人";
+Message_Input = "一起聊聊吧~";
+Mic = "麦克风";
+Speaker = "扬声器";
+IEMs = "耳返";
+Effects = "音效";
+Mixer = "调音台";
+End_Live = "结束直播";
+More = "更多";
+Send_Message = "发送";
+
+Announcement_Content = "本应用为示例产品，请勿商用。";
+
+Close_Room_Title = "确认结束直播？";
+Close_Room_Message = "请确认是否结束直播";
+Comfirm = "确认";
+Cancel = "取消";
+
+Seat = "麦位";
+
+Join_Room = "加入房间";
+Leave_Room = "离开房间";
+
+Seat_Leaved = "已下麦";
+Seat_Kicked = "已被主播请下麦位";
+Seat_Approved = "已上麦";
+Seat_Rejected = "申请麦位已被拒绝";
+Seat_Canceled = "已取消申请上麦";
+Seat_Submitted = "申请上麦";
+Seat_Accepted = "已上麦";
+Seat_Request = "申请麦位";
+
+Seat_Ban = "屏蔽麦位";
+Seat_Unban = "解除语音屏蔽";
+Seat_Invite = "将成员抱上麦";
+Seat_Kick = "将TA踢下麦位";
+Seat_Close = "关闭麦位";
+Seat_Open = "打开麦位";
+Seat_Approve_Cancel = "确认取消申请上麦";
+Seat_Leave = "下麦";
+
+Seat_Ban_Failed = "语音屏蔽失败";
+Seat_Unban_Failed = "解除语音屏蔽失败";
+Seat_Kick_Failed = "操作失败";
+Seat_Close_Failed = "关闭麦位失败";
+Seat_Close_Succeed = "\"麦位%d\"已关闭";
+Seat_Open_Failed = "打开麦位失败";
+Seat_Open_Succeed = "\"麦位%d\"已打开";
+Seat_Leave_Failed = "下麦失败";
+Seat_Invite_Failed = "操作失败";
+
+Seat_Kick_Other = "已将\"%@\"踢下麦位";
+Seat_Self_Kicked = "您已被主播踢下麦";
+Seat_Moved_To_Seat = "您已被主播抱上麦位 %d";
+Seat_Self_Leaved = "您已下麦";
+Seat_Approve_Rejected = "你的申请已被拒绝";
+Seat_Invite_Accepted = "已将 %@ 抱上麦位 %d";
+Seat_Request_Waiting = "已申请上麦，等待通过...";
+Seat_Request_Approved = "申请通过";
+Seat_Request_Rejected = "申请被拒绝";
+Seat_Request_Cancel_Comfirm = "确认取消申请上麦";
+
+Invite_Title = "选择成员";
+No_Members = "暂无成员~";
+
+Room_Deleted = "房间解散成功";
+Room_Closed = "房间关闭";
+
+Join_Room_Failed = "加入房间失败";
+Message_Empty = "发送内容为空";
+
+Unmute_Failed = "麦克风打开失败";
+Unmute_Succeed = "麦克风已打开";
+Mute_Failed = "静音失败";
+Mute_Succeed = "麦克风已关闭";
+
+Seat_Busy = "该麦位正在被操作";
+Seat_Waiting_Other = "该麦位正在被申请,请尝试申请其他麦位";
+Seat_Waiting_Self = "正在申请该麦位";
+Seat_Closed = "该麦位已关闭";
+
+Hide = "收起";
+
+Gift = "礼物";
+Send_Gift_To = "送给";
+Send_Gift = "赠送礼物";
+Gift_Send = "赠送";
+Glow_Stick = "荧光棒";
+Arrange = "安排";
+Sports_Car = "跑车";
+Rockets = "火箭";
+
+IEMs_Tips = "插入耳机后可使用耳返功能";
+Effects_Clap = "鼓掌声";
+Effects_Laugh = "笑声";
+Voice = "人声";
+
+Chatroom = "聊天室";
+Room_List_Empty = "暂时没有房间，请创建房间";

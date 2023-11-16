@@ -29,10 +29,6 @@ enum Configs {
   static var loginSampleBaseUrl: String {
     IS_OVERSEA ? BASE_URL_OVERSEA : BASE_URL
   }
-  
-  static var voiceRoomConfigId: Int {
-    IS_OVERSEA ? 75 : 569
-  }
 
   static var privacyUrl: String {
     UIDevice.isChinese ? "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/protocol/clauses.html" : "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/protocol/policy.html"
@@ -40,6 +36,10 @@ enum Configs {
 
   static var termsUrl: String {
     UIDevice.isChinese ? "https://yunxin.163.com/m/clauses/user" : "https://commsease.com/en/m/clauses/user"
+  }
+
+  static var voiceRoomConfigId: Int {
+    IS_OVERSEA ? 1068 : 1067
   }
 }
 

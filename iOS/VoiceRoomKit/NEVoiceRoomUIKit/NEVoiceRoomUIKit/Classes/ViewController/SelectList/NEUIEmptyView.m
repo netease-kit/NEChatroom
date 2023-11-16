@@ -6,6 +6,7 @@
 #import <NEUIKit/UIColor+NEUIExtension.h>
 #import <NEUIKit/UIView+NEUIExtension.h>
 #import "NEVoiceRoomUI.h"
+@import NESocialUIKit;
 
 @interface NEUIEmptyView ()
 @property(nonatomic, strong) UIImageView *imgView;
@@ -39,7 +40,7 @@
   if (!_imgView) {
     _imgView = [[UIImageView alloc] init];
     _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    _imgView.image = [NEVoiceRoomUI ne_voice_imageName:@"empty_ico"];
+    _imgView.image = [NESocialBundle loadImage:@"empty_ico"];
   }
   return _imgView;
 }

@@ -11,6 +11,7 @@ package com.netease.yunxin.kit.voiceroomkit.api.model
  * @property livePicture 直播房间背景
  */
 data class NEVoiceCreateRoomDefaultInfo(
-    val topic: String,
-    val livePicture: String
+    val topic: String?,
+    val livePicture: String?,
+    val defaultPictures: List<String>?
 )

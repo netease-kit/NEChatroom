@@ -25,6 +25,7 @@ import com.netease.yunxin.kit.copyrightedmedia.api.NECopyrightedMedia;
 import com.netease.yunxin.kit.copyrightedmedia.api.NEErrorCode;
 import com.netease.yunxin.kit.copyrightedmedia.api.NESongPreloadCallback;
 import com.netease.yunxin.kit.copyrightedmedia.api.SongResType;
+import com.netease.yunxin.kit.entertainment.common.utils.Utils;
 import com.netease.yunxin.kit.ordersong.core.model.OrderSongModel;
 import com.netease.yunxin.kit.ordersong.ui.R;
 import com.netease.yunxin.kit.ordersong.ui.databinding.OrderItemLayoutBinding;
@@ -95,8 +96,12 @@ public class OrderAdapter extends CommonMoreAdapter<OrderSongModel, OrderItemLay
         getBinding().songCover.setData(item.getSongCover(), "");
       }
       getBinding().songName.setText(item.getSongName());
-      if (!item.getSingers().isEmpty()) {
-        getBinding().userName.setText(item.getSingers().get(0).getSingerName());
+      if (item.getSingers() != null && !item.getSingers().isEmpty()) {
+        getBinding()
+            .userName
+            .setText(
+                Utils.getApp()
+                    .getString(R.string.singer, item.getSingers().get(0).getSingerName()));
       }
       int channelIconRes = getChannelIconRes(item.getChannel());
       getBinding().channelIcon.setImageResource(channelIconRes);
@@ -146,13 +151,13 @@ public class OrderAdapter extends CommonMoreAdapter<OrderSongModel, OrderItemLay
   }
 
   private static int getChannelIconRes(int channel) {
-    int channelIconRes = R.drawable.icon_cloud_music;
+    int channelIconRes = R.drawable.icon_cloud_music_gray;
     switch (channel) {
       case CLOUD_MUSIC:
-        channelIconRes = R.drawable.icon_cloud_music;
+        channelIconRes = R.drawable.icon_cloud_music_gray;
         break;
       case MI_GU:
-        channelIconRes = R.drawable.icon_migu;
+        channelIconRes = R.drawable.icon_migu_gray;
         break;
       default:
         break;

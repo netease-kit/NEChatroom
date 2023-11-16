@@ -215,7 +215,7 @@ extension AppDelegate {
     let config = NEVoiceRoomKitConfig()
     config.appKey = appKey
     var voiceRoomExtras = extras
-      voiceRoomExtras["baseUrl"] = Configs.voiceRoomBaseUrl
+    voiceRoomExtras["baseUrl"] = Configs.voiceRoomBaseUrl
     config.extras = voiceRoomExtras
     NEVoiceRoomUIManager.sharedInstance().initialize(with: config, configId: Configs.voiceRoomConfigId, callback: callback)
     NEVoiceRoomUIManager.sharedInstance().delegate = self
@@ -326,7 +326,7 @@ extension AppDelegate: NEVoiceRoomUIDelegate {
     switch event {
     case .kicOut,.forbidden:
       IHProgressHUD.showError(withStatus: "Kick_Out".localized)
-      NEVoiceRoomFloatWindowSingleton.ins().clickCloseButton(!NEVoiceRoomFloatWindowSingleton.ins().hasFloatingView())
+      NESocialFloatWindow.instance.closeAction?({})
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
           if let tab = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController,
              let home = tab.viewControllers?[0] as? UINavigationController,

@@ -258,7 +258,7 @@ object NEOrderSongService {
                 {
                     val singers = songModel.singers
                     val singer = StringBuilder()
-                    if (singers.isNotEmpty()) {
+                    if (singers?.isNotEmpty() == true) {
                         singers.forEachIndexed { index, neCopyrightedSinger ->
                             if (index != singers.size - 1) {
                                 singer.append(neCopyrightedSinger.singerName).append("/")

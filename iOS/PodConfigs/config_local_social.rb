@@ -256,3 +256,48 @@ module NEListenTogetherUIKit
     pod.pod NEListenTogetherUIKit.name, :path => NEListenTogetherUIKit.path
   end
 end
+
+# ---------- NEVoiceRoomBaseUIKit ----------
+module NEVoiceRoomBaseUIKit
+  def self.name
+    "NEVoiceRoomBaseUIKit"
+  end
+
+  def self.path
+    "VoiceRoomKit/NEVoiceRoomBaseUIKit/NEVoiceRoomBaseUIKit.podspec"
+  end
+
+  def self.install(pod)
+    pod.pod NEVoiceRoomBaseUIKit.name, :path => NEVoiceRoomBaseUIKit.path
+  end
+end
+
+# ---------- NEGameKit ----------
+module NEGameKit
+  def self.name
+    "NEGameKit"
+  end
+
+  def self.path
+    "VoiceRoomKit/NEGame/NEGameKit/NEGameKit.podspec"
+  end
+
+  def self.install(pod)
+    pod.pod NEGameKit.name, :path => NEGameKit.path
+  end
+end
+
+# ---------- NEGameUIKit ----------
+module NEGameUIKit
+  def self.name
+    "NEGameUIKit"
+  end
+
+  def self.path
+    "VoiceRoomKit/NEGame/NEGameUIKit/NEGameUIKit.podspec"
+  end
+
+  def self.install(pod)
+    pod.pod NEGameUIKit.name, :path => NEGameUIKit.path
+  end
+end

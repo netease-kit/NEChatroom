@@ -49,6 +49,8 @@
           [weakSelf closeRoom];
           return;
         }
+        // 版权设置为听歌场景
+        [[NEOrderSong getInstance] setSongScene:TYPE_LISTENING_TO_MUSIC];
         [NEVoiceRoomKit.getInstance enableAudioVolumeIndicationWithEnable:true interval:1000];
         [[NEOrderSong getInstance] configRoomSetting:weakSelf.detail.liveModel.roomUuid
                                         liveRecordId:weakSelf.detail.liveModel.liveRecordId];

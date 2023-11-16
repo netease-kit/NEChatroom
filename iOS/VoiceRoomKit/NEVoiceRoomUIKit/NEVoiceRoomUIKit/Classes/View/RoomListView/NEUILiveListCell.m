@@ -5,7 +5,6 @@
 #import "NEUILiveListCell.h"
 #import <Masonry/Masonry.h>
 #import <SDWebImage/SDWebImage.h>
-#import "NEUICreateRoomTitleButton.h"
 #import "NEVoiceRoomUI.h"
 #import "NSString+NTES.h"
 #import "NTESGlobalMacro.h"
