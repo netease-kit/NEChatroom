@@ -1,10 +1,9 @@
 # 简介
 
-网易云信语聊房场景方案为您提供 iOS 和 Android 端的 Demo App 与示例项目源码。您可以安装对应 App，快速体验网易云信语聊房和一起听场景。
+网易云信语聊房场景方案为您提供 iOS 和 Android 端的 Demo App 与示例项目源码。您可以安装对应 App，快速体验网易云信语聊房。
 
 
 # 功能列表
-语聊房 Demo 提供标准语聊房和一起听两个场景，功能列表分别如下：
 标准语聊房的主要功能如下表所示。
 
 |  主要功能   | 功能描述  |
@@ -24,34 +23,18 @@
 | 音频波谱  | 主播、连麦者说话时，相应的麦位上会展示音频波谱，以便观众识别当前说话者。 |
 
 
-一起听的主要功能如下表所示。
-
-|  主要功能 | 功能描述 |
-|  ----  | ----  |
-|  一起听歌 | 房主和连麦者均可进行点歌、切歌、暂停/恢复播放、拖动进度条。  |
-|  融合曲库  | 数十万首版权歌曲实时更新。<br>覆盖 70、80 劲歌金曲、 Y 时代流行音乐、Z 时代热门原创，完美匹配不同用户圈层。  |
-|  实时语音通话  | 房主和连麦者可以进行语音互动。  |
-|  即时消息  | 房主和连麦者可以进行文字聊天。  |
-
-
 
 # 效果演示
 
-> 内容拷贝场景方案文档的 “体验Demo ”章节。包括Demo的二维码和界面效果图展示。
-> 如果前面功能列表中已经有界面截图，这里可以不再添加界面截图。
-> 您可以扫描下方二维码，下载并体验在线 K 歌 Demo App。
+> 您可以扫描下方二维码，下载并体验demo。
 
-| iOS                                                          | Android                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](pic/download_url.png)  |  ![](pic/download_url.png) | 
+| iOS    | Android  |
+|  ----  | ----  |
+| ![](pic/download_ios.png)  |  ![](pic/download_android.png) | 
 
 标准语聊房 的界面效果如下图所示：
 
 ![](pic/effect_picture_1.png)
-
-一起听 的界面效果如下图所示：
-
-![](pic/effect_picture_2.png)
 
 
 # 联系我们
@@ -70,3 +53,6 @@
 - [PK连麦](https://github.com/netease-kit/OnlinePK)
 - [在线教育](https://github.com/netease-kit/WisdomEducation)
 - [多人视频通话](https://github.com/netease-kit/NEGroupCall)
+- [一起听](https://github.com/netease-kit/NEListenTogether)
+- [在线K歌](https://github.com/netease-kit/NEKaraoke)
+- [云信娱乐社交服务端 Nemo](https://github.com/netease-kit/nemo)
