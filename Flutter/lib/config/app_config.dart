@@ -30,7 +30,6 @@ class AppConfig {
   String get roomKitUrl => _isOverSea ? 'https://roomkit-sg.netease.im' : 'https://roomkit.netease.im';
   // 请填写应用对应的configId，可在云信控制台的”产品功能/房间组件模版/语聊房/角色管理“页面获取
   int get configId => _isOverSea ? 75 : 1067;
-  Map<String, String> get extras => _isOverSea ? {'serverUrl':'oversea', 'baseUrl':baseUrl}: {'baseUrl':baseUrl};
 
   late String versionName;
 
