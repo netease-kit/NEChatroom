@@ -500,6 +500,16 @@ class S {
     );
   }
 
+  /// `Decline to go on mic.`
+  String get rejectInviteSeat {
+    return Intl.message(
+      'Decline to go on mic.',
+      name: 'rejectInviteSeat',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You have left a seat`
   String get downSeat {
     return Intl.message(
@@ -540,10 +550,10 @@ class S {
     );
   }
 
-  /// `You are moved to Seat`
+  /// `Moved to Seat`
   String get onSeatedTips {
     return Intl.message(
-      'You are moved to Seat',
+      'Moved to Seat',
       name: 'onSeatedTips',
       desc: '',
       args: [],
@@ -785,6 +795,16 @@ class S {
     return Intl.message(
       'Remove',
       name: 'kickoutSeatSure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm to go on mic?`
+  String get onSeatSure {
+    return Intl.message(
+      'Confirm to go on mic?',
+      name: 'onSeatSure',
       desc: '',
       args: [],
     );
@@ -1257,36 +1277,6 @@ class S {
     return Intl.message(
       'No internet',
       name: 'noInternet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Audio Room`
-  String get sampleLoginDesc {
-    return Intl.message(
-      'Audio Room',
-      name: 'sampleLoginDesc',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Start exploring`
-  String get startExploring {
-    return Intl.message(
-      'Start exploring',
-      name: 'startExploring',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Login successfully`
-  String get loginSuccess {
-    return Intl.message(
-      'Login successfully',
-      name: 'loginSuccess',
       desc: '',
       args: [],
     );

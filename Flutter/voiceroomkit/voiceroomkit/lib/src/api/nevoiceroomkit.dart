@@ -23,6 +23,12 @@ abstract class NEVoiceRoomKit {
   /// 是否已经登录
   Future<bool> get isLoggedIn;
 
+  /// current userUuid
+  String? get userUuid;
+
+  /// nickname
+  String? nickname;
+
   ///
   /// 初始化
   /// [options] 初始化参数
@@ -311,11 +317,15 @@ abstract class NEVoiceRoomKit {
 class NEVoiceRoomKitOptions {
   NEVoiceRoomKitOptions({
     required this.appKey,
+    required this.voiceRoomUrl,
     Map<String, String>? extras,
   }) : extras = extras != null ? Map.from(extras) : const {};
 
   /// 应用 appKey
   final String appKey;
+
+  /// 语聊房业务接口host
+  final String voiceRoomUrl;
 
   /// 额外参数
   final Map<String, String>? extras;

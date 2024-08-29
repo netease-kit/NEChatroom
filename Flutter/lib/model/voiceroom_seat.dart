@@ -73,7 +73,7 @@ class Reason {
   static const int ANCHOR_APPROVE_APPLY = 1;
 
   /// 主播抱上麦
-  static const int ANCHOR_INVITE = 2;
+  static const int ANCHOR_INVITE_ACCEPT = 2;
 
   /// 主播踢下麦
   static const int ANCHOR_KICK = 3;
@@ -83,4 +83,7 @@ class Reason {
 
   /// 主播拒绝申请
   static const int ANCHOR_DENY_APPLY = 6;
+
+  /// 主播抱上麦申请
+  static const int ANCHOR_INVITE_APPLY = 7;
 }

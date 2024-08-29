@@ -9,10 +9,10 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
-import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
 import 'package:voiceroomkit_ui/model/voiceroom_seat.dart';
 import 'package:voiceroomkit_ui/model/voiceroom_seat_event.dart';
+import 'package:voiceroomkit_ui/service/auth/auth_manager.dart';
 import 'package:voiceroomkit_ui/utils/seat_util.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 import 'package:voiceroomkit_ui/widgets/chatroom_list_view.dart';
@@ -187,10 +187,38 @@ class SeatViewModel extends ChangeNotifier {
     VoiceRoomKitLog.i(tag,
         "_notifySeatInvitationAccepted,seatIndex:$seatIndex,account:$account,isAutoAgree:$isAutoAgree");
     if (SeatUtil.isSelf(account)) {
-      eventBus
-          .fire(VoiceRoomSeatEvent(account, seatIndex, Reason.ANCHOR_INVITE));
+      eventBus.fire(
+          VoiceRoomSeatEvent(account, seatIndex, Reason.ANCHOR_INVITE_ACCEPT));
     }
+    _buildSeatEventMessage(account, S.current.onSeatedTips);
     notifyListeners();
+  }
+
+  void _notifySeatInvitationReceived(
+      int seatIndex, String account, String operateBy) {
+    VoiceRoomKitLog.i(
+        tag,
+        "_notifySeatInvitationReceived,seatIndex:$seatIndex" +
+            ",account:$account,operateBy:$operateBy");
+
+    eventBus.fire(
+        VoiceRoomSeatEvent(account, seatIndex, Reason.ANCHOR_INVITE_APPLY));
+  }
+
+  void _notifySeatInvitationCancelled(
+      int seatIndex, String account, String operateBy) {
+    VoiceRoomKitLog.i(
+        tag,
+        "_notifySeatInvitationCancelled,seatIndex:$seatIndex" +
+            ",account:$account,operateBy:$operateBy");
+  }
+
+  void _notifySeatInvitationRejected(int seatIndex, String account) {
+    VoiceRoomKitLog.i(
+        tag,
+        "_notifySeatInvitationRejected,seatIndex:$seatIndex" +
+            ",account:$account");
+    _buildSeatEventMessage(account, S.current.rejectInviteSeat);
   }
 
   void _notifySeatListChanged(List<NEVoiceRoomSeatItem> seatItems) {
@@ -273,7 +301,7 @@ class SeatViewModel extends ChangeNotifier {
       if (item.onSeatType == NEVoiceRoomOnSeatType.request) {
         reason = Reason.ANCHOR_APPROVE_APPLY;
       } else if (item.onSeatType == NEVoiceRoomOnSeatType.invitation) {
-        reason = Reason.ANCHOR_INVITE;
+        reason = Reason.ANCHOR_INVITE_ACCEPT;
       } else {
         reason = Reason.NONE;
       }
@@ -411,33 +439,6 @@ class SeatViewModel extends ChangeNotifier {
         NEVoiceRoomMember(anchorInfo.account!, anchorInfo.nick!, role, true,
             false, anchorInfo.avatar));
     notifyListeners();
-  }
-
-  void _notifySeatInvitationReceived(
-      int seatIndex, String account, String operateBy) {
-    VoiceRoomKitLog.i(
-        tag,
-        "_notifySeatInvitationReceived,seatIndex:$seatIndex" +
-            ",account:$account,operateBy:$operateBy");
-    // if(!isAnchor){
-    //    NEVoiceRoomKit.instance.acceptSeatInvitation();
-    //    NEVoiceRoomKit.instance.rejectSeatInvitation();
-    // }
-  }
-
-  void _notifySeatInvitationCancelled(
-      int seatIndex, String account, String operateBy) {
-    VoiceRoomKitLog.i(
-        tag,
-        "_notifySeatInvitationCancelled,seatIndex:$seatIndex" +
-            ",account:$account,operateBy:$operateBy");
-  }
-
-  void _notifySeatInvitationRejected(int seatIndex, String account) {
-    VoiceRoomKitLog.i(
-        tag,
-        "_notifySeatInvitationRejected,seatIndex:$seatIndex" +
-            ",account:$account");
   }
 }
 

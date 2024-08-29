@@ -9,7 +9,7 @@ class LoadingUtil {
     BotToast.showLoading();
   }
 
-  static void cancelLoading() {
+  static void hideLoading() {
     BotToast.closeAllLoading();
   }
 }

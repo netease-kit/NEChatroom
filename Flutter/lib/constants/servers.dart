@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'package:voiceroomkit_ui/app_config.dart';
+import 'package:voiceroomkit_ui/config/app_config.dart';
 
 class Servers {
   /// 隐私协议链接

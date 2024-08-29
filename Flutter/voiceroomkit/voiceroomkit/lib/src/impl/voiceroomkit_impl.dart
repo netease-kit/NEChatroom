@@ -25,13 +25,17 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   static const String ERROR_MSG_LIVEID_NOT_EXIST = "LiveId not exist";
 
   static const String SERVER_URL_KEY = "serverUrl";
-  static const String BASE_URL_KEY = "baseUrl";
   static const String HTTP_PREFIX = "http";
   static const String TEST_URL_VALUE = "test";
   static const String OVERSEA_URL_VALUE = "oversea";
   static const String OVERSEA_SERVER_URL = "https://roomkit-sg.netease.im/";
   // 自己操作后的mute状态，区别于ban之后的mute
   bool _isSelfMuted = false;
+
+  String? _userUuid;
+
+  @override
+  String? get userUuid => _userUuid;
 
   @override
   void addAuthListener(NEVoiceRoomAuthEventCallback listener) {
@@ -191,19 +195,17 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   @override
   Future<VoidResult> endRoom() async {
     commonLogger.i("endRoom");
-    if (_currentRoomContext == null) {
-      commonLogger.e('endRoom currentRoomContext is null');
-      return const NEResult(code: -1, msg: "currentRoomContext is null");
+
+    if (_currentRoomContext != null) {
+      _currentRoomContext!.endRoom().then((value) {
+        if (value.isSuccess()) {
+          commonLogger.i("endRoom success");
+        } else {
+          commonLogger
+              .e("endRoom error code = ${value.code} message = ${value.msg}");
+        }
+      });
     }
-    _currentRoomContext!.endRoom().then((value) {
-      if (value.isSuccess()) {
-        commonLogger.i("endRoom success");
-      } else {
-        commonLogger
-            .e("endRoom error code = ${value.code} message = ${value.msg}");
-      }
-      _reset();
-    });
 
     if (_voiceRoomInfo?.liveModel?.liveRecordId != null) {
       var stopRet = await _NEVoiceRoomHttpRepository.stopVoiceRoom(
@@ -214,6 +216,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
         commonLogger.e(
             "stopVoiceRoom error code = ${stopRet.code} message = ${stopRet.msg}");
       }
+      _reset();
       return stopRet;
     } else {
       commonLogger.e("_voiceRoomInfo?.liveModel?.liveRecordId == null");
@@ -346,14 +349,13 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
       }
     }
     realExtras[SERVER_URL_KEY] = realRoomServerUrl;
-    if (options.extras?[BASE_URL_KEY] != null) {
-      var baseUrl = options.extras?[BASE_URL_KEY];
-      ServersConfig().serverUrl = baseUrl ?? '';
+    if (TextUtils.isNotEmpty(options.voiceRoomUrl)) {
+      ServersConfig().serverUrl = options.voiceRoomUrl;
     }
-    ServersConfig().appKey = options.appKey;
-    _NEVoiceRoomHttpRepository.appKey = options.appKey;
+    ServersConfig().appkey = options.appKey;
+    ServersConfig().deviceId = const Uuid().v1();
     commonLogger.i(
-        "ServersConfig().baseUrl:${ServersConfig().baseUrl},realRoomServerUrl:$realRoomServerUrl,isOversea:$isOversea,realExtras:$realExtras");
+        "ServersConfig() realRoomServerUrl:$realRoomServerUrl,isOversea:$isOversea,realExtras:$realExtras");
     if (isOversea) {
       NEServerConfig serversConfig = NEServerConfig();
       NEIMServerConfig imServerConfig = NEIMServerConfig();
@@ -397,7 +399,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     var joinRet = await NERoomKit.instance.roomService.joinRoom(
         NEJoinRoomParams(
             roomUuid: params.roomUuid,
-            userName: params.nick,
+            userName: nickname ?? userUuid!,
             avatar: params.avatar,
             role: params.role.name.toLowerCase(),
             initialMyProperties: params.extraData),
@@ -411,9 +413,21 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
           .e('joinRoom error: code = ${joinRet.code} msg = ${joinRet.msg}');
       return NEResult(code: joinRet.code, msg: joinRet.msg);
     }
-
     commonLogger.i('joinRoom roomUuid=${params.roomUuid} success');
     _currentRoomContext = joinRet.data;
+
+    var joinedRet =
+        await _NEVoiceRoomHttpRepository.joinedLive(params.liveRecordId);
+    if (!joinedRet.isSuccess()) {
+      /// joined live failed
+      commonLogger
+          .e('joinedLive failed code:${joinedRet.code} msg:${joinedRet.msg}');
+      var _ = await _currentRoomContext?.leaveRoom();
+      _NEVoiceRoomHttpRepository.stopVoiceRoom(params.liveRecordId);
+      _reset();
+      return NEResult(code: joinRet.code, msg: joinRet.msg);
+    }
+
     _setAudioProfile();
     _roomEventCallback = NERoomEventCallback(
         memberJoinRtcChannel: _notifyMemberJoinRtcChannel,
@@ -539,15 +553,16 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   @override
   Future<VoidResult> login(String account, String token) {
     commonLogger.i('login account:$account token:$token');
+    _userUuid = userUuid;
     ServersConfig().token = token;
     ServersConfig().userUuid = account;
-    ServersConfig().deviceId = const Uuid().v1();
     return NERoomKit.instance.authService.login(account, token);
   }
 
   @override
   Future<VoidResult> logout() {
     commonLogger.i('logout');
+    _userUuid = null;
     ServersConfig().token = "";
     ServersConfig().userUuid = "";
     ServersConfig().deviceId = "";
@@ -1000,7 +1015,7 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
     }
   }
 
-  void _notifyRtcChannelError(int code) {
+  void _notifyRtcChannelError(String? channel, int code) {
     for (var callback in _eventCallbacks.copy()) {
       callback.rtcChannelErrorCallback?.call(code);
     }
@@ -1216,10 +1231,10 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
 
   void _reset() {
     commonLogger.i("_reset");
-    _removeListener();
     _voiceRoomInfo = null;
     _currentRoomContext = null;
     currentSeatItems = null;
+    _removeListener();
   }
 
   @override

@@ -6,8 +6,9 @@ import 'dart:async';
 
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import '../base/base_state.dart';
-import 'sample_login_widget.dart';
+import 'package:voiceroomkit_ui/base/base_state.dart';
+
+import 'widgets/sample_login_widget.dart';
 
 class LoginRoute extends StatefulWidget {
   const LoginRoute({Key? key}) : super(key: key);

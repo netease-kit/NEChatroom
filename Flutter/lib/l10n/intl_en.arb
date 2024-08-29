@@ -45,11 +45,12 @@
   "alreadySeat": "You have taken a seat",
   "applyCanceled": "Request to speak was cancelled",
   "requestRejected": "Your request was rejected",
+  "rejectInviteSeat": "Decline to go on mic.",
   "downSeat": "You have left a seat",
   "kickoutSeatByHost": "removed from the seat",
   "applySeat": "Seat Request",
   "notify": "Notification",
-  "onSeatedTips": "You are moved to Seat",
+  "onSeatedTips": "Moved to Seat",
   "onSeatedTips2": "You can speak now \n To leave the seat, click your avatar or the Leave button",
   "seatMuted": "The seat is muted, Unable to speak",
   "voiceChatRoom": "Voice chat room",
@@ -74,6 +75,7 @@
   "seatAlreadyTaken": "Seat is already taken",
   "alreadyLeaveSeat": "You are moved to audience",
   "kickoutSeatSure": "Remove",
+  "onSeatSure": "Confirm to go on mic?",
   "closeSeatTip": "is closed",
   "kickoutSeatSuccessTip1": "Move",
   "kickoutSeatSuccessTip2": "to audience",
@@ -121,8 +123,5 @@
   "voiceRoomLive": "VoiceRoom Live",
   "topAndCoverEmptyHint": "topic and cover should not be empty",
   "startLiveFailed": "start live failed",
-  "noInternet": "No internet",
-  "sampleLoginDesc": "Audio Room",
-  "startExploring": "Start exploring",
-  "loginSuccess": "Login successfully"
+  "noInternet": "No internet"
 }

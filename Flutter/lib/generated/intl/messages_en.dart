@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a en locale. All the
 // messages from the main program should be duplicated here with the same
@@ -103,8 +107,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "loadFailed": MessageLookupByLibrary.simpleMessage("Load failed"),
         "loaded": MessageLookupByLibrary.simpleMessage("Loaded"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
-        "loginSuccess":
-            MessageLookupByLibrary.simpleMessage("Login successfully"),
         "logoutEn": MessageLookupByLibrary.simpleMessage("Log out"),
         "micOff": MessageLookupByLibrary.simpleMessage("Microphone Off"),
         "micOn": MessageLookupByLibrary.simpleMessage("Microphone On"),
@@ -123,8 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "noInternet": MessageLookupByLibrary.simpleMessage("No internet"),
         "noMore": MessageLookupByLibrary.simpleMessage("No more"),
         "notify": MessageLookupByLibrary.simpleMessage("Notification"),
-        "onSeatedTips":
-            MessageLookupByLibrary.simpleMessage("You are moved to Seat"),
+        "onSeatSure":
+            MessageLookupByLibrary.simpleMessage("Confirm to go on mic?"),
+        "onSeatedTips": MessageLookupByLibrary.simpleMessage("Moved to Seat"),
         "onSeatedTips2": MessageLookupByLibrary.simpleMessage(
             "You can speak now \n To leave the seat, click your avatar or the Leave button"),
         "online": MessageLookupByLibrary.simpleMessage(""),
@@ -142,6 +145,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Refresh completed"),
         "refreshFailed": MessageLookupByLibrary.simpleMessage("Refresh failed"),
         "refreshing": MessageLookupByLibrary.simpleMessage("Refreshing..."),
+        "rejectInviteSeat":
+            MessageLookupByLibrary.simpleMessage("Decline to go on mic."),
         "rejectSeatRequestTips": m0,
         "releaseToLoad":
             MessageLookupByLibrary.simpleMessage("Release to load"),
@@ -150,7 +155,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestRejected":
             MessageLookupByLibrary.simpleMessage("Your request was rejected"),
         "roomName": MessageLookupByLibrary.simpleMessage("Room Name"),
-        "sampleLoginDesc": MessageLookupByLibrary.simpleMessage("Audio Room"),
         "seatAlreadyClosed":
             MessageLookupByLibrary.simpleMessage("The seat is closed"),
         "seatAlreadyTaken":
@@ -169,8 +173,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "settingTitle": MessageLookupByLibrary.simpleMessage("User Profile"),
         "space": MessageLookupByLibrary.simpleMessage(" "),
-        "startExploring":
-            MessageLookupByLibrary.simpleMessage("Start exploring"),
         "startLive": MessageLookupByLibrary.simpleMessage("Start Live"),
         "startLiveFailed":
             MessageLookupByLibrary.simpleMessage("start live failed"),

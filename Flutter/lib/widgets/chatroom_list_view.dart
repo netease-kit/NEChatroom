@@ -5,7 +5,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:voiceroomkit_ui/app_config.dart';
+import 'package:voiceroomkit_ui/config/app_config.dart';
 import 'package:voiceroomkit_ui/constants/asset_name.dart';
 
 import '../generated/l10n.dart';

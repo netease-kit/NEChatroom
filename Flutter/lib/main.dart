@@ -4,52 +4,61 @@
 
 import 'dart:async';
 import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
+import 'package:provider/provider.dart';
+import 'package:voiceroomkit_ui/base/base_state.dart';
+import 'package:voiceroomkit_ui/constants/consts.dart';
 import 'package:voiceroomkit_ui/constants/style/app_style_util.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
-import 'package:voiceroomkit_ui/app_config.dart';
+import 'package:voiceroomkit_ui/config/app_config.dart';
+import 'package:voiceroomkit_ui/service/auth/auth_manager.dart';
 import 'package:voiceroomkit_ui/utils/audio_helper.dart';
+import 'package:voiceroomkit_ui/utils/nav_utils.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
-
-import 'auth/service/auth_manager.dart';
-import 'base/base_state.dart';
 import 'constants/router_name.dart';
 import 'utils/application.dart';
 import 'base/net_util.dart';
 import 'utils/nav_register.dart';
-import 'utils/nav_utils.dart';
 
 void main() {
   AppStyle.setStatusBarTextBlackColor();
-  VoiceRoomKitLog.init()
-      .then((value) => VoiceRoomKitLog.i("main", "log init result = $value"));
+
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    VoiceRoomKitLog.init()
+        .then((value) => VoiceRoomKitLog.i("main", "log init result = $value"));
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
       AppConfig().init().then((value) {
-        var options =
-        NEVoiceRoomKitOptions(appKey: AppConfig().appKey, extras: AppConfig().extras);
-        NEVoiceRoomKit.instance.initialize(options).then((value) {
+        // _initializeFlutterFire();
+
+        var extras = <String, String>{};
+        extras["serverUrl"] = AppConfig().roomKitUrl;
+        NEVoiceRoomKit.instance
+            .initialize(NEVoiceRoomKitOptions(
+                appKey: AppConfig().appKey,
+                voiceRoomUrl: AppConfig().baseUrl,
+                extras: extras))
+            .then((value) {
+          VoiceRoomKitLog.d(moduleName, "NELiveKit initialize success");
           AuthManager().init().then((e) {
-          runApp(NEVoiceRoomApp());
-          if (Platform.isAndroid) {
-            var systemUiOverlayStyle = const SystemUiOverlayStyle(
-                systemNavigationBarColor: Colors.black,
-                statusBarColor: Colors.transparent,
-                statusBarBrightness: Brightness.light,
-                statusBarIconBrightness: Brightness.light);
-            SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-          }
-          NetUtil().addListener();
+            runApp(NEVoiceRoomApp());
+            if (Platform.isAndroid) {
+              var systemUiOverlayStyle = const SystemUiOverlayStyle(
+                  systemNavigationBarColor: Colors.black,
+                  statusBarColor: Colors.transparent,
+                  statusBarBrightness: Brightness.light,
+                  statusBarIconBrightness: Brightness.light);
+              SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+            }
           });
         });
+        NetUtil().addListener();
       });
     });
   }, (Object error, StackTrace stack) {
@@ -90,21 +99,20 @@ class NEVoiceRoomApp extends StatelessWidget {
               builder: (ctx) => builder(ctx),
               settings: RouteSettings(name: settings.name));
         },
-        localizationsDelegates: const [
-          S.delegate,
+        localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        localeResolutionCallback: (deviceLocale, supportedLocales) {
-          print('deviceLocale languageCode: ${deviceLocale?.languageCode}');
-          if (languageCodeZh == deviceLocale?.languageCode) {
-            AppConfig().language = languageCodeZh;
-          } else {
-            AppConfig().language = languageCodeEn;
-          }
-        },
+        // localeResolutionCallback: (deviceLocale, supportedLocales) {
+        //   print('deviceLocale languageCode: ${deviceLocale?.languageCode}');
+        //   if (languageCodeZh == deviceLocale?.languageCode) {
+        //     AppConfig().language = languageCodeZh;
+        //   } else {
+        //     AppConfig().language = languageCodeEn;
+        //   }
+        // },
         supportedLocales: const [
           Locale('en', 'US'),
           Locale('zh', 'CN'),

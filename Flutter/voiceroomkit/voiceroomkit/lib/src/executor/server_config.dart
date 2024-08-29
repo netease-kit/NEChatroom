@@ -5,7 +5,7 @@
 part of netease_voiceroomkit;
 
 class ServersConfig {
-  String _appKey = "";
+  static final String _serverUrl = 'https://roomkit-dev.netease.im';
 
   int get connectTimeout => 30000;
 
@@ -25,22 +25,15 @@ class ServersConfig {
     }
   }
 
-  set appKey(String appKey) {
-    if (TextUtils.isNotEmpty(appKey)) {
-      _appKey = appKey;
-    }
-  }
-
   String get baseUrl {
-    var baseUrl = _privateServerUrl;
+    var baseUrl = TextUtils.isNotEmpty(_privateServerUrl)
+        ? _privateServerUrl
+        : _serverUrl;
     return baseUrl!;
-  }
-
-  String get appKey {
-    return _appKey;
   }
 
   String? userUuid;
   String? token;
   String? deviceId;
+  String? appkey;
 }

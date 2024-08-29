@@ -56,12 +56,12 @@ class LiveListFooter extends Footer {
       this.loadedText,
       this.loadFailedText,
       this.noMoreText,
-      this.showInfo: true,
+      this.showInfo = true,
       this.infoText,
-      this.bgColor: Colors.transparent,
-      this.textColor: AppColors.white_50_ffffff,
+      this.bgColor = Colors.transparent,
+      this.textColor = AppColors.white_50_ffffff,
       this.darkTextColor = AppColors.black_50_000000,
-      this.infoColor: Colors.teal,
+      this.infoColor = Colors.teal,
       this.isLight = true})
       : super(
           extent: extent,

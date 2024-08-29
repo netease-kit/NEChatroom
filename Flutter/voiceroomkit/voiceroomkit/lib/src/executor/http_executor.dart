@@ -19,8 +19,8 @@ class _HttpExecutor with _AloggerMixin {
   _HttpExecutor._internal() {
     var options = http.BaseOptions(
         baseUrl: _serversConfig.baseUrl,
-        connectTimeout: _serversConfig.connectTimeout,
-        receiveTimeout: _serversConfig.receiveTimeout);
+        connectTimeout: Duration(milliseconds: _serversConfig.connectTimeout),
+        receiveTimeout: Duration(milliseconds: _serversConfig.receiveTimeout));
 
     dio = http.Dio(options);
   }
@@ -31,21 +31,23 @@ class _HttpExecutor with _AloggerMixin {
     Map<String, dynamic>? _baseHeaders = {
       'deviceId': _serversConfig.deviceId,
       'clientType': 'aos',
-      'appkey': _serversConfig.appKey,
       'user': _serversConfig.userUuid,
       'token': _serversConfig.token,
+      'appkey': _serversConfig.appkey,
       'Accept-Language': _getLanguage(),
     };
     try {
       var options = http.Options();
       options.headers = mergeHeaders(_baseHeaders, headers);
-      commonLogger.i('execute path:$path header:${options.headers} data:$data');
+      commonLogger.i(
+          '=====> request post path:$path header:${options.headers} data:$data');
       if (path.startsWith('http')) {
         response =
             await dio.postUri(Uri.parse(path), data: data, options: options);
       } else {
         response = await dio.post(path, data: data, options: options);
       }
+      commonLogger.i('<===== response post path:$path result:$response');
     } on http.DioError catch (e) {
       commonLogger.e('execute error:$e');
     }
@@ -95,20 +97,21 @@ class _HttpExecutor with _AloggerMixin {
     Map<String, dynamic>? _baseHeaders = {
       'deviceId': _serversConfig.deviceId,
       'clientType': 'aos',
-      'appkey': _serversConfig.appKey,
       'user': _serversConfig.userUuid,
       'token': _serversConfig.token,
+      'appkey': _serversConfig.appkey,
       'Accept-Language': _getLanguage(),
     };
     try {
       var options = http.Options();
       options.headers = mergeHeaders(_baseHeaders, headers);
-      commonLogger.i('execute path:$path header:${options.headers} ');
+      commonLogger.i('=====> request get path:$path header:${options.headers}');
       if (path.startsWith('http')) {
         response = await dio.getUri(Uri.parse(path));
       } else {
         response = await dio.get(path, options: options);
       }
+      commonLogger.i('=====> response get path:$path result:${response}');
     } on http.DioError catch (e) {
       commonLogger.e('execute error:$e');
     }

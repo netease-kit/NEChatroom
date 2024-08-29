@@ -44,8 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     // init
-    NEVoiceRoomKit.instance
-        .initialize(NEVoiceRoomKitOptions(appKey: "your app key"));
+    NEVoiceRoomKit.instance.initialize(
+        NEVoiceRoomKitOptions(appKey: "your app key", voiceRoomUrl: ''));
     // login
     NEVoiceRoomKit.instance.login("your account", "your token");
     // createRoom
@@ -73,7 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),

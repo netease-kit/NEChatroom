@@ -7,10 +7,8 @@ part of netease_voiceroomkit;
 class _NEVoiceRoomHttpRepository {
   static var manager = _HttpExecutor();
 
-  static late String appKey;
-
-  static String _path(String subPath, String module, String version) {
-    return '/scene/apps/$appKey/$module/$version/$subPath';
+  static String _path(String subPath) {
+    return '/nemo/entertainmentLive/live/$subPath';
   }
 
   /// POST http://{host}/scene/apps/{appKey}/ent/live/v1/list HTTP/1.1
@@ -70,6 +68,14 @@ class _NEVoiceRoomHttpRepository {
         await manager._post('/nemo/entertainmentLive/live/createLive', body);
     var response = NEVoiceRoomInfo.fromJson(ret.data);
     return NEResult(code: ret.code, msg: ret.msg, data: response);
+  }
+
+  static Future<VoidResult> joinedLive(int liveRecordId) async {
+    var body = {
+      'liveRecordId': liveRecordId,
+    };
+    var ret = await manager._post(_path('joinedLiveRoom'), body);
+    return NEResult(code: ret.code, msg: ret.msg);
   }
 
   /// POST http://{host}/scene/apps/{appKey}/ent/live/v1/destroyLive HTTP/1.1
