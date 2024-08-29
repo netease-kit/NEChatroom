@@ -63,7 +63,7 @@ dependencies:
   connectivity_plus: ^2.3.0
   wakelock_plus: ^1.1.1
   netease_voiceroomkit:
-    path: voiceroomkit/voiceroomkit
+    path: voiceroomkit
   provider: ^6.0.0
   restart_app: ^1.1.0
 
