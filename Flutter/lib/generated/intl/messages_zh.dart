@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a zh locale. All the
 // messages from the main program should be duplicated here with the same
@@ -84,7 +88,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "loadFailed": MessageLookupByLibrary.simpleMessage("加载失败"),
         "loaded": MessageLookupByLibrary.simpleMessage("加载完成"),
         "loading": MessageLookupByLibrary.simpleMessage("加载中..."),
-        "loginSuccess": MessageLookupByLibrary.simpleMessage("登录成功"),
         "logoutEn": MessageLookupByLibrary.simpleMessage("登出"),
         "micOff": MessageLookupByLibrary.simpleMessage("话筒已关闭"),
         "micOn": MessageLookupByLibrary.simpleMessage("话筒已打开"),
@@ -102,7 +105,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("当前网络不可用，请检查你当网络设置。"),
         "noMore": MessageLookupByLibrary.simpleMessage("没有更多啦"),
         "notify": MessageLookupByLibrary.simpleMessage("通知"),
-        "onSeatedTips": MessageLookupByLibrary.simpleMessage("您已被主播抱上麦位"),
+        "onSeatSure": MessageLookupByLibrary.simpleMessage("确定上麦？"),
+        "onSeatedTips": MessageLookupByLibrary.simpleMessage("已被主播抱上麦位"),
         "onSeatedTips2": MessageLookupByLibrary.simpleMessage(
             "\n现在可以进行语音互动啦 \n如需下麦，可点击自己的头像或下麦按钮"),
         "online": MessageLookupByLibrary.simpleMessage("在线"),
@@ -118,12 +122,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "refreshCompleted": MessageLookupByLibrary.simpleMessage("刷新完成"),
         "refreshFailed": MessageLookupByLibrary.simpleMessage("刷新失败"),
         "refreshing": MessageLookupByLibrary.simpleMessage("刷新中"),
+        "rejectInviteSeat": MessageLookupByLibrary.simpleMessage("拒绝邀请上麦"),
         "rejectSeatRequestTips": m0,
         "releaseToLoad": MessageLookupByLibrary.simpleMessage("松开加载"),
         "releaseToRefresh": MessageLookupByLibrary.simpleMessage("松开刷新"),
         "requestRejected": MessageLookupByLibrary.simpleMessage("申请麦位已被拒绝"),
         "roomName": MessageLookupByLibrary.simpleMessage("房间名称"),
-        "sampleLoginDesc": MessageLookupByLibrary.simpleMessage("语聊房"),
         "seatAlreadyClosed": MessageLookupByLibrary.simpleMessage("该麦位已被关闭"),
         "seatAlreadyTaken": MessageLookupByLibrary.simpleMessage("当前麦位有人"),
         "seatApplied":
@@ -138,7 +142,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("发送"),
         "settingTitle": MessageLookupByLibrary.simpleMessage("个人信息"),
         "space": MessageLookupByLibrary.simpleMessage(" "),
-        "startExploring": MessageLookupByLibrary.simpleMessage("开始探索"),
         "startLive": MessageLookupByLibrary.simpleMessage("开播"),
         "startLiveFailed": MessageLookupByLibrary.simpleMessage("创建房间失败"),
         "sure": MessageLookupByLibrary.simpleMessage("确定"),

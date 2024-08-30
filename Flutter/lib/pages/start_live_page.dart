@@ -2,15 +2,12 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
-import 'package:voiceroomkit_ui/app_config.dart';
+import 'package:voiceroomkit_ui/config/app_config.dart';
+import 'package:voiceroomkit_ui/service/auth/auth_manager.dart';
 import 'package:voiceroomkit_ui/widgets/live_info_view.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
 
@@ -140,7 +137,7 @@ class _StartLivePageRouteState extends LifecycleBaseState<StartLivePageRoute> {
       NEVoiceRoomKit.instance
           .createRoom(createVoiceRoomParams, NECreateVoiceRoomOptions())
           .then((value) {
-        LoadingUtil.cancelLoading();
+        LoadingUtil.hideLoading();
         if (value.isSuccess()) {
           NavUtils.pushNamed(context, RouterName.roomPage, arguments: {
             'roomInfo': value.data as NEVoiceRoomInfo,
@@ -152,14 +149,14 @@ class _StartLivePageRouteState extends LifecycleBaseState<StartLivePageRoute> {
         }
       });
     } else {
-      LoadingUtil.cancelLoading();
+      LoadingUtil.hideLoading();
       ToastUtils.showToast(context, S.of(context).topAndCoverEmptyHint);
     }
   }
 
   @override
   void dispose() {
-    LoadingUtil.cancelLoading();
+    LoadingUtil.hideLoading();
     super.dispose();
   }
 

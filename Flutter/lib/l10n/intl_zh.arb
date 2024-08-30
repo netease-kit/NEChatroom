@@ -45,11 +45,12 @@
   "alreadySeat": "已上麦",
   "applyCanceled": "已取消申请上麦",
   "requestRejected": "申请麦位已被拒绝",
+  "rejectInviteSeat": "拒绝邀请上麦",
   "downSeat": "已下麦",
   "kickoutSeatByHost": "已被主播请下麦位",
   "applySeat": "麦位申请",
   "notify": "通知",
-  "onSeatedTips": "您已被主播抱上麦位",
+  "onSeatedTips": "已被主播抱上麦位",
   "onSeatedTips2": "\n现在可以进行语音互动啦 \n如需下麦，可点击自己的头像或下麦按钮",
   "seatMuted": "该麦位被主播屏蔽语音\n现在您已无法进行语音互动",
   "voiceChatRoom": "语音聊天室",
@@ -74,6 +75,7 @@
   "seatAlreadyTaken": "当前麦位有人",
   "alreadyLeaveSeat": "您已下麦",
   "kickoutSeatSure": "确定踢下麦位",
+  "onSeatSure": "确定上麦？",
   "closeSeatTip": "已关闭",
   "kickoutSeatSuccessTip1": "已将",
   "kickoutSeatSuccessTip2": "踢下麦位",
@@ -121,8 +123,5 @@
   "voiceRoomLive": "语聊房",
   "topAndCoverEmptyHint": "主题和封面不能为空",
   "startLiveFailed": "创建房间失败",
-  "noInternet": "当前网络不可用，请检查你当网络设置。",
-  "sampleLoginDesc": "语聊房",
-  "startExploring": "开始探索",
-  "loginSuccess": "登录成功"
+  "noInternet": "当前网络不可用，请检查你当网络设置。"
 }

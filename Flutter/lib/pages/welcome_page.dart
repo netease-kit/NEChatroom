@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../app_config.dart';
+import '../config/app_config.dart';
 import '../constants/asset_name.dart';
 
 class WelcomePage extends StatelessWidget {

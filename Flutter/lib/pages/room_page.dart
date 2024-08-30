@@ -100,7 +100,7 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
 
     seatViewModel.eventBus.on<VoiceRoomSeatEvent>().listen((event) {
       VoiceRoomKitLog.i(tag, "eventBus,VoiceRoomSeatEvent event:$event");
-      if (event.reason == Reason.ANCHOR_INVITE ||
+      if (event.reason == Reason.ANCHOR_INVITE_ACCEPT ||
           event.reason == Reason.ANCHOR_APPROVE_APPLY) {
         _onEnterSeat(event, false);
       } else if (event.reason == Reason.ANCHOR_DENY_APPLY) {
@@ -109,6 +109,8 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
         _onLeaveSeat(event, true);
       } else if (event.reason == Reason.ANCHOR_KICK) {
         _onLeaveSeat(event, false);
+      } else if (event.reason == Reason.ANCHOR_INVITE_APPLY) {
+        _onAnchorInviteApply();
       }
     });
 
@@ -550,9 +552,22 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
     }
   }
 
+  void _onAnchorInviteApply() {
+    DialogUtils.showCommonDialog(
+        context, S.of(context).onSeatSure, S.of(context).onSeatSure, () {
+      _rejectSeatInvitation();
+    }, () {
+      _acceptSeatInvitation();
+    },
+        cancelText: S.current.cancel,
+        acceptText: S.current.sure,
+        canBack: true,
+        isContentCenter: true);
+  }
+
   void _hintSeatState(VoiceRoomSeatEvent event, bool on) {
     if (on) {
-      if (event.reason == Reason.ANCHOR_INVITE) {
+      if (event.reason == Reason.ANCHOR_INVITE_ACCEPT) {
         SeatUtil.showOnSeatByAnchorPickTips(context, event.index);
       } else if (event.reason == Reason.ANCHOR_APPROVE_APPLY) {
         // 展示打钩提示弹窗
@@ -633,5 +648,13 @@ class _RoomPageRouteState extends LifecycleBaseState<RoomPageRoute> {
       }
       NavUtils.popUntil(context, RouterName.liveListPage);
     });
+  }
+
+  void _acceptSeatInvitation() {
+    NEVoiceRoomKit.instance.acceptSeatInvitation().then((value) {});
+  }
+
+  void _rejectSeatInvitation() {
+    NEVoiceRoomKit.instance.rejectSeatInvitation().then((value) {});
   }
 }

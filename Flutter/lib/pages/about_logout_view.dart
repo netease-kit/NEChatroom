@@ -3,15 +3,14 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-
-import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
+import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
+import 'package:voiceroomkit_ui/constants/router_name.dart';
 import 'package:voiceroomkit_ui/generated/l10n.dart';
+import 'package:voiceroomkit_ui/service/auth/auth_manager.dart';
 import 'package:voiceroomkit_ui/utils/nav_utils.dart';
 import 'package:voiceroomkit_ui/constants/asset_name.dart';
 import 'package:voiceroomkit_ui/constants/colors.dart';
 import 'package:voiceroomkit_ui/constants/dimem.dart';
-
-import '../constants/router_name.dart';
 
 class AboutLogoutViewRoute extends StatefulWidget {
   const AboutLogoutViewRoute({
@@ -24,8 +23,8 @@ class AboutLogoutViewRoute extends StatefulWidget {
 }
 
 class _AboutLogoutViewRouteRouteState extends State<AboutLogoutViewRoute> {
-  String? get iconUrl => AuthManager().avatar;
-  String get nickname => AuthManager().nickName ?? '';
+  String? iconUrl = AuthManager().avatar;
+  String nickname = AuthManager().nickName ?? '';
 
   @override
   Widget build(BuildContext context) {

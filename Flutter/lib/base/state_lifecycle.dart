@@ -22,7 +22,7 @@ class StateLifecycleExecutor {
   Future<T?> execUi<T>(Future<T> future) {
     LoadingUtil.showLoading();
     return exec(future).whenComplete(() {
-      LoadingUtil.cancelLoading();
+      LoadingUtil.hideLoading();
     });
   }
 

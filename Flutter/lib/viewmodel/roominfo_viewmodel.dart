@@ -2,13 +2,9 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'dart:collection';
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:netease_voiceroomkit/netease_voiceroomkit.dart';
-import 'package:voiceroomkit_ui/auth/service/auth_manager.dart';
+import 'package:voiceroomkit_ui/service/auth/auth_manager.dart';
 import 'package:voiceroomkit_ui/utils/voiceroomkit_log.dart';
 
 /// 房间数据
@@ -49,6 +45,7 @@ class RoomInfoViewModel extends ChangeNotifier {
         }
         callback(NEVoiceRoomErrorCode.success);
       } else {
+        NEVoiceRoomKit.instance.endRoom();
         callback(NEVoiceRoomErrorCode.failure);
       }
     });

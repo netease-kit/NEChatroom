@@ -3,12 +3,13 @@
 // found in the LICENSE file.
 
 import 'package:flutter/cupertino.dart';
+import 'package:voiceroomkit_ui/auth/login_page.dart';
 import 'package:voiceroomkit_ui/pages/live_list_page.dart';
 import 'package:voiceroomkit_ui/pages/home_page.dart';
 import 'package:voiceroomkit_ui/pages/room_page.dart';
 
-import '../auth/login_page.dart';
 import '../pages/start_live_page.dart';
+import '../pages/home_page.dart';
 import '../pages/about_logout_view.dart';
 import '../pages/about_view.dart';
 import '../constants/router_name.dart';
@@ -16,9 +17,9 @@ import '../constants/router_name.dart';
 class RoutesRegister {
   static Map<String, WidgetBuilder> routes(RouteSettings settings) {
     return {
-      RouterName.homePage: (context) => const HomePageRoute(),
+      RouterName.homePage: (context) => HomePageRoute(),
       RouterName.loginPage: (context) => const LoginRoute(),
-      RouterName.aboutView: (context) => const AboutViewRoute(),
+      RouterName.aboutView: (context) => AboutViewRoute(),
       RouterName.aboutLogoutView: (context) => const AboutLogoutViewRoute(),
       RouterName.liveListPage: (context) => const LiveListPage(),
       RouterName.startLivePage: (context) => const StartLivePageRoute(),
