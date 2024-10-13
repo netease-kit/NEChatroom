@@ -159,11 +159,12 @@ internal class VoiceRoomService {
             NEJoinRoomOptions(),
             object : NECallback2<NERoomContext>() {
                 override fun onSuccess(data: NERoomContext?) {
+                    VoiceRoomLog.d(TAG, "joinRoom roomUuid = $roomUuid success")
                     currentRoomContext = data!!
                     addRoomListener()
                     addSeatListener()
                     NetworkUtils.registerNetworkStatusChangedListener(networkStateListener)
-                    VoiceRoomLog.d(TAG, "joinRoom roomUuid = $roomUuid success")
+
                     currentRoomContext?.rtcController?.setClientRole(NERoomRtcClientRole.AUDIENCE)
                     currentRoomContext?.rtcController?.setParameters(
                         NERoomRtcParameters.kNERoomRtcKeyRecordAudioEnabled,
@@ -298,7 +299,7 @@ internal class VoiceRoomService {
         currentSeatItems = null
     }
 
-    fun sendTextMessage(content: String, callback: NECallback2<Unit>) {
+    fun sendTextMessage(content: String, callback: NECallback2<NERoomChatMessage>) {
         currentRoomContext?.chatController?.sendBroadcastTextMessage(content, callback)
             ?: callback.onError(
                 NEErrorCode.FAILURE,

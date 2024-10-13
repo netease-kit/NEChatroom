@@ -30,7 +30,6 @@ dependencies {
     // xkit dependencies
     implementation("com.netease.yunxin.kit.core:corekit:1.4.2")
     api("com.netease.yunxin.kit.common:common-ui:1.3.1")
-    api("com.netease.yunxin.kit.common:common-network:1.1.8")
     api("com.netease.yunxin.kit.common:common-image:1.1.7")
     api(project(":voiceroomkit"))
     api("com.netease.yunxin.kit.copyrightedmedia:copyrightedmedia:1.7.0")

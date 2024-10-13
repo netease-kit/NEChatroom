@@ -32,6 +32,14 @@ interface VoiceRoomApi {
     ): Response<VoiceRoomInfo>
 
     /**
+     * 加入成功后上报给服务器
+     */
+    @POST("nemo/entertainmentLive/live/joinedLiveRoom")
+    suspend fun joinedVoiceRoom(
+        @Body params: Map<String, @JvmSuppressWildcards Any>
+    ): Response<Unit>
+
+    /**
      * 结束 语聊房 房间
      */
     @POST("nemo/entertainmentLive/live/destroyLive")
