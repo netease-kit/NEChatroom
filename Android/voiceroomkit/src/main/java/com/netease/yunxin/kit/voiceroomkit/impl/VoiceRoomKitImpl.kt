@@ -13,6 +13,7 @@ import com.netease.yunxin.kit.roomkit.api.NECallback2
 import com.netease.yunxin.kit.roomkit.api.NEErrorCode
 import com.netease.yunxin.kit.roomkit.api.NEPreviewRoomContext
 import com.netease.yunxin.kit.roomkit.api.NEPreviewRoomListener
+import com.netease.yunxin.kit.roomkit.api.NERoomChatMessage
 import com.netease.yunxin.kit.roomkit.api.NERoomKit
 import com.netease.yunxin.kit.roomkit.api.NERoomKitOptions
 import com.netease.yunxin.kit.roomkit.api.NERoomLanguage
@@ -618,30 +619,46 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                 override fun onSuccess(data: Unit?) {
                     VoiceRoomLog.i(tag, "joinRoom success")
 
-                    voiceRoomHttpService.getRoomInfo(
+                    voiceRoomHttpService.joinedVoiceRoom(
                         params.liveRecordId,
-                        object : NetRequestCallback<VoiceRoomInfo> {
-                            override fun success(info: VoiceRoomInfo?) {
+                        object : NetRequestCallback<Unit> {
+                            override fun error(code: Int, msg: String?) {
                                 VoiceRoomLog.i(
                                     tag,
-                                    "joinRoom  getRoomInfo success"
-                                )
-                                joinedVoiceRoomInfo = info
-                                callback?.onSuccess(
-                                    info?.let {
-                                        VoiceRoomUtils.voiceRoomInfo2NEVoiceRoomInfo(
-                                            it
-                                        )
-                                    }
-                                )
-                            }
-
-                            override fun error(code: Int, msg: String?) {
-                                VoiceRoomLog.e(
-                                    tag,
-                                    "get room info after join room error: code = $code message = $msg"
+                                    "joinedVoiceRoom failed code = $code message = $msg"
                                 )
                                 callback?.onFailure(code, msg)
+                            }
+
+                            override fun success(info: Unit?) {
+                                VoiceRoomLog.i(tag, "joinedVoiceRoom success")
+                                voiceRoomHttpService.getRoomInfo(
+                                    params.liveRecordId,
+                                    object : NetRequestCallback<VoiceRoomInfo> {
+                                        override fun success(info: VoiceRoomInfo?) {
+                                            VoiceRoomLog.i(
+                                                tag,
+                                                "getRoomInfo success"
+                                            )
+                                            joinedVoiceRoomInfo = info
+                                            callback?.onSuccess(
+                                                info?.let {
+                                                    VoiceRoomUtils.voiceRoomInfo2NEVoiceRoomInfo(
+                                                        it
+                                                    )
+                                                }
+                                            )
+                                        }
+
+                                        override fun error(code: Int, msg: String?) {
+                                            VoiceRoomLog.e(
+                                                tag,
+                                                "getRoomInfo failed code = $code message = $msg"
+                                            )
+                                            callback?.onFailure(code, msg)
+                                        }
+                                    }
+                                )
                             }
                         }
                     )
@@ -657,6 +674,16 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
 
     override fun endRoom(callback: NEVoiceRoomCallback<Unit>?) {
         VoiceRoomLog.logApi("endRoom")
+
+        myRoomService.endRoom(object : NECallback2<Unit>() {
+            override fun onError(code: Int, message: String?) {
+                VoiceRoomLog.e(tag, "endRoom error: code = $code message = $message")
+            }
+
+            override fun onSuccess(data: Unit?) {
+                VoiceRoomLog.i(tag, "endRoom success")
+            }
+        })
 
         val liveRecordId = createVoiceRoomInfo?.liveModel?.liveRecordId
             ?: joinedVoiceRoomInfo?.liveModel?.liveRecordId
@@ -676,17 +703,8 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
                     }
                 }
             )
-        } ?: callback?.onFailure(NEErrorCode.FAILURE, "roomInfo info is empty")
+        } ?: callback?.onFailure(NEErrorCode.FAILURE, "liveRecordId is empty")
 
-        myRoomService.endRoom(object : NECallback2<Unit>() {
-            override fun onError(code: Int, message: String?) {
-                VoiceRoomLog.e(tag, "endRoom error: code = $code message = $message")
-            }
-
-            override fun onSuccess(data: Unit?) {
-                VoiceRoomLog.i(tag, "endRoom success")
-            }
-        })
         joinedVoiceRoomInfo = null
         createVoiceRoomInfo = null
         listeners.clear()
@@ -1004,13 +1022,13 @@ internal class VoiceRoomKitImpl : NEVoiceRoomKit, CoroutineRunner() {
         )
     }
 
-    override fun sendTextMessage(content: String, callback: NEVoiceRoomCallback<Unit>?) {
+    override fun sendTextMessage(content: String, callback: NEVoiceRoomCallback<NERoomChatMessage>?) {
         VoiceRoomLog.logApi("sendTextMessage")
         myRoomService.sendTextMessage(
             content,
-            object : NECallback2<Unit>() {
+            object : NECallback2<NERoomChatMessage>() {
 
-                override fun onSuccess(data: Unit?) {
+                override fun onSuccess(data: NERoomChatMessage?) {
                     callback?.onSuccess(data)
                 }
 

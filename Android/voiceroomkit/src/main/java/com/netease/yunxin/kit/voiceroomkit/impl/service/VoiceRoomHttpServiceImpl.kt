@@ -102,6 +102,21 @@ object VoiceRoomHttpServiceImpl : VoiceRoomHttpService {
         }
     }
 
+    override fun joinedVoiceRoom(liveRecodeId: Long, callback: NetRequestCallback<Unit>) {
+        voiceRoomScope?.launch {
+            Request.request(
+                { voiceRoomRepository.joinedVoiceRoom(liveRecodeId) },
+                success = {
+                    callback.success(it)
+                },
+                error = { code: Int, msg: String ->
+                    reportHttpErrorEvent(HttpErrorReporter.ErrorEvent(code, msg, ""))
+                    callback.error(code, msg)
+                }
+            )
+        }
+    }
+
     /**
      * 获取房间 信息
      */

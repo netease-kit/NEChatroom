@@ -82,6 +82,13 @@ class VoiceRoomRepository {
             voiceRoomApi.startVoiceRoom(params)
         }
 
+    suspend fun joinedVoiceRoom(liveRecordId: Long): Response<Unit> = withContext(Dispatchers.IO) {
+        val params = mapOf(
+            "liveRecordId" to liveRecordId
+        )
+        voiceRoomApi.joinedVoiceRoom(params)
+    }
+
     suspend fun stopVoiceRoom(liveRecordId: Long): Response<Unit> = withContext(Dispatchers.IO) {
         val params = mapOf(
             "liveRecordId" to liveRecordId

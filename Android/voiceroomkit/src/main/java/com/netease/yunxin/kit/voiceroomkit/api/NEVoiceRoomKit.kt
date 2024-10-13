@@ -8,6 +8,7 @@ package com.netease.yunxin.kit.voiceroomkit.api
 
 import android.annotation.SuppressLint
 import android.content.Context
+import com.netease.yunxin.kit.roomkit.api.NERoomChatMessage
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceCreateRoomDefaultInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioEffectOption
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomCreateAudioMixingOption
@@ -360,7 +361,7 @@ interface NEVoiceRoomKit {
      * @param callback 回调
      * <br>相关回调：调用改方法后，房间内其他成员都会触发[NEVoiceRoomListener.onReceiveTextMessage]回调
      */
-    fun sendTextMessage(content: String, callback: NEVoiceRoomCallback<Unit>? = null)
+    fun sendTextMessage(content: String, callback: NEVoiceRoomCallback<NERoomChatMessage>? = null)
 
     /**
      * 关闭自己的麦克风
@@ -599,7 +600,7 @@ interface VoiceRoomInterceptor {
  */
 data class NEVoiceRoomKitConfig(val appKey: String, val extras: Map<String, Any?> = mapOf()) {
     constructor(appKey: String) :
-        this(appKey, mapOf())
+            this(appKey, mapOf())
 }
 
 /**

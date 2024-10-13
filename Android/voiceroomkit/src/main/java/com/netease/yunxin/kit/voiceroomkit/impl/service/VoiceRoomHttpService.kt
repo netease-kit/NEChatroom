@@ -59,6 +59,11 @@ interface VoiceRoomHttpService : HttpErrorReporter {
     fun startVoiceRoom(param: StartVoiceRoomParam, callback: NetRequestCallback<VoiceRoomInfo>)
 
     /**
+     * 加入成功后上报给服务器
+     */
+    fun joinedVoiceRoom(liveRecodeId: Long, callback: NetRequestCallback<Unit>)
+
+    /**
      * 获取房间 信息
      */
     fun getRoomInfo(liveRecordId: Long, callback: NetRequestCallback<VoiceRoomInfo>)
