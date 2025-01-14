@@ -9,7 +9,7 @@ module NERoomKit
   end
 
   def self.version
-    "1.22.0"
+    "1.33.0"
   end
 
   def self.path
@@ -38,8 +38,8 @@ module NERoomKit
   def self.Video_Special
       "NERoomKit/Video_Special"
   end
-  def self.ShareScreen_Special
-    "NERoomKit/ShareScreen_Special"
+  def self.ScreenShare_Special
+    "NERoomKit/ScreenShare_Special"
   end
 
   def self.Base
@@ -64,8 +64,8 @@ module NERoomKit
   def self.Video
     "NERoomKit/Video"
   end
-  def self.ShareScreen
-    "NERoomKit/ShareScreen"
+  def self.ScreenShare
+    "NERoomKit/ScreenShare"
   end
 
   def self.install(pod)

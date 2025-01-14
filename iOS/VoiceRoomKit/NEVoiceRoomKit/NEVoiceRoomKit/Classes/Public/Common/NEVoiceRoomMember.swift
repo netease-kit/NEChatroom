@@ -6,7 +6,7 @@ import Foundation
 import NERoomKit
 
 /// 成员属性变量
-struct MemberPropertyConstants {
+enum MemberPropertyConstants {
   enum MuteAudio {
     static let key = "recordDevice"
     static let on = "on"
@@ -20,8 +20,8 @@ struct MemberPropertyConstants {
   }
 }
 
-@objcMembers
 /// 用户音量信息
+@objcMembers
 public class NEVoiceRoomMemberVolumeInfo: NSObject {
   /// 成员ID
   public var userUuid: String = ""
@@ -34,8 +34,8 @@ public class NEVoiceRoomMemberVolumeInfo: NSObject {
   }
 }
 
-@objcMembers
 /// Karaoke 成员模型
+@objcMembers
 public class NEVoiceRoomMember: NSObject {
   /// 用户ID
   public var account: String = ""
@@ -60,8 +60,7 @@ public class NEVoiceRoomMember: NSObject {
     role = member.role.name
     avatar = member.avatar
 
-    isAudioOn = member.properties[MemberPropertyConstants.MuteAudio.key] == MemberPropertyConstants
-      .MuteAudio.on
+    isAudioOn = member.isAudioOn
     isAudioBanned = member
       .properties[MemberPropertyConstants.CanOpenMic.key] == MemberPropertyConstants.CanOpenMic.no
   }
@@ -75,8 +74,7 @@ public class NEVoiceRoomMember: NSObject {
     role = member.role.name
     avatar = member.avatar
 
-    isAudioOn = member.properties[MemberPropertyConstants.MuteAudio.key] == MemberPropertyConstants
-      .MuteAudio.on
+    isAudioOn = member.isAudioOn
     isAudioBanned = member
       .properties[MemberPropertyConstants.CanOpenMic.key] == MemberPropertyConstants.CanOpenMic.no
   }

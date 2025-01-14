@@ -192,20 +192,24 @@ extension NEVoiceRoomKit: NERoomListener {
     }
   }
 
+  public func onMemberAudioMuteChanged(member: NERoomMember, mute: Bool, operateBy: NERoomMember?) {
+    DispatchQueue.main.async {
+      for pointListener in self.listeners.allObjects {
+        guard pointListener is NEVoiceRoomListener, let listener = pointListener as? NEVoiceRoomListener else { continue }
+
+        let mem = NEVoiceRoomMember(member)
+        if listener
+          .responds(to: #selector(NEVoiceRoomListener
+              .onMemberAudioMuteChanged(_:mute:operateBy:))) {
+          listener.onMemberAudioMuteChanged?(mem, mute: !mem.isAudioOn, operateBy: nil)
+        }
+      }
+    }
+  }
+
   public func onMemberPropertiesChanged(member: NERoomMember, properties: [String: String]) {
     DispatchQueue.main.async {
-      if properties.keys.contains(MemberPropertyConstants.MuteAudio.key) { // mute audio
-        for pointListener in self.listeners.allObjects {
-          guard pointListener is NEVoiceRoomListener, let listener = pointListener as? NEVoiceRoomListener else { continue }
-
-          let mem = NEVoiceRoomMember(member)
-          if listener
-            .responds(to: #selector(NEVoiceRoomListener
-                .onMemberAudioMuteChanged(_:mute:operateBy:))) {
-            listener.onMemberAudioMuteChanged?(mem, mute: !mem.isAudioOn, operateBy: nil)
-          }
-        }
-      } else if properties.keys.contains(MemberPropertyConstants.CanOpenMic.key) { // ban
+      if properties.keys.contains(MemberPropertyConstants.CanOpenMic.key) { // ban
         let ban: Bool = properties[MemberPropertyConstants.CanOpenMic.key] ==
           MemberPropertyConstants.CanOpenMic.no
         let mem = NEVoiceRoomMember(member)
@@ -349,7 +353,6 @@ extension NEVoiceRoomKit: NERoomListener {
           if let msg = message as? NERoomChatCustomMessage {
             self.handleCustomMessage(msg)
           }
-
         case .image: break
         case .file: break
         default: break

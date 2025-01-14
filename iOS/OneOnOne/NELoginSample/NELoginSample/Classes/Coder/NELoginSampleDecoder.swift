@@ -5,7 +5,7 @@
 import Foundation
 
 /// 解析器
-struct NELoginSampleDecoder {
+enum NELoginSampleDecoder {
   static let tag: String = "NELoginSampleDecoder"
 
   // MARK: - ------------------------- 字典转模型 --------------------------

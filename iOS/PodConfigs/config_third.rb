@@ -20,7 +20,11 @@ module NIMSDK
   end
 
   def self.version
-    "9.12.0"
+    "9.17.0"
+  end
+
+  def self.version10
+    "10.6.0"
   end
 
   def self.FCS
@@ -31,55 +35,55 @@ end
 # ---------- NERtcSDK ----------
 module NERtcSDK
   def self.name
-    "NERtcSDK_Special"
+    "NERtcSDK"
   end
 
   def self.version
-    "5.5.203"
+    "5.6.42"
   end
 
   def self.RtcBasic
-    "NERtcSDK_Special/RtcBasic"
+    "#{NERtcSDK.name}/RtcBasic"
   end
 
   def self.Nenn
-    "NERtcSDK_Special/Nenn"
+    "#{NERtcSDK.name}/Nenn"
   end
 
   def self.Beauty
-    "NERtcSDK_Special/Beauty"
+    "#{NERtcSDK.name}/Beauty"
   end
 
   def self.FaceDetect
-    "NERtcSDK_Special/FaceDetect"
+    "#{NERtcSDK.name}/FaceDetect"
   end
 
   def self.Segment
-    "NERtcSDK_Special/Segment"
+    "#{NERtcSDK.name}/Segment"
   end
 
   def self.AiDenoise
-    "NERtcSDK_Special/AiDenoise"
+    "#{NERtcSDK.name}/AiDenoise"
   end
 
   def self.AiHowling
-    "NERtcSDK_Special/AiHowling"
+    "#{NERtcSDK.name}/AiHowling"
   end
 
   def self.ScreenShare
-    "NERtcSDK_Special/ScreenShare"
+    "#{NERtcSDK.name}/ScreenShare"
   end
   def self.FaceEnhance
-      "NERtcSDK_Special/FaceEnhance"
+    "#{NERtcSDK.name}/FaceEnhance"
   end
   def self.VideoDenoise
-      "NERtcSDK_Special/VideoDenoise"
+    "#{NERtcSDK.name}/VideoDenoise"
   end
   def self.SuperResolution
-      "NERtcSDK_Special/SuperResolution"
+    "#{NERtcSDK.name}/SuperResolution"
   end
   def self.SpatialSound
-      "NERtcSDK_Special/SpatialSound"
+    "#{NERtcSDK.name}/SpatialSound"
   end
 end
 
@@ -155,6 +159,21 @@ module LottieOC
 
   def self.install(pod)
     pod.pod LottieOC.name, LottieOC.version
+  end
+end
+
+# ---------- Lottie ----------
+module Lottie
+  def self.name
+    "lottie-ios"
+  end
+
+  def self.version
+    "4.4.0"
+  end
+
+  def self.install(pod)
+    pod.pod Lottie.name, Lottie.version
   end
 end
 
@@ -305,5 +324,20 @@ module SudMGPWrapper
 
   def self.install(pod)
     pod.pod SudMGPWrapper.name, SudMGPWrapper.version
+  end
+end
+
+# ---------- libyuv ----------
+module Libyuv
+  def self.name
+    "libyuv-iOS"
+  end
+
+  def self.version
+    "1.0.2"
+  end
+
+  def self.install(pod)
+    pod.pod Libyuv.name, Libyuv.version
   end
 end

@@ -6,8 +6,8 @@ import Foundation
 
 import Foundation
 
-@objcMembers
 /// OneOnOneKit 配置项
+@objcMembers
 public class NELoginSampleConfig: NSObject {
   /// appKey 为LoginSample服务的Key
   public var appKey: String = ""
