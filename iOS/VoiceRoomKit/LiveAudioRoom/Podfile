@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '11.0'
+platform :ios, '12.0'
 
 # 引入配置文件
 require_relative '../../PodConfigs/config_third.rb'
@@ -16,7 +16,7 @@ target 'LiveAudioRoom' do
   # 工程的podspec引用采用源码的环境变量
   ENV['USE_SOURCE_FILES'] = 'true'
 
-  pod NIMSDK.name, NIMSDK.version
+  pod NIMSDK.name, NIMSDK.version10
   pod NERtcSDK.RtcBasic, NERtcSDK.version
   pod SDWebImage.name, SDWebImage.version
   pod Masonry.name, Masonry.version
@@ -42,7 +42,7 @@ target 'LiveAudioRoom' do
 pod NERoomKit.Special_All , NERoomKit.version
 pod NECopyrightedMedia.name , NECopyrightedMedia.version
 pod NECommonKit.name , NECommonKit.version
-pod NECoreKit.name , '9.6.4'
+pod NECoreKit.name , '9.7.2'
 pod IHProgressHUD.name
 pod NECommonUIKit.name , NECommonUIKit.version
 #GitPushEnd
@@ -59,7 +59,7 @@ post_install do |installer|
   installer.generated_projects.each do |project|
     project.targets.each do |target|
       target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
       end
     end
   end

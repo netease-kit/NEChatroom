@@ -5,6 +5,7 @@
 import AVFAudio
 import Foundation
 import NERoomKit
+
 /// rtc 扩展
 public extension NEVoiceRoomKit {
   /// 关闭自己麦克风
@@ -30,33 +31,17 @@ public extension NEVoiceRoomKit {
         callback?(NEVoiceRoomErrorCode.failed, "Can't find LocalMember", nil)
         return
       }
-      self.roomContext?.updateMemberProperty(
-        userUuid: local,
-        key: MemberPropertyConstants.MuteAudio.key,
-        value: MemberPropertyConstants.MuteAudio.off
-      ) { code, msg, _ in
+
+      self.roomContext?.rtcController.muteMyAudio(enableMediaPub: true, callback: { code, msg, obj in
         var res = code
-        if res == 0 {
-          res = Int(self.roomContext?.rtcController.setRecordDeviceMute(muted: true) ?? -1)
-          if res == 0 {
-            if bySelf {
-              self.isSelfMuted = true
-            }
-            NEVoiceRoomLog.successLog(kitTag, desc: "Successfully mute my audio.")
-          } else {
-            NEVoiceRoomLog.errorLog(
-              kitTag,
-              desc: "Failed to mute my audio. Code: \(res)."
-            )
-          }
-        } else {
+        if res != 0 {
           NEVoiceRoomLog.errorLog(
             kitTag,
             desc: "Failed to mute mu audio. Code: \(res). Msg: \(msg ?? "")"
           )
         }
         callback?(res, msg, nil)
-      }
+      })
     }, failure: callback)
   }
 
@@ -70,7 +55,7 @@ public extension NEVoiceRoomKit {
       guard let local = self.localMember?.account else {
         NEVoiceRoomLog.errorLog(
           kitTag,
-          desc: "Failed to mute my audio. Msg: Can't find LocalMember."
+          desc: "Failed to unmute my audio. Msg: Can't find LocalMember."
         )
         callback?(NEVoiceRoomErrorCode.failed, "Can't find LocalMember", nil)
         return
@@ -79,45 +64,31 @@ public extension NEVoiceRoomKit {
          banned {
         NEVoiceRoomLog.errorLog(
           kitTag,
-          desc: "Failed to mute my audio. Audio banned"
+          desc: "Failed to unmute my audio. Audio banned"
         )
         callback?(NEVoiceRoomErrorCode.failed, "Audio banned", nil)
         return
       }
-      self.roomContext?.updateMemberProperty(
-        userUuid: local,
-        key: MemberPropertyConstants.MuteAudio.key,
-        value: MemberPropertyConstants.MuteAudio.on
-      ) { code, msg, _ in
+
+      self.roomContext?.rtcController.unmuteMyAudio(enableMediaPub: true, callback: { code, msg, obj in
         var res = code
-        if res == 0 {
-          res = Int(self.roomContext?.rtcController.setRecordDeviceMute(muted: false) ?? -1)
-          if res == 0 {
-            self.isSelfMuted = false
-            NEVoiceRoomLog.successLog(kitTag, desc: "Successfully unmute my audio.")
-          } else {
-            NEVoiceRoomLog.errorLog(
-              kitTag,
-              desc: "Failed to unmute my audio. Code: \(res)"
-            )
-          }
-        } else {
+        if res != 0 {
           NEVoiceRoomLog.errorLog(
             kitTag,
             desc: "Failed to unmute my audio. Code: \(res). Msg: \(msg ?? "")"
           )
         }
         callback?(res, msg, nil)
-      }
+      })
     }, failure: callback)
   }
 
-  @discardableResult
   /// 开启耳返功能
   ///
   /// 使用前提：该方法仅在调用[login]方法登录成功且上麦成功后调用有效
   /// - Parameter volume: 设置耳返音量
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func enableEarBack(_ volume: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Enable earback. Volume: \(volume)")
     return Judge.syncCondition {
@@ -131,11 +102,11 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 关闭耳返功能
   ///
   /// 使用前提：该方法仅在调用[login]方法登录成功且上麦成功后调用有效
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func disableEarBack() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Disable earback.")
     return Judge.syncCondition {
@@ -149,12 +120,12 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 调节人声音量
   ///
   /// 使用前提：该方法仅在调用[login]方法登录成功且上麦成功后调用有效
   /// - Parameter volume: 音量 范围[0-100]
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func adjustRecordingSignalVolume(_ volume: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Adjust recording signal volume. Volume: \(volume)")
     return Judge.syncCondition {
@@ -175,11 +146,11 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 获取人声音量
   ///
   /// 使用前提：该方法仅在调用[login]方法登录成功且上麦成功后调用有效
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func getRecordingSignalVolume() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Get recording signal volume.")
     return Judge.syncCondition {
@@ -187,13 +158,13 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 开始播放音乐文件
   ///
   ///  该方法指定本地或在线音频文件来和录音设备采集的音频流进行混音
   ///  支持的音乐文件类型包括 MP3、M4A、AAC、3GP、WMA 和 WAV 格式，支持本地文件或在线 URL
   /// - Parameter option: 创建混音任务配置的选项，包括混音任务类型、混音文件全路径或 URL 等
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func startAudioMixing(_ option: NEVoiceRoomCreateAudioMixingOption) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Start audio mixing.")
     return Judge.syncCondition {
@@ -222,9 +193,9 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 暂停播放音乐文件及混音
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func pauseAudioMixing() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Pause audio mixing.")
     return Judge.syncCondition {
@@ -238,11 +209,11 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 恢复播放伴奏
   ///
   /// 该方法恢复混音，继续播放伴奏。请在房间内调用该方法
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func resumeAudioMixing() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Resume audio mixing.")
     return Judge.syncCondition {
@@ -259,12 +230,12 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 设置伴奏音量
   ///
   /// 该方法调节混音里伴奏的音量大小
   /// - Parameter volume: 伴奏发送音量 范围[0-100]
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func setAudioMixingVolume(_ volume: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Set audio mixing volume. Volume: \(volume).")
     return Judge.syncCondition {
@@ -284,9 +255,9 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 获取伴奏音量
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func getAudioMixingVolume() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Get audio mixing volume.")
     return Judge.syncCondition {
@@ -294,7 +265,6 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 播放指定音效文件
   ///
   /// 该方法播放指定的本地或在线音效文件
@@ -303,6 +273,7 @@ public extension NEVoiceRoomKit {
   ///   - effectId: 指定音效的 ID。每个音效均应有唯一的 ID
   ///   - option: 音效相关参数，包括混音任务类型、混音文件路径等
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func playEffect(_ effectId: UInt32, option: NEVoiceRoomCreateAudioEffectOption) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Play effect. EffectId: \(effectId).")
     return Judge.syncCondition {
@@ -319,10 +290,10 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 暂停播放指定音效文件。
   /// - Parameter effectId: 音效ID
   /// - Returns: 操作返回值，成功则返回 0
+  @discardableResult
   func pauseEffect(effectId: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Pause effect. EffectId:\(effectId)")
     return Judge.syncCondition {
@@ -336,10 +307,10 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 恢复播放指定音效文件。
   /// - Parameter effectId: 指定音效的 ID。每个音效均有唯一的 ID。
   /// - Returns: 操作返回值，成功则返回 0
+  @discardableResult
   func resumeEffect(effectId: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Resume effect. EffectId:\(effectId)")
     return Judge.syncCondition {
@@ -353,9 +324,9 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 关闭所有音效
   /// - Returns: 0: 代表成功 否则失败
+  @discardableResult
   func stopAllEffects() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Stop all effects.")
     return Judge.syncCondition {
@@ -369,10 +340,10 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 关闭音效
   /// - Parameter effectId: 指定音效的 ID。每个音效均有唯一的 ID。
   /// - Returns: 0: 代表成功 否则失败
+  @discardableResult
   func stopEffect(effectId: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Stop all effects.")
     return Judge.syncCondition {
@@ -386,12 +357,12 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 设置音效音量
   /// - Parameters:
   ///   - effectId: 指定音效的 ID
   ///   - volume: 音效音量
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func setEffectVolume(_ effectId: UInt32, volume: UInt32) -> Int {
     NEVoiceRoomLog.apiLog(
       kitTag,
@@ -419,9 +390,9 @@ public extension NEVoiceRoomKit {
     }
   }
 
-  @discardableResult
   /// 获取音效音量
   /// - Returns: 0: 代表成功，否则失败
+  @discardableResult
   func getEffectVolume() -> Int {
     NEVoiceRoomLog.apiLog(kitTag, desc: "Get effect volume.")
     return Judge.syncCondition {
@@ -497,17 +468,17 @@ public extension NEVoiceRoomKit {
     }, failure: callback)
   }
 
-  @discardableResult
   /// 获取当前播放音乐长度
   /// - Returns: 长度
+  @discardableResult
   func getEffectDuration() -> UInt64 {
     audioPlayService?.getEffectDuration() ?? 0
   }
 
-  @discardableResult
   /// 设置音乐播放位置
   /// - Parameter position: 播放位置，单位毫秒
   /// - Returns: 0成功，其他失败
+  @discardableResult
   func setPlayingPosition(position: UInt64) -> Int {
     audioPlayService?.setEffectPosition(position: position) ?? -1
   }
@@ -527,7 +498,6 @@ public extension NEVoiceRoomKit {
     return isHead
   }
 
-  @discardableResult
   /// 启用说话者音量提示
   ///
   /// 该方法允许 SDK 定期向 App 反馈本地发流用户和瞬时音量最高的远端用户（最多 3 位）的音量相关信息，
@@ -537,6 +507,7 @@ public extension NEVoiceRoomKit {
   ///   - enable: 是否启用说话者音量提示
   ///   - interval: 指定音量提示的时间间隔。单位为毫秒。必须设置为 100 毫秒的整数倍值，建议设置为 200 毫秒以上
   /// - Returns: 0: 代表成功 否则成功
+  @discardableResult
   func enableAudioVolumeIndication(enable: Bool,
                                    interval: Int) -> Int {
     roomContext?.rtcController.enableAudioVolumeIndication(enable: enable, interval: interval) ?? -1

@@ -9,7 +9,7 @@ module NECommonKit
   end
 
   def self.version
-    "9.6.3-alpha01"
+    "9.7.0"
   end
 
   def self.path
@@ -38,7 +38,7 @@ module NECommonUIKit
   end
 
   def self.version
-    "9.6.3-alpha01"
+    "9.7.4"
   end
 
   def self.path
@@ -56,6 +56,37 @@ module NECommonUIKit
   end
 end
 
+# ---------- NETranscodingKit ----------
+module NETranscodingKit
+  def self.use_path
+    true
+  end
+
+  def self.name
+    "NETranscodingKit"
+  end
+
+  def self.version
+    "1.0.1"
+  end
+
+  def self.path
+    "Common/NETranscodingKit/NETranscodingKit.podspec"
+  end
+
+  def self.install(pod)
+    if NETranscodingKit.use_path
+      puts "NETranscodingKit use path"
+      pod.pod NETranscodingKit.name, :path => NETranscodingKit.path
+    else
+      puts "NETranscodingKit use http"
+      pod.pod NETranscodingKit.name, NETranscodingKit.version
+    end
+  end
+end
+
+
+
 # ---------- YXLogin ----------
 module YXLogin
   def self.use_path
@@ -67,7 +98,7 @@ module YXLogin
   end
 
   def self.version
-    "9.6.1"
+    "1.2.3"
   end
 
   def self.path
