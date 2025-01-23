@@ -265,7 +265,7 @@ class _AudiencesSeatState extends State<AudiencesSeatWidget> {
           if (seat.getStatus() == Status.CLOSED) {
             ToastUtils.showToast(context, S.of(context).seatAlreadyClosed);
           } else if (seatViewModel.isCurrentUserOnSeat()) {
-            ToastUtils.showToast(context, S.of(context).alreadyOnSeat);
+            _changeSeatIndex(seat.getSeatIndex());
           } else {
             _applySeat(seat.getSeatIndex());
           }
@@ -285,6 +285,10 @@ class _AudiencesSeatState extends State<AudiencesSeatWidget> {
           break;
       }
     }
+  }
+
+  void _changeSeatIndex(int index) {
+    NEVoiceRoomKit.instance.changeSeatIndex(index).then((value) {});
   }
 
   void _applySeat(int index) {

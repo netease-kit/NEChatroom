@@ -141,6 +141,12 @@ abstract class NEVoiceRoomKit {
   /// <br>相关回调：申请上麦后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatRequestSubmittedCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
   Future<VoidResult> submitSeatRequest(int seatIndex, bool exclusive);
 
+  /// 麦上成员切换麦位
+  /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
+  /// @param seatIndex 麦位位置。
+  /// <br>相关回调：房主踢麦后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatListChangedCallback]回调
+  Future<VoidResult> changeSeatIndex(int seatIndex);
+
   /// 取消申请上麦
   /// <br>使用前提：该方法仅在调用[login]方法登录成功后调用有效
   /// <br>相关回调：取消申请上麦后，房间内所有成员会触发[NEVoiceRoomEventCallback.seatRequestCancelledCallback]回调和[NEVoiceRoomEventCallback.seatListChangedCallback]回调
