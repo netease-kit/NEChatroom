@@ -23,8 +23,7 @@ internal class VoiceRoomMember(
         get() = roomMember.role.name
 
     override val isAudioOn: Boolean
-        get() = roomMember.isAudioOn &&
-            MemberPropertyConstants.MUTE_VOICE_VALUE_ON == roomMember.properties[MemberPropertyConstants.MUTE_VOICE_KEY]
+        get() = roomMember.isAudioOn
 
     override val isAudioBanned: Boolean
         get() = roomMember.properties[MemberPropertyConstants.CAN_OPEN_MIC_KEY] == MemberPropertyConstants.CAN_OPEN_MIC_VALUE_NO

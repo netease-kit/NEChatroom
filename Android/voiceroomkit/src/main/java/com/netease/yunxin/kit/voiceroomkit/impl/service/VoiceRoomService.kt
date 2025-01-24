@@ -33,7 +33,6 @@ import com.netease.yunxin.kit.roomkit.api.model.NERoomCreateAudioMixingOption
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcAudioStreamType
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcClientRole
 import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcLastmileProbeResult
-import com.netease.yunxin.kit.roomkit.api.model.NERoomRtcParameters
 import com.netease.yunxin.kit.roomkit.api.service.NEJoinRoomOptions
 import com.netease.yunxin.kit.roomkit.api.service.NEJoinRoomParams
 import com.netease.yunxin.kit.roomkit.api.service.NERoomService
@@ -166,14 +165,6 @@ internal class VoiceRoomService {
                     NetworkUtils.registerNetworkStatusChangedListener(networkStateListener)
 
                     currentRoomContext?.rtcController?.setClientRole(NERoomRtcClientRole.AUDIENCE)
-                    currentRoomContext?.rtcController?.setParameters(
-                        NERoomRtcParameters.kNERoomRtcKeyRecordAudioEnabled,
-                        true
-                    )
-                    currentRoomContext?.rtcController?.setParameters(
-                        NERoomRtcParameters.kNERoomRtcKeyRecordVideoEnabled,
-                        true
-                    )
                     joinRtcChannel(object : NECallback2<Unit>() {
                         override fun onSuccess(data: Unit?) {
                             VoiceRoomLog.d(TAG, "joinRtcChannel roomUuid = $roomUuid success")
@@ -205,6 +196,28 @@ internal class VoiceRoomService {
                             )
                             currentRoomContext?.leaveRoom(object : NECallback2<Unit?>() {})
                             callback.onError(code, message)
+                        }
+                    })
+
+                    getSeatInfo(object : NECallback2<NESeatInfo>() {
+                        override fun onSuccess(data: NESeatInfo?) {
+                            VoiceRoomLog.d(TAG, "getSeatInfo success")
+                            data?.let {
+                                for (seat in data.seatItems) {
+                                    if (VoiceRoomUtils.isLocal(seat.user)) {
+                                        if (seat.status == NESeatItemStatus.TAKEN) {
+                                            muteMyAudio(EmptyCallback)
+                                            currentRoomContext?.rtcController?.setClientRole(
+                                                NERoomRtcClientRole.BROADCASTER
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        override fun onError(code: Int, message: String?) {
+                            VoiceRoomLog.e(TAG, "getSeatInfo error:code = $code message = $message")
                         }
                     })
                 }
@@ -308,7 +321,7 @@ internal class VoiceRoomService {
     }
 
     fun kickMemberOut(userUuid: String, callback: NECallback2<Unit>) {
-        currentRoomContext?.kickMemberOut(userUuid, callback)
+        currentRoomContext?.kickMemberOut(userUuid, false, callback)
             ?: callback.onError(
                 NEErrorCode.FAILURE,
                 ERROR_MSG_ROOM_NOT_EXISTS
@@ -321,11 +334,18 @@ internal class VoiceRoomService {
             callback.onError(NEErrorCode.FAILURE, ERROR_MSG_ROOM_NOT_EXISTS)
             return
         }
-        context.updateMemberProperty(
-            context.localMember.uuid,
-            MemberPropertyConstants.MUTE_VOICE_KEY,
-            MemberPropertyConstants.MUTE_VOICE_VALUE_OFF,
-            callback
+
+        context.rtcController.muteMyAudio(
+            true,
+            object : NEUnitCallback() {
+                override fun onError(code: Int, message: String?) {
+                    callback.onError(code, message)
+                }
+
+                override fun onSuccess() {
+                    callback.onSuccess(Unit)
+                }
+            }
         )
     }
 
@@ -340,26 +360,14 @@ internal class VoiceRoomService {
             return
         }
 
-        val uuid = context.localMember.uuid
-        fun realUnmute() {
-            context.updateMemberProperty(
-                uuid,
-                MemberPropertyConstants.MUTE_VOICE_KEY,
-                MemberPropertyConstants.MUTE_VOICE_VALUE_ON,
-                callback
-            )
-        }
-
-        if (context.localMember.isAudioOn.not()) {
-            context.rtcController.unmuteMyAudio(object : NEUnitCallback() {
-                override fun onError(code: Int, message: String?) {
-                    callback.onError(code, message)
-                }
-                override fun onSuccess() = realUnmute()
-            })
-        } else {
-            realUnmute()
-        }
+        context.rtcController.unmuteMyAudio(object : NEUnitCallback() {
+            override fun onError(code: Int, message: String?) {
+                callback.onError(code, message)
+            }
+            override fun onSuccess() {
+                callback.onSuccess(Unit)
+            }
+        })
     }
 
     fun banRemoteAudio(userId: String, callback: NECallback2<Unit>) {
@@ -639,24 +647,7 @@ internal class VoiceRoomService {
                 member: NERoomMember,
                 properties: Map<String, String>
             ) {
-                val uuid = getLocalMember()?.account
-                if (properties.containsKey(MemberPropertyConstants.MUTE_VOICE_KEY)) {
-                    val voiceValue = properties[MemberPropertyConstants.MUTE_VOICE_KEY]
-                    if (voiceValue == MemberPropertyConstants.MUTE_VOICE_VALUE_ON || voiceValue == MemberPropertyConstants.MUTE_VOICE_VALUE_OFF) {
-                        val mute = voiceValue != MemberPropertyConstants.MUTE_VOICE_VALUE_ON
-                        if (member.uuid == uuid) {
-                            syncLocalAudioState(mute)
-                        }
-                        val voiceRoomMember = mapMember(member)
-                        VoiceRoomLog.d(
-                            TAG,
-                            "onMemberAudioMuteChanged voiceRoomMember:$voiceRoomMember,mute:$mute,operateBy:" + getLocalMember()
-                        )
-                        listeners.forEach {
-                            it.onMemberAudioMuteChanged(voiceRoomMember, mute, getLocalMember())
-                        }
-                    }
-                } else if (properties.containsKey(MemberPropertyConstants.CAN_OPEN_MIC_KEY)) {
+                if (properties.containsKey(MemberPropertyConstants.CAN_OPEN_MIC_KEY)) {
                     val banned = properties[MemberPropertyConstants.CAN_OPEN_MIC_KEY] == MemberPropertyConstants.CAN_OPEN_MIC_VALUE_NO
                     val voiceRoomMember = mapMember(member)
                     VoiceRoomLog.d(
@@ -765,6 +756,14 @@ internal class VoiceRoomService {
                 mute: Boolean,
                 operateBy: NERoomMember?
             ) {
+                val operateMember = operateBy?.let { mapMember(it) }
+                VoiceRoomLog.d(
+                    TAG,
+                    "onMemberAudioMuteChanged member:$member,mute:$mute,operateBy:$operateMember"
+                )
+                listeners.forEach {
+                    it.onMemberAudioMuteChanged(mapMember(member), mute, operateMember)
+                }
             }
 
             override fun onReceiveChatroomMessages(messages: List<NERoomChatMessage>) {
@@ -950,16 +949,19 @@ internal class VoiceRoomService {
     }
 
     private fun handleSeatListItemChanged(seatItems: List<NESeatItem>) {
+        val isCurrentOnSeat = isCurrentOnSeat(seatItems)
+        currentRoomContext?.rtcController?.setClientRole(
+            if (isCurrentOnSeat) NERoomRtcClientRole.BROADCASTER else NERoomRtcClientRole.AUDIENCE
+        )
+
         val context = currentRoomContext ?: return
         val myUuid = context.localMember.uuid
         val old = currentSeatItems?.firstOrNull { it.user == myUuid }
         val now = seatItems.firstOrNull { it.user == myUuid }
         if ((old == null || old.status != NESeatItemStatus.TAKEN) && now != null && now.status == NESeatItemStatus.TAKEN) {
             unmuteMyAudio(EmptyCallback)
-            context.rtcController.setClientRole(NERoomRtcClientRole.BROADCASTER)
         } else if (old != null && old.status == NESeatItemStatus.TAKEN && now == null) {
             muteMyAudio(EmptyCallback)
-            context.rtcController.setClientRole(NERoomRtcClientRole.AUDIENCE)
             // 成员自己重置
             if (context.localMember.properties[MemberPropertyConstants.CAN_OPEN_MIC_KEY]
                 == MemberPropertyConstants.CAN_OPEN_MIC_VALUE_NO
@@ -1044,7 +1046,7 @@ internal open class RoomListenerWrapper : NERoomListenerAdapter() {
     ) {
     }
 
-    override fun onMemberNameChanged(member: NERoomMember, name: String) {
+    override fun onMemberNameChanged(member: NERoomMember, name: String, operateBy: NERoomMember?) {
     }
 
     override fun onMemberPropertiesChanged(member: NERoomMember, properties: Map<String, String>) {
@@ -1168,11 +1170,6 @@ internal open class RoomListenerWrapper : NERoomListenerAdapter() {
 }
 
 internal object MemberPropertyConstants {
-    // 根据该成员属性 变更mic声音采集
-    const val MUTE_VOICE_KEY = "recordDevice"
-    const val MUTE_VOICE_VALUE_ON = "on"
-    const val MUTE_VOICE_VALUE_OFF = "off"
-
     // 成员是否可以开启麦克风。如果值为 [CAN_OPEN_MIC_VALUE_NO]，表示不能开启麦克风。
     const val CAN_OPEN_MIC_KEY = "canOpenMic"
     const val CAN_OPEN_MIC_VALUE_NO = "0"

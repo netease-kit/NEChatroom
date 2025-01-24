@@ -6,14 +6,18 @@
 
 package com.netease.yunxin.kit.voiceroomkit.impl.utils
 
+import android.text.TextUtils
 import com.netease.yunxin.kit.roomkit.api.service.NESeatInfo
 import com.netease.yunxin.kit.roomkit.api.service.NESeatItem
 import com.netease.yunxin.kit.roomkit.api.service.NESeatRequestItem
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomKit
+import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomRole
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomAnchor
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomBatchSeatUserReward
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomList
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomLiveModel
+import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomMember
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatInfo
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatItem
 import com.netease.yunxin.kit.voiceroomkit.api.model.NEVoiceRoomSeatRequestItem
@@ -23,6 +27,29 @@ import com.netease.yunxin.kit.voiceroomkit.impl.model.response.Operator
 import com.netease.yunxin.kit.voiceroomkit.impl.model.response.VoiceRoomList
 
 internal object VoiceRoomUtils {
+
+    fun isLocal(uuid: String?): Boolean {
+        return NEVoiceRoomKit.getInstance().localMember != null &&
+            TextUtils.equals(NEVoiceRoomKit.getInstance().localMember!!.account, uuid)
+    }
+
+    fun isHost(uuid: String?): Boolean {
+        val member: NEVoiceRoomMember =
+            getMember(uuid)
+                ?: return false
+        return TextUtils.equals(member.role, NEVoiceRoomRole.HOST.value)
+    }
+
+    fun getMember(uuid: String?): NEVoiceRoomMember? {
+        val allMemberList = NEVoiceRoomKit.getInstance().allMemberList
+        for (i in allMemberList.indices) {
+            val member = allMemberList[i]
+            if (TextUtils.equals(member.account, uuid)) {
+                return member
+            }
+        }
+        return null
+    }
 
     fun voiceRoomInfo2NEVoiceRoomInfo(voiceRoomInfo: VoiceRoomInfo): NEVoiceRoomInfo {
         return NEVoiceRoomInfo(

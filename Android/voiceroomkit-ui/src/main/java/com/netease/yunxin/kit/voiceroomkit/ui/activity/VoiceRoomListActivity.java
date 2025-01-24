@@ -10,12 +10,14 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.common.utils.NetworkUtils;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
 import com.netease.yunxin.kit.entertainment.common.activity.RoomListActivity;
 import com.netease.yunxin.kit.entertainment.common.adapter.RoomListAdapter;
 import com.netease.yunxin.kit.entertainment.common.model.RoomModel;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.OneOnOneUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.ReportUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NELiveType;
 import com.netease.yunxin.kit.voiceroomkit.api.NEVoiceRoomCallback;
@@ -141,6 +143,7 @@ public class VoiceRoomListActivity extends RoomListActivity {
   }
 
   private void handleJoinVoiceRoom(RoomModel info) {
+
     if (FloatPlayManager.getInstance().isShowFloatView()) {
       if (FloatPlayManager.getInstance().getVoiceRoomInfo() != null
           && FloatPlayManager.getInstance()
@@ -176,6 +179,8 @@ public class VoiceRoomListActivity extends RoomListActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
       }
+    } else if (OneOnOneUtils.isInTheCall()) {
+      ToastX.showShortToast(getString(R.string.ec_in_the_call_tips));
     } else {
       NavUtils.toVoiceRoomAudiencePage(VoiceRoomListActivity.this, userName, avatar, info, true);
     }

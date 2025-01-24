@@ -44,6 +44,7 @@ public abstract class BaseSampleLoginActivity extends BasePartyActivity {
     loadingDialog.show();
     // 先创建账号再登录1v1再登录云信IM
     createAccount(
+        getSceneType(),
         new Callback<ECModelResponse<NemoAccount>>() {
           @Override
           public void onResponse(
@@ -69,11 +70,11 @@ public abstract class BaseSampleLoginActivity extends BasePartyActivity {
         });
   }
 
-  private void createAccount(Callback<ECModelResponse<NemoAccount>> callback) {
+  private void createAccount(int sceneType, Callback<ECModelResponse<NemoAccount>> callback) {
     ECHttpService.getInstance().initialize(this, getBaseUrl());
     ECHttpService.getInstance().addHeader("appkey", getAppKey());
     ECHttpService.getInstance().addHeader("AppSecret", getAppSecret());
-    ECHttpService.getInstance().createAccount(callback);
+    ECHttpService.getInstance().createAccount(sceneType, callback);
   }
 
   public abstract void login(NemoAccount nemoAccount);
@@ -87,6 +88,8 @@ public abstract class BaseSampleLoginActivity extends BasePartyActivity {
   public abstract int getIconResId();
 
   public abstract int getContentResId();
+
+  public abstract int getSceneType();
 
   @Override
   protected void onDestroy() {

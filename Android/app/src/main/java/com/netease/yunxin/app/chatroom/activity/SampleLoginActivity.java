@@ -71,6 +71,11 @@ public class SampleLoginActivity extends BaseSampleLoginActivity {
     return R.string.sample_login_desc;
   }
 
+  @Override
+  public int getSceneType() {
+    return 2;
+  }
+
   private void gotoHomePage() {
     Intent intent = new Intent(this, HomeActivity.class);
     startActivity(intent);
