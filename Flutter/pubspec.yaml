@@ -69,7 +69,6 @@ dependencies:
 
 dependency_overrides:
   intl: ^0.18.0
-  collection: 1.17.0
   meta: 1.8.0
 
 dev_dependencies:
