@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.netease.yunxin.kit.alog.ALog;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
+import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.entertainment.common.RoomConstants;
 import com.netease.yunxin.kit.entertainment.common.activity.BaseActivity;
 import com.netease.yunxin.kit.entertainment.common.databinding.ActivityCreatRoomBinding;
 import com.netease.yunxin.kit.entertainment.common.utils.ClickUtils;
+import com.netease.yunxin.kit.entertainment.common.utils.OneOnOneUtils;
 import com.netease.yunxin.kit.entertainment.common.utils.Utils;
 import com.netease.yunxin.kit.entertainment.common.utils.VoiceRoomUtils;
 import com.netease.yunxin.kit.voiceroomkit.api.NECreateVoiceRoomOptions;
@@ -155,6 +157,8 @@ public abstract class MultiCreateRoomActivity extends BaseActivity {
                 getString(R.string.voiceroom_cancel), (dialog, which) -> dialog.dismiss());
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+          } else if (OneOnOneUtils.isInTheCall()) {
+            ToastX.showShortToast(getString(R.string.ec_in_the_call_tips));
           } else {
             createRoomInner();
           }

@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.common.ui.dialog.TopPopupWindow;
 import com.netease.yunxin.kit.common.ui.utils.ToastUtils;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.common.utils.DeviceUtils;
@@ -112,7 +114,7 @@ import kotlin.Unit;
 
 /** 主播与观众基础页，包含所有的通用UI元素 */
 public abstract class VoiceRoomBaseActivity extends BaseActivity
-   implements ViewTreeObserver.OnGlobalLayoutListener {
+    implements ViewTreeObserver.OnGlobalLayoutListener {
 
   public static final String TAG = "VoiceRoomBaseActivity";
   protected ActivityVoiceroomBaseBinding binding;
@@ -198,91 +200,95 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private SeatApplyDialog seatApplyDialog;
   private ListItemDialog bottomDialog;
   private CancelApplySeatDialog cancelApplySeatDialog;
+  private TopPopupWindow permissionPop;
 
   private final BluetoothHeadsetUtil.BluetoothHeadsetStatusObserver
-     bluetoothHeadsetStatusChangeListener =
-     new BluetoothHeadsetUtil.BluetoothHeadsetStatusObserver() {
-       @Override
-       public void connect() {
-         if (!BluetoothHeadsetUtil.hasBluetoothConnectPermission(VoiceRoomBaseActivity.this)) {
-           BluetoothHeadsetUtil.requestBluetoothConnectPermission(VoiceRoomBaseActivity.this);
-         }
-       }
+      bluetoothHeadsetStatusChangeListener =
+          new BluetoothHeadsetUtil.BluetoothHeadsetStatusObserver() {
+            @Override
+            public void connect() {
+              if (!BluetoothHeadsetUtil.hasBluetoothConnectPermission(VoiceRoomBaseActivity.this)) {
+                BluetoothHeadsetUtil.requestBluetoothConnectPermission(VoiceRoomBaseActivity.this);
+              }
+            }
 
-       @Override
-       public void disconnect() {}
-     };
+            @Override
+            public void disconnect() {}
+          };
   private final ActivityResultLauncher<String> requestPermissionLauncher =
-     registerForActivityResult(
-        new ActivityResultContracts.RequestPermission(),
-        isGranted -> {
-          if (isGranted) {
-            enterRoomInner(
-               voiceRoomInfo.getRoomUuid(),
-               voiceRoomInfo.getNick(),
-               voiceRoomInfo.getAvatar(),
-               voiceRoomInfo.getRole());
-          } else {
-            ToastX.showShortToast(R.string.need_permission_audio);
-            finish();
-          }
-        });
+      registerForActivityResult(
+          new ActivityResultContracts.RequestPermission(),
+          isGranted -> {
+            if (permissionPop != null) {
+              permissionPop.dismiss();
+            }
+            if (isGranted) {
+              enterRoomInner(
+                  voiceRoomInfo.getRoomUuid(),
+                  voiceRoomInfo.getNick(),
+                  voiceRoomInfo.getAvatar(),
+                  voiceRoomInfo.getRole());
+            } else {
+              ToastX.showShortToast(R.string.need_permission_audio);
+              finish();
+            }
+          });
 
   protected ChatRoomMoreDialog.OnItemClickListener onMoreItemClickListener =
-     (dialog, itemView, item) -> {
-       switch (item.id) {
-         case MORE_ITEM_MICRO_PHONE:
-         {
-           toggleMuteLocalAudio();
-           break;
-         }
+      (dialog, itemView, item) -> {
+        switch (item.id) {
+          case MORE_ITEM_MICRO_PHONE:
+            {
+              toggleMuteLocalAudio();
+              break;
+            }
 
-         case MORE_ITEM_EAR_BACK:
-         {
-           if (DeviceUtils.hasEarBack(this)) {
-             boolean isEarBackEnable = NEVoiceRoomKit.getInstance().isEarbackEnable();
-             if (enableEarBack(!isEarBackEnable) == 0) {
-               item.enable = !isEarBackEnable;
-               dialog.updateData();
-             }
-           } else {
-             ToastUtils.INSTANCE.showShortToast(this, getString(R.string.voiceroom_earback_tip));
-           }
-           break;
-         }
-         case MORE_ITEM_MIXER:
-         {
-           if (dialog != null && dialog.isShowing()) {
-             dialog.dismiss();
-           }
-           showChatRoomMixerDialog();
-           break;
-         }
-         case MORE_ITEM_AUDIO:
-         {
-           if (dialog != null && dialog.isShowing()) {
-             dialog.dismiss();
-           }
-           new ChatRoomAudioDialog(VoiceRoomBaseActivity.this, audioPlay).show();
-           break;
-         }
-         case MORE_ITEM_REPORT:
-           if (dialog != null && dialog.isShowing()) {
-             dialog.dismiss();
-           }
-           new ReportDialog().show(getSupportFragmentManager(), TAG);
-           break;
-         case MORE_ITEM_FINISH:
-         {
-           if (dialog != null && dialog.isShowing()) {
-             dialog.dismiss();
-           }
-           doLeaveRoom();
-           break;
-         }
-       }
-       return true;
-     };
+          case MORE_ITEM_EAR_BACK:
+            {
+              if (DeviceUtils.hasEarBack(this)) {
+                boolean isEarBackEnable = NEVoiceRoomKit.getInstance().isEarbackEnable();
+                if (enableEarBack(!isEarBackEnable) == 0) {
+                  item.enable = !isEarBackEnable;
+                  dialog.updateData();
+                }
+              } else {
+                ToastUtils.INSTANCE.showShortToast(this, getString(R.string.voiceroom_earback_tip));
+              }
+              break;
+            }
+          case MORE_ITEM_MIXER:
+            {
+              if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+              }
+              showChatRoomMixerDialog();
+              break;
+            }
+          case MORE_ITEM_AUDIO:
+            {
+              if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+              }
+              new ChatRoomAudioDialog(VoiceRoomBaseActivity.this, audioPlay).show();
+              break;
+            }
+          case MORE_ITEM_REPORT:
+            if (dialog != null && dialog.isShowing()) {
+              dialog.dismiss();
+            }
+            new ReportDialog().show(getSupportFragmentManager(), TAG);
+            break;
+          case MORE_ITEM_FINISH:
+            {
+              if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+              }
+              doLeaveRoom();
+              break;
+            }
+        }
+        return true;
+      };
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -306,7 +312,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     initData();
     bindForegroundService();
     BluetoothHeadsetUtil.registerBluetoothHeadsetStatusObserver(
-       bluetoothHeadsetStatusChangeListener);
+        bluetoothHeadsetStatusChangeListener);
     if (BluetoothHeadsetUtil.isBluetoothHeadsetConnected()
         && !BluetoothHeadsetUtil.hasBluetoothConnectPermission(VoiceRoomBaseActivity.this)) {
       BluetoothHeadsetUtil.requestBluetoothConnectPermission(VoiceRoomBaseActivity.this);
@@ -328,7 +334,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     isOverSeaEnv = getIntent().getBooleanExtra(NEVoiceRoomUIConstants.ENV_KEY, false);
     if (voiceRoomInfo == null) {
       ToastUtils.INSTANCE.showShortToast(
-         VoiceRoomBaseActivity.this, getString(R.string.voiceroom_chat_message_tips));
+          VoiceRoomBaseActivity.this, getString(R.string.voiceroom_chat_message_tips));
       finish();
     }
   }
@@ -364,7 +370,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     unbindForegroundService();
     GiftHelper.getInstance().clear();
     BluetoothHeadsetUtil.unregisterBluetoothHeadsetStatusObserver(
-       bluetoothHeadsetStatusChangeListener);
+        bluetoothHeadsetStatusChangeListener);
     super.onDestroy();
   }
 
@@ -420,13 +426,13 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     // 沉浸式状态栏，顶部设置margin
     int statusBarHeight = ViewUtils.getStatusBarHeight(this);
     ConstraintLayout.LayoutParams tvRoomNameLayoutParams =
-       (ConstraintLayout.LayoutParams) tvRoomName.getLayoutParams();
+        (ConstraintLayout.LayoutParams) tvRoomName.getLayoutParams();
     tvRoomNameLayoutParams.topToTop = R.id.rl_base_audio_ui;
     tvRoomNameLayoutParams.topMargin = statusBarHeight;
     tvRoomName.setLayoutParams(tvRoomNameLayoutParams);
     View closeImageView = baseAudioView.findViewById(R.id.iv_leave_room);
     ConstraintLayout.LayoutParams closeImgLayoutParams =
-       (ConstraintLayout.LayoutParams) closeImageView.getLayoutParams();
+        (ConstraintLayout.LayoutParams) closeImageView.getLayoutParams();
     closeImgLayoutParams.topToTop = R.id.rl_base_audio_ui;
     closeImgLayoutParams.topMargin = statusBarHeight;
     closeImageView.setLayoutParams(closeImgLayoutParams);
@@ -436,7 +442,7 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     topTipsDialog = new TopTipsDialog();
     tvApplyHint = findViewById(R.id.apply_hint);
     tvApplyHint.setOnClickListener(
-       view -> showApplySeats(SeatHelper.getInstance().getApplySeatList()));
+        view -> showApplySeats(SeatHelper.getInstance().getApplySeatList()));
 
     tvApplyHint.setVisibility(View.INVISIBLE);
     tvApplyHint.setClickable(true);
@@ -445,115 +451,115 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private void initListeners() {
     settingsContainer.setOnClickListener(view -> settingsContainer.setVisibility(View.GONE));
     switchEarBack.setOnCheckedChangeListener(
-       (buttonView, isChecked) -> {
-         if (!DeviceUtils.hasEarBack(VoiceRoomBaseActivity.this)) {
-           buttonView.setChecked(false);
-           return;
-         }
-         enableEarBack(isChecked);
-       });
+        (buttonView, isChecked) -> {
+          if (!DeviceUtils.hasEarBack(VoiceRoomBaseActivity.this)) {
+            buttonView.setChecked(false);
+            return;
+          }
+          enableEarBack(isChecked);
+        });
     skRecordingVolume.setOnSeekBarChangeListener(
-       new VolumeSetup() {
-         @Override
-         protected void onVolume(int volume) {
-           setAudioCaptureVolume(volume);
-         }
-       });
+        new VolumeSetup() {
+          @Override
+          protected void onVolume(int volume) {
+            setAudioCaptureVolume(volume);
+          }
+        });
     more.setOnClickListener(
-       v -> {
-         moreItemList = getMoreItems();
-         chatRoomMoreDialog = new ChatRoomMoreDialog(VoiceRoomBaseActivity.this, moreItemList);
-         chatRoomMoreDialog.registerOnItemClickListener(getMoreItemClickListener());
-         chatRoomMoreDialog.show();
-       });
+        v -> {
+          moreItemList = getMoreItems();
+          chatRoomMoreDialog = new ChatRoomMoreDialog(VoiceRoomBaseActivity.this, moreItemList);
+          chatRoomMoreDialog.registerOnItemClickListener(getMoreItemClickListener());
+          chatRoomMoreDialog.show();
+        });
     ivLocalAudioSwitch.setOnClickListener(view -> toggleMuteLocalAudio());
     baseAudioView.findViewById(R.id.iv_leave_room).setOnClickListener(view -> doLeaveRoom());
 
     ImageView ivSmallWindow = baseAudioView.findViewById(R.id.iv_small_window);
     ivSmallWindow.setImageResource(R.drawable.voice_room_small_window);
     ivSmallWindow.setOnClickListener(
-       v -> {
-         if (FloatWindowPermissionManager.INSTANCE.isFloatWindowOpAllowed(
-            VoiceRoomBaseActivity.this)) {
-           prepareFloatPlay = true;
-           onClickSmallWindow();
-           finish();
-         } else {
-           FloatWindowPermissionManager.INSTANCE.requestFloatWindowPermission(
-              VoiceRoomBaseActivity.this);
-         }
-       });
+        v -> {
+          if (FloatWindowPermissionManager.INSTANCE.isFloatWindowOpAllowed(
+              VoiceRoomBaseActivity.this)) {
+            prepareFloatPlay = true;
+            onClickSmallWindow();
+            finish();
+          } else {
+            FloatWindowPermissionManager.INSTANCE.requestFloatWindowPermission(
+                VoiceRoomBaseActivity.this);
+          }
+        });
     tvInput.setOnClickListener(
-       v -> {
-         InputUtils.showSoftInput(VoiceRoomBaseActivity.this, edtInput);
-         edtInput.bringToFront();
-       });
+        v -> {
+          InputUtils.showSoftInput(VoiceRoomBaseActivity.this, edtInput);
+          edtInput.bringToFront();
+        });
     edtInput.setOnEditorActionListener(
-       (v, actionId, event) -> {
-         InputUtils.hideSoftInput(VoiceRoomBaseActivity.this, edtInput);
-         sendTextMessage();
-         return true;
-       });
+        (v, actionId, event) -> {
+          InputUtils.hideSoftInput(VoiceRoomBaseActivity.this, edtInput);
+          sendTextMessage();
+          return true;
+        });
     InputUtils.registerSoftInputListener(
-       this,
-       new InputUtils.InputParamHelper() {
+        this,
+        new InputUtils.InputParamHelper() {
 
-         @Override
-         public int getHeight() {
-           return baseAudioView.getHeight();
-         }
+          @Override
+          public int getHeight() {
+            return baseAudioView.getHeight();
+          }
 
-         @Override
-         public EditText getInputView() {
-           return edtInput;
-         }
-       });
+          @Override
+          public EditText getInputView() {
+            return edtInput;
+          }
+        });
     announcement.setOnClickListener(
-       v -> {
-         NoticeDialog noticeDialog = new NoticeDialog();
-         noticeDialog.show(getSupportFragmentManager(), "");
-       });
+        v -> {
+          NoticeDialog noticeDialog = new NoticeDialog();
+          noticeDialog.show(getSupportFragmentManager(), "");
+        });
     ivGift.setOnClickListener(
-       v -> {
-         ReportUtils.report(VoiceRoomBaseActivity.this, getPageName(), "chatroom_gift");
-         Application application = Utils.getApp();
-         if (application != null && !NetworkUtils.isConnected()) {
-           ToastUtils.INSTANCE.showShortToast(
-              application, application.getString(R.string.network_error));
-           return;
-         }
+        v -> {
+          ReportUtils.report(VoiceRoomBaseActivity.this, getPageName(), "chatroom_gift");
+          Application application = Utils.getApp();
+          if (application != null && !NetworkUtils.isConnected()) {
+            ToastUtils.INSTANCE.showShortToast(
+                application, application.getString(R.string.network_error));
+            return;
+          }
 
-         GiftDialog2 giftDialog = new GiftDialog2(VoiceRoomBaseActivity.this);
-         giftDialog.show(
-            (giftId, giftCount, userUuids) ->
-               NEVoiceRoomKit.getInstance()
-                             .sendBatchGift(
-                                giftId,
-                                giftCount,
-                                userUuids,
-                                new NEVoiceRoomCallback<Unit>() {
-                                  @Override
-                                  public void onSuccess(@Nullable Unit unit) {}
+          GiftDialog2 giftDialog = new GiftDialog2(VoiceRoomBaseActivity.this);
+          giftDialog.show(
+              (giftId, giftCount, userUuids) ->
+                  NEVoiceRoomKit.getInstance()
+                      .sendBatchGift(
+                          giftId,
+                          giftCount,
+                          userUuids,
+                          new NEVoiceRoomCallback<Unit>() {
+                            @Override
+                            public void onSuccess(@Nullable Unit unit) {}
 
-                                  @Override
-                                  public void onFailure(int code, @Nullable String msg) {
-                                    if (application != null) {
-                                      ToastUtils.INSTANCE.showShortToast(
-                                         application, application.getString(R.string.reward_failed));
-                                    }
-                                  }
-                                }));
-       });
+                            @Override
+                            public void onFailure(int code, @Nullable String msg) {
+                              if (application != null) {
+                                ToastUtils.INSTANCE.showShortToast(
+                                    application, application.getString(R.string.reward_failed));
+                              }
+                            }
+                          }));
+        });
     ivOrderSong.setOnClickListener(
-       v -> {
-         ReportUtils.report(VoiceRoomBaseActivity.this, getPageName(), "chatroom_order_song");
-         showSingingTable();
-       });
+        v -> {
+          ReportUtils.report(VoiceRoomBaseActivity.this, getPageName(), "chatroom_order_song");
+          showSingingTable();
+        });
   }
 
   private void initData() {
     seatGridView.updateAnchorUI(
-       voiceRoomInfo.getAnchorNick(), voiceRoomInfo.getAnchorAvatar(), false);
+        voiceRoomInfo.getAnchorNick(), voiceRoomInfo.getAnchorAvatar(), false);
     audioPlay = new EffectPlayHelper(VoiceRoomBaseActivity.this);
     initDataObserver();
   }
@@ -591,31 +597,31 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     if (isAnchor()) {
       if (seat.getStatus() == RoomSeat.Status.APPLY) {
         ToastUtils.INSTANCE.showShortToast(
-           VoiceRoomBaseActivity.this, getString(R.string.voiceroom_applying_now));
+            VoiceRoomBaseActivity.this, getString(R.string.voiceroom_applying_now));
         return;
       }
       OnItemClickListener<String> onItemClickListener = item -> onSeatAction(seat, item);
       List<String> items = new ArrayList<>();
       ListItemDialog itemDialog = new ListItemDialog(VoiceRoomBaseActivity.this);
       switch (seat.getStatus()) {
-        // 抱观众上麦（点击麦位）
+          // 抱观众上麦（点击麦位）
         case RoomSeat.Status.INIT:
           items.add(getString(R.string.voiceroom_invite_seat));
           items.add(getString(R.string.voiceroom_close_seat));
           break;
-        // 当前存在有效用户
+          // 当前存在有效用户
         case RoomSeat.Status.ON:
           items.add(getString(R.string.voiceroom_kickout_seat));
           final NEVoiceRoomMember member = seat.getMember();
           if (member != null) {
             items.add(
-               member.isAudioBanned()
-                  ? getString(R.string.voiceroom_unmute_seat)
-                  : getString(R.string.voiceroom_mute_seat));
+                member.isAudioBanned()
+                    ? getString(R.string.voiceroom_unmute_seat)
+                    : getString(R.string.voiceroom_mute_seat));
           }
           items.add(getString(R.string.voiceroom_close_seat));
           break;
-        // 当前麦位已经被关闭
+          // 当前麦位已经被关闭
         case RoomSeat.Status.CLOSED:
           items.add(getString(R.string.voiceroom_open_seat));
           break;
@@ -627,71 +633,71 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
         case RoomSeat.Status.INIT:
           if (seat.getStatus() == RoomSeat.Status.CLOSED) {
             ToastUtils.INSTANCE.showShortToast(
-               this,
-               getString(
-                  com.netease
-                     .yunxin
-                     .kit
-                     .voiceroomkit
-                     .ui
-                     .base
-                     .R
-                     .string
-                     .voiceroom_seat_already_closed));
+                this,
+                getString(
+                    com.netease
+                        .yunxin
+                        .kit
+                        .voiceroomkit
+                        .ui
+                        .base
+                        .R
+                        .string
+                        .voiceroom_seat_already_closed));
           } else if (roomViewModel.isCurrentUserOnSeat()) {
             ToastUtils.INSTANCE.showShortToast(
-               this,
-               getString(
-                  com.netease
-                     .yunxin
-                     .kit
-                     .voiceroomkit
-                     .ui
-                     .base
-                     .R
-                     .string
-                     .voiceroom_already_on_seat));
+                this,
+                getString(
+                    com.netease
+                        .yunxin
+                        .kit
+                        .voiceroomkit
+                        .ui
+                        .base
+                        .R
+                        .string
+                        .voiceroom_already_on_seat));
           } else {
             applySeat(seat.getSeatIndex());
           }
           break;
         case RoomSeat.Status.APPLY:
           ToastUtils.INSTANCE.showShortToast(
-             this,
-             getString(
-                com.netease.yunxin.kit.voiceroomkit.ui.base.R.string.voiceroom_seat_applied));
+              this,
+              getString(
+                  com.netease.yunxin.kit.voiceroomkit.ui.base.R.string.voiceroom_seat_applied));
           break;
         case RoomSeat.Status.ON:
           if (VoiceRoomUtils.isLocal(seat.getAccount())) {
             promptLeaveSeat();
           } else {
             ToastUtils.INSTANCE.showShortToast(
-               this,
-               getString(
-                  com.netease
-                     .yunxin
-                     .kit
-                     .voiceroomkit
-                     .ui
-                     .base
-                     .R
-                     .string
-                     .voiceroom_seat_already_taken));
+                this,
+                getString(
+                    com.netease
+                        .yunxin
+                        .kit
+                        .voiceroomkit
+                        .ui
+                        .base
+                        .R
+                        .string
+                        .voiceroom_seat_already_taken));
           }
           break;
         case RoomSeat.Status.CLOSED:
           ToastUtils.INSTANCE.showShortToast(
-             this,
-             getString(
-                com.netease
-                   .yunxin
-                   .kit
-                   .voiceroomkit
-                   .ui
-                   .base
-                   .R
-                   .string
-                   .voiceroom_seat_already_closed));
+              this,
+              getString(
+                  com.netease
+                      .yunxin
+                      .kit
+                      .voiceroomkit
+                      .ui
+                      .base
+                      .R
+                      .string
+                      .voiceroom_seat_already_closed));
           break;
       }
     }
@@ -700,8 +706,8 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   @NonNull
   protected List<ChatRoomMoreDialog.MoreItem> getMoreItems() {
     boolean isAudioOn =
-       NEVoiceRoomKit.getInstance().getLocalMember() != null
-       && NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn();
+        NEVoiceRoomKit.getInstance().getLocalMember() != null
+            && NEVoiceRoomKit.getInstance().getLocalMember().isAudioOn();
     moreItems.get(MORE_ITEM_MICRO_PHONE).setEnable(isAudioOn);
     moreItems.get(MORE_ITEM_EAR_BACK).setEnable(NEVoiceRoomKit.getInstance().isEarbackEnable());
     return moreItems;
@@ -714,11 +720,20 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   protected final void enterRoom() {
     if (PermissionUtils.hasPermissions(this, RECORD_AUDIO_PERMISSION)) {
       enterRoomInner(
-         voiceRoomInfo.getRoomUuid(),
-         voiceRoomInfo.getNick(),
-         voiceRoomInfo.getAvatar(),
-         voiceRoomInfo.getRole());
+          voiceRoomInfo.getRoomUuid(),
+          voiceRoomInfo.getNick(),
+          voiceRoomInfo.getAvatar(),
+          voiceRoomInfo.getRole());
     } else {
+      rootView.post(
+          () -> {
+            permissionPop =
+                new TopPopupWindow(
+                    VoiceRoomBaseActivity.this,
+                    R.string.app_permission_tip_microphone_title,
+                    R.string.app_permission_tip_microphone_content);
+            permissionPop.showAtLocation(rootView, Gravity.TOP, 0, 100);
+          });
       requestPermissionLauncher.launch(RECORD_AUDIO_PERMISSION);
     }
   }
@@ -731,30 +746,30 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
       roomViewModel.initDataOnJoinRoom();
     } else {
       roomViewModel.joinRoom(
-         roomUuid,
-         nick,
-         avatar,
-         role,
-         new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
+          roomUuid,
+          nick,
+          avatar,
+          role,
+          new NEVoiceRoomCallback<NEVoiceRoomInfo>() {
 
-           @Override
-           public void onSuccess(@Nullable NEVoiceRoomInfo neVoiceRoomInfo) {
-             joinRoomSuccess = true;
-           }
+            @Override
+            public void onSuccess(@Nullable NEVoiceRoomInfo neVoiceRoomInfo) {
+              joinRoomSuccess = true;
+            }
 
-           @Override
-           public void onFailure(int code, @Nullable String msg) {
-             if (!callLeaveRoom) {
-               ToastUtils.INSTANCE.showShortToast(
-                  VoiceRoomBaseActivity.this,
-                  getString(
-                     isAnchor()
-                        ? R.string.voiceroom_start_live_error
-                        : R.string.voiceroom_join_live_error));
-             }
-             finish();
-           }
-         });
+            @Override
+            public void onFailure(int code, @Nullable String msg) {
+              if (!callLeaveRoom) {
+                ToastUtils.INSTANCE.showShortToast(
+                    VoiceRoomBaseActivity.this,
+                    getString(
+                        isAnchor()
+                            ? R.string.voiceroom_start_live_error
+                            : R.string.voiceroom_join_live_error));
+              }
+              finish();
+            }
+          });
     }
   }
 
@@ -771,218 +786,216 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   protected void initDataObserver() {
     roomViewModel.localMemberData.observe(this, this::updateLocalUI);
     roomViewModel.toastData.observe(
-       this, s -> ToastUtils.INSTANCE.showShortToast(VoiceRoomBaseActivity.this, s));
+        this, s -> ToastUtils.INSTANCE.showShortToast(VoiceRoomBaseActivity.this, s));
     roomViewModel.memberCountData.observe(
-       this,
-       count -> {
-         String countStr = String.format(getString(R.string.voiceroom_people_online), count + "");
-         tvMemberCount.setText(countStr);
-       });
+        this,
+        count -> {
+          String countStr = String.format(getString(R.string.voiceroom_people_online), count + "");
+          tvMemberCount.setText(countStr);
+        });
     roomViewModel.onSeatListData.observe(
-       this,
-       seatList -> {
-         seatGridView.refresh(seatList);
-       });
+        this,
+        seatList -> {
+          seatGridView.refresh(seatList);
+        });
 
     roomViewModel.chatRoomMsgData.observe(
-       this,
-       charSequence -> {
-         charSequenceList.add(charSequence);
-         rcyChatMsgList.appendItem(charSequence);
-       });
+        this,
+        charSequence -> {
+          charSequenceList.add(charSequence);
+          rcyChatMsgList.appendItem(charSequence);
+        });
 
     roomViewModel.roomRtcErrorData.observe(
-       this,
-       code -> {
-         ALog.e(TAG, "roomRtcErrorData code = " + code);
-       });
+        this,
+        code -> {
+          ALog.e(TAG, "roomRtcErrorData code = " + code);
+        });
 
     roomViewModel.roomEndData.observe(
-       this,
-       endReason -> {
-         if (endReason == NEVoiceRoomEndReason.CLOSE_BY_MEMBER
-             && !VoiceRoomUtils.isLocalAnchor()) {
-           ToastUtils.INSTANCE.showShortToast(
-              VoiceRoomBaseActivity.this, getString(R.string.voiceroom_host_close_room));
-         }
-         finish();
-       });
+        this,
+        endReason -> {
+          if (endReason == NEVoiceRoomEndReason.CLOSE_BY_MEMBER
+              && !VoiceRoomUtils.isLocalAnchor()) {
+            ToastUtils.INSTANCE.showShortToast(
+                VoiceRoomBaseActivity.this, getString(R.string.voiceroom_host_close_room));
+          }
+          finish();
+        });
 
     roomViewModel.rtcLocalAudioVolumeIndicationData.observe(
-       this,
-       volume -> {
-         if (VoiceRoomUtils.isLocalAnchor()) {
-           seatGridView.showAvatarAnimal(
-              volume > 0 && VoiceRoomUtils.getLocalMember().isAudioOn());
-         } else {
-           for (RoomSeat roomSeat : seatGridView.getItems()) {
-             if (VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
-               if (roomSeat.isSpeaking() && volume == 0) {
-                 roomSeat.setSpeaking(false);
-                 seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
-               } else if (!roomSeat.isSpeaking() && volume > 0) {
-                 roomSeat.setSpeaking(true);
-                 seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
-               }
-             }
-           }
-         }
-       });
+        this,
+        volume -> {
+          if (VoiceRoomUtils.isLocalAnchor()) {
+            seatGridView.showAvatarAnimal(
+                volume > 0 && VoiceRoomUtils.getLocalMember().isAudioOn());
+          } else {
+            for (RoomSeat roomSeat : seatGridView.getItems()) {
+              if (VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
+                if (roomSeat.isSpeaking() && volume == 0) {
+                  roomSeat.setSpeaking(false);
+                  seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
+                } else if (!roomSeat.isSpeaking() && volume > 0) {
+                  roomSeat.setSpeaking(true);
+                  seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
+                }
+              }
+            }
+          }
+        });
 
     roomViewModel.rtcRemoteAudioVolumeIndicationData.observe(
-       this,
-       volumes -> {
-         Map<String, NEVoiceRoomMemberVolumeInfo> memberVolumeInfoMap = new HashMap<>();
-         for (NEVoiceRoomMemberVolumeInfo memberVolumeInfo : volumes) {
-           memberVolumeInfoMap.put(memberVolumeInfo.getUserUuid(), memberVolumeInfo);
-           if (VoiceRoomUtils.isHost(memberVolumeInfo.getUserUuid())) {
-             seatGridView.showAvatarAnimal(
-                memberVolumeInfo.getVolume() > 0
-                && VoiceRoomUtils.getMember(memberVolumeInfo.getUserUuid()).isAudioOn());
-           }
-         }
-         for (RoomSeat roomSeat : seatGridView.getItems()) {
-           if (!VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
-             if (memberVolumeInfoMap.containsKey(roomSeat.getAccount())
-                 && (Objects.requireNonNull(memberVolumeInfoMap.get(roomSeat.getAccount())))
-                       .getVolume()
-                    > 0) {
-               if (!roomSeat.isSpeaking()) {
-                 roomSeat.setSpeaking(true);
-                 seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
-               }
-             } else {
-               if (roomSeat.isSpeaking()) {
-                 roomSeat.setSpeaking(false);
-                 seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
-               }
-             }
-           }
-         }
-       });
+        this,
+        volumes -> {
+          Map<String, NEVoiceRoomMemberVolumeInfo> memberVolumeInfoMap = new HashMap<>();
+          for (NEVoiceRoomMemberVolumeInfo memberVolumeInfo : volumes) {
+            memberVolumeInfoMap.put(memberVolumeInfo.getUserUuid(), memberVolumeInfo);
+            if (VoiceRoomUtils.isHost(memberVolumeInfo.getUserUuid())) {
+              seatGridView.showAvatarAnimal(
+                  memberVolumeInfo.getVolume() > 0
+                      && VoiceRoomUtils.getMember(memberVolumeInfo.getUserUuid()).isAudioOn());
+            }
+          }
+          for (RoomSeat roomSeat : seatGridView.getItems()) {
+            if (!VoiceRoomUtils.isLocal(roomSeat.getAccount())) {
+              if (memberVolumeInfoMap.containsKey(roomSeat.getAccount())
+                  && (Objects.requireNonNull(memberVolumeInfoMap.get(roomSeat.getAccount())))
+                          .getVolume()
+                      > 0) {
+                if (!roomSeat.isSpeaking()) {
+                  roomSeat.setSpeaking(true);
+                  seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
+                }
+              } else {
+                if (roomSeat.isSpeaking()) {
+                  roomSeat.setSpeaking(false);
+                  seatGridView.refreshItem(seatGridView.getItems().indexOf(roomSeat));
+                }
+              }
+            }
+          }
+        });
 
     roomViewModel.memberAudioBannedData.observe(
-       this,
-       memberAudioBannedModel -> {
-         if (VoiceRoomUtils.isLocal(memberAudioBannedModel.getMember().getAccount())
-             && roomViewModel.isCurrentUserOnSeat()) {
-           if (memberAudioBannedModel.isBanned()) {
-             roomViewModel.muteMyAudio(false);
-           } else if (!roomViewModel.isMute()) {
-             roomViewModel.unmuteMyAudio(false);
-           }
-           ToastX.showShortToast(
-              getString(
-                 memberAudioBannedModel.isBanned()
-                    ? R.string.voiceroom_seat_muted
-                    : R.string.voiceroom_unmute_seat_tips));
-         }
-       });
+        this,
+        memberAudioBannedModel -> {
+          if (VoiceRoomUtils.isLocal(memberAudioBannedModel.getMember().getAccount())
+              && roomViewModel.isCurrentUserOnSeat()) {
+            if (memberAudioBannedModel.isBanned()) {
+              roomViewModel.muteMyAudio(false);
+            } else if (!roomViewModel.isMute()) {
+              roomViewModel.unmuteMyAudio(false);
+            }
+            ToastX.showShortToast(
+                getString(
+                    memberAudioBannedModel.isBanned()
+                        ? R.string.voiceroom_seat_muted
+                        : R.string.voiceroom_unmute_seat_tips));
+          }
+        });
 
     roomViewModel.memberAudioMuteChangedData.observe(
-       this,
-       memberAudioMuteChangedModel -> {
-         if (VoiceRoomUtils.isLocal(memberAudioMuteChangedModel.getMember().getAccount())) {
-           ivLocalAudioSwitch.setSelected(memberAudioMuteChangedModel.isMute());
-           getMoreItems()
-              .get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE)
-              .setEnable(!memberAudioMuteChangedModel.isMute());
-           if (chatRoomMoreDialog != null) {
-             chatRoomMoreDialog.updateData();
-           }
-         }
-       });
+        this,
+        memberAudioMuteChangedModel -> {
+          if (VoiceRoomUtils.isLocal(memberAudioMuteChangedModel.getMember().getAccount())) {
+            ivLocalAudioSwitch.setSelected(memberAudioMuteChangedModel.isMute());
+            getMoreItems()
+                .get(VoiceRoomBaseActivity.MORE_ITEM_MICRO_PHONE)
+                .setEnable(!memberAudioMuteChangedModel.isMute());
+            if (chatRoomMoreDialog != null) {
+              chatRoomMoreDialog.updateData();
+            }
+          }
+        });
 
     roomViewModel.bachRewardData.observe(
-       this,
-       batchReward -> {
-         if (voiceRoomInfo == null) {
-           return;
-         }
+        this,
+        batchReward -> {
+          if (voiceRoomInfo == null) {
+            return;
+          }
 
-         ALog.i(TAG, "bachRewardData observe giftModel:" + batchReward);
-         List<NEVoiceRoomBatchRewardTarget> targets = batchReward.getTargets();
-         if (targets.isEmpty()) {
-           return;
-         }
-         for (NEVoiceRoomBatchRewardTarget target : targets) {
-           CharSequence batchGiftReward =
-              ChatRoomMsgCreator.createBatchGiftReward(
-                 VoiceRoomBaseActivity.this,
-                 batchReward.getUserName(),
-                 target.getUserName(),
-                 GiftCache.getGift(batchReward.getGiftId()).getName(),
-                 batchReward.getGiftCount(),
-                 GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId());
-           rcyChatMsgList.appendItem(batchGiftReward);
-           charSequenceList.add(batchGiftReward);
-           ALog.i(TAG, "target:" + target);
-         }
-         if (!VoiceRoomUtils.isLocalAnchor()) {
-           if (gifAnimationView != null) {
-             gifAnimationView.bringToFront();
-           }
-           giftRender.addGift(GiftCache.getGift(batchReward.getGiftId()).getDynamicIconResId());
-         }
-       });
+          ALog.i(TAG, "bachRewardData observe giftModel:" + batchReward);
+          List<NEVoiceRoomBatchRewardTarget> targets = batchReward.getTargets();
+          if (targets.isEmpty()) {
+            return;
+          }
+          for (NEVoiceRoomBatchRewardTarget target : targets) {
+            CharSequence batchGiftReward =
+                ChatRoomMsgCreator.createBatchGiftReward(
+                    VoiceRoomBaseActivity.this,
+                    batchReward.getUserName(),
+                    target.getUserName(),
+                    GiftCache.getGift(batchReward.getGiftId()).getName(),
+                    batchReward.getGiftCount(),
+                    GiftCache.getGift(batchReward.getGiftId()).getStaticIconResId());
+            rcyChatMsgList.appendItem(batchGiftReward);
+            charSequenceList.add(batchGiftReward);
+            ALog.i(TAG, "target:" + target);
+          }
+          if (gifAnimationView != null) {
+            gifAnimationView.bringToFront();
+          }
+          giftRender.addGift(GiftCache.getGift(batchReward.getGiftId()).getDynamicIconResId());
+        });
 
     roomViewModel.anchorReward.observe(
-       this,
-       reward -> {
-         seatGridView.updateAnchorReward(reward);
-       });
+        this,
+        reward -> {
+          seatGridView.updateAnchorReward(reward);
+        });
     roomViewModel.earBackData.observe(
-       this,
-       isOpen -> {
-         enableEarBack(isOpen);
-         moreItems.get(MORE_ITEM_EAR_BACK).setEnable(isOpen);
-         if (chatRoomMoreDialog != null) {
-           chatRoomMoreDialog.updateData();
-         }
-       });
+        this,
+        isOpen -> {
+          enableEarBack(isOpen);
+          moreItems.get(MORE_ITEM_EAR_BACK).setEnable(isOpen);
+          if (chatRoomMoreDialog != null) {
+            chatRoomMoreDialog.updateData();
+          }
+        });
     orderSongViewModel
-       .getVolumeChangedEvent()
-       .observe(
-          this,
-          volume -> {
-            SongPlayManager.getInstance().setVolume(volume);
-          });
+        .getVolumeChangedEvent()
+        .observe(
+            this,
+            volume -> {
+              SongPlayManager.getInstance().setVolume(volume);
+            });
     roomViewModel.currentSeatState.observe(
-       this,
-       new Observer<Integer>() {
-         @Override
-         public void onChanged(Integer integer) {
-           //观众断网重连也会走这个逻辑
-           ALog.d(TAG, "initDataObserver currentSeatState,integer:" + integer);
-           if (integer != VoiceRoomViewModel.CURRENT_SEAT_STATE_APPLYING) {
-             canShowTip = false;
-             dismissCancelApplySeatDialog();
-           }
-           updateAudioSwitchVisible(roomViewModel.isCurrentUserOnSeat());
-         }
-       });
+        this,
+        new Observer<Integer>() {
+          @Override
+          public void onChanged(Integer integer) {
+            //观众断网重连也会走这个逻辑
+            ALog.d(TAG, "initDataObserver currentSeatState,integer:" + integer);
+            if (integer != VoiceRoomViewModel.CURRENT_SEAT_STATE_APPLYING) {
+              canShowTip = false;
+              dismissCancelApplySeatDialog();
+            }
+            updateAudioSwitchVisible(roomViewModel.isCurrentUserOnSeat());
+          }
+        });
 
     // 房间背景
     roomViewModel.roomInfoLiveData.observe(
-       this,
-       new Observer<NEVoiceRoomInfo>() {
-         @Override
-         public void onChanged(NEVoiceRoomInfo neVoiceRoomInfo) {
-           ALog.i(TAG, "neVoiceRoomInfo:" + neVoiceRoomInfo);
-           loadRoomBg(neVoiceRoomInfo.getLiveModel().getCover());
-         }
-       });
+        this,
+        new Observer<NEVoiceRoomInfo>() {
+          @Override
+          public void onChanged(NEVoiceRoomInfo neVoiceRoomInfo) {
+            ALog.i(TAG, "neVoiceRoomInfo:" + neVoiceRoomInfo);
+            loadRoomBg(neVoiceRoomInfo.getLiveModel().getCover());
+          }
+        });
   }
 
   private void loadRoomBg(String cover) {
     Glide.with(VoiceRoomBaseActivity.this.getApplicationContext())
-         .asBitmap()
-         .load(cover)
-         .into(
+        .asBitmap()
+        .load(cover)
+        .into(
             new SimpleTarget<Bitmap>() {
               @Override
               public void onResourceReady(
-                 @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                  @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 baseAudioView.setBackground(new BitmapDrawable(resource));
                 ALog.i(TAG, "onResourceReady:" + resource);
               }
@@ -999,39 +1012,39 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     callLeaveRoom = true;
     if (VoiceRoomUtils.isLocalAnchor()) {
       NEVoiceRoomKit.getInstance()
-                    .endRoom(
-                       new NEVoiceRoomCallback<Unit>() {
-                         @Override
-                         public void onSuccess(@Nullable Unit unit) {
-                           ALog.i(TAG, "endRoom success");
-                           ToastUtils.INSTANCE.showShortToast(
-                              VoiceRoomBaseActivity.this,
-                              getString(R.string.voiceroom_host_close_room_success));
-                           finish();
-                         }
+          .endRoom(
+              new NEVoiceRoomCallback<Unit>() {
+                @Override
+                public void onSuccess(@Nullable Unit unit) {
+                  ALog.i(TAG, "endRoom success");
+                  ToastUtils.INSTANCE.showShortToast(
+                      VoiceRoomBaseActivity.this,
+                      getString(R.string.voiceroom_host_close_room_success));
+                  finish();
+                }
 
-                         @Override
-                         public void onFailure(int code, @Nullable String msg) {
-                           ALog.e(TAG, "endRoom onFailure");
-                           finish();
-                         }
-                       });
+                @Override
+                public void onFailure(int code, @Nullable String msg) {
+                  ALog.e(TAG, "endRoom onFailure");
+                  finish();
+                }
+              });
     } else {
       NEVoiceRoomKit.getInstance()
-                    .leaveRoom(
-                       new NEVoiceRoomCallback<Unit>() {
-                         @Override
-                         public void onSuccess(@Nullable Unit unit) {
-                           ALog.i(TAG, "leaveRoom success");
-                           finish();
-                         }
+          .leaveRoom(
+              new NEVoiceRoomCallback<Unit>() {
+                @Override
+                public void onSuccess(@Nullable Unit unit) {
+                  ALog.i(TAG, "leaveRoom success");
+                  finish();
+                }
 
-                         @Override
-                         public void onFailure(int code, @Nullable String msg) {
-                           ALog.e(TAG, "leaveRoom onFailure");
-                           finish();
-                         }
-                       });
+                @Override
+                public void onFailure(int code, @Nullable String msg) {
+                  ALog.e(TAG, "leaveRoom onFailure");
+                  finish();
+                }
+              });
     }
 
     if (audioPlay != null) {
@@ -1045,17 +1058,17 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     if (localMember == null) return;
     boolean isAudioOn = localMember.isAudioOn();
     ALog.d(
-       TAG,
-       "toggleMuteLocalAudio,localMember.isAudioOn:"
-       + isAudioOn
-       + ",localMember.isAudioBanned():"
-       + localMember.isAudioBanned());
+        TAG,
+        "toggleMuteLocalAudio,localMember.isAudioOn:"
+            + isAudioOn
+            + ",localMember.isAudioBanned():"
+            + localMember.isAudioBanned());
     if (isAudioOn) {
       roomViewModel.muteMyAudio(true);
     } else {
       if (localMember.isAudioBanned()) {
         ToastUtils.INSTANCE.showShortToast(
-           VoiceRoomBaseActivity.this, getString(R.string.voiceroom_audio_banned));
+            VoiceRoomBaseActivity.this, getString(R.string.voiceroom_audio_banned));
       } else {
         roomViewModel.unmuteMyAudio(true);
       }
@@ -1081,26 +1094,26 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
       return;
     }
     NEVoiceRoomKit.getInstance()
-                  .sendTextMessage(
-                     content,
-                     new NEVoiceRoomCallback<NERoomChatMessage>() {
-                       @Override
-                       public void onSuccess(@Nullable NERoomChatMessage unit) {
-                         CharSequence charSequence =
-                            ChatRoomMsgCreator.createText(
-                               VoiceRoomBaseActivity.this,
-                               VoiceRoomUtils.isLocalAnchor(),
-                               VoiceRoomUtils.getLocalName(),
-                               content);
-                         rcyChatMsgList.appendItem(charSequence);
-                         charSequenceList.add(charSequence);
-                       }
+        .sendTextMessage(
+            content,
+            new NEVoiceRoomCallback<NERoomChatMessage>() {
+              @Override
+              public void onSuccess(@Nullable NERoomChatMessage unit) {
+                CharSequence charSequence =
+                    ChatRoomMsgCreator.createText(
+                        VoiceRoomBaseActivity.this,
+                        VoiceRoomUtils.isLocalAnchor(),
+                        VoiceRoomUtils.getLocalName(),
+                        content);
+                rcyChatMsgList.appendItem(charSequence);
+                charSequenceList.add(charSequence);
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "sendTextMessage failed code = " + code + " msg = " + msg);
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "sendTextMessage failed code = " + code + " msg = " + msg);
+              }
+            });
   }
 
   @Override
@@ -1162,16 +1175,16 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   protected void onSeatAction(RoomSeat seat, String item) {
     if (item.equals(getString(R.string.voiceroom_kickout_seat_sure))) {
       new ListItemDialog(VoiceRoomBaseActivity.this)
-         .setOnItemClickListener(
-            item1 -> {
-              if (getString(R.string.voiceroom_kickout_seat_sure).equals(item1)) {
-                kickSeat(seat);
-              }
-            })
-         .show(
-            Arrays.asList(
-               getString(R.string.voiceroom_kickout_seat_sure),
-               getString(R.string.voiceroom_cancel)));
+          .setOnItemClickListener(
+              item1 -> {
+                if (getString(R.string.voiceroom_kickout_seat_sure).equals(item1)) {
+                  kickSeat(seat);
+                }
+              })
+          .show(
+              Arrays.asList(
+                  getString(R.string.voiceroom_kickout_seat_sure),
+                  getString(R.string.voiceroom_cancel)));
     } else if (item.equals(getString(R.string.voiceroom_close_seat))) {
       closeSeat(seat);
     } else if (item.equals(getString(R.string.voiceroom_invite_seat))) {
@@ -1196,20 +1209,20 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     seatApplyDialog.setArguments(bundle);
     seatApplyDialog.show(getSupportFragmentManager(), seatApplyDialog.getDialogTag());
     seatApplyDialog.setRequestAction(
-       new SeatApplyDialog.IRequestAction() {
-         @Override
-         public void refuse(RoomSeat seat) {
-           denySeatApply(seat);
-         }
+        new SeatApplyDialog.IRequestAction() {
+          @Override
+          public void refuse(RoomSeat seat) {
+            denySeatApply(seat);
+          }
 
-         @Override
-         public void agree(RoomSeat seat) {
-           approveSeatApply(seat);
-         }
+          @Override
+          public void agree(RoomSeat seat) {
+            approveSeatApply(seat);
+          }
 
-         @Override
-         public void dismiss() {}
-       });
+          @Override
+          public void dismiss() {}
+        });
   }
 
   public void onApplySeats(List<RoomSeat> seats) {
@@ -1238,40 +1251,40 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
   private void approveSeatApply(RoomSeat seat) {
     final String text = getString(R.string.voiceroom_seat_request_success);
     NEVoiceRoomKit.getInstance()
-                  .approveSeatRequest(
-                     seat.getAccount(),
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ToastX.showShortToast(text);
-                       }
+        .approveSeatRequest(
+            seat.getAccount(),
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ToastX.showShortToast(text);
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "approveSeatApply onFailure code:" + code);
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "approveSeatApply onFailure code:" + code);
+              }
+            });
   }
 
   private void denySeatApply(RoomSeat seat) {
     NEVoiceRoomMember member = seat.getMember();
     if (member == null) return;
     final String text =
-       String.format(getString(R.string.voiceroom_deny_seat_apply), member.getName());
+        String.format(getString(R.string.voiceroom_deny_seat_apply), member.getName());
     NEVoiceRoomKit.getInstance()
-                  .rejectSeatRequest(
-                     seat.getAccount(),
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ToastX.showShortToast(text);
-                       }
+        .rejectSeatRequest(
+            seat.getAccount(),
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ToastX.showShortToast(text);
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "denySeatApply onFailure code:" + code);
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "denySeatApply onFailure code:" + code);
+              }
+            });
   }
 
   public void openSeat(RoomSeat seat) {
@@ -1279,45 +1292,45 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     List<Integer> seatIndices = new ArrayList<>();
     seatIndices.add(seat.getSeatIndex());
     NEVoiceRoomKit.getInstance()
-                  .openSeats(
-                     seatIndices,
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ALog.i(TAG, "openSeats onSuccess");
-                         ToastX.showShortToast(
-                            String.format(getString(R.string.voiceroom_open_seat_success), position));
-                       }
+        .openSeats(
+            seatIndices,
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.i(TAG, "openSeats onSuccess");
+                ToastX.showShortToast(
+                    String.format(getString(R.string.voiceroom_open_seat_success), position));
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "openSeats onFailure");
-                         ToastX.showShortToast(
-                            String.format(getString(R.string.voiceroom_open_seat_fail), position));
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "openSeats onFailure");
+                ToastX.showShortToast(
+                    String.format(getString(R.string.voiceroom_open_seat_fail), position));
+              }
+            });
   }
 
   protected void closeSeat(RoomSeat seat) {
     List<Integer> list = new ArrayList<>();
     list.add(seat.getSeatIndex());
     NEVoiceRoomKit.getInstance()
-                  .closeSeats(
-                     list,
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ALog.i(TAG, "closeSeat onSuccess");
-                         ToastX.showShortToast(
-                            String.format(
-                               getString(R.string.voiceroom_close_seat_tip), seat.getSeatIndex() - 1));
-                       }
+        .closeSeats(
+            list,
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.i(TAG, "closeSeat onSuccess");
+                ToastX.showShortToast(
+                    String.format(
+                        getString(R.string.voiceroom_close_seat_tip), seat.getSeatIndex() - 1));
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "closeSeat onFailure code:" + code);
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "closeSeat onFailure code:" + code);
+              }
+            });
   }
 
   protected void muteSeat(RoomSeat seat) {
@@ -1326,21 +1339,21 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
     final String text = getString(R.string.voiceroom_seat_mute_tips);
     NEVoiceRoomKit.getInstance()
-                  .banRemoteAudio(
-                     userId,
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ALog.i(TAG, "muteSeat onSuccess");
-                         ToastX.showShortToast(text);
-                       }
+        .banRemoteAudio(
+            userId,
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.i(TAG, "muteSeat onSuccess");
+                ToastX.showShortToast(text);
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "muteSeat onFailure code:" + code);
-                         ToastX.showShortToast(getString(R.string.voiceroom_mute_seat_fail));
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "muteSeat onFailure code:" + code);
+                ToastX.showShortToast(getString(R.string.voiceroom_mute_seat_fail));
+              }
+            });
   }
 
   protected void unmuteSeat(RoomSeat seat) {
@@ -1348,21 +1361,21 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     if (userId == null) return;
 
     NEVoiceRoomKit.getInstance()
-                  .unbanRemoteAudio(
-                     userId,
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ALog.i(TAG, "muteSeat onSuccess");
-                         ToastX.showShortToast(getString(R.string.voiceroom_unmute_seat_success));
-                       }
+        .unbanRemoteAudio(
+            userId,
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.i(TAG, "muteSeat onSuccess");
+                ToastX.showShortToast(getString(R.string.voiceroom_unmute_seat_success));
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "muteSeat onFailure code:" + code);
-                         ToastX.showShortToast(getString(R.string.voiceroom_unmute_seat_fail));
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "muteSeat onFailure code:" + code);
+                ToastX.showShortToast(getString(R.string.voiceroom_unmute_seat_fail));
+              }
+            });
   }
 
   private int inviteIndex = -1;
@@ -1374,47 +1387,47 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   private void inviteSeat(@NonNull VoiceRoomUser member) {
     NEVoiceRoomKit.getInstance()
-                  .sendSeatInvitation(
-                     inviteIndex,
-                     member.account,
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         final String text =
-                            String.format(
-                               getString(R.string.voiceroom_invite_seat_success), member.getNick());
-                         ToastX.showShortToast(text);
-                       }
+        .sendSeatInvitation(
+            inviteIndex,
+            member.account,
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                final String text =
+                    String.format(
+                        getString(R.string.voiceroom_invite_seat_success), member.getNick());
+                ToastX.showShortToast(text);
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "inviteSeat onFailure code:" + code);
-                         ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "inviteSeat onFailure code:" + code);
+                ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
+              }
+            });
   }
 
   protected void kickSeat(@NonNull RoomSeat seat) {
     NEVoiceRoomMember member = seat.getMember();
     if (member == null) return;
     final String text =
-       String.format(getString(R.string.voiceroom_kickout_seat_success), member.getName());
+        String.format(getString(R.string.voiceroom_kickout_seat_success), member.getName());
     NEVoiceRoomKit.getInstance()
-                  .kickSeat(
-                     member.getAccount(),
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ALog.e(TAG, "kickSeat onSuccess");
-                         ToastX.showShortToast(text);
-                       }
+        .kickSeat(
+            member.getAccount(),
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ALog.e(TAG, "kickSeat onSuccess");
+                ToastX.showShortToast(text);
+              }
 
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "kickSeat onFailure code:" + code);
-                         ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
-                       }
-                     });
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "kickSeat onFailure code:" + code);
+                ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
+              }
+            });
   }
 
   private boolean checkMySeat(RoomSeat seat) {
@@ -1436,21 +1449,21 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
       return;
     }
     NEVoiceRoomKit.getInstance()
-                  .submitSeatRequest(
-                     index,
-                     true,
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "applySeat onFailure code:" + code);
-                         ToastUtils.INSTANCE.showShortToast(VoiceRoomBaseActivity.this, msg);
-                       }
+        .submitSeatRequest(
+            index,
+            true,
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "applySeat onFailure code:" + code);
+                ToastUtils.INSTANCE.showShortToast(VoiceRoomBaseActivity.this, msg);
+              }
 
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         showApplySeatDialog();
-                       }
-                     });
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                showApplySeatDialog();
+              }
+            });
   }
 
   protected boolean canShowTip = false;
@@ -1463,30 +1476,30 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     ALog.d(TAG, "onApplySeatSuccess");
     canShowTip = true;
     cancelApplySeatDialog.setClickListener(
-       () -> {
-         if (bottomDialog != null && bottomDialog.isShowing()) {
-           bottomDialog.dismiss();
-         }
-         bottomDialog =
-            new ListItemDialog(VoiceRoomBaseActivity.this)
-               .setOnItemClickListener(
-                  item -> {
-                    if (getString(R.string.voiceroom_confirm_to_cancel).equals(item)) {
-                      cancelSeatApply();
-                      canShowTip = false;
-                    }
-                  });
-         bottomDialog.setOnDismissListener(
-            dialog1 -> {
-              if (canShowTip) {
-                cancelApplySeatDialog.show(getSupportFragmentManager());
-              }
-            });
-         bottomDialog.show(
-            Arrays.asList(
-               getString(R.string.voiceroom_confirm_to_cancel),
-               getString(R.string.voiceroom_cancel)));
-       });
+        () -> {
+          if (bottomDialog != null && bottomDialog.isShowing()) {
+            bottomDialog.dismiss();
+          }
+          bottomDialog =
+              new ListItemDialog(VoiceRoomBaseActivity.this)
+                  .setOnItemClickListener(
+                      item -> {
+                        if (getString(R.string.voiceroom_confirm_to_cancel).equals(item)) {
+                          cancelSeatApply();
+                          canShowTip = false;
+                        }
+                      });
+          bottomDialog.setOnDismissListener(
+              dialog1 -> {
+                if (canShowTip) {
+                  cancelApplySeatDialog.show(getSupportFragmentManager());
+                }
+              });
+          bottomDialog.show(
+              Arrays.asList(
+                  getString(R.string.voiceroom_confirm_to_cancel),
+                  getString(R.string.voiceroom_cancel)));
+        });
   }
 
   private void dismissCancelApplySeatDialog() {
@@ -1500,35 +1513,35 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
 
   public void cancelSeatApply() {
     NEVoiceRoomKit.getInstance()
-                  .cancelSeatRequest(
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "cancelSeatApply onFailure code:" + code);
-                         ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
-                       }
+        .cancelSeatRequest(
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "cancelSeatApply onFailure code:" + code);
+                ToastX.showShortToast(getString(R.string.voiceroom_operate_fail));
+              }
 
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ToastX.showShortToast(getString(R.string.voiceroom_apply_canceled));
-                       }
-                     });
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ToastX.showShortToast(getString(R.string.voiceroom_apply_canceled));
+              }
+            });
   }
 
   protected void leaveSeat() {
     NEVoiceRoomKit.getInstance()
-                  .leaveSeat(
-                     new NEVoiceRoomCallback<Unit>() {
-                       @Override
-                       public void onFailure(int code, @Nullable String msg) {
-                         ALog.e(TAG, "leaveSeat onFailure code:" + code);
-                       }
+        .leaveSeat(
+            new NEVoiceRoomCallback<Unit>() {
+              @Override
+              public void onFailure(int code, @Nullable String msg) {
+                ALog.e(TAG, "leaveSeat onFailure code:" + code);
+              }
 
-                       @Override
-                       public void onSuccess(@Nullable Unit unit) {
-                         ToastX.showShortToast(getString(R.string.voiceroom_already_leave_seat));
-                       }
-                     });
+              @Override
+              public void onSuccess(@Nullable Unit unit) {
+                ToastX.showShortToast(getString(R.string.voiceroom_already_leave_seat));
+              }
+            });
   }
 
   public void hintSeatState(VoiceRoomSeatEvent seat, boolean on) {
@@ -1536,68 +1549,68 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
       Bundle bundle = new Bundle();
       switch (seat.getReason()) {
         case RoomSeat.Reason.ANCHOR_INVITE:
-        {
-          int position = seat.getIndex() - 1;
-          new NotificationDialog(VoiceRoomBaseActivity.this)
-             .setTitle(getString(R.string.voiceroom_notify))
-             .setContent(String.format(getString(R.string.voiceroom_on_seated_tips), position))
-             .setPositive(
-                getString(R.string.voiceroom_get_it),
-                v -> {
-                  canShowTip = false;
-                  if (bottomDialog != null && bottomDialog.isShowing()) {
-                    bottomDialog.dismiss();
-                  }
-                })
-             .show();
-          break;
-        }
-        //主播同意上麦
-        case RoomSeat.Reason.ANCHOR_APPROVE_APPLY:
-        {
-          canShowTip = false;
-          if (bottomDialog != null && bottomDialog.isShowing()) {
-            bottomDialog.dismiss();
+          {
+            int position = seat.getIndex() - 1;
+            new NotificationDialog(VoiceRoomBaseActivity.this)
+                .setTitle(getString(R.string.voiceroom_notify))
+                .setContent(String.format(getString(R.string.voiceroom_on_seated_tips), position))
+                .setPositive(
+                    getString(R.string.voiceroom_get_it),
+                    v -> {
+                      canShowTip = false;
+                      if (bottomDialog != null && bottomDialog.isShowing()) {
+                        bottomDialog.dismiss();
+                      }
+                    })
+                .show();
+            break;
           }
-          TopTipsDialog topTipsDialog = new TopTipsDialog();
-          TopTipsDialog.Style style =
-             topTipsDialog
+          //主播同意上麦
+        case RoomSeat.Reason.ANCHOR_APPROVE_APPLY:
+          {
+            canShowTip = false;
+            if (bottomDialog != null && bottomDialog.isShowing()) {
+              bottomDialog.dismiss();
+            }
+            TopTipsDialog topTipsDialog = new TopTipsDialog();
+            TopTipsDialog.Style style =
+                topTipsDialog
                 .new Style(
-                getString(R.string.voiceroom_request_accepted),
-                R.color.color_00000000,
-                R.drawable.right,
-                R.color.color_black);
-          bundle.putParcelable(topTipsDialog.getDialogTag(), style);
-          topTipsDialog.setArguments(bundle);
-          topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.getDialogTag());
-          new Handler(Looper.getMainLooper()).postDelayed(topTipsDialog::dismiss, 2000); // 延时2秒
-          break;
-        }
+                    getString(R.string.voiceroom_request_accepted),
+                    R.color.color_00000000,
+                    R.drawable.right,
+                    R.color.color_black);
+            bundle.putParcelable(topTipsDialog.getDialogTag(), style);
+            topTipsDialog.setArguments(bundle);
+            topTipsDialog.show(getSupportFragmentManager(), topTipsDialog.getDialogTag());
+            new Handler(Looper.getMainLooper()).postDelayed(topTipsDialog::dismiss, 2000); // 延时2秒
+            break;
+          }
         default:
           break;
       }
     } else {
       if (seat.getReason() == RoomSeat.Reason.ANCHOR_KICK) {
         new NotificationDialog(this)
-           .setTitle(getString(R.string.voiceroom_notify))
-           .setContent(getString(R.string.voiceroom_kikout_seat_by_host))
-           .setPositive(getString(R.string.voiceroom_get_it), null)
-           .show();
+            .setTitle(getString(R.string.voiceroom_notify))
+            .setContent(getString(R.string.voiceroom_kikout_seat_by_host))
+            .setPositive(getString(R.string.voiceroom_get_it), null)
+            .show();
       }
     }
   }
 
   protected void promptLeaveSeat() {
     new ListItemDialog(VoiceRoomBaseActivity.this)
-       .setOnItemClickListener(
-          item -> {
-            if (getString(R.string.voiceroom_dowmseat).equals(item)) {
-              leaveSeat();
-            }
-          })
-       .show(
-          Arrays.asList(
-             getString(R.string.voiceroom_dowmseat), getString(R.string.voiceroom_cancel)));
+        .setOnItemClickListener(
+            item -> {
+              if (getString(R.string.voiceroom_dowmseat).equals(item)) {
+                leaveSeat();
+              }
+            })
+        .show(
+            Arrays.asList(
+                getString(R.string.voiceroom_dowmseat), getString(R.string.voiceroom_cancel)));
   }
 
   public void onSeatApplyDenied(boolean otherOn) {
@@ -1606,17 +1619,17 @@ public abstract class VoiceRoomBaseActivity extends BaseActivity
     } else {
 
       new NotificationDialog(this)
-         .setTitle(getString(R.string.voiceroom_notify))
-         .setContent(getString(R.string.voiceroom_request_rejected))
-         .setPositive(
-            getString(R.string.voiceroom_get_it),
-            v -> {
-              canShowTip = false;
-              if (bottomDialog != null && bottomDialog.isShowing()) {
-                bottomDialog.dismiss();
-              }
-            })
-         .show();
+          .setTitle(getString(R.string.voiceroom_notify))
+          .setContent(getString(R.string.voiceroom_request_rejected))
+          .setPositive(
+              getString(R.string.voiceroom_get_it),
+              v -> {
+                canShowTip = false;
+                if (bottomDialog != null && bottomDialog.isShowing()) {
+                  bottomDialog.dismiss();
+                }
+              })
+          .show();
     }
   }
 

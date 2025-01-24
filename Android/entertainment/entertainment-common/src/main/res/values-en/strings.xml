@@ -95,4 +95,14 @@
     <string name="voiceroom_authentication_success">Identity Verification passed</string>
     <string name="voiceroom_authentication_know">Got it</string>
     <string name="singer">singer:%1$s</string>
+    <string name="ec_in_the_call_tips">You are currently on a call, try again later</string>
+    <string name="app_permission_tip_title">Camera and Microphone Permission Usage Instructions</string>
+    <string name="app_permission_tip_content">Used for scenarios such as voice or video calls</string>
+    <string name="app_permission_tip_camera_title">Camera Permission Usage Instructions</string>
+    <string name="app_permission_tip_camera_content">Used for scenarios such as video calls</string>
+    <string name="app_permission_tip_microphone_title">Microphone Permission Usage Instructions</string>
+    <string name="app_permission_tip_microphone_content">Used for scenarios such as voice calls</string>
+    <string name="app_permission_tip_camera_and_microphone_title">Camera and Microphone Permission Usage Instructions</string>
+    <string name="app_permission_tip_camera_and_microphone_content">Used for scenarios such as voice or video calls</string>
+
 </resources>

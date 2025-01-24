@@ -830,6 +830,21 @@ class _VoiceRoomKitImpl extends NEVoiceRoomKit with _AloggerMixin {
   }
 
   @override
+  Future<VoidResult> changeSeatIndex(int seatIndex) async {
+    commonLogger.i('changeSeatIndex,seatIndex:$seatIndex');
+    if (_currentRoomContext != null) {
+      var ret =
+      await _currentRoomContext!.seatController.changeSeatIndex(seatIndex);
+      commonLogger.i('submitSeatRequest,ret:$ret');
+      return ret;
+    } else {
+      commonLogger.e("_currentRoomContext == null");
+      return Future.value(const NEResult(
+          code: NEVoiceRoomErrorCode.failure, msg: ERROR_MSG_NOT_IN_ROOM));
+    }
+  }
+
+  @override
   Future<VoidResult> unbanRemoteAudio(String account) async {
     commonLogger.i('unbanRemoteAudio,account:$account');
     if (_currentRoomContext != null) {

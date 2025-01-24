@@ -11,6 +11,7 @@ plugins {
 
 android {
     compileSdk = 31
+    namespace = "com.netease.yunxin.kit.voiceroomkit"
     buildFeatures {
         viewBinding = true
     }
@@ -26,9 +27,9 @@ dependencies {
 
     // xkit
     implementation("com.netease.yunxin.kit:alog:1.1.0")
-    implementation("com.netease.yunxin.kit.common:common:1.3.1")
+    implementation("com.netease.yunxin.kit.common:common:1.3.9")
     implementation("com.netease.yunxin.kit.common:common-network:1.1.8")
-    api("com.netease.yunxin.kit.room:roomkit:1.25.2")
+    api("com.netease.yunxin.kit.room:roomkit:1.34.0")
 
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 }

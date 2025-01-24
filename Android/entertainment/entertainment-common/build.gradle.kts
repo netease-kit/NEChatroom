@@ -11,6 +11,7 @@ plugins {
 
 android {
     compileSdk = 31
+    namespace = "com.netease.yunxin.kit.entertainment.common"
     buildFeatures {
         viewBinding = true
     }
@@ -32,7 +33,7 @@ dependencies {
     implementation("com.netease.yunxin:nertc-base:5.4.8")
 
 
-    implementation("com.netease.yunxin.kit.common:common-ui:1.3.1")
+    implementation("com.netease.yunxin.kit.common:common-ui:1.3.9")
     implementation("com.netease.yunxin.kit.common:common-image:1.1.7")
     implementation(project(":voiceroomkit"))
     implementation("com.netease.yunxin.kit.core:corekit:1.4.2")
