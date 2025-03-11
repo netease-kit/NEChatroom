@@ -6,6 +6,7 @@ package com.netease.yunxin.kit.entertainment.common.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
@@ -16,11 +17,14 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import androidx.annotation.NonNull;
 import com.netease.yunxin.kit.alog.ALog;
+import com.netease.yunxin.kit.common.ui.dialog.TopPopupWindow;
 import com.netease.yunxin.kit.common.ui.utils.Permission;
 import com.netease.yunxin.kit.common.ui.utils.ToastX;
 import com.netease.yunxin.kit.common.utils.XKitUtils;
+import com.netease.yunxin.kit.entertainment.common.R;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -116,12 +120,29 @@ public class BluetoothHeadsetUtil {
   }
 
   public static void requestBluetoothConnectPermission(Context context) {
+    TopPopupWindow permissionPop = null;
+    if (context instanceof Activity) {
+      permissionPop =
+          new TopPopupWindow(
+              (Activity) context,
+              R.string.app_permission_tip_camera_title,
+              R.string.app_permission_tip_camera_content);
+      if (!Permission.hasPermissions(context, BLUETOOTH_CONNECT_PERMISSION)) {
+        permissionPop.showAtLocation(
+            ((Activity) context).getWindow().getDecorView(), Gravity.TOP, 0, 100);
+      }
+    }
+
+    TopPopupWindow finalPermissionPop = permissionPop;
     Permission.requirePermissions(context, BLUETOOTH_CONNECT_PERMISSION)
         .request(
             new Permission.PermissionCallback() {
               @Override
               public void onGranted(@NonNull List<String> granted) {
                 ALog.i(TAG, "BLUETOOTH_CONNECT_PERMISSION onGranted");
+                if (finalPermissionPop != null) {
+                  finalPermissionPop.dismiss();
+                }
               }
 
               @Override
@@ -129,10 +150,17 @@ public class BluetoothHeadsetUtil {
                   List<String> permissionsDenial, List<String> permissionDenialForever) {
                 ALog.e(TAG, "BLUETOOTH_CONNECT_PERMISSION onDenied");
                 ToastX.showShortToast("Bluetooth connect permission denied");
+                if (finalPermissionPop != null) {
+                  finalPermissionPop.dismiss();
+                }
               }
 
               @Override
-              public void onException(Exception exception) {}
+              public void onException(Exception exception) {
+                if (finalPermissionPop != null) {
+                  finalPermissionPop.dismiss();
+                }
+              }
             });
   }
 

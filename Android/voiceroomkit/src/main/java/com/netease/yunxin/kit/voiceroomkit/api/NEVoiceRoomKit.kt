@@ -600,7 +600,7 @@ interface VoiceRoomInterceptor {
  */
 data class NEVoiceRoomKitConfig(val appKey: String, val extras: Map<String, Any?> = mapOf()) {
     constructor(appKey: String) :
-            this(appKey, mapOf())
+        this(appKey, mapOf())
 }
 
 /**

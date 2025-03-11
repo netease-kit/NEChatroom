@@ -13,7 +13,7 @@ dependencies:
 
   yunxin_alog: ^2.0.0
   netease_roomkit: 1.30.7
-  netease_common: ^1.0.9
+  netease_common: 1.0.9
 
   dio: ^5.3.0
   uuid: ^3.0.6

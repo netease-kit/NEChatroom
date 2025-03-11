@@ -538,11 +538,8 @@
   [self.chatView addMessages:messages];
   //  message.giftTo = giftModel.rewardeeUserName;
 
-  if (self.role != NEVoiceRoomRoleHost) {
-    // 房主不展示礼物
-    NSString *giftName = [NSString stringWithFormat:@"anim_gift_0%zd", giftModel.giftId];
-    [self playGiftWithName:giftName];
-  }
+  NSString *giftName = [NSString stringWithFormat:@"anim_gift_0%zd", giftModel.giftId];
+  [self playGiftWithName:giftName];
 
   [self.micQueueView updateGiftDatas:[giftModel.seatUserReward mutableCopy]];
 }

@@ -24,7 +24,8 @@ public class VoiceRoomUtils {
     }
     RoomModel roomModel = new RoomModel();
     roomModel.setRoomUuid(voiceRoomInfo.getLiveModel().getRoomUuid());
-    roomModel.setAudienceCount(voiceRoomInfo.getLiveModel().getAudienceCount() + 1);
+    Integer audienceCount = voiceRoomInfo.getLiveModel().getAudienceCount();
+    roomModel.setAudienceCount((audienceCount == null ? 0 : audienceCount) + 1);
     roomModel.setCover(voiceRoomInfo.getLiveModel().getCover());
     roomModel.setLiveRecordId(voiceRoomInfo.getLiveModel().getLiveRecordId());
     roomModel.setRoomName(voiceRoomInfo.getLiveModel().getLiveTopic());

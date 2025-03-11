@@ -18,7 +18,7 @@ public class Constants {
   public static final String PAGE_ACTION_HOME = "https://netease.yunxin.party.home";
   public static final String PAGE_ACTION_AUTH = "https://netease.yunxin.party.auth";
   public static final String PRIVACY_POLICY_ZH =
-      "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/protocol/clauses.html";
+      "https://yunxin.163.com/clause-detail?serviceType=11";
   public static final String USER_AGREEMENT_ZH = "https://yunxin.163.com/m/clauses/user";
   public static final String PRIVACY_POLICY_EN =
       "https://yx-web-nosdn.netease.im/quickhtml/assets/yunxin/protocol/policy.html";
