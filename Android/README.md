@@ -42,7 +42,7 @@ VoiceRoomViewModel.java     # 语聊房ViewModel
 
 1. 克隆示例项目源码仓库至您本地工程。
 2. 开启 Android 设备的开发者选项，通过 USB 连接线将 Android 设备接入电脑。
-3. 通过 Android Studio 打开项目，在 ` app\src\main\java\com\netease\yunxin\app\voiceroom\config\AppConfig.java ` 文件中配置应用的 App Key。    
+3. 通过 Android Studio 打开项目，在 ` app\src\main\java\com\netease\yunxin\app\chatroom\config\AppConfig.java ` 文件中配置应用的 App Key。    
 
     
 
