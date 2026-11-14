@@ -10,6 +10,7 @@ plugins {
 }
 
 android {
+    namespace = "com.netease.yunxin.app.chatroom"
     compileSdk = 34
     defaultConfig {
         minSdk = 21
