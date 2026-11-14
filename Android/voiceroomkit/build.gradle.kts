@@ -12,8 +12,13 @@ plugins {
 android {
     compileSdk = 31
     namespace = "com.netease.yunxin.kit.voiceroomkit"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
