@@ -8,13 +8,14 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,20 +25,35 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
+          cache: gradle
+          cache-dependency-path: Android/**/*.gradle*
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: "platform-tools platforms;android-34 build-tools;34.0.0"
+          packages: |
+            platform-tools
+            platforms;android-34
+            build-tools;34.0.0
 
       - name: Grant execute permission
-        run: chmod +x gradlew
+        working-directory: Android
+        run: chmod +x ./gradlew
 
       - name: Build debug APK
-        run: ./gradlew :app:assembleDebug --stacktrace
+        working-directory: Android
+        run: ./gradlew --no-daemon --stacktrace :app:assembleDebug
+
+      - name: Verify APK
+        shell: bash
+        run: |
+          test -n "$(find Android/app/build/outputs/apk/debug -maxdepth 1 -name '*.apk' -print -quit)"
+          ls -lh Android/app/build/outputs/apk/debug/*.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: NEChatroom-debug
           path: Android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
