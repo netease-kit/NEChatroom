@@ -36,7 +36,9 @@ jobs:
       - name: Install Android SDK packages
         shell: bash
         run: |
+          set +o pipefail
           yes | sdkmanager --licenses
+          set -o pipefail
           sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
       - name: Grant execute permission
