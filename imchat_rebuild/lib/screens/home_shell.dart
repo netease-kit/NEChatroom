@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'messages_page.dart';
+import 'profile_page.dart';
+import 'room_detail_page.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});
@@ -11,7 +14,7 @@ class _HomeShellState extends State<HomeShell> {
   static const pages = ['الغرف', 'الرسائل', 'لحظات', 'أنا'];
   @override
   Widget build(BuildContext context) {
-    final bodies = [const _Rooms(), const _Messages(), const _Moments(), const _Profile()];
+    final bodies = [const _Rooms(), const MessagesPage(), const _Moments(), const ProfilePage()];
     return Scaffold(
       appBar: AppBar(
         title: Text(pages[index], style: const TextStyle(fontWeight: FontWeight.w800)),
@@ -50,42 +53,23 @@ class _RoomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
     margin: const EdgeInsets.only(bottom: 12), clipBehavior: Clip.antiAlias,
-    child: Padding(padding: const EdgeInsets.all(14), child: Row(children: [
-      CircleAvatar(radius: 27, backgroundColor: const Color(0xFFE9E3FF), child: Icon(Icons.headphones, color: Color(0xFF7655E8))),
-      const SizedBox(width: 12),
-      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('غرفة دردشة $number', style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4), const Text('مرحبًا بالجميع • غرفة صوتية', style: TextStyle(color: Colors.black54, fontSize: 12)),
+    child: InkWell(
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => RoomDetailPage(roomName: 'غرفة دردشة $number'))),
+      child: Padding(padding: const EdgeInsets.all(14), child: Row(children: [
+        const CircleAvatar(radius: 27, backgroundColor: Color(0xFFE9E3FF), child: Icon(Icons.headphones, color: Color(0xFF7655E8))),
+        const SizedBox(width: 12),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('غرفة دردشة $number', style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4), const Text('مرحبًا بالجميع • غرفة صوتية', style: TextStyle(color: Colors.black54, fontSize: 12)),
+        ])),
+        const Column(children: [Icon(Icons.people_alt_outlined, size: 18), Text('12', style: TextStyle(fontSize: 12))]),
       ])),
-      const Column(children: [Icon(Icons.people_alt_outlined, size: 18), Text('12', style: TextStyle(fontSize: 12))]),
-    ])),
+    ),
   );
 }
 
-class _Messages extends StatelessWidget {
-  const _Messages();
-  @override
-  Widget build(BuildContext context) => ListView(children: const [
-    ListTile(leading: CircleAvatar(child: Icon(Icons.person)), title: Text('المحادثات'), subtitle: Text('ستظهر رسائلك هنا بعد ربط الحساب')),
-    Divider(height: 1),
-    ListTile(leading: CircleAvatar(child: Icon(Icons.group)), title: Text('مجموعات'), subtitle: Text('محادثاتك الجماعية')),
-  ]);
-}
 class _Moments extends StatelessWidget {
   const _Moments();
   @override
   Widget build(BuildContext context) => const Center(child: Text('قسم اللحظات والفيديوهات — قيد التنفيذ'));
-}
-class _Profile extends StatelessWidget {
-  const _Profile();
-  @override
-  Widget build(BuildContext context) => ListView(padding: const EdgeInsets.all(16), children: const [
-    CircleAvatar(radius: 42, child: Icon(Icons.person, size: 42)),
-    SizedBox(height: 12),
-    Center(child: Text('ملفي الشخصي', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-    SizedBox(height: 20),
-    Card(child: ListTile(leading: Icon(Icons.account_balance_wallet_outlined), title: Text('المحفظة'), subtitle: Text('الرصيد سيظهر بعد ربط قاعدة البيانات'))),
-    Card(child: ListTile(leading: Icon(Icons.workspace_premium_outlined), title: Text('VIP'))),
-    Card(child: ListTile(leading: Icon(Icons.settings_outlined), title: Text('الإعدادات'))),
-  ]);
 }
