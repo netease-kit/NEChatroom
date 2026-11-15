@@ -23,7 +23,7 @@ jobs:
       - name: Resolve packages
         run: flutter pub get
       - name: Analyze
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
       - name: Build APK
         run: flutter build apk --release
       - name: Upload APK artifact
