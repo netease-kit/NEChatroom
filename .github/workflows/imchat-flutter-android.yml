@@ -1,0 +1,34 @@
+name: Flutter Android build
+on:
+  push:
+    branches: [rebuild/imchat-supabase]
+    paths:
+      - "imchat_flutter/**"
+      - ".github/workflows/imchat-flutter-android.yml"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: imchat_flutter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Generate Android platform
+        run: flutter create --platforms=android --org com.imchat.app .
+      - name: Resolve packages
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze
+      - name: Build APK
+        run: flutter build apk --release
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: imchat-android-apk
+          path: imchat_flutter/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
