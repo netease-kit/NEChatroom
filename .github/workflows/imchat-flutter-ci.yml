@@ -1,0 +1,28 @@
+name: Im Chat Flutter CI
+
+on:
+  push:
+    paths:
+      - 'imchat_rebuild/**'
+      - '.github/workflows/imchat-flutter-ci.yml'
+  pull_request:
+    paths:
+      - 'imchat_rebuild/**'
+      - '.github/workflows/imchat-flutter-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  analyze-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: imchat_rebuild
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
