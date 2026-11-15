@@ -17,6 +17,7 @@
 
 ```bash
 cd imchat_flutter
+flutter create --platforms=android --org com.imchat.app .
 flutter pub get
 flutter run \
   --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
