@@ -1,0 +1,23 @@
+name: Flutter check
+on:
+  push:
+    paths:
+      - "imchat_rebuild/**"
+  pull_request:
+    paths:
+      - "imchat_rebuild/**"
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: imchat_rebuild
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter create --project-name imchat_rebuild --org com.imchat.rebuild --platforms=android .
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter build apk --debug
